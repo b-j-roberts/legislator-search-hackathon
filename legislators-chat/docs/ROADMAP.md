@@ -16,56 +16,17 @@ Hey, I am working on the legislators-chat project. Let's continue with implement
 
 Foundation and infrastructure required before feature development.
 
-### 0.2 Base Layout Components
-
-**Description**: Create the foundational layout components that will wrap all pages.
-
-**Requirements**:
-- [ ] Create root layout with theme provider
-- [ ] Create Header component with logo/branding
-- [ ] Create main content area with responsive grid
-- [ ] Set up dark mode as default (with optional toggle)
-- [ ] Configure base fonts (Geist or system fonts)
-
-**Implementation Notes**:
-- Layout should support split-view: chat on left, results on right
-- Mobile-first responsive design
-- Consider sticky header behavior
-
----
-
-### 0.3 Common UI Components
-
-**Description**: Install and configure commonly used shadcn/ui components.
-
-**Requirements**:
-- [ ] Add Button component with variants
-- [ ] Add Input component
-- [ ] Add Card component
-- [ ] Add Badge component
-- [ ] Add ScrollArea component
-- [ ] Add Skeleton component for loading states
-- [ ] Add Avatar component
-- [ ] Add Tooltip component
-
-**Implementation Notes**:
-- Only add components as needed; don't pre-install everything
-- Customize component styles to match STYLES.md spec
-- Ensure all components support dark mode
-
----
-
 ### 0.4 Type Definitions
 
 **Description**: Define TypeScript interfaces for all data models used across the application.
 
 **Requirements**:
-- [ ] Define Legislator interface
-- [ ] Define ChatMessage interface
-- [ ] Define ChatResponse interface
-- [ ] Define Document/Hearing/Vote interfaces
-- [ ] Define Contact information types
-- [ ] Define API response types
+- [x] Define Legislator interface
+- [x] Define ChatMessage interface
+- [x] Define ChatResponse interface
+- [x] Define Document/Hearing/Vote interfaces
+- [x] Define Contact information types
+- [x] Define API response types
 
 **Implementation Notes**:
 - Keep types in src/lib/types.ts for shared types
