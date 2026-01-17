@@ -8,22 +8,20 @@ The TV News Archive contains closed captions from major networks:
 - ABC, CBS, NBC, PBS
 - BBC, Al Jazeera, and more
 
-API Documentation: https://archive.org/advancedsearch.php
+TV News Archive Search: https://archive.org/details/tv
 """
 
 import json
 import time
+import re
 import requests
 from pathlib import Path
 from datetime import datetime
 from typing import Optional
-from urllib.parse import quote_plus
+from urllib.parse import quote_plus, urlencode
 
-# Internet Archive Advanced Search API
-IA_SEARCH_URL = "https://archive.org/advancedsearch.php"
-
-# TV Archive collection
-TV_COLLECTION = "tv"
+# TV News Archive search endpoint (different from general archive search)
+TV_SEARCH_URL = "https://archive.org/details/tv"
 
 # Rate limiting
 REQUESTS_PER_MINUTE = 30
@@ -32,45 +30,54 @@ REQUEST_DELAY = 60 / REQUESTS_PER_MINUTE
 
 def search_tv_archive(
     query: str,
-    start_date: str = "2020-01-01",
-    end_date: str = "2026-12-31",
+    start_year: int = 2020,
+    end_year: int = 2026,
     rows: int = 100,
-    page: int = 1,
+    page: int = 0,
 ) -> dict:
     """
     Search the Internet Archive TV News Archive.
 
     Args:
         query: Search term (e.g., legislator name)
-        start_date: Start date in YYYY-MM-DD format
-        end_date: End date in YYYY-MM-DD format
-        rows: Number of results per page (max 10000)
-        page: Page number (1-indexed)
+        start_year: Start year for search
+        end_year: End year for search
+        rows: Number of results per page
+        page: Page number (0-indexed for this API)
 
     Returns:
         Dict with 'total', 'items', and 'query_info'
     """
-    # Build the search query
-    # Search in the TV archive collection with date range
-    full_query = f'collection:"{TV_COLLECTION}" AND "{query}" AND date:[{start_date} TO {end_date}]'
+    # Build the URL manually since TV archive uses special param format
+    # Format: /details/tv?q="query"&and[]=year:"2024"&and[]=year:"2023"...&output=json
 
-    params = {
-        "q": full_query,
-        "fl[]": ["identifier", "title", "date", "description", "mediatype", "collection"],
-        "sort[]": "date desc",
-        "rows": rows,
-        "page": page,
-        "output": "json",
-    }
+    base_url = f'{TV_SEARCH_URL}?q="{quote_plus(query)}"'
 
-    response = requests.get(IA_SEARCH_URL, params=params, timeout=60)
+    # Add year filters - TV archive uses &and[]=year:"YYYY" format
+    if start_year and end_year:
+        for year in range(start_year, end_year + 1):
+            base_url += f'&and[]=year:"{year}"'
+
+    # Add pagination and output format
+    url = f"{base_url}&rows={rows}&page={page}&output=json"
+
+    response = requests.get(url, timeout=60)
     response.raise_for_status()
 
+    # The TV archive returns an array directly, not wrapped in "response"
     data = response.json()
-    response_data = data.get("response", {})
 
     items = []
-    for doc in response_data.get("docs", []):
+
+    # Handle both array format and potential wrapped format
+    if isinstance(data, list):
+        docs = data
+        total = len(data)  # Approximate - API doesn't return total count easily
+    else:
+        docs = data.get("docs", data.get("response", {}).get("docs", []))
+        total = data.get("numFound", data.get("response", {}).get("numFound", len(docs)))
+
+    for doc in docs:
         # Parse the identifier to extract network and show info
         identifier = doc.get("identifier", "")
         parts = identifier.split("_")
@@ -78,23 +85,43 @@ def search_tv_archive(
         # Typical format: NETWORK_YYYYMMDD_HHMMSS_Show_Name
         network = parts[0] if parts else "Unknown"
 
+        # Extract date from identifier if not provided
+        date_str = doc.get("date", "")
+        if not date_str and len(parts) > 1:
+            # Try to parse YYYYMMDD from identifier
+            date_match = re.search(r"(\d{8})", identifier)
+            if date_match:
+                d = date_match.group(1)
+                date_str = f"{d[:4]}-{d[4:6]}-{d[6:8]}"
+
+        # Get transcript snippet if available
+        snippet = doc.get("snip", "")
+        # Clean HTML tags from snippet
+        if snippet:
+            snippet = re.sub(r"<[^>]+>", "", snippet)
+
         items.append({
             "identifier": identifier,
             "title": doc.get("title", ""),
-            "date": doc.get("date", ""),
-            "description": doc.get("description", ""),
+            "date": date_str,
+            "snippet": snippet,
             "network": network,
+            "collection": doc.get("collection", ""),
+            "start_time": doc.get("start", ""),
+            "end_time": doc.get("end", ""),
+            "video_url": doc.get("video", ""),
+            "thumbnail": doc.get("thumb", ""),
             "archive_url": f"https://archive.org/details/{identifier}",
             "embed_url": f"https://archive.org/embed/{identifier}",
         })
 
     return {
-        "total": response_data.get("numFound", 0),
+        "total": total if total > len(items) else len(items) * (page + 2),  # Estimate if not provided
         "items": items,
         "query_info": {
             "query": query,
-            "start_date": start_date,
-            "end_date": end_date,
+            "start_year": start_year,
+            "end_year": end_year,
             "page": page,
             "rows": rows,
         }
@@ -114,42 +141,56 @@ def search_legislator(
     Args:
         name: Full name of the legislator
         bioguide_id: Unique identifier for the legislator
-        start_date: Start date for search
-        end_date: End date for search
+        start_date: Start date for search (YYYY-MM-DD)
+        end_date: End date for search (YYYY-MM-DD)
         max_results: Maximum total results to fetch
 
     Returns:
         Dict with legislator info and all appearances
     """
+    # Convert dates to years for TV archive API
+    start_year = int(start_date.split("-")[0])
+    end_year = int(end_date.split("-")[0])
+
     all_items = []
-    page = 1
+    page = 0  # TV archive uses 0-indexed pages
     rows_per_page = 100
+    total = 0
 
     print(f"Searching Internet Archive for: {name}")
 
     while len(all_items) < max_results:
-        result = search_tv_archive(
-            query=name,
-            start_date=start_date,
-            end_date=end_date,
-            rows=rows_per_page,
-            page=page,
-        )
+        try:
+            result = search_tv_archive(
+                query=name,
+                start_year=start_year,
+                end_year=end_year,
+                rows=rows_per_page,
+                page=page,
+            )
 
-        total = result["total"]
-        items = result["items"]
+            total = result["total"]
+            items = result["items"]
 
-        if not items:
+            if not items:
+                break
+
+            all_items.extend(items)
+            print(f"  Page {page + 1}: fetched {len(items)} items (total so far: {len(all_items)})")
+
+            # If we got fewer items than requested, we've likely hit the end
+            if len(items) < rows_per_page:
+                break
+
+            if len(all_items) >= max_results:
+                break
+
+            page += 1
+            time.sleep(REQUEST_DELAY)
+
+        except Exception as e:
+            print(f"  Error on page {page}: {e}")
             break
-
-        all_items.extend(items)
-        print(f"  Page {page}: fetched {len(items)} items (total found: {total})")
-
-        if len(all_items) >= total or len(all_items) >= max_results:
-            break
-
-        page += 1
-        time.sleep(REQUEST_DELAY)
 
     # Deduplicate by identifier
     seen = set()
@@ -162,7 +203,7 @@ def search_legislator(
     return {
         "bioguide_id": bioguide_id,
         "name": name,
-        "total_found": result.get("total", 0) if result else 0,
+        "total_found": len(unique_items),
         "items_fetched": len(unique_items),
         "search_params": {
             "start_date": start_date,

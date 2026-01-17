@@ -1,0 +1,20 @@
+{
+  "run_date": "2026-01-17T14:19:07.603132",
+  "legislators_processed": 100,
+  "date_range": {
+    "start": "2020-01-01",
+    "end": "2026-12-31"
+  },
+  "internet_archive": {
+    "total_appearances": 0,
+    "legislators_with_results": 0
+  },
+  "youtube": {
+    "total_videos": 0,
+    "legislators_with_results": 0
+  },
+  "transcripts": {
+    "extracted": 0,
+    "failed": 0
+  }
+}

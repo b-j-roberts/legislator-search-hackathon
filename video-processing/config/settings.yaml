@@ -1,0 +1,40 @@
+# Video Processing Pipeline Configuration
+
+# Date range for searches
+date_range:
+  start: "2020-01-01"
+  end: "2026-12-31"
+
+# Internet Archive settings
+internet_archive:
+  max_results_per_legislator: 200
+  rate_limit_per_minute: 30
+
+# YouTube settings
+youtube:
+  max_results_per_legislator: 50
+  rate_limit_per_minute: 20
+  # Set this or use YOUTUBE_API_KEY env var
+  api_key: null
+
+  # Official news channel IDs to prioritize
+  news_channels:
+    CNN: "UCupvZG-5ko_eiXAupbDfxWw"
+    MSNBC: "UCaXkIU1QidjPwiAYu6GcHjg"
+    "Fox News": "UCXIJgqnII2ZOINSWNOGFThA"
+    "CBS News": "UC8p1vwvWtl6T73JiExfWs1g"
+    "ABC News": "UCBi2mrWuNuyYy4gbM6fU18Q"
+    "NBC News": "UCeY0bbntWzzVIaj2z3QigXg"
+    "PBS NewsHour": "UC6ZFN9Tx6xh-skXCuRHCDpQ"
+    "C-SPAN": "UCb--64Gl51jIEVE-GLDAVTg"
+
+# Whisper transcription settings
+whisper:
+  model: "base"  # tiny, base, small, medium, large
+  language: "en"
+
+# Output settings
+output:
+  base_dir: "data/pipeline_output"
+  save_individual_results: true
+  save_combined_results: true

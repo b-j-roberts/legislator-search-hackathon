@@ -1,0 +1,502 @@
+[
+  {
+    "bioguide_id": "C000127",
+    "name": "Maria Cantwell",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "K000367",
+    "name": "Amy Klobuchar",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "S000033",
+    "name": "Bernard Sanders",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "W000802",
+    "name": "Sheldon Whitehouse",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "B001261",
+    "name": "John Barrasso",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "W000437",
+    "name": "Roger F. Wicker",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "C001035",
+    "name": "Susan M. Collins",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "C001056",
+    "name": "John Cornyn",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "D000563",
+    "name": "Richard J. Durbin",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "G000359",
+    "name": "Lindsey Graham",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "M000355",
+    "name": "Mitch McConnell",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "M001176",
+    "name": "Jeff Merkley",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "R000122",
+    "name": "Jack Reed",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "R000584",
+    "name": "James E. Risch",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "S001181",
+    "name": "Jeanne Shaheen",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "W000805",
+    "name": "Mark R. Warner",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "G000555",
+    "name": "Kirsten E. Gillibrand",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "C001088",
+    "name": "Christopher A. Coons",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "B001230",
+    "name": "Tammy Baldwin",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "B001267",
+    "name": "Michael F. Bennet",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "B001243",
+    "name": "Marsha Blackburn",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "B001277",
+    "name": "Richard Blumenthal",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "B001236",
+    "name": "John Boozman",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "C001047",
+    "name": "Shelley Moore Capito",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "C001075",
+    "name": "Bill Cassidy",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "C000880",
+    "name": "Mike Crapo",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "G000386",
+    "name": "Chuck Grassley",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "H001046",
+    "name": "Martin Heinrich",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "H001042",
+    "name": "Mazie K. Hirono",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "H001061",
+    "name": "John Hoeven",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "J000293",
+    "name": "Ron Johnson",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "L000575",
+    "name": "James Lankford",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "L000577",
+    "name": "Mike Lee",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "L000570",
+    "name": "Ben Ray Luj\u00e1n",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "M000133",
+    "name": "Edward J. Markey",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "M000934",
+    "name": "Jerry Moran",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "M001153",
+    "name": "Lisa Murkowski",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "M001169",
+    "name": "Christopher Murphy",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "M001111",
+    "name": "Patty Murray",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "P000603",
+    "name": "Rand Paul",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "P000595",
+    "name": "Gary C. Peters",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "S001150",
+    "name": "Adam B. Schiff",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "S000148",
+    "name": "Charles E. Schumer",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "S001184",
+    "name": "Tim Scott",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "T000250",
+    "name": "John Thune",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "V000128",
+    "name": "Chris Van Hollen",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "W000800",
+    "name": "Peter Welch",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "W000779",
+    "name": "Ron Wyden",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "Y000064",
+    "name": "Todd Young",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "S001194",
+    "name": "Brian Schatz",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "C001095",
+    "name": "Tom Cotton",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "D000622",
+    "name": "Tammy Duckworth",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "W000817",
+    "name": "Elizabeth Warren",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "K000383",
+    "name": "Angus S. King, Jr.",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "D000618",
+    "name": "Steve Daines",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "C001096",
+    "name": "Kevin Cramer",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "F000463",
+    "name": "Deb Fischer",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "M001190",
+    "name": "Markwayne Mullin",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "C001098",
+    "name": "Ted Cruz",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "K000384",
+    "name": "Tim Kaine",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "B001288",
+    "name": "Cory A. Booker",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "G000574",
+    "name": "Ruben Gallego",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "S001198",
+    "name": "Dan Sullivan",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "E000295",
+    "name": "Joni Ernst",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "T000476",
+    "name": "Thom Tillis",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "R000605",
+    "name": "Mike Rounds",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "K000393",
+    "name": "John Kennedy",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "H001076",
+    "name": "Margaret Wood Hassan",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "C001113",
+    "name": "Catherine Cortez Masto",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "B001303",
+    "name": "Lisa Blunt Rochester",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "B001299",
+    "name": "Jim Banks",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "M001198",
+    "name": "Roger Marshall",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "B001305",
+    "name": "Ted Budd",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "R000608",
+    "name": "Jacky Rosen",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "C001114",
+    "name": "John R. Curtis",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "S001203",
+    "name": "Tina Smith",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "H001079",
+    "name": "Cindy Hyde-Smith",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "S001208",
+    "name": "Elissa Slotkin",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "K000394",
+    "name": "Andy Kim",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "S001217",
+    "name": "Rick Scott",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "H001089",
+    "name": "Josh Hawley",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "K000377",
+    "name": "Mark Kelly",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "L000571",
+    "name": "Cynthia M. Lummis",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "T000278",
+    "name": "Tommy Tuberville",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "H000273",
+    "name": "John W. Hickenlooper",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "H000601",
+    "name": "Bill Hagerty",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "P000145",
+    "name": "Alex Padilla",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "O000174",
+    "name": "Jon Ossoff",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "W000790",
+    "name": "Raphael G. Warnock",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "B001319",
+    "name": "Katie Boyd Britt",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "S001227",
+    "name": "Eric Schmitt",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "F000479",
+    "name": "John Fetterman",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "R000618",
+    "name": "Pete Ricketts",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "A000382",
+    "name": "Angela D. Alsobrooks",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "S001232",
+    "name": "Tim Sheehy",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "M001242",
+    "name": "Bernie Moreno",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "M001243",
+    "name": "David McCormick",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "J000312",
+    "name": "James C. Justice",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "H001104",
+    "name": "Jon Husted",
+    "error": "'NoneType' object is not subscriptable"
+  },
+  {
+    "bioguide_id": "M001244",
+    "name": "Ashley Moody",
+    "error": "'NoneType' object is not subscriptable"
+  }
+]
