@@ -3,3 +3,5 @@ export { useResults } from "./use-results";
 export type { ResultsState, UseResultsReturn } from "./use-results";
 export { useNetworkStatus } from "./use-network-status";
 export type { NetworkStatus } from "./use-network-status";
+export { usePanelPreferences } from "./use-panel-preferences";
+export type { PanelPreferences } from "./use-panel-preferences";

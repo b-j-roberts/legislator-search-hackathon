@@ -2,9 +2,10 @@
 
 import * as React from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { MessageSquare } from "lucide-react";
+import { MessageSquare, ArrowDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
 import { ChatBubble } from "./chat-bubble";
 import { TypingIndicator } from "./typing-indicator";
 import type { ChatMessage } from "@/lib/types";
@@ -24,6 +25,9 @@ const containerVariants = {
     },
   },
 };
+
+// How far from bottom (in pixels) to show the scroll button
+const SCROLL_BUTTON_THRESHOLD = 100;
 
 function EmptyState() {
   return (
@@ -62,13 +66,102 @@ export function ChatMessages({
   className,
   onRetryMessage,
 }: ChatMessagesProps) {
-  const scrollRef = React.useRef<HTMLDivElement>(null);
+  const scrollAreaRef = React.useRef<HTMLDivElement>(null);
   const bottomRef = React.useRef<HTMLDivElement>(null);
+  const [showScrollButton, setShowScrollButton] = React.useState(false);
 
-  // Auto-scroll to bottom when new messages arrive or loading state changes
+  // Track if we should auto-scroll (true by default, false when user scrolls up)
+  const shouldAutoScrollRef = React.useRef(true);
+  // Track if scroll was triggered programmatically to ignore that scroll event
+  const isProgrammaticScrollRef = React.useRef(false);
+  // Track last message count to detect new messages
+  const lastMessageCountRef = React.useRef(messages.length);
+
+  // Get the actual scrollable viewport from ScrollArea
+  const getScrollViewport = React.useCallback(() => {
+    return scrollAreaRef.current?.querySelector("[data-radix-scroll-area-viewport]") as HTMLElement | null;
+  }, []);
+
+  // Check if user is near the bottom of the scroll area
+  const isNearBottom = React.useCallback(() => {
+    const viewport = getScrollViewport();
+    if (!viewport) return true;
+
+    const { scrollTop, scrollHeight, clientHeight } = viewport;
+    return scrollHeight - scrollTop - clientHeight < SCROLL_BUTTON_THRESHOLD;
+  }, [getScrollViewport]);
+
+  // Scroll to bottom
+  const scrollToBottom = React.useCallback(() => {
+    const viewport = getScrollViewport();
+    if (!viewport) return;
+
+    isProgrammaticScrollRef.current = true;
+    viewport.scrollTop = viewport.scrollHeight;
+    setShowScrollButton(false);
+
+    // Reset the flag after a short delay to allow the scroll event to fire
+    requestAnimationFrame(() => {
+      isProgrammaticScrollRef.current = false;
+    });
+  }, [getScrollViewport]);
+
+  // Handle user clicking scroll to bottom button
+  const handleScrollToBottom = React.useCallback(() => {
+    shouldAutoScrollRef.current = true;
+    scrollToBottom();
+  }, [scrollToBottom]);
+
+  // Track scroll position to detect user scrolling away
   React.useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isLoading]);
+    const viewport = getScrollViewport();
+    if (!viewport) return;
+
+    const handleScroll = () => {
+      // Ignore programmatic scrolls
+      if (isProgrammaticScrollRef.current) return;
+
+      const nearBottom = isNearBottom();
+
+      // If user scrolls up (away from bottom), disable auto-scroll
+      if (!nearBottom) {
+        shouldAutoScrollRef.current = false;
+        setShowScrollButton(true);
+      } else {
+        // User scrolled back to bottom manually
+        shouldAutoScrollRef.current = true;
+        setShowScrollButton(false);
+      }
+    };
+
+    viewport.addEventListener("scroll", handleScroll);
+    return () => viewport.removeEventListener("scroll", handleScroll);
+  }, [getScrollViewport, isNearBottom]);
+
+  // Auto-scroll when new user message is sent
+  React.useEffect(() => {
+    const isNewMessage = messages.length > lastMessageCountRef.current;
+    lastMessageCountRef.current = messages.length;
+
+    if (isNewMessage && messages.length > 0) {
+      const lastMessage = messages[messages.length - 1];
+      // Always scroll for new user messages and re-enable auto-scroll
+      if (lastMessage?.role === "user") {
+        shouldAutoScrollRef.current = true;
+        scrollToBottom();
+      }
+    }
+  }, [messages.length, messages, scrollToBottom]);
+
+  // Auto-scroll during streaming if auto-scroll is enabled
+  React.useEffect(() => {
+    if (shouldAutoScrollRef.current) {
+      // Use RAF for smooth scroll during streaming
+      requestAnimationFrame(() => {
+        scrollToBottom();
+      });
+    }
+  }, [messages, isLoading, scrollToBottom]);
 
   // Show empty state if no messages
   if (messages.length === 0 && !isLoading) {
@@ -80,41 +173,65 @@ export function ChatMessages({
   }
 
   return (
-    <ScrollArea className={cn("flex-1 min-h-0", className)}>
-      <div ref={scrollRef} className="flex flex-col p-4">
-        <motion.div
-          variants={containerVariants}
-          initial="initial"
-          animate="animate"
-          className="flex flex-col gap-4"
-        >
-          <AnimatePresence mode="popLayout">
-            {messages.map((message) => (
-              <ChatBubble
-                key={message.id}
-                role={message.role}
-                content={message.content}
-                timestamp={message.timestamp}
-                status={message.status}
-                error={message.error}
-                onRetry={
-                  message.status === "error" && onRetryMessage
-                    ? () => onRetryMessage(message.id)
-                    : undefined
-                }
-              />
-            ))}
-          </AnimatePresence>
+    <div className={cn("relative flex-1 min-h-0", className)}>
+      <ScrollArea ref={scrollAreaRef} className="h-full">
+        <div className="flex flex-col p-4">
+          <motion.div
+            variants={containerVariants}
+            initial="initial"
+            animate="animate"
+            className="flex flex-col gap-4"
+          >
+            <AnimatePresence mode="popLayout">
+              {messages.map((message) => (
+                <ChatBubble
+                  key={message.id}
+                  role={message.role}
+                  content={message.content}
+                  timestamp={message.timestamp}
+                  status={message.status}
+                  error={message.error}
+                  onRetry={
+                    message.status === "error" && onRetryMessage
+                      ? () => onRetryMessage(message.id)
+                      : undefined
+                  }
+                />
+              ))}
+            </AnimatePresence>
 
-          {/* Typing indicator when loading */}
-          <AnimatePresence>
-            {isLoading && <TypingIndicator key="typing-indicator" />}
-          </AnimatePresence>
-        </motion.div>
+            {/* Typing indicator when loading */}
+            <AnimatePresence>
+              {isLoading && <TypingIndicator key="typing-indicator" />}
+            </AnimatePresence>
+          </motion.div>
 
-        {/* Invisible element for scroll anchor */}
-        <div ref={bottomRef} className="h-px" aria-hidden="true" />
-      </div>
-    </ScrollArea>
+          {/* Invisible element for scroll anchor */}
+          <div ref={bottomRef} className="h-px" aria-hidden="true" />
+        </div>
+      </ScrollArea>
+
+      {/* Scroll to bottom button - appears when user scrolls up */}
+      <AnimatePresence>
+        {showScrollButton && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10"
+          >
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={handleScrollToBottom}
+              className="shadow-lg gap-1.5"
+            >
+              <ArrowDown className="h-4 w-4" />
+              <span>Scroll to bottom</span>
+            </Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
