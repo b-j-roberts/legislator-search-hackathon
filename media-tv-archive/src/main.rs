@@ -36,13 +36,9 @@ enum Commands {
         #[arg(long)]
         end_date: Option<String>,
 
-        /// Maximum pages to fetch
-        #[arg(long, default_value = "5")]
-        max_pages: u32,
-
-        /// Results per page
-        #[arg(long, default_value = "50")]
-        rows: u32,
+        /// Maximum results to return
+        #[arg(long, default_value = "100")]
+        max_results: u32,
 
         /// Output file path
         #[arg(short, long, default_value = "media_tv_archive.yaml")]
@@ -63,13 +59,9 @@ enum Commands {
         #[arg(long)]
         end_date: Option<String>,
 
-        /// Maximum pages per member
-        #[arg(long, default_value = "3")]
-        max_pages: u32,
-
-        /// Results per page
-        #[arg(long, default_value = "20")]
-        rows: u32,
+        /// Maximum results per member
+        #[arg(long, default_value = "50")]
+        max_results: u32,
 
         /// Output file path
         #[arg(short, long, default_value = "media_tv_archive.yaml")]
@@ -82,9 +74,9 @@ enum Commands {
         #[arg(short, long, default_value = "Chuck Schumer")]
         query: String,
 
-        /// Number of results
+        /// Number of results to display
         #[arg(short, long, default_value = "5")]
-        rows: u32,
+        limit: u32,
     },
 }
 
@@ -104,8 +96,7 @@ fn main() -> Result<()> {
             bioguide_id,
             start_date,
             end_date,
-            max_pages,
-            rows,
+            max_results,
             output,
         } => {
             let start = start_date
@@ -119,14 +110,8 @@ fn main() -> Result<()> {
                 .transpose()?;
 
             let client = TvArchiveClient::new()?;
-            let appearances = client.fetch_member_appearances(
-                &name,
-                &bioguide_id,
-                start,
-                end,
-                max_pages,
-                rows,
-            )?;
+            let appearances =
+                client.fetch_member_appearances(&name, &bioguide_id, start, end, max_results)?;
 
             let output_data = MediaAppearanceOutput::new(SourceType::TvArchive, appearances);
             write_yaml(&output_data, &output)?;
@@ -141,8 +126,7 @@ fn main() -> Result<()> {
             legislators,
             start_date,
             end_date,
-            max_pages,
-            rows,
+            max_results,
             output,
         } => {
             let start = start_date
@@ -167,8 +151,7 @@ fn main() -> Result<()> {
                     &member.bioguide_id,
                     start,
                     end,
-                    max_pages,
-                    rows,
+                    max_results,
                 ) {
                     Ok(appearances) => {
                         all_appearances.extend(appearances);
@@ -191,24 +174,29 @@ fn main() -> Result<()> {
             );
         }
 
-        Commands::Test { query, rows } => {
+        Commands::Test { query, limit } => {
             let client = TvArchiveClient::new()?;
-            let response = client.search_tv_news(&query, None, None, rows, 1)?;
+            let results = client.search_tv_news(&query)?;
 
-            info!("Found {} total results", response.response.num_found);
+            info!("Found {} total results", results.len());
 
-            for doc in response.response.docs.iter().take(5) {
-                println!("\n{}", doc.title);
-                println!("  ID: {}", doc.identifier);
-                println!("  Date: {}", doc.date);
-                if let Some(creator) = &doc.creator {
-                    println!("  Network: {}", creator);
+            for result in results.iter().take(limit as usize) {
+                println!("\n{}", result.title);
+                println!("  ID: {}", result.identifier);
+                if let Some(video) = &result.video {
+                    println!("  Video: {}", video);
                 }
-                if let Some(desc) = &doc.description {
-                    println!(
-                        "  Description: {}...",
-                        desc.chars().take(100).collect::<String>()
-                    );
+                if let Some(snip) = &result.snip {
+                    // strip HTML and truncate
+                    let clean: String = snip
+                        .chars()
+                        .filter(|c| *c != '<' && *c != '>')
+                        .take(150)
+                        .collect();
+                    println!("  Transcript: {}...", clean);
+                }
+                if let Some(topics) = &result.topic {
+                    println!("  Topics: {}", topics.iter().take(5).cloned().collect::<Vec<_>>().join(", "));
                 }
             }
         }

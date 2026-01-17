@@ -107,9 +107,12 @@ impl GovInfoClient {
         end_date: &str,
     ) -> Result<Vec<Package>> {
         let mut all_packages = Vec::new();
+        // API requires ISO datetime format: yyyy-MM-dd'T'HH:mm:ss'Z'
+        let start_datetime = format!("{}T00:00:00Z", start_date);
+        let end_datetime = format!("{}T23:59:59Z", end_date);
         let mut url = format!(
             "{}/collections/CREC/{}?offset=0&pageSize=100&startDate={}&endDate={}",
-            GOVINFO_BASE_URL, start_date, start_date, end_date
+            GOVINFO_BASE_URL, start_datetime, start_datetime, end_datetime
         );
 
         loop {
