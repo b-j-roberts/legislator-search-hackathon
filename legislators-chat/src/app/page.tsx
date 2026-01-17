@@ -1,7 +1,24 @@
+"use client";
+
+import * as React from "react";
 import { AppLayout } from "@/components/layout";
+import { ChatInput } from "@/components/chat";
 import { MessageSquare, Users } from "lucide-react";
 
 export default function Home() {
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const handleSend = React.useCallback((message: string) => {
+    // TODO: Integrate with chat API
+    console.log("Sending message:", message);
+    setIsLoading(true);
+
+    // Simulate API call
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, []);
+
   return (
     <AppLayout
       resultsPanel={
@@ -24,32 +41,8 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Chat Input Area (placeholder) */}
-        <div className="border-t border-border p-4">
-          <div className="flex items-center gap-3">
-            <div className="flex-1 rounded-lg border border-input bg-background px-4 py-3 text-sm text-muted-foreground">
-              Message input will go here...
-            </div>
-            <button
-              disabled
-              className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground opacity-50"
-            >
-              <svg
-                className="h-4 w-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
+        {/* Chat Input */}
+        <ChatInput onSend={handleSend} isLoading={isLoading} />
       </div>
     </AppLayout>
   );

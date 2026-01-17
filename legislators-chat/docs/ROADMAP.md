@@ -9,29 +9,7 @@ Feature roadmap for Legislators Chat frontend, broken into Phase 0 (Setup), MVP,
 ## Prompt Initialization
 
 Hey, I am working on the legislators-chat project. Let's continue with implementing:
-
----
-
-# Phase 0: Project Setup
-
-Foundation and infrastructure required before feature development.
-
-### 0.4 Type Definitions
-
-**Description**: Define TypeScript interfaces for all data models used across the application.
-
-**Requirements**:
-- [x] Define Legislator interface
-- [x] Define ChatMessage interface
-- [x] Define ChatResponse interface
-- [x] Define Document/Hearing/Vote interfaces
-- [x] Define Contact information types
-- [x] Define API response types
-
-**Implementation Notes**:
-- Keep types in src/lib/types.ts for shared types
-- Component-specific types can live with components
-- Consider using Zod for runtime validation
+After implementing the feature, please provide a concise step-by-step instruction on how to test it locally, if applicable, and what I should expect to see.
 
 ---
 
@@ -44,17 +22,19 @@ Core features required for initial usable product.
 **Description**: Build the primary chat input interface for user queries.
 
 **Requirements**:
-- [ ] Create ChatInput component with textarea
-- [ ] Implement auto-resize behavior for textarea
-- [ ] Add send button with loading state
-- [ ] Handle keyboard shortcuts (Enter to send, Shift+Enter for newline)
-- [ ] Add character limit indicator (if applicable)
-- [ ] Implement disabled state during API calls
+- [x] Create ChatInput component with textarea
+- [x] Implement auto-resize behavior for textarea
+- [x] Add send button with loading state
+- [x] Handle keyboard shortcuts (Enter to send, Shift+Enter for newline)
+- [x] Add character limit indicator (if applicable)
+- [x] Implement disabled state during API calls
 
 **Implementation Notes**:
 - Use shadcn/ui textarea as base
 - Consider adding voice input button placeholder for future
 - Ensure focus management for accessibility
+
+**Completed**: ChatInput component at `src/components/chat/chat-input.tsx`
 
 ---
 
