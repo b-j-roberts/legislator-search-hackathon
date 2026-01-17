@@ -1,5 +1,5 @@
 /cache/
-/data/*/bills/
-/data/*/amendments/
-/data/transcripts/
+/data/
 target
+.fastembed_cache
+.fastembed_cache/model*

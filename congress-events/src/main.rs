@@ -39,6 +39,21 @@ enum Commands {
         output: PathBuf,
     },
 
+    /// Fetch hearings from GovInfo CHRG collection
+    FetchHearings {
+        /// Start date (YYYY-MM-DD)
+        #[arg(long, default_value = "2020-01-01")]
+        start_date: String,
+
+        /// End date (YYYY-MM-DD)
+        #[arg(long, default_value = "2026-12-31")]
+        end_date: String,
+
+        /// Output file path
+        #[arg(short, long, default_value = "hearings.yaml")]
+        output: PathBuf,
+    },
+
     /// Load hearings from existing YAML and convert to our format
     Hearings {
         /// Path to existing hearings YAML file
@@ -122,6 +137,14 @@ fn main() -> Result<()> {
             fetch_floor_speeches(&start_date, &end_date, &output)?;
         }
 
+        Commands::FetchHearings {
+            start_date,
+            end_date,
+            output,
+        } => {
+            fetch_hearings_from_govinfo(&start_date, &end_date, &output)?;
+        }
+
         Commands::Hearings { input, output } => {
             convert_hearings(&input, &output)?;
         }
@@ -191,6 +214,34 @@ fn fetch_floor_speeches(start_date: &str, end_date: &str, output: &PathBuf) -> R
     );
 
     write_floor_speeches(&speeches, output)?;
+    eprintln!("Output written to: {}", output.display());
+
+    Ok(())
+}
+
+fn fetch_hearings_from_govinfo(start_date: &str, end_date: &str, output: &PathBuf) -> Result<()> {
+    let api_key = get_api_key()?;
+    let client = GovInfoClient::new(api_key);
+
+    eprintln!("Fetching hearings from {} to {}...", start_date, end_date);
+
+    let hearings = client.fetch_hearings(start_date, end_date, |current, total| {
+        eprint!("\r  Processing hearing {}/{}...", current, total);
+    })?;
+    eprintln!();
+
+    eprintln!("Total hearings: {}", hearings.len());
+    eprintln!(
+        "With transcript: {} ({}%)",
+        hearings.iter().filter(|h| h.transcript.is_some()).count(),
+        if hearings.is_empty() {
+            0
+        } else {
+            hearings.iter().filter(|h| h.transcript.is_some()).count() * 100 / hearings.len()
+        }
+    );
+
+    write_hearings(&hearings, output)?;
     eprintln!("Output written to: {}", output.display());
 
     Ok(())

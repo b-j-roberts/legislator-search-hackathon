@@ -33,6 +33,9 @@ struct ExistingHearing {
     subcommittee: Option<String>,
     sources: Option<Vec<Source>>,
     event_id: Option<String>,
+    // Direct transcript/video fields from GovInfo fetcher
+    transcript: Option<String>,
+    video: Option<String>,
 }
 
 #[allow(dead_code)]
@@ -66,23 +69,21 @@ pub fn load_hearings_from_yaml(path: &Path) -> Result<Vec<Hearing>> {
 fn convert_hearing(h: ExistingHearing, index: usize) -> Hearing {
     let sources = h.sources.unwrap_or_default();
 
-    // Extract transcript URL (type == "text" from govinfo)
-    let transcript = sources
-        .iter()
-        .find(|s| {
-            let source_type = s.source_type.as_deref().unwrap_or("");
-            source_type == "text"
-        })
-        .and_then(|s| s.url.clone());
+    // Extract transcript URL - prefer direct field, fall back to sources array
+    let transcript = h.transcript.or_else(|| {
+        sources
+            .iter()
+            .find(|s| s.source_type.as_deref() == Some("text"))
+            .and_then(|s| s.url.clone())
+    });
 
-    // Extract video URL
-    let video = sources
-        .iter()
-        .find(|s| {
-            let source_type = s.source_type.as_deref().unwrap_or("");
-            source_type == "video"
-        })
-        .and_then(|s| s.url.clone());
+    // Extract video URL - prefer direct field, fall back to sources array
+    let video = h.video.or_else(|| {
+        sources
+            .iter()
+            .find(|s| s.source_type.as_deref() == Some("video"))
+            .and_then(|s| s.url.clone())
+    });
 
     // Generate event ID if not present
     let event_id = h.event_id.unwrap_or_else(|| {
