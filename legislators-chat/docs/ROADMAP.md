@@ -13,49 +13,6 @@ After implementing the feature, please provide a concise step-by-step instructio
 
 ---
 
-# Phase 1: MVP
-
-Core features required for initial usable product.
-
-### 1.4 API Client Setup
-
-**Description**: Create API client for communicating with the backend (which uses Maple AI).
-
-**Requirements**:
-- [ ] Create API client module in src/lib/api.ts
-- [ ] Implement chat endpoint function
-- [ ] Add request/response type validation
-- [ ] Configure base URL from environment
-- [ ] Implement request timeout handling
-- [ ] Add error response parsing
-
-**Implementation Notes**:
-- Use native fetch with error handling
-- Backend connects to Maple for LLM inference
-- Maple uses OpenAI-compatible API format (streaming only)
-- Structure for easy addition of new endpoints
-- Maple docs: https://docs.opensecret.cloud/docs/maple-ai/
-
----
-
-### 1.8 Error Handling UI
-
-**Description**: Implement user-facing error states and recovery.
-
-**Requirements**:
-- [ ] Create error message component
-- [ ] Show errors inline in chat
-- [ ] Add retry button for failed messages
-- [ ] Handle network offline state
-- [ ] Show toast notifications for transient errors
-
-**Implementation Notes**:
-- Use shadcn Alert or custom error bubble
-- Provide actionable error messages
-- Log errors for debugging (console in dev)
-
----
-
 # Phase 2: Nice-to-Have
 
 Features that enhance the experience but aren't required for initial launch.
