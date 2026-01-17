@@ -3,10 +3,10 @@
 import * as React from "react";
 import type {
   ChatMessage,
-  ChatResponse,
   ChatState,
   MessageRole,
 } from "@/lib/types";
+import { sendChatMessageStream, ApiClientError } from "@/lib/api";
 
 // =============================================================================
 // Constants
@@ -190,13 +190,14 @@ export function ChatProvider({ children }: ChatProviderProps) {
   }, [state.messages]);
 
   /**
-   * Send a message to the chat API
+   * Send a message to the chat API with streaming support
    */
   const sendMessage = React.useCallback(
     async (content: string) => {
       // Generate conversation ID if this is the first message
+      const conversationId = state.conversationId || generateConversationId();
       if (!state.conversationId) {
-        dispatch({ type: "SET_CONVERSATION_ID", payload: generateConversationId() });
+        dispatch({ type: "SET_CONVERSATION_ID", payload: conversationId });
       }
 
       // Create user message
@@ -208,7 +209,18 @@ export function ChatProvider({ children }: ChatProviderProps) {
         status: "sent",
       };
 
+      // Create placeholder assistant message for streaming
+      const assistantMessageId = generateMessageId();
+      const assistantMessage: ChatMessage = {
+        id: assistantMessageId,
+        role: "assistant",
+        content: "",
+        timestamp: new Date().toISOString(),
+        status: "sending",
+      };
+
       dispatch({ type: "ADD_USER_MESSAGE", payload: userMessage });
+      dispatch({ type: "ADD_ASSISTANT_MESSAGE", payload: assistantMessage });
       dispatch({ type: "SET_LOADING", payload: true });
       dispatch({ type: "SET_ERROR", payload: null });
 
@@ -220,45 +232,61 @@ export function ChatProvider({ children }: ChatProviderProps) {
             content: msg.content,
           }));
 
-        // Call the chat API
-        const response = await sendChatRequest(
-          content,
-          state.conversationId,
-          previousMessages
+        let streamedContent = "";
+
+        // Call the streaming API
+        await sendChatMessageStream(
+          {
+            message: content,
+            conversationId,
+            context: { previousMessages },
+          },
+          (chunk, done) => {
+            if (done) {
+              // Mark message as complete
+              dispatch({
+                type: "UPDATE_MESSAGE",
+                payload: {
+                  id: assistantMessageId,
+                  updates: {
+                    status: "sent",
+                    sources: [],
+                    confidence: 0,
+                  },
+                },
+              });
+            } else {
+              // Append chunk to content
+              streamedContent += chunk;
+              dispatch({
+                type: "UPDATE_MESSAGE",
+                payload: {
+                  id: assistantMessageId,
+                  updates: { content: streamedContent },
+                },
+              });
+            }
+          }
         );
-
-        // Add assistant message with response
-        const assistantMessage: ChatMessage = {
-          id: generateMessageId(),
-          role: "assistant",
-          content: response.message,
-          timestamp: new Date().toISOString(),
-          status: "sent",
-          legislators: response.legislators,
-          documents: response.documents,
-          votes: response.votes,
-          hearings: response.hearings,
-          report: response.report,
-          sources: response.sources,
-          confidence: response.confidence,
-        };
-
-        dispatch({ type: "ADD_ASSISTANT_MESSAGE", payload: assistantMessage });
       } catch (error) {
         const errorMessage =
-          error instanceof Error ? error.message : "Failed to send message";
+          error instanceof ApiClientError
+            ? error.message
+            : error instanceof Error
+              ? error.message
+              : "Failed to send message";
 
-        // Add failed assistant message for retry capability
-        const failedMessage: ChatMessage = {
-          id: generateMessageId(),
-          role: "assistant",
-          content: "",
-          timestamp: new Date().toISOString(),
-          status: "error",
-          error: errorMessage,
-        };
-
-        dispatch({ type: "ADD_ASSISTANT_MESSAGE", payload: failedMessage });
+        // Update the assistant message to error state
+        dispatch({
+          type: "UPDATE_MESSAGE",
+          payload: {
+            id: assistantMessageId,
+            updates: {
+              status: "error",
+              error: errorMessage,
+            },
+          },
+        });
         dispatch({ type: "SET_ERROR", payload: errorMessage });
       } finally {
         dispatch({ type: "SET_LOADING", payload: false });
@@ -290,7 +318,6 @@ export function ChatProvider({ children }: ChatProviderProps) {
       }
 
       // Find the user message that triggered this response
-      // It should be the message right before this one
       let userMessage: ChatMessage | undefined;
       for (let i = messageIndex - 1; i >= 0; i--) {
         if (state.messages[i].role === "user") {
@@ -310,7 +337,7 @@ export function ChatProvider({ children }: ChatProviderProps) {
         type: "UPDATE_MESSAGE",
         payload: {
           id: messageId,
-          updates: { status: "sending", error: undefined },
+          updates: { status: "sending", error: undefined, content: "" },
         },
       });
 
@@ -330,30 +357,40 @@ export function ChatProvider({ children }: ChatProviderProps) {
               content: msg.content,
             }));
 
-          const response = await sendChatRequest(
-            userMessage.content,
-            state.conversationId,
-            previousMessages
-          );
+          let streamedContent = "";
 
-          dispatch({
-            type: "UPDATE_MESSAGE",
-            payload: {
-              id: messageId,
-              updates: {
-                content: response.message,
-                status: "sent",
-                legislators: response.legislators,
-                documents: response.documents,
-                votes: response.votes,
-                hearings: response.hearings,
-                report: response.report,
-                sources: response.sources,
-                confidence: response.confidence,
-                error: undefined,
-              },
+          await sendChatMessageStream(
+            {
+              message: userMessage.content,
+              conversationId: state.conversationId,
+              context: { previousMessages },
             },
-          });
+            (chunk, done) => {
+              if (done) {
+                dispatch({
+                  type: "UPDATE_MESSAGE",
+                  payload: {
+                    id: messageId,
+                    updates: {
+                      status: "sent",
+                      sources: [],
+                      confidence: 0,
+                      error: undefined,
+                    },
+                  },
+                });
+              } else {
+                streamedContent += chunk;
+                dispatch({
+                  type: "UPDATE_MESSAGE",
+                  payload: {
+                    id: messageId,
+                    updates: { content: streamedContent },
+                  },
+                });
+              }
+            }
+          );
 
           dispatch({ type: "SET_LOADING", payload: false });
           return;
@@ -422,170 +459,3 @@ export function useChat(): ChatContextValue {
   return context;
 }
 
-// =============================================================================
-// API Client (placeholder)
-// =============================================================================
-
-/**
- * Send a chat request to the backend API
- *
- * TODO: Replace with actual API client when Phase 1.4 is implemented
- */
-async function sendChatRequest(
-  message: string,
-  conversationId?: string,
-  previousMessages?: Array<{ role: MessageRole; content: string }>
-): Promise<ChatResponse> {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-
-  // If no API URL is configured, use simulated response
-  if (!apiUrl) {
-    return simulatedResponse(message);
-  }
-
-  const response = await fetch(`${apiUrl}/chat`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      message,
-      conversationId,
-      context: {
-        previousMessages,
-      },
-    }),
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => null);
-    throw new Error(
-      errorData?.error?.message || `API error: ${response.status}`
-    );
-  }
-
-  return response.json();
-}
-
-/**
- * Simulated response for development/demo
- */
-async function simulatedResponse(message: string): Promise<ChatResponse> {
-  // Simulate network delay
-  await sleep(1000 + Math.random() * 500);
-
-  // Randomly fail sometimes to test error handling (10% chance)
-  if (Math.random() < 0.1) {
-    throw new Error("Simulated network error");
-  }
-
-  const truncatedMessage =
-    message.length > 50 ? `${message.slice(0, 50)}...` : message;
-
-  // Check if message mentions legislators to return sample data
-  const lowerMessage = message.toLowerCase();
-  const mentionsLegislators =
-    lowerMessage.includes("senator") ||
-    lowerMessage.includes("representative") ||
-    lowerMessage.includes("legislator") ||
-    lowerMessage.includes("congress") ||
-    lowerMessage.includes("climate") ||
-    lowerMessage.includes("healthcare") ||
-    lowerMessage.includes("who");
-
-  if (mentionsLegislators) {
-    return {
-      message: `I found several legislators relevant to your question about "${truncatedMessage}". Here are some key members who have been active on this issue.`,
-      legislators: [
-        {
-          id: "S001181",
-          name: "Jeanne Shaheen",
-          party: "D",
-          chamber: "Senate",
-          state: "NH",
-          stance: "for",
-          stanceSummary: "Strong advocate for climate action and renewable energy initiatives. Co-sponsored multiple clean energy bills.",
-          contact: {
-            phone: "(202) 224-2841",
-            email: "senator@shaheen.senate.gov",
-            website: "https://shaheen.senate.gov",
-            office: "506 Hart Senate Office Building, Washington, DC 20510",
-            socialMedia: { twitter: "SenatorShaheen" },
-          },
-          termStart: "2009-01-06",
-          nextElection: "2026",
-        },
-        {
-          id: "C001098",
-          name: "Ted Cruz",
-          party: "R",
-          chamber: "Senate",
-          state: "TX",
-          stance: "against",
-          stanceSummary: "Opposes federal climate regulations. Advocates for energy independence through fossil fuels.",
-          contact: {
-            phone: "(202) 224-5922",
-            email: "senator@cruz.senate.gov",
-            website: "https://cruz.senate.gov",
-            office: "127A Russell Senate Office Building, Washington, DC 20510",
-            socialMedia: { twitter: "SenTedCruz" },
-          },
-          termStart: "2013-01-03",
-          nextElection: "2030",
-        },
-        {
-          id: "O000172",
-          name: "Alexandria Ocasio-Cortez",
-          party: "D",
-          chamber: "House",
-          state: "NY",
-          district: "14",
-          stance: "for",
-          stanceSummary: "Leading proponent of the Green New Deal. Advocates for aggressive climate action and environmental justice.",
-          contact: {
-            phone: "(202) 225-3965",
-            email: "rep@ocasiocortez.house.gov",
-            website: "https://ocasio-cortez.house.gov",
-            office: "229 Cannon House Office Building, Washington, DC 20515",
-            socialMedia: { twitter: "AOC" },
-          },
-          termStart: "2019-01-03",
-          nextElection: "2026",
-        },
-      ],
-      documents: [
-        {
-          id: "doc-1",
-          type: "bill",
-          title: "Clean Energy Innovation Act",
-          date: "2024-03-15",
-          summary: "Bipartisan legislation to invest in clean energy research and development.",
-          relevance: 0.92,
-        },
-      ],
-      votes: [
-        {
-          id: "vote-1",
-          billId: "HR-4567",
-          billTitle: "Renewable Energy Tax Credit Extension",
-          date: "2024-06-12",
-          chamber: "House",
-          result: "passed",
-          yeas: 245,
-          nays: 188,
-          present: 0,
-          notVoting: 2,
-          relevance: 0.88,
-        },
-      ],
-      sources: ["Congress.gov", "OpenSecrets", "VoteSmart"],
-      confidence: 0.92,
-    };
-  }
-
-  return {
-    message: `I'm researching your question about "${truncatedMessage}". This is a simulated response - the actual API integration will provide real legislator data, voting records, and hearing information. Try asking about legislators, senators, or specific topics like "climate" or "healthcare" to see example results.`,
-    sources: ["Simulated data"],
-    confidence: 0.85,
-  };
-}

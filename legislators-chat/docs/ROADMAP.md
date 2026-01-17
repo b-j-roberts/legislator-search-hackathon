@@ -31,29 +31,10 @@ Core features required for initial usable product.
 
 **Implementation Notes**:
 - Use native fetch with error handling
-- Backend connects to Maple Proxy for LLM inference
+- Backend connects to Maple for LLM inference
 - Maple uses OpenAI-compatible API format (streaming only)
 - Structure for easy addition of new endpoints
-- Consider adding request interceptors for auth (future)
-
----
-
-### 1.7 Responsive Layout
-
-**Description**: Implement responsive layout for desktop and mobile views.
-
-**Requirements**:
-- [ ] Desktop: side-by-side chat and results
-- [ ] Tablet: stacked or collapsible results
-- [ ] Mobile: full-width chat with results below or in drawer
-- [ ] Ensure touch-friendly tap targets
-- [ ] Test on various viewport sizes
-- [ ] Ensure app always takes full viewport height, and does not overflow/scroll, all scrolling should be nested within scrollable areas ( chat history, results panel)
-
-**Implementation Notes**:
-- Use Tailwind responsive prefixes (sm:, md:, lg:)
-- Consider drawer pattern for mobile results
-- Maintain usability at all breakpoints
+- Maple docs: https://docs.opensecret.cloud/docs/maple-ai/
 
 ---
 
