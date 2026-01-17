@@ -17,27 +17,6 @@ After implementing the feature, please provide a concise step-by-step instructio
 
 Core features required for initial usable product.
 
-### 1.1 Chat Input Component
-
-**Description**: Build the primary chat input interface for user queries.
-
-**Requirements**:
-- [x] Create ChatInput component with textarea
-- [x] Implement auto-resize behavior for textarea
-- [x] Add send button with loading state
-- [x] Handle keyboard shortcuts (Enter to send, Shift+Enter for newline)
-- [x] Add character limit indicator (if applicable)
-- [x] Implement disabled state during API calls
-
-**Implementation Notes**:
-- Use shadcn/ui textarea as base
-- Consider adding voice input button placeholder for future
-- Ensure focus management for accessibility
-
-**Completed**: ChatInput component at `src/components/chat/chat-input.tsx`
-
----
-
 ### 1.2 Chat Messages Display
 
 **Description**: Display conversation history with distinct styling for user and AI messages.
