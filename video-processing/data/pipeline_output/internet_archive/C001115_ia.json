@@ -1,0 +1,26 @@
+{
+  "bioguide_id": "C001115",
+  "name": "Michael Cloud",
+  "total_found": 1,
+  "items_fetched": 1,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "CSPAN_20260108_170000_U.S._House_of_Representatives_U.S._House_of_Representatives",
+      "title": "U.S. House of Representatives U.S. House of Representatives : CSPAN : January 8, 2026 12:00pm-2:06pm EST",
+      "date": "2026-01-08",
+      "snippet": "michael cloud of texas. >> gentleman from texas, recognized for two minutes. >> thank you, chair. and thank you, mr. speaker. i rise today in support of the fiscal year 2026 energy and water appropriations act. as vice chair of the energy and water appropriations subcommittee, i am encouraged by this bill's historic commitment to unleashing american energy dominance while also responsibly stewarding taxpayer dollars. we're at a time when our nation is at an energy crossroads, and certainly as we work to win the ai race against china, energy dominance is mandatory. this bill appropriately allocates resources to invest in our nuclear capabilities, mining, production, water resources, and more specifically, this bill repurposes wasteful biden administration spending on things like unproductive carbon capture towards real infrastructure and energy production capabilities. this includes 1.75 billion in total resources for nuclear energy technology, 720 million in investments for fossil energy production, and 190 million to improve cybersecurity and grid resilience, unleashing american ",
+      "network": "CSPAN",
+      "collection": "TV-CSPAN",
+      "start_time": "3648",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CSPAN_20260108_170000_U.S._House_of_Representatives_U.S._House_of_Representatives/CSPAN_20260108_170000_U.S._House_of_Representatives_U.S._House_of_Representatives.mp4?t=3648/3708&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CSPAN_20260108_170000_U.S._House_of_Representatives_U.S._House_of_Representatives/CSPAN_20260108_170000_U.S._House_of_Representatives_U.S._House_of_Representatives.thumbs/CSPAN_20260108_170000_U.S._House_of_Representatives_U.S._House_of_Representatives_003629.jpg",
+      "archive_url": "https://archive.org/details/CSPAN_20260108_170000_U.S._House_of_Representatives_U.S._House_of_Representatives",
+      "embed_url": "https://archive.org/embed/CSPAN_20260108_170000_U.S._House_of_Representatives_U.S._House_of_Representatives"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "bioguide_id": "M001143",
+  "name": "Betty McCollum",
+  "total_found": 2,
+  "items_fetched": 2,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "BBCNEWS_20260107_203000_The_Context",
+      "title": "The Context : BBCNEWS : January 7, 2026 8:30pm-9:01pm GMT",
+      "date": "2026-01-07",
+      "snippet": "know, know, household progressive names names such as representative congresswoman congresswoman betty mccollum from from saint paul. she was just on on a cable show here in the states states a few minutes ago, basically basically calling into question, question, saying it was a rogue action action taken by this ice agent who who was on the ground there on portland portland avenue. and for those who who don't know, minneapolis, portland portland avenue, it's not an interstate, interstate, but it's a very busy busy thoroughfare coming out of downtown. downtown. and so, you know, filled filled with homes on either side. side. and there's a lot of witnesses witnesses who say basically that that this motorist, while she had had been blocking the road, was attempting attempting to get out. yeah. and and it's striking, isn't it, christopher, christopher, that before there has has been any formal <font",
+      "network": "BBCNEWS",
+      "collection": "TV-BBCNEWS",
+      "start_time": "281",
+      "end_time": "",
+      "video_url": "https://archive.org/download/BBCNEWS_20260107_203000_The_Context/BBCNEWS_20260107_203000_The_Context.mp4?t=281/341&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/BBCNEWS_20260107_203000_The_Context/BBCNEWS_20260107_203000_The_Context.thumbs/BBCNEWS_20260107_203000_The_Context_000268.jpg",
+      "archive_url": "https://archive.org/details/BBCNEWS_20260107_203000_The_Context",
+      "embed_url": "https://archive.org/embed/BBCNEWS_20260107_203000_The_Context"
+    },
+    {
+      "identifier": "MSNOW_20260107_190000_Katy_Tur_Reports",
+      "title": "Katy Tur Reports : MSNOW : January 7, 2026 11:00am-1:01pm PST",
+      "date": "2026-01-07",
+      "snippet": "joining us now, minnesota representative betsy or betty mccollum. excuse me. her district neighbors, the district where this shooting happened. thank you very much for joining us. i want to get your initial reaction. >> well, i represent saint paul, where the twin cities, and right now, what's happening in minneapolis. i so much respect what mayor frey said. we need the public to be calm. we need peaceful protests. we need to let the bureau of minnesota criminal investigations work alongside with the fbi. i think the minneapolis police for securing a crime scene immediately. and kristi noem should have at least maybe looked at a video before she made the statement that she did. we haven't seen secretary noem to. >> yeah, i i'm sorry for interrupting. we haven't again, we haven't seen anything that happened before that video. we don't know the context of what led up to it. and i want to be very clear about that. all we have to go on is the is the the moments immediately preceding the the shooting and the witness statements. have you been able to gather any more",
+      "network": "MSNOW",
+      "collection": "TV-MSNOW",
+      "start_time": "1198",
+      "end_time": "",
+      "video_url": "https://archive.org/download/MSNOW_20260107_190000_Katy_Tur_Reports/MSNOW_20260107_190000_Katy_Tur_Reports.mp4?t=1198/1258&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/MSNOW_20260107_190000_Katy_Tur_Reports/MSNOW_20260107_190000_Katy_Tur_Reports.thumbs/MSNOW_20260107_190000_Katy_Tur_Reports_001197.jpg",
+      "archive_url": "https://archive.org/details/MSNOW_20260107_190000_Katy_Tur_Reports",
+      "embed_url": "https://archive.org/embed/MSNOW_20260107_190000_Katy_Tur_Reports"
+    }
+  ]
+}

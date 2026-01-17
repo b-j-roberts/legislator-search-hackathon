@@ -1,0 +1,26 @@
+{
+  "bioguide_id": "M000687",
+  "name": "Kweisi Mfume",
+  "total_found": 1,
+  "items_fetched": 1,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "CSPAN_20260106_232900_U.S._House_of_Representatives",
+      "title": "U.S. House of Representatives : CSPAN : January 6, 2026 6:29pm-8:20pm EST",
+      "date": "2026-01-06",
+      "snippet": "and with that, i'd like to yield one minute to kweisi mfume from the great state of maryland representative mfume. >> mr. >> i want to thank the gentleman from south carolina for yielding and the gentleman from maryland for co-participation. mr. speaker, five years ago at this time, those of us who were in this chamber could hear the sound of glass being swept up outside of this door. there were persons in here sweeping the room to see if there were any explosive devices that had been planted. after the break in. up and down these halls you could hear murmurs and questions. and for those of us who were here, this is not a joke. this is not donald trump's history. and it's not his story. it's what actually happened to our nation's capital. and some of you who are here will remember that day i had to run out through this door from the second floor, find my way down to the tunnels underneath the capitol to walk for a quarter of a mile, to get to an office building where i could be safe. but there were so many others that were not fortunate to do that. they got swept up as the gentleman from so",
+      "network": "CSPAN",
+      "collection": "TV-CSPAN",
+      "start_time": "4979",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CSPAN_20260106_232900_U.S._House_of_Representatives/CSPAN_20260106_232900_U.S._House_of_Representatives.mp4?t=4979/5039&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CSPAN_20260106_232900_U.S._House_of_Representatives/CSPAN_20260106_232900_U.S._House_of_Representatives.thumbs/CSPAN_20260106_232900_U.S._House_of_Representatives_004977.jpg",
+      "archive_url": "https://archive.org/details/CSPAN_20260106_232900_U.S._House_of_Representatives",
+      "embed_url": "https://archive.org/embed/CSPAN_20260106_232900_U.S._House_of_Representatives"
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "bioguide_id": "M001236",
+  "name": "Tim Moore",
+  "total_found": 3,
+  "items_fetched": 3,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "BBCNEWS_20260109_123000_BBC_News_Now",
+      "title": "BBC News Now : BBCNEWS : January 9, 2026 12:30pm-1:01pm GMT",
+      "date": "2026-01-09",
+      "snippet": "you saw sort of of minnesota governor tim moore  color=\"#00ffff\">speak speak about that yesterday when he he sort of said, you know, if your your issue is with me, come for me, me, don't come for my community. community. a couple of other stories. stories. i want to try to talk to to you about as well. naomi, one one very interestingly, i think had had happened pretty late local time time in washington was the news that</f",
+      "network": "BBCNEWS",
+      "collection": "TV-BBCNEWS",
+      "start_time": "589",
+      "end_time": "",
+      "video_url": "https://archive.org/download/BBCNEWS_20260109_123000_BBC_News_Now/BBCNEWS_20260109_123000_BBC_News_Now.mp4?t=589/649&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/BBCNEWS_20260109_123000_BBC_News_Now/BBCNEWS_20260109_123000_BBC_News_Now.thumbs/BBCNEWS_20260109_123000_BBC_News_Now_000567.jpg",
+      "archive_url": "https://archive.org/details/BBCNEWS_20260109_123000_BBC_News_Now",
+      "embed_url": "https://archive.org/embed/BBCNEWS_20260109_123000_BBC_News_Now"
+    },
+    {
+      "identifier": "CSPAN_20260114_214500_U.S._House_of_Representatives_U.S._House_of_Representatives",
+      "title": "U.S. House of Representatives U.S. House of Representatives : CSPAN : January 14, 2026 4:45pm-7:12pm EST",
+      "date": "2026-01-14",
+      "snippet": "robert anacletus underwood of tim moore, guam. >> the chair announces the speaker's appointment pursuant to 22 u.s.c. 6913 and the order of the house of january 3rd, 2020. five of the following members on the part of the house to the congressional executive commission on the people's republic of china. >> mr. walkinshaw of virginia. >> the chair, announces the speaker's appointment pursuant to 22 u.s.c. 1928, a clause ten of rule one and the order of the house of january 3rd, 2020. five of the following members on the part of the house to the united states group of the nato parliamentary assembly. >> miss sanchez of california. mr. larson of washington, mr. norcross of new jersey. and miss kamala gurdev of california. >> the chair will now entertain requests for one minute speeches. for what purpose does the gentleman from wisconsin seek recognition? >> speaker i rise unanimous consent to address the house for one minute and revise and extend my remarks. >> without objection, the gentleman from wisconsin is recognized for one minute. >> mr. speaker, i rise today to recognize an extraordi",
+      "network": "CSPAN",
+      "collection": "TV-CSPAN",
+      "start_time": "3036",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CSPAN_20260114_214500_U.S._House_of_Representatives_U.S._House_of_Representatives/CSPAN_20260114_214500_U.S._House_of_Representatives_U.S._House_of_Representatives.mp4?t=3036/3096&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CSPAN_20260114_214500_U.S._House_of_Representatives_U.S._House_of_Representatives/CSPAN_20260114_214500_U.S._House_of_Representatives_U.S._House_of_Representatives.thumbs/CSPAN_20260114_214500_U.S._House_of_Representatives_U.S._House_of_Representatives_003027.jpg",
+      "archive_url": "https://archive.org/details/CSPAN_20260114_214500_U.S._House_of_Representatives_U.S._House_of_Representatives",
+      "embed_url": "https://archive.org/embed/CSPAN_20260114_214500_U.S._House_of_Representatives_U.S._House_of_Representatives"
+    },
+    {
+      "identifier": "CSPAN_20260108_170000_U.S._House_of_Representatives_U.S._House_of_Representatives",
+      "title": "U.S. House of Representatives U.S. House of Representatives : CSPAN : January 8, 2026 12:00pm-2:06pm EST",
+      "date": "2026-01-08",
+      "snippet": "father microsoft tim moore lived a life rooted in faith, service and love of his community. guam is in a better place because of his work, and his legacy will live on in the countless lives he touched. i yield back. >> for what purpose does the gentleman from new york seek recognition? >> madam speaker, i ask unanimous consent to address the house for one minute. >> without objection, the gentleman is recognized for one minute. >> thank you, madam speaker. to madam speaker, emerita, to senator mark kelly, to the arizona delegation, to all of my colleagues who are present here today, i rise on the 15th anniversary of the tragic mass shooting in tucson, arizona, that took six lives and injured 1613 others, including a former colleague. our good friend, congresswoman gabby giffords. an extraordinary american leader who i'm pleased to say is here with us in the chamber today. at 10:10 a.m. mountain standard time in tucson, arizona, during a congress on your corner event being held by representative gabby giffords to serve her constituents. a gunman opened fire on this peaceful g",
+      "network": "CSPAN",
+      "collection": "TV-CSPAN",
+      "start_time": "479",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CSPAN_20260108_170000_U.S._House_of_Representatives_U.S._House_of_Representatives/CSPAN_20260108_170000_U.S._House_of_Representatives_U.S._House_of_Representatives.mp4?t=479/539&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CSPAN_20260108_170000_U.S._House_of_Representatives_U.S._House_of_Representatives/CSPAN_20260108_170000_U.S._House_of_Representatives_U.S._House_of_Representatives.thumbs/CSPAN_20260108_170000_U.S._House_of_Representatives_U.S._House_of_Representatives_000478.jpg",
+      "archive_url": "https://archive.org/details/CSPAN_20260108_170000_U.S._House_of_Representatives_U.S._House_of_Representatives",
+      "embed_url": "https://archive.org/embed/CSPAN_20260108_170000_U.S._House_of_Representatives_U.S._House_of_Representatives"
+    }
+  ]
+}

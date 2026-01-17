@@ -1,0 +1,26 @@
+{
+  "bioguide_id": "H001085",
+  "name": "Chrissy Houlahan",
+  "total_found": 1,
+  "items_fetched": 1,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "MSNOW_20260115_070000_The_11th_Hour_With_Stephanie_Ruhle",
+      "title": "The 11th Hour With Stephanie Ruhle : MSNOW : January 14, 2026 11:00pm-12:00am PST",
+      "date": "2026-01-15",
+      "snippet": "senator elissa slotkin, along with representative jason crow, chrissy houlahan and maggie goodlander,n contacted by the office of u.s. attorney jeanine pirro. our nightcap is still here. barb, let me go back to you, because i want to start with talking about the search of the washington post reporters home. can you explain to people why this is so rare and what the justice department is saying they did differently here? >> yes. well, there is a law, the privacy protection act of 1980, that protects the newsgathering activities of reporters. what it says is that there must be probable cause before a reporter's records may be searched, and that there should not be any search done unless that reporter is themselves engaged in criminal activity, or there is an exception for national security. now, in this case, they say that although this reporter is not herself a target of the criminal investigation, it does relate to national security. so it is legal on its face. however, what we have seen historically and certainly during the biden administration was a policy to refrain from any kind o",
+      "network": "MSNOW",
+      "collection": "TV-MSNOW",
+      "start_time": "1532",
+      "end_time": "",
+      "video_url": "https://archive.org/download/MSNOW_20260115_070000_The_11th_Hour_With_Stephanie_Ruhle/MSNOW_20260115_070000_The_11th_Hour_With_Stephanie_Ruhle.mp4?t=1532/1592&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/MSNOW_20260115_070000_The_11th_Hour_With_Stephanie_Ruhle/MSNOW_20260115_070000_The_11th_Hour_With_Stephanie_Ruhle.thumbs/MSNOW_20260115_070000_The_11th_Hour_With_Stephanie_Ruhle_001529.jpg",
+      "archive_url": "https://archive.org/details/MSNOW_20260115_070000_The_11th_Hour_With_Stephanie_Ruhle",
+      "embed_url": "https://archive.org/embed/MSNOW_20260115_070000_The_11th_Hour_With_Stephanie_Ruhle"
+    }
+  ]
+}

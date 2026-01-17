@@ -1,0 +1,26 @@
+{
+  "bioguide_id": "S001189",
+  "name": "Austin Scott",
+  "total_found": 1,
+  "items_fetched": 1,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "CSPAN_20260112_233000_U.S._House_of_Representatives_U.S._House_of_Representatives",
+      "title": "U.S. House of Representatives U.S. House of Representatives : CSPAN : January 12, 2026 6:30pm-8:16pm EST",
+      "date": "2026-01-12",
+      "snippet": "austin scott, thank. >> you, chairman. and i have, as other members, got a number of calls over the last couple of days about whether or not i think the president did the right thing or not. and i want to just read this to you, president of the united states of america, find that the situation of venezuela, including the government of venezuela's erosion of human rights, guarantees persecution, persecution of political opponents, curtailment of press freedoms, use of violence human rights violations and abuses in response to anti-government protests and arbitrary arrest and detention of anti-government protesters, as well as the exacerbating presence of significant public corruption, constitutes an unusual and extraordinary threat to the national security and foreign policy of the united states. now, what i want you to know is that wasn't donald trump that wrote that. that was barack obama that wrote that. and if president obama or president biden had taken the sameions to remove maduro from power and help not just the uni",
+      "network": "CSPAN",
+      "collection": "TV-CSPAN",
+      "start_time": "5094",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CSPAN_20260112_233000_U.S._House_of_Representatives_U.S._House_of_Representatives/CSPAN_20260112_233000_U.S._House_of_Representatives_U.S._House_of_Representatives.mp4?t=5094/5154&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CSPAN_20260112_233000_U.S._House_of_Representatives_U.S._House_of_Representatives/CSPAN_20260112_233000_U.S._House_of_Representatives_U.S._House_of_Representatives.thumbs/CSPAN_20260112_233000_U.S._House_of_Representatives_U.S._House_of_Representatives_005067.jpg",
+      "archive_url": "https://archive.org/details/CSPAN_20260112_233000_U.S._House_of_Representatives_U.S._House_of_Representatives",
+      "embed_url": "https://archive.org/embed/CSPAN_20260112_233000_U.S._House_of_Representatives_U.S._House_of_Representatives"
+    }
+  ]
+}

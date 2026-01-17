@@ -1,0 +1,67 @@
+{
+  "bioguide_id": "L000566",
+  "name": "Robert E. Latta",
+  "total_found": 21,
+  "filtered_count": 5,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "QIA5ONO-30U",
+      "title": "Ohio Congressman Bob Latta talks impeachment inquiry - part 1 | Leading Edge",
+      "url": "https://www.youtube.com/watch?v=QIA5ONO-30U",
+      "channel": "WTOL11",
+      "channel_id": "UCrLGxsBRktzKo-KNWC-nfEw",
+      "upload_date": null,
+      "duration": 490.0,
+      "view_count": 175,
+      "description": ""
+    },
+    {
+      "video_id": "6NvLP4d5lgY",
+      "title": "Election 2020: One-On-One with Congressman Bob Latta (R) OH-5",
+      "url": "https://www.youtube.com/watch?v=6NvLP4d5lgY",
+      "channel": "Jaden Jefferson Reports",
+      "channel_id": "UCmFkh5--KdVNe834UGgrdFw",
+      "upload_date": null,
+      "duration": 924.0,
+      "view_count": 419,
+      "description": ""
+    },
+    {
+      "video_id": "epQz0gZITTY",
+      "title": "Congressman Bob Latta Wants to Hear From You!",
+      "url": "https://www.youtube.com/watch?v=epQz0gZITTY",
+      "channel": "CongressmanBobLatta",
+      "channel_id": "UCVSBVHoWu-eWnBBQaMKZ_sQ",
+      "upload_date": null,
+      "duration": 79.0,
+      "view_count": 317,
+      "description": ""
+    },
+    {
+      "video_id": "o90a9nYzzDo",
+      "title": "135 GOP Reps Supported Red Flags. Was YOUR Congress Critter One Of Them?",
+      "url": "https://www.youtube.com/watch?v=o90a9nYzzDo",
+      "channel": "ARFCOM News",
+      "channel_id": "UCbiiqvaU4DuhAn33LqCz0qA",
+      "upload_date": null,
+      "duration": 661.0,
+      "view_count": 10090,
+      "description": ""
+    },
+    {
+      "video_id": "tb7YqgHrM-k",
+      "title": "126 House Republicans Trying to Undermine Democracy displayed in14 seconds - open captioned",
+      "url": "https://www.youtube.com/watch?v=tb7YqgHrM-k",
+      "channel": "Captioning for Everyone",
+      "channel_id": "UCuynh1xfy81AQz19ax3lWQA",
+      "upload_date": null,
+      "duration": 55.0,
+      "view_count": 59,
+      "description": ""
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "bioguide_id": "S001224",
+  "name": "Keith Self",
+  "total_found": 1,
+  "items_fetched": 1,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "CSPAN_20260114_150000_U.S._House_of_Representatives_U.S._House_of_Representatives",
+      "title": "U.S. House of Representatives U.S. House of Representatives : CSPAN : January 14, 2026 10:00am-10:49am EST",
+      "date": "2026-01-14",
+      "snippet": "i stand before you, along with my colleague, representative keith self of the texas third congressional district, to honor colonel chuck debellevue, united states air force retired, an american patriot whose extraordinary cou, leadership, and lifetime of service reflect the highest ideals of our nation and the united states air force. on september 9th, 1972, then captain debellevue and f-4 phantom two crewmate captain john madden shot down two north vietnamese mig 19. these victor marked debellevue fifth and sixth aerial kills, making him the highest scoring american ace of the vietnam war. over the course of his career, colonel debellevue flew 220 combat missions, including 96 over north vietnam. he is credited with the destruction of six north vietnamese jet fighters in aerial combat, making him america's leading ace of that conflict and the last american ace to serve on active duty. his actions in combat remain among the most distinguished examples of aerial valor in the united states mily history. his decorations include the air force cross, the service's second highest award for va",
+      "network": "CSPAN",
+      "collection": "TV-CSPAN",
+      "start_time": "1536",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CSPAN_20260114_150000_U.S._House_of_Representatives_U.S._House_of_Representatives/CSPAN_20260114_150000_U.S._House_of_Representatives_U.S._House_of_Representatives.mp4?t=1536/1596&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CSPAN_20260114_150000_U.S._House_of_Representatives_U.S._House_of_Representatives/CSPAN_20260114_150000_U.S._House_of_Representatives_U.S._House_of_Representatives.thumbs/CSPAN_20260114_150000_U.S._House_of_Representatives_U.S._House_of_Representatives_001528.jpg",
+      "archive_url": "https://archive.org/details/CSPAN_20260114_150000_U.S._House_of_Representatives_U.S._House_of_Representatives",
+      "embed_url": "https://archive.org/embed/CSPAN_20260114_150000_U.S._House_of_Representatives_U.S._House_of_Representatives"
+    }
+  ]
+}

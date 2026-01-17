@@ -1,0 +1,89 @@
+{
+  "bioguide_id": "W000805",
+  "name": "Mark R. Warner",
+  "total_found": 39,
+  "filtered_count": 7,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "vzGiJofQB-A",
+      "title": "David Rubenstein interviews Senator Mark Warner, Jos\u00e9 Andr\u00e9s, and Schroeder Stribling",
+      "url": "https://www.youtube.com/watch?v=vzGiJofQB-A",
+      "channel": "The Economic Club of Washington, D.C.",
+      "channel_id": "UCMxg9TQdOZSu21CHffziZlw",
+      "upload_date": null,
+      "duration": 3442.0,
+      "view_count": 1301,
+      "description": ""
+    },
+    {
+      "video_id": "-CpidHPJcSM",
+      "title": "Warner: 'We must find out the full story'",
+      "url": "https://www.youtube.com/watch?v=-CpidHPJcSM",
+      "channel": "Washington Post",
+      "channel_id": "UCHd62-u_v4DvJ8TCFtpi4GA",
+      "upload_date": null,
+      "duration": 185.0,
+      "view_count": 2857,
+      "description": ""
+    },
+    {
+      "video_id": "1ofPSvJ3Gs0",
+      "title": "Trump-Russia probe thrusts Mark Warner into the national spotlight",
+      "url": "https://www.youtube.com/watch?v=1ofPSvJ3Gs0",
+      "channel": "Washington Post",
+      "channel_id": "UCHd62-u_v4DvJ8TCFtpi4GA",
+      "upload_date": null,
+      "duration": 153.0,
+      "view_count": 3999,
+      "description": ""
+    },
+    {
+      "video_id": "Shk1OskGWuU",
+      "title": "Warner urges officials to give answers on Russia",
+      "url": "https://www.youtube.com/watch?v=Shk1OskGWuU",
+      "channel": "Washington Post",
+      "channel_id": "UCHd62-u_v4DvJ8TCFtpi4GA",
+      "upload_date": null,
+      "duration": 213.0,
+      "view_count": 1737,
+      "description": ""
+    },
+    {
+      "video_id": "9RT5FVjTI-U",
+      "title": "ACB Hearing Update",
+      "url": "https://www.youtube.com/watch?v=9RT5FVjTI-U",
+      "channel": "TheFamilyFoundation",
+      "channel_id": "UCeyPueYDiJgV0chnGRWkUYQ",
+      "upload_date": null,
+      "duration": 167.0,
+      "view_count": 28,
+      "description": ""
+    },
+    {
+      "video_id": "ei_umdQEonU",
+      "title": "Senator Mark R. Warner, introduced by Congresswoman Jennifer McClellan  VAWC25",
+      "url": "https://www.youtube.com/watch?v=ei_umdQEonU",
+      "channel": "Virginia Women's Conference",
+      "channel_id": "UCGCpXKxPVIy1I12gzJNXISg",
+      "upload_date": null,
+      "duration": 2052.0,
+      "view_count": 19,
+      "description": ""
+    },
+    {
+      "video_id": "uhLdHT9vbog",
+      "title": "VAWC24 - U.S. Senator Mark R. Warner and U.S. Congresswoman Jennifer McClellan",
+      "url": "https://www.youtube.com/watch?v=uhLdHT9vbog",
+      "channel": "Virginia Women's Conference",
+      "channel_id": "UCGCpXKxPVIy1I12gzJNXISg",
+      "upload_date": null,
+      "duration": 2840.0,
+      "view_count": 54,
+      "description": ""
+    }
+  ]
+}

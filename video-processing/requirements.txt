@@ -1,0 +1,14 @@
+# Core dependencies
+requests>=2.28.0
+pyyaml>=6.0
+
+# YouTube
+yt-dlp>=2023.1.1
+youtube-transcript-api>=0.6.0  # Alternative transcript extraction
+
+# Whisper transcription (optional - for videos without captions)
+# Uncomment to enable:
+# openai-whisper>=20231117
+
+# Development
+# pytest>=7.0.0

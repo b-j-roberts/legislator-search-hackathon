@@ -1,0 +1,26 @@
+{
+  "bioguide_id": "S001229",
+  "name": "Jefferson Shreve",
+  "total_found": 1,
+  "items_fetched": 1,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "FBC_20260114_150000_Varney__Company",
+      "title": "Varney & Company : FBC : January 14, 2026 10:00am-11:00am EST",
+      "date": "2026-01-14",
+      "snippet": "look at this , republican congressman jefferson shreve made 625 trades last year totaling more than $150nthal, republican mike mccaul each traded about $80 million worth and ro khanna made more than 4,000 trades and we can't forget nancy pelosi just $5 million in trades last year, but way moreover her decades in congress. it's all legal, but in the court of public opinion, the opportunity to profit off of information does a trust in government so today congress again will try to ban themselves from trading stocks but it's an up hill climb. if styles bill can get to a full floor vote in the house, there's no certainty the senate will even pick it up, stuart. stuart: thanks, lauren. house oversight committee chair james comer joins me now about this stock trading by congress. forgive me, congressman. i've got a proposal. what if there was a congressional database, clearly stating any trade that lawmakers make and reported immediately in roll time, so we all know exactly what everybody is doing. what's wrong with that? >> well i don't think anything is wrong with that. i would support that.",
+      "network": "FBC",
+      "collection": "TV-FBC",
+      "start_time": "3031",
+      "end_time": "",
+      "video_url": "https://archive.org/download/FBC_20260114_150000_Varney__Company/FBC_20260114_150000_Varney__Company.mp4?t=3031/3091&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/FBC_20260114_150000_Varney__Company/FBC_20260114_150000_Varney__Company.thumbs/FBC_20260114_150000_Varney__Company_003028.jpg",
+      "archive_url": "https://archive.org/details/FBC_20260114_150000_Varney__Company",
+      "embed_url": "https://archive.org/embed/FBC_20260114_150000_Varney__Company"
+    }
+  ]
+}

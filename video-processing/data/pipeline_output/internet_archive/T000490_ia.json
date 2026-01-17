@@ -1,0 +1,26 @@
+{
+  "bioguide_id": "T000490",
+  "name": "David J. Taylor",
+  "total_found": 1,
+  "items_fetched": 1,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "CSPAN_20260112_165900_U.S._House_of_Representatives_U.S._House_of_Representatives",
+      "title": "U.S. House of Representatives U.S. House of Representatives : CSPAN : January 12, 2026 11:59am-12:26pm EST",
+      "date": "2026-01-12",
+      "snippet": "january 12th, 2026 i hereby appoint the honorable david j. taylor to act as speaker pro tempore on this day. signed mike johnson, speaker of the house of representatives. >> pursuant to the order of the house of january 6th, 2026, the chair will now recognize members from lists submitted by the majority and minority leaders for morning hour debate. the chair will alternate recognition between the parties, with time equally allocated between the parties and each member other than the majority and minority leaders, and the minority whip limited to five minutes, but in no event shall debate continue beyond 1:50 p.m. the chair recognizes the gentleman from pennsylvania, mr. john joyce, for five minutes. >> thank you, mr. speaker. last week, president trump issued an executive order to prioritize the development of the us warfighter. president trump has made significant strides to strengthen the us military capabilities, and this executive order continues to do just that, enhancing the lethality and readiness of our military forces relies on the highly s",
+      "network": "CSPAN",
+      "collection": "TV-CSPAN",
+      "start_time": "101",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CSPAN_20260112_165900_U.S._House_of_Representatives_U.S._House_of_Representatives/CSPAN_20260112_165900_U.S._House_of_Representatives_U.S._House_of_Representatives.mp4?t=101/161&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CSPAN_20260112_165900_U.S._House_of_Representatives_U.S._House_of_Representatives/CSPAN_20260112_165900_U.S._House_of_Representatives_U.S._House_of_Representatives.thumbs/CSPAN_20260112_165900_U.S._House_of_Representatives_U.S._House_of_Representatives_000087.jpg",
+      "archive_url": "https://archive.org/details/CSPAN_20260112_165900_U.S._House_of_Representatives_U.S._House_of_Representatives",
+      "embed_url": "https://archive.org/embed/CSPAN_20260112_165900_U.S._House_of_Representatives_U.S._House_of_Representatives"
+    }
+  ]
+}

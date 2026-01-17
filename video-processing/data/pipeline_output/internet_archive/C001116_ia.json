@@ -1,0 +1,40 @@
+{
+  "bioguide_id": "C001116",
+  "name": "Andrew S. Clyde",
+  "total_found": 2,
+  "items_fetched": 2,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "CSPAN_20260113_150000_U.S._House_of_Representatives_U.S._House_of_Representatives",
+      "title": "U.S. House of Representatives U.S. House of Representatives : CSPAN : January 13, 2026 10:00am-10:50am EST",
+      "date": "2026-01-13",
+      "snippet": "i hereby appoint the honorable andrew s clyde to act as speaker pro tempore on this day. signed mike johnson speaker of the house of representatives. >> pursuant to the order of the house of january 6th, 2026, the chair now recognizes members from lists stted by the majority and minority leaders for morning hour debate. the chair will alternate recognition between the parties. the time equally allocated between the parties and each member other than the majority and minority leaders,ndhe minority whip, limited to five minutes, but in no event shall debate continue beyond 11:50 a.m. the chair now recogs the gentlemanm delaware, representative mcbride for five minutes. >> mr. speaker, i rise today to congratu lieutenant colonel chaplain. reverend doctor. addison on her recent promotion at the delaware army national guard. i rise today to chaplain reverend doctorcolonel addison on her recent promotion at the dare army national guard. earlier this month, i was honored to attend her promotion ceremony and celebrate her historic role as thrst womo hold this rank at the delaware",
+      "network": "CSPAN",
+      "collection": "TV-CSPAN",
+      "start_time": "49",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CSPAN_20260113_150000_U.S._House_of_Representatives_U.S._House_of_Representatives/CSPAN_20260113_150000_U.S._House_of_Representatives_U.S._House_of_Representatives.mp4?t=49/109&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CSPAN_20260113_150000_U.S._House_of_Representatives_U.S._House_of_Representatives/CSPAN_20260113_150000_U.S._House_of_Representatives_U.S._House_of_Representatives.thumbs/CSPAN_20260113_150000_U.S._House_of_Representatives_U.S._House_of_Representatives_000057.jpg",
+      "archive_url": "https://archive.org/details/CSPAN_20260113_150000_U.S._House_of_Representatives_U.S._House_of_Representatives",
+      "embed_url": "https://archive.org/embed/CSPAN_20260113_150000_U.S._House_of_Representatives_U.S._House_of_Representatives"
+    },
+    {
+      "identifier": "CSPAN_20260113_115900_Washington_Journal_01132026",
+      "title": "Washington Journal 01/13/2026 : CSPAN : January 13, 2026 6:59am-9:49am EST",
+      "date": "2026-01-13",
+      "snippet": "i hereby appoint the honorable andrew s clyde to act as speaker pro tempore on this day.igned mike johnson speaker of the house of representatives. >> pursuant to th",
+      "network": "CSPAN",
+      "collection": "TV-CSPAN",
+      "start_time": "10909",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CSPAN_20260113_115900_Washington_Journal_01132026/CSPAN_20260113_115900_Washington_Journal_01132026.mp4?t=10909/10969&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CSPAN_20260113_115900_Washington_Journal_01132026/format=Thumbnail",
+      "archive_url": "https://archive.org/details/CSPAN_20260113_115900_Washington_Journal_01132026",
+      "embed_url": "https://archive.org/embed/CSPAN_20260113_115900_Washington_Journal_01132026"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "bioguide_id": "T000469",
+  "name": "Paul Tonko",
+  "total_found": 1,
+  "items_fetched": 1,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "CSPAN_20260108_233000_U.S._House_of_Representatives_U.S._House_of_Representatives",
+      "title": "U.S. House of Representatives U.S. House of Representatives : CSPAN : January 8, 2026 6:30pm-8:52pm EST",
+      "date": "2026-01-08",
+      "snippet": "i now yield three minutes to my colleague from the great state of new york, congressman paul tonko. >ank you. i appreciate the gentlewoman. gentlewoman yielding. and let me thank both. congress member luz rivas of california and emily randall of washington state for hosting us with this special order hour. i know, as they being two freshmen congresswomen and i know at least one other freshman congresswoman that will be joining in the discussion, just reflect the tremendous amount of talent and passion to make a difference in this freshman class, and we are so blessed to have them in the caucus, and it's so important to witness the efforts that the two congresswomen hosting us have made in regard to accessibility and affordability. it's the most appreciated. after months of pushing, democrats succeeded in forcing a vote to extend aca subsidies that offer life saving health care benefits to millions of families. that extension just passed the house just hours ago, but the fight isn't over. to secure these benefits and meaningfully lower costs for americans, the senate must act at once t",
+      "network": "CSPAN",
+      "collection": "TV-CSPAN",
+      "start_time": "2407",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CSPAN_20260108_233000_U.S._House_of_Representatives_U.S._House_of_Representatives/CSPAN_20260108_233000_U.S._House_of_Representatives_U.S._House_of_Representatives.mp4?t=2407/2467&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CSPAN_20260108_233000_U.S._House_of_Representatives_U.S._House_of_Representatives/CSPAN_20260108_233000_U.S._House_of_Representatives_U.S._House_of_Representatives.thumbs/CSPAN_20260108_233000_U.S._House_of_Representatives_U.S._House_of_Representatives_002398.jpg",
+      "archive_url": "https://archive.org/details/CSPAN_20260108_233000_U.S._House_of_Representatives_U.S._House_of_Representatives",
+      "embed_url": "https://archive.org/embed/CSPAN_20260108_233000_U.S._House_of_Representatives_U.S._House_of_Representatives"
+    }
+  ]
+}

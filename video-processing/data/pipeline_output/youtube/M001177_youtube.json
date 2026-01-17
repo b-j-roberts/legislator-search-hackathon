@@ -1,0 +1,331 @@
+{
+  "bioguide_id": "M001177",
+  "name": "Tom McClintock",
+  "total_found": 45,
+  "filtered_count": 29,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "N17NMztnIIw",
+      "title": "One on One with Tom Mcclintock! MUST WATCH INTERVIEW!!!",
+      "url": "https://www.youtube.com/watch?v=N17NMztnIIw",
+      "channel": "The Podcast Lounge El Dorado Hills, CA",
+      "channel_id": "UCN2MRqLSumdZD1Fanz7hlJQ",
+      "upload_date": null,
+      "duration": 2777.0,
+      "view_count": 123,
+      "description": ""
+    },
+    {
+      "video_id": "M9JcFzgejp8",
+      "title": "Interview with Congressman McClintock to talk California Redistricting and More",
+      "url": "https://www.youtube.com/watch?v=M9JcFzgejp8",
+      "channel": "Congressman Tom McClintock",
+      "channel_id": "UCMh04KC4LfIzKoXh2Xws_pw",
+      "upload_date": null,
+      "duration": 421.0,
+      "view_count": 376,
+      "description": ""
+    },
+    {
+      "video_id": "zh0TxRgdy3M",
+      "title": "Fox Business Interview Congressman Tom McClintock",
+      "url": "https://www.youtube.com/watch?v=zh0TxRgdy3M",
+      "channel": "Congressman Tom McClintock",
+      "channel_id": "UCMh04KC4LfIzKoXh2Xws_pw",
+      "upload_date": null,
+      "duration": 309.0,
+      "view_count": 431,
+      "description": ""
+    },
+    {
+      "video_id": "cZseIebrweM",
+      "title": "Inside View #322 Cory Burnell with Guest Congressman Tom McClintock Interview #3 8/8/2019",
+      "url": "https://www.youtube.com/watch?v=cZseIebrweM",
+      "channel": "CalaverasCommunityTV",
+      "channel_id": "UCBa_xGTLZoFxsXKD_T506Qw",
+      "upload_date": null,
+      "duration": 1817.0,
+      "view_count": 20,
+      "description": ""
+    },
+    {
+      "video_id": "u2iBX-3e8ck",
+      "title": "C4 speaks with Congressman Tom McClintock on 1090 AM WBAL pt 2",
+      "url": "https://www.youtube.com/watch?v=u2iBX-3e8ck",
+      "channel": "WBAL Radio",
+      "channel_id": "UCABoFmIGpud6i5ky-8ywHEg",
+      "upload_date": null,
+      "duration": 122.0,
+      "view_count": 69,
+      "description": ""
+    },
+    {
+      "video_id": "Pt7P0rwscCo",
+      "title": "Inside View #321 Host Cory Burnell with Guest Congressman Tom McClintock Interview #2 8/8/2019",
+      "url": "https://www.youtube.com/watch?v=Pt7P0rwscCo",
+      "channel": "CalaverasCommunityTV",
+      "channel_id": "UCBa_xGTLZoFxsXKD_T506Qw",
+      "upload_date": null,
+      "duration": 1677.0,
+      "view_count": 22,
+      "description": ""
+    },
+    {
+      "video_id": "VuI-PPwtH3w",
+      "title": "Tom McClintock Interview - A Must Watch!",
+      "url": "https://www.youtube.com/watch?v=VuI-PPwtH3w",
+      "channel": "Oliver Unfiltered",
+      "channel_id": "UCfK8u1nB0LPXJ4L-NZGmLRA",
+      "upload_date": null,
+      "duration": 3722.0,
+      "view_count": 101,
+      "description": ""
+    },
+    {
+      "video_id": "mr1B_Nbrz6E",
+      "title": "C4 speaks with Congressman Tom McClintock on 1090 AM WBAL pt 3",
+      "url": "https://www.youtube.com/watch?v=mr1B_Nbrz6E",
+      "channel": "WBAL Radio",
+      "channel_id": "UCABoFmIGpud6i5ky-8ywHEg",
+      "upload_date": null,
+      "duration": 138.0,
+      "view_count": 34,
+      "description": ""
+    },
+    {
+      "video_id": "GpI-rOE9Vj0",
+      "title": "Interview with Congressman Tom McClintock, 4th District of California - Segment 4",
+      "url": "https://www.youtube.com/watch?v=GpI-rOE9Vj0",
+      "channel": "clayandmartyshow",
+      "channel_id": "UCWBCbyLi6pTWmo0Y5YqfGrg",
+      "upload_date": null,
+      "duration": 714.0,
+      "view_count": 53,
+      "description": ""
+    },
+    {
+      "video_id": "kK-_7RQpg3Y",
+      "title": "Raw Interview with Rep. Tom McClintock",
+      "url": "https://www.youtube.com/watch?v=kK-_7RQpg3Y",
+      "channel": "KCRA 3",
+      "channel_id": "UC-BSVXejMFhhml4V_VyoGxg",
+      "upload_date": null,
+      "duration": 479.0,
+      "view_count": 1628,
+      "description": ""
+    },
+    {
+      "video_id": "ReEs70KonqA",
+      "title": "Interview with Congressman Tom McClintock on April 14, 2022",
+      "url": "https://www.youtube.com/watch?v=ReEs70KonqA",
+      "channel": "Forestry Challenge",
+      "channel_id": "UC7MnS4keRctR8Yd44KqmwqA",
+      "upload_date": null,
+      "duration": 1035.0,
+      "view_count": 98,
+      "description": ""
+    },
+    {
+      "video_id": "khvxxyNxDNo",
+      "title": "Interview with Congressman Tom McClintock, 4th District of California - Segment 3",
+      "url": "https://www.youtube.com/watch?v=khvxxyNxDNo",
+      "channel": "clayandmartyshow",
+      "channel_id": "UCWBCbyLi6pTWmo0Y5YqfGrg",
+      "upload_date": null,
+      "duration": 587.0,
+      "view_count": 29,
+      "description": ""
+    },
+    {
+      "video_id": "EGmC4KiB3u0",
+      "title": "Inside View #320 Host Cory Burnell with Guest Congressman Tom McClintock  8/8/2019",
+      "url": "https://www.youtube.com/watch?v=EGmC4KiB3u0",
+      "channel": "CalaverasCommunityTV",
+      "channel_id": "UCBa_xGTLZoFxsXKD_T506Qw",
+      "upload_date": null,
+      "duration": 1777.0,
+      "view_count": 24,
+      "description": ""
+    },
+    {
+      "video_id": "KeODGvdkeaQ",
+      "title": "Rep. Tom  McClintock interview with Gold Rush News",
+      "url": "https://www.youtube.com/watch?v=KeODGvdkeaQ",
+      "channel": "David Titchenal",
+      "channel_id": "UCtRG4yHKiiowzkPhPpZSHUQ",
+      "upload_date": null,
+      "duration": 378.0,
+      "view_count": 25,
+      "description": ""
+    },
+    {
+      "video_id": "YWJJJSlVAvE",
+      "title": "Congressman Tom McClintock interview part 2",
+      "url": "https://www.youtube.com/watch?v=YWJJJSlVAvE",
+      "channel": "snappythom",
+      "channel_id": "UCS6TqO7KjLZFT2WjqgUEfHQ",
+      "upload_date": null,
+      "duration": 778.0,
+      "view_count": 38,
+      "description": ""
+    },
+    {
+      "video_id": "YP4aUFSKHJQ",
+      "title": "Chairman Tom McClintock opening statement at the Subcommittee on Federal Lands oversight hearing",
+      "url": "https://www.youtube.com/watch?v=YP4aUFSKHJQ",
+      "channel": "House Committee on Natural Resources GOP",
+      "channel_id": "UCY08wEbJ8fztRofQ9eZs0-g",
+      "upload_date": null,
+      "duration": 298.0,
+      "view_count": 75,
+      "description": ""
+    },
+    {
+      "video_id": "20obV8V3eH8",
+      "title": "Congressman Tom McClintock: Democrats Fire Back at Elon Musk, Calling Him an Unelected Bureaucrat!",
+      "url": "https://www.youtube.com/shorts/20obV8V3eH8",
+      "channel": "Political Spin",
+      "channel_id": "UC6310UoangSlrKHWmRXhQbg",
+      "upload_date": null,
+      "duration": 64.0,
+      "view_count": 3565,
+      "description": ""
+    },
+    {
+      "video_id": "EXXHYvHOq6U",
+      "title": "Congressman Tom McClintock Unleashes Truth at The Censorship-Industrial Complex Hearing",
+      "url": "https://www.youtube.com/watch?v=EXXHYvHOq6U",
+      "channel": "Political Spin",
+      "channel_id": "UC6310UoangSlrKHWmRXhQbg",
+      "upload_date": null,
+      "duration": 340.0,
+      "view_count": 71,
+      "description": ""
+    },
+    {
+      "video_id": "0yrQ3-7xSjE",
+      "title": "Congressman Tom McClintock: Are Democrats the New Truth Judges? #SHORTS",
+      "url": "https://www.youtube.com/shorts/0yrQ3-7xSjE",
+      "channel": "Political Spin",
+      "channel_id": "UC6310UoangSlrKHWmRXhQbg",
+      "upload_date": null,
+      "duration": 85.0,
+      "view_count": 741,
+      "description": ""
+    },
+    {
+      "video_id": "wBfwI9UU7nQ",
+      "title": "WATCH: Rep. Tom McClintock's full questioning of Corey Lewandowski | Lewandowski hearing",
+      "url": "https://www.youtube.com/watch?v=wBfwI9UU7nQ",
+      "channel": "PBS NewsHour",
+      "channel_id": "UC6ZFN9Tx6xh-skXCuRHCDpQ",
+      "upload_date": null,
+      "duration": 298.0,
+      "view_count": 17095,
+      "description": ""
+    },
+    {
+      "video_id": "TDLcegVG26E",
+      "title": "Packed Town Hall Crowd Greets Rep. Tom McClintock For Nearly 3-Hour Marathon",
+      "url": "https://www.youtube.com/watch?v=TDLcegVG26E",
+      "channel": "CBS News Sacramento",
+      "channel_id": "UCxZMOY2RdtK6LQUbIYgec4A",
+      "upload_date": null,
+      "duration": 122.0,
+      "view_count": 217,
+      "description": ""
+    },
+    {
+      "video_id": "NG6VQtjoLcY",
+      "title": "Chairman McClintock Opening Remarks: Hearing on the Oversight of HHS Office of Refugee Resettlement",
+      "url": "https://www.youtube.com/watch?v=NG6VQtjoLcY",
+      "channel": "Congressman Tom McClintock",
+      "channel_id": "UCMh04KC4LfIzKoXh2Xws_pw",
+      "upload_date": null,
+      "duration": 291.0,
+      "view_count": 1037,
+      "description": ""
+    },
+    {
+      "video_id": "2jCwrF9LMlk",
+      "title": "'Who's Going To Decide Which Viewpoint Is Legal?': Tom McClintock Grills Witness Over Banning Speech",
+      "url": "https://www.youtube.com/watch?v=2jCwrF9LMlk",
+      "channel": "Forbes Breaking News",
+      "channel_id": "UCg40OxZ1GYh3u3jBntB6DLg",
+      "upload_date": null,
+      "duration": 481.0,
+      "view_count": 8216,
+      "description": ""
+    },
+    {
+      "video_id": "rjfg4GfAWKk",
+      "title": "Congressman McClintock Challenges Shellenberger: Can We Defund Censorship? #SHORTS",
+      "url": "https://www.youtube.com/shorts/rjfg4GfAWKk",
+      "channel": "Political Spin",
+      "channel_id": "UC6310UoangSlrKHWmRXhQbg",
+      "upload_date": null,
+      "duration": 88.0,
+      "view_count": 902,
+      "description": ""
+    },
+    {
+      "video_id": "u_sGCBM_f-A",
+      "title": "Congressman Tom McClintock speech at ReOpen Cal Now conference.",
+      "url": "https://www.youtube.com/watch?v=u_sGCBM_f-A",
+      "channel": "Tab Berg",
+      "channel_id": "UCiKf88Ikr6-8z8nU9-XuPNg",
+      "upload_date": null,
+      "duration": 1444.0,
+      "view_count": 7,
+      "description": ""
+    },
+    {
+      "video_id": "ZM5_dVzvKUQ",
+      "title": "'Utterly Destructive': Tom McClintock Hammers FTC Chair For 'Censoring Speech'",
+      "url": "https://www.youtube.com/watch?v=ZM5_dVzvKUQ",
+      "channel": "Forbes Breaking News",
+      "channel_id": "UCg40OxZ1GYh3u3jBntB6DLg",
+      "upload_date": null,
+      "duration": 283.0,
+      "view_count": 1492,
+      "description": ""
+    },
+    {
+      "video_id": "aFHLYZ-B514",
+      "title": "Congressman Tom McClintock, \"Do No Harm\" Stimulus Bill Remarks, February 12, 2009",
+      "url": "https://www.youtube.com/watch?v=aFHLYZ-B514",
+      "channel": "Congressman Tom McClintock",
+      "channel_id": "UCMh04KC4LfIzKoXh2Xws_pw",
+      "upload_date": null,
+      "duration": 400.0,
+      "view_count": 1233,
+      "description": ""
+    },
+    {
+      "video_id": "T9nPppUIS9Q",
+      "title": "Rep  Tom McClintock on President's UN Speech on North Korea",
+      "url": "https://www.youtube.com/watch?v=T9nPppUIS9Q",
+      "channel": "FOX40 News",
+      "channel_id": "UC64F2oovpjsxy06vTdrJG-g",
+      "upload_date": null,
+      "duration": 251.0,
+      "view_count": 106,
+      "description": ""
+    },
+    {
+      "video_id": "y779g19VGLg",
+      "title": "Packed Town Hall Crowd Greets Rep. Tom McClintock For Nearly 3-Hour Marathon",
+      "url": "https://www.youtube.com/watch?v=y779g19VGLg",
+      "channel": "CBS News Sacramento",
+      "channel_id": "UCxZMOY2RdtK6LQUbIYgec4A",
+      "upload_date": null,
+      "duration": 82.0,
+      "view_count": 203,
+      "description": ""
+    }
+  ]
+}

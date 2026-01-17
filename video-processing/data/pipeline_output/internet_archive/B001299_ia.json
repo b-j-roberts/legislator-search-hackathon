@@ -1,0 +1,26 @@
+{
+  "bioguide_id": "B001299",
+  "name": "Jim Banks",
+  "total_found": 1,
+  "items_fetched": 1,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "CSPAN2_20260108_185900_U.S._Senate_U.S._Senate",
+      "title": "U.S. Senate U.S. Senate : CSPAN2 : January 8, 2026 1:59pm-4:32pm EST",
+      "date": "2026-01-08",
+      "snippet": "senate, under the provisions of rule 1, paragraph three of the standing rules of the senate i appoint jim banks, a senator from the state of indiana, to perform the duties of the chair ms. murkowski: mr. president, i ask unanimous consent that the morning hour be deemed expired, the journal of proceedings be approved to date, the time for the two leaders be reserved for their use later in the day, and that the senate be in a period of morning business, with senators permitted to speak therein for up to ten minutes each. the presiding officer: without objection. ms. murkowski: i understand that there is a bill at the desk that is due for a second reading. the presiding officer: the leader is correct. the clerk will read the title of the bill for a second time. the clerk: h.r. 6938, making consolidated appropriations for the fiscal year ending september 30, 2026, and for other purposes. ms. murkowski: in order to place the bill on the calendar under the provisions of rule 14, i would object to further proceeding. the presiding officer: objection is heard so the item will be placed on the calendar",
+      "network": "CSPAN2",
+      "collection": "TV-CSPAN2",
+      "start_time": "8936",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CSPAN2_20260108_185900_U.S._Senate_U.S._Senate/CSPAN2_20260108_185900_U.S._Senate_U.S._Senate.mp4?t=8936/8996&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CSPAN2_20260108_185900_U.S._Senate_U.S._Senate/CSPAN2_20260108_185900_U.S._Senate_U.S._Senate.thumbs/CSPAN2_20260108_185900_U.S._Senate_U.S._Senate_008909.jpg",
+      "archive_url": "https://archive.org/details/CSPAN2_20260108_185900_U.S._Senate_U.S._Senate",
+      "embed_url": "https://archive.org/embed/CSPAN2_20260108_185900_U.S._Senate_U.S._Senate"
+    }
+  ]
+}

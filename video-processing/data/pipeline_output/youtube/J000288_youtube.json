@@ -1,0 +1,23 @@
+{
+  "bioguide_id": "J000288",
+  "name": "Henry C. \"Hank\" Johnson, Jr.",
+  "total_found": 10,
+  "filtered_count": 1,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "-iEcS0ahq4M",
+      "title": "Congressman Johnson calls on AT&T to deploy its ultra-fast fiber network in Atlanta",
+      "url": "https://www.youtube.com/watch?v=-iEcS0ahq4M",
+      "channel": "RepHankJohnson",
+      "channel_id": "UCqMici9I7nz_i-PN7eSYjwQ",
+      "upload_date": null,
+      "duration": 317.0,
+      "view_count": 141,
+      "description": ""
+    }
+  ]
+}

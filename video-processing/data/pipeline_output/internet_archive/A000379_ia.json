@@ -1,0 +1,26 @@
+{
+  "bioguide_id": "A000379",
+  "name": "Mark Alford",
+  "total_found": 1,
+  "items_fetched": 1,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "FBC_20260113_120000_Mornings_With_Maria_Bartiromo",
+      "title": "Mornings With Maria Bartiromo : FBC : January 13, 2026 7:00am-8:00am EST",
+      "date": "2026-01-13",
+      "snippet": "maria: mark alford on capitol hill.he president made so many efforts including the cap on potential credit card rates. >> his focus obviously is on making it easier for families and when it comes to credit cards we need more competition. you've got the big two that are really able to drive up costs. and move money from people who are paying high interest rates to people like me who like to take advantage of the great points programs and that probably those be better balanced and that's what the president's looking for. maria: i want to talk about the whole list of things that president trump has come out with, literally in the last 48 hours just to address affordability when we come back. stay with us. we'll be right back. do you have a life insurance policy you no longer need? now you can sell your policy - even a term policy - for an immediate cash payment. call coventry direct to learn more. we thought we had planned carefully for our retirement. but we quickly realized we needed a way to supplement our income. our f",
+      "network": "FBC",
+      "collection": "TV-FBC",
+      "start_time": "2103",
+      "end_time": "",
+      "video_url": "https://archive.org/download/FBC_20260113_120000_Mornings_With_Maria_Bartiromo/FBC_20260113_120000_Mornings_With_Maria_Bartiromo.mp4?t=2103/2163&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/FBC_20260113_120000_Mornings_With_Maria_Bartiromo/FBC_20260113_120000_Mornings_With_Maria_Bartiromo.thumbs/FBC_20260113_120000_Mornings_With_Maria_Bartiromo_002097.jpg",
+      "archive_url": "https://archive.org/details/FBC_20260113_120000_Mornings_With_Maria_Bartiromo",
+      "embed_url": "https://archive.org/embed/FBC_20260113_120000_Mornings_With_Maria_Bartiromo"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "bioguide_id": "S001172",
+  "name": "Adrian Smith",
+  "total_found": 1,
+  "items_fetched": 1,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "CSPAN_20260112_200000_U.S._House_of_Representatives_U.S._House_of_Representatives",
+      "title": "U.S. House of Representatives U.S. House of Representatives : CSPAN : January 12, 2026 3:00pm-6:09pm EST",
+      "date": "2026-01-12",
+      "snippet": "i want to thank the chairman of our ways and means trade subcommittee, congressman adrian smith, for his tremendous work and leadership in proactively building support for this renewal effort. i urge my colleagues to support this extension of agoa, which receives strong, strong bipartisan approval in the ways and means committee, and i look forward to continue working across the aisle to further strengthen this critical program. i reserve the balance of my time. >> the gentleman reserves and the gentleman from alabama is recognized. >> madam speaker, i yield myself such time as i may consume. >> the gentlewoman is recognized. >> i rise in strong support of h.r. 6500, the agoa extension act. for over two decades, agoa, the african growth and opportunity act has affirmed america's commitment to expanding economic opportunity, creating jobs, strengthening strategic partnerships, and forging mutually beneficial economic bonds between the united states and our allies in sub-saharan africa. since its enactment in 2000, agoa has provided duty free access to the us market for a broad range o",
+      "network": "CSPAN",
+      "collection": "TV-CSPAN",
+      "start_time": "7808",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CSPAN_20260112_200000_U.S._House_of_Representatives_U.S._House_of_Representatives/CSPAN_20260112_200000_U.S._House_of_Representatives_U.S._House_of_Representatives.mp4?t=7808/7868&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CSPAN_20260112_200000_U.S._House_of_Representatives_U.S._House_of_Representatives/CSPAN_20260112_200000_U.S._House_of_Representatives_U.S._House_of_Representatives.thumbs/CSPAN_20260112_200000_U.S._House_of_Representatives_U.S._House_of_Representatives_007797.jpg",
+      "archive_url": "https://archive.org/details/CSPAN_20260112_200000_U.S._House_of_Representatives_U.S._House_of_Representatives",
+      "embed_url": "https://archive.org/embed/CSPAN_20260112_200000_U.S._House_of_Representatives_U.S._House_of_Representatives"
+    }
+  ]
+}

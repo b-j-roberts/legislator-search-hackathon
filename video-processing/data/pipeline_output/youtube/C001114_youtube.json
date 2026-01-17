@@ -1,0 +1,111 @@
+{
+  "bioguide_id": "C001114",
+  "name": "John R. Curtis",
+  "total_found": 36,
+  "filtered_count": 9,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "qav3FP3zz-o",
+      "title": "Right Voices: Congressman John Curtis",
+      "url": "https://www.youtube.com/watch?v=qav3FP3zz-o",
+      "channel": "C3 Solutions",
+      "channel_id": "UCSJiJ5m6u1kJsqMplNjsCdA",
+      "upload_date": null,
+      "duration": 758.0,
+      "view_count": 1879,
+      "description": ""
+    },
+    {
+      "video_id": "egucdEir1TA",
+      "title": "The County Seat - One on one with Congressional Representative John Curtis of Utah's 3rd District",
+      "url": "https://www.youtube.com/watch?v=egucdEir1TA",
+      "channel": "The County Seat / Corrective Lenses Podcasts",
+      "channel_id": "UCutDmZVNNXEFm4J9ipI4LTg",
+      "upload_date": null,
+      "duration": 1731.0,
+      "view_count": 192,
+      "description": ""
+    },
+    {
+      "video_id": "vAb0pTQ0PQU",
+      "title": "Lawrence I. Fox",
+      "url": "https://www.youtube.com/watch?v=vAb0pTQ0PQU",
+      "channel": "Antiquarian Booksellers' Association of America",
+      "channel_id": "UCWB0homXlHevQzfGpvN8_xg",
+      "upload_date": null,
+      "duration": 1596.0,
+      "view_count": 375,
+      "description": ""
+    },
+    {
+      "video_id": "V4nMA2o7e_c",
+      "title": "Full Committee Markup 12.13.17",
+      "url": "https://www.youtube.com/watch?v=V4nMA2o7e_c",
+      "channel": "House Committee on Natural Resources GOP",
+      "channel_id": "UCY08wEbJ8fztRofQ9eZs0-g",
+      "upload_date": null,
+      "duration": 6846.0,
+      "view_count": 1512,
+      "description": ""
+    },
+    {
+      "video_id": "blFB94jsPx0",
+      "title": "6.27.2018 Full Committee Markup",
+      "url": "https://www.youtube.com/watch?v=blFB94jsPx0",
+      "channel": "House Committee on Natural Resources GOP",
+      "channel_id": "UCY08wEbJ8fztRofQ9eZs0-g",
+      "upload_date": null,
+      "duration": 4692.0,
+      "view_count": 322,
+      "description": ""
+    },
+    {
+      "video_id": "ybau1h58UN8",
+      "title": "9.26.2018 Full Committee Markup 10:15 AM H.R. 4644",
+      "url": "https://www.youtube.com/watch?v=ybau1h58UN8",
+      "channel": "House Committee on Natural Resources GOP",
+      "channel_id": "UCY08wEbJ8fztRofQ9eZs0-g",
+      "upload_date": null,
+      "duration": 1164.0,
+      "view_count": 82,
+      "description": ""
+    },
+    {
+      "video_id": "CS62Gb_sdqk",
+      "title": "9.26.2018 Full Committee Markup 10:15 AM",
+      "url": "https://www.youtube.com/watch?v=CS62Gb_sdqk",
+      "channel": "House Committee on Natural Resources GOP",
+      "channel_id": "UCY08wEbJ8fztRofQ9eZs0-g",
+      "upload_date": null,
+      "duration": 11983.0,
+      "view_count": 463,
+      "description": ""
+    },
+    {
+      "video_id": "WpBJqX_gwnU",
+      "title": "The Center Lane  Political Podcast  #21 Politics, A.I., Economy and Hope ! what's ahead in 2024",
+      "url": "https://www.youtube.com/watch?v=WpBJqX_gwnU",
+      "channel": "dicknixon",
+      "channel_id": "UCHsp2l3zxlhy5hyY1EQwSxw",
+      "upload_date": null,
+      "duration": 689.0,
+      "view_count": 26,
+      "description": ""
+    },
+    {
+      "video_id": "iK0c2FtB8I4",
+      "title": "6.20.2018 Full Committee Markup 10:15 AM",
+      "url": "https://www.youtube.com/watch?v=iK0c2FtB8I4",
+      "channel": "House Committee on Natural Resources GOP",
+      "channel_id": "UCY08wEbJ8fztRofQ9eZs0-g",
+      "upload_date": null,
+      "duration": 4957.0,
+      "view_count": 280,
+      "description": ""
+    }
+  ]
+}

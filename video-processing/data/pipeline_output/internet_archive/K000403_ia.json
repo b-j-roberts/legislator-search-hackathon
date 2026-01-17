@@ -1,0 +1,40 @@
+{
+  "bioguide_id": "K000403",
+  "name": "Mike Kennedy",
+  "total_found": 2,
+  "items_fetched": 2,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "KNTV_20260101_010000_NBC_Bay_Area_News_at_5",
+      "title": "NBC Bay Area News at 5 : KNTV : December 31, 2025 5:00pm-5:30pm PST",
+      "date": "2026-01-01",
+      "snippet": "utah republican congressman mike kennedy, a doctor, says obamacare needs a complete overhaul. i want to make sure that those people have excellent access to high quality health care, which i and people like me as doctors have been delivering for many years, and obamacare process. so there's a way to make this happen. but moderate republicans and democrats argue congress needs to extend the health care credits while working on long term reforms. this is what the people want. the number one issue in america is affordability. and affordability of health insurance is right there at the very top. and i'm going to set up a meeting with them. president trump, who has railed against obamacare for years, says he'll start the new year negotiating to get private health insurance companies to lower their premiums. maybe they'll surprise us, but maybe we'll ask them for a 50% cut and maybe they'll give it. you know, you never know. so what happens next? congress went home without any action on this earlier this month, and they're not in session today. so premiums will go up at midnight. th",
+      "network": "KNTV",
+      "collection": "TV-KNTV",
+      "start_time": "564",
+      "end_time": "",
+      "video_url": "https://archive.org/download/KNTV_20260101_010000_NBC_Bay_Area_News_at_5/KNTV_20260101_010000_NBC_Bay_Area_News_at_5.mp4?t=564/624&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/KNTV_20260101_010000_NBC_Bay_Area_News_at_5/KNTV_20260101_010000_NBC_Bay_Area_News_at_5.thumbs/KNTV_20260101_010000_NBC_Bay_Area_News_at_5_000540.jpg",
+      "archive_url": "https://archive.org/details/KNTV_20260101_010000_NBC_Bay_Area_News_at_5",
+      "embed_url": "https://archive.org/embed/KNTV_20260101_010000_NBC_Bay_Area_News_at_5"
+    },
+    {
+      "identifier": "DW_20260109_041500_Treasure_Islands_in_the_Pacific",
+      "title": "Treasure Islands in the Pacific : DW : January 9, 2026 5:15am-6:00am CET",
+      "date": "2026-01-09",
+      "snippet": "so in, in your, we asked the general mike kennedy, the units in question about security. you know, it's not possible anymore to separate the regions from each of us in the building does on europe, in the, in the pacific are independent into one's a little bit. so even just in terms of our economic interest, it's, it's, it's helped us to be in the pacific. i'm having a free and open in the pacific. gosh, on. these are fundamental impulses to germany in the pacific, at the us marine corps base on the other side. of the island, us coast guard units were practicing securing a port. a specialized unit. the german navy is also involved. mine diver boob is the head of the group as specialized forces. they do not want to be named or identified by rec. the operating conditions here in the pacific are completely different from those in the north and baltic seats. and so or the danger scuba tells us will be redundant. the middle of this 200 head sharks came towards us. it was really unsettling. a 1st time it ever since sharks and they came within 3 meters of us. it was while my hear",
+      "network": "DW",
+      "collection": "TV-DW",
+      "start_time": "437",
+      "end_time": "",
+      "video_url": "https://archive.org/download/DW_20260109_041500_Treasure_Islands_in_the_Pacific/DW_20260109_041500_Treasure_Islands_in_the_Pacific.mp4?t=437/497&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/DW_20260109_041500_Treasure_Islands_in_the_Pacific/DW_20260109_041500_Treasure_Islands_in_the_Pacific.thumbs/DW_20260109_041500_Treasure_Islands_in_the_Pacific_000422.jpg",
+      "archive_url": "https://archive.org/details/DW_20260109_041500_Treasure_Islands_in_the_Pacific",
+      "embed_url": "https://archive.org/embed/DW_20260109_041500_Treasure_Islands_in_the_Pacific"
+    }
+  ]
+}

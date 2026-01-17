@@ -1,0 +1,100 @@
+{
+  "bioguide_id": "H001076",
+  "name": "Margaret Wood Hassan",
+  "total_found": 29,
+  "filtered_count": 8,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "WdCjBQdhj8Q",
+      "title": "Editorial board interview with Sen. Maggie Hassan",
+      "url": "https://www.youtube.com/watch?v=WdCjBQdhj8Q",
+      "channel": "The Keene Sentinel",
+      "channel_id": "UC_ns5CBNZszNb0wBeEZXKpQ",
+      "upload_date": null,
+      "duration": 3573.0,
+      "view_count": 70,
+      "description": ""
+    },
+    {
+      "video_id": "kKbXusjHdiU",
+      "title": "Interview with Gov  Maggie Hassan",
+      "url": "https://www.youtube.com/watch?v=kKbXusjHdiU",
+      "channel": "AARPNH",
+      "channel_id": "UCJbQPpNmsjNJ0CrTEkrCKSw",
+      "upload_date": null,
+      "duration": 100.0,
+      "view_count": 86,
+      "description": ""
+    },
+    {
+      "video_id": "hTv24Os8T7w",
+      "title": "Maggie Hassan cites fake hacking story in DHS confirmation hearing",
+      "url": "https://www.youtube.com/watch?v=hTv24Os8T7w",
+      "channel": "Chuck Ross",
+      "channel_id": "UCWoEXRFsNmkfB-TcWACdbWQ",
+      "upload_date": null,
+      "duration": 99.0,
+      "view_count": 4567,
+      "description": ""
+    },
+    {
+      "video_id": "6tAxt4OWqnI",
+      "title": "Senator Hassan Leads Hearing on Reducing Wasteful Government Spending by Updating Legacy IT Systems",
+      "url": "https://www.youtube.com/watch?v=6tAxt4OWqnI",
+      "channel": "Senator Maggie Hassan",
+      "channel_id": "UC4dD6MKchWaCEbfHo-VbQhA",
+      "upload_date": null,
+      "duration": 1514.0,
+      "view_count": 66,
+      "description": ""
+    },
+    {
+      "video_id": "rinfVVWwwyY",
+      "title": "LIVE: First Senate Hearing on Gain of Function Research Since Start of Pandemic\u2014Part 2",
+      "url": "https://www.youtube.com/watch?v=rinfVVWwwyY",
+      "channel": "The Epoch Times",
+      "channel_id": "UCeLc4heXqG9dtL7jiPHMBfQ",
+      "upload_date": null,
+      "duration": 4094.0,
+      "view_count": 9028,
+      "description": ""
+    },
+    {
+      "video_id": "tx6GXOhAUMA",
+      "title": "Senator Hassan Questions VA During Her First Hearing as a Member of the Veterans\u2019 Affairs Committee",
+      "url": "https://www.youtube.com/watch?v=tx6GXOhAUMA",
+      "channel": "Senator Maggie Hassan",
+      "channel_id": "UC4dD6MKchWaCEbfHo-VbQhA",
+      "upload_date": null,
+      "duration": 427.0,
+      "view_count": 56,
+      "description": "Intro\u00a0..."
+    },
+    {
+      "video_id": "FlUhJBXiblM",
+      "title": "Raw Video: Maggie Hassan delivers budget speech",
+      "url": "https://www.youtube.com/watch?v=FlUhJBXiblM",
+      "channel": "WMUR-TV",
+      "channel_id": "UCwuZjWoiT30kDTz0G41Y8gQ",
+      "upload_date": null,
+      "duration": 3276.0,
+      "view_count": 133,
+      "description": ""
+    },
+    {
+      "video_id": "KI86IY9gREM",
+      "title": "New Hampshire Innovation Nights November 2014 - Speech by Governor Maggie Hassan",
+      "url": "https://www.youtube.com/watch?v=KI86IY9gREM",
+      "channel": "Innovation Nights",
+      "channel_id": "UCPdqryavX5ZL7ZcAEdvDDdQ",
+      "upload_date": null,
+      "duration": 184.0,
+      "view_count": 105,
+      "description": ""
+    }
+  ]
+}

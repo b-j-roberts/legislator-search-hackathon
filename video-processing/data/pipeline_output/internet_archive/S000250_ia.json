@@ -1,0 +1,40 @@
+{
+  "bioguide_id": "S000250",
+  "name": "Pete Sessions",
+  "total_found": 2,
+  "items_fetched": 2,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "MSNOW_20260114_000000_The_Weeknight",
+      "title": "The Weeknight : MSNOW : January 13, 2026 4:00pm-5:00pm PST",
+      "date": "2026-01-14",
+      "snippet": "you know, former head of the justice department pete sessions, the justice department, quote, he cannever find a great attorney general because by definition, they can't be a great lawyer. boom shaka laka laka boom. that's it right there. that's it folks, if you want a summation of all the leadership in the justice department in in the fbi and any other department of this administration, they can't be the thing that they've been charged to be because they can't get the job otherwise. >> that's exactly right. so i will say this. this lady is on borrowed time, and she has been on borrowed time ever since the beginning of this administration, when she whiffed on the handling of the epstein files, when she goes over to the west wing of the white house and she tells these conservative bloggers, here's volume one, and they they open up these binders and it's all material that they have seen before. in my most recent data point is with the capture of maduro, right. we all saw the photographs of the president and marco rubio and others down in mar a lago in this makeshift situation room, and",
+      "network": "MSNOW",
+      "collection": "TV-MSNOW",
+      "start_time": "796",
+      "end_time": "",
+      "video_url": "https://archive.org/download/MSNOW_20260114_000000_The_Weeknight/MSNOW_20260114_000000_The_Weeknight.mp4?t=796/856&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/MSNOW_20260114_000000_The_Weeknight/MSNOW_20260114_000000_The_Weeknight.thumbs/MSNOW_20260114_000000_The_Weeknight_000780.jpg",
+      "archive_url": "https://archive.org/details/MSNOW_20260114_000000_The_Weeknight",
+      "embed_url": "https://archive.org/embed/MSNOW_20260114_000000_The_Weeknight"
+    },
+    {
+      "identifier": "CNNW_20260116_030000_CNN_NewsNight_With_Abby_Phillip",
+      "title": "CNN NewsNight With Abby Phillip : CNNW : January 15, 2026 7:00pm-8:00pm PST",
+      "date": "2026-01-16",
+      "snippet": "we had pete, congressman pete sessions was there, john solomon the whole blt crew, rudy.and we were talking about what if trump doesn't support guaido? what if you know, what are our chances to get maduro to go if he doesn't go with this? and there was a conversation that was bluntly said by harry, said, listen, if we have to, erik prince will take him out. and basically that's what people don't know is a much friendlier player to. >> the now president of venezuela. >> she was she was friendlier than maduro even back then. >> so the nobel peace prize committee said today that once a nobel prize is announced, it cannot be revoked, shared or transferred to others. the decision is final and stands for all time. a medal can change owners, however, but the title of nobel peace prize laureate cannot. so he's got the medal, but he's still not a laureate. and i'm not sure if that's enough for him, but it's good enough for now. it seems. >> and you know, i don't even blame her for doing. i think that they're in a desperate situation in venezuela. whatever she feels like she needs ",
+      "network": "CNNW",
+      "collection": "TV-CNNW",
+      "start_time": "3120",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CNNW_20260116_030000_CNN_NewsNight_With_Abby_Phillip/CNNW_20260116_030000_CNN_NewsNight_With_Abby_Phillip.mp4?t=3120/3180&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CNNW_20260116_030000_CNN_NewsNight_With_Abby_Phillip/CNNW_20260116_030000_CNN_NewsNight_With_Abby_Phillip.thumbs/CNNW_20260116_030000_CNN_NewsNight_With_Abby_Phillip_003118.jpg",
+      "archive_url": "https://archive.org/details/CNNW_20260116_030000_CNN_NewsNight_With_Abby_Phillip",
+      "embed_url": "https://archive.org/embed/CNNW_20260116_030000_CNN_NewsNight_With_Abby_Phillip"
+    }
+  ]
+}

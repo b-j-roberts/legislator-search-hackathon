@@ -1,0 +1,40 @@
+{
+  "bioguide_id": "E000246",
+  "name": "Chuck Edwards",
+  "total_found": 2,
+  "items_fetched": 2,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "CSPAN_20260101_115900_Washington_Journal_01012026",
+      "title": "Washington Journal 01/01/2026 : CSPAN : January 1, 2026 6:59am-10:03am EST",
+      "date": "2026-01-01",
+      "snippet": "which leans pretty heavily republican, but democrats think they might have a chance to knock out chuck edwardsn that seat. right now 10-4 in republicans favor. republicans hope they can make it 11-3. democrats are hoping that maybe they can cut that margin and make it 8-6 in republicans favor. host: folks are seeing carolina journal and the john locke foundation in your id on the screen. for those who don't know, what is the john locke foundation and what is the carolina journal? guest: the john locke foundation is a think tank in north carolina. we focus primarily on state government issues, what is going on with our legislature, executive branch, and the courts. the carolina journal is our publication. we have a publication that comes out in print edition eight to 10 times a year. we have material at thecarolinajournal.com daily, including about the elections coming up. host: all available to find on the internet. mitch kokai has been our guest the last 10 minutes or so. -- or so. we will check in with you throughout the year and we hope you continue to join us throughout 2026. guest: thank ",
+      "network": "CSPAN",
+      "collection": "TV-CSPAN",
+      "start_time": "6890",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CSPAN_20260101_115900_Washington_Journal_01012026/CSPAN_20260101_115900_Washington_Journal_01012026.mp4?t=6890/6950&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CSPAN_20260101_115900_Washington_Journal_01012026/CSPAN_20260101_115900_Washington_Journal_01012026.thumbs/CSPAN_20260101_115900_Washington_Journal_01012026_006868.jpg",
+      "archive_url": "https://archive.org/details/CSPAN_20260101_115900_Washington_Journal_01012026",
+      "embed_url": "https://archive.org/embed/CSPAN_20260101_115900_Washington_Journal_01012026"
+    },
+    {
+      "identifier": "CSPAN_20260101_150300_Washington_Journal_Washington_Journal",
+      "title": "Washington Journal Washington Journal : CSPAN : January 1, 2026 10:03am-1:28pm EST",
+      "date": "2026-01-01",
+      "snippet": "which leans pretty heavily republican, but democrats think they might have a chance to knock out chuck edwardsn that seat. right now 10-4 in republicans favor. republicans hope they can make it 11-3. democrats are hoping that maybe they can cut that margin and make it 8-6 in republicans favor. host: folks are seeing carolina journal and the john locke foundation in your id on the screen. for those who don't know, what is the john locke foundation and what is the carolina journal? guest: the john locke foundation is a think tank in north carolina. we focus primarily on state government issues, what is going on with our legislature, executive branch, and the courts. the carolina journal is our publication. we have a publication that comes out in print edition eight to 10 times a year. we have material at thecarolinajournal.com daily, including about the elections coming up. host: all available to find on the internet. mitch kokai has been our guest the last 10 minutes or so. -- or so. we will check in with you throughout the year and we hope you continue to join us throughout 2026. guest: thank ",
+      "network": "CSPAN",
+      "collection": "TV-CSPAN",
+      "start_time": "6847",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CSPAN_20260101_150300_Washington_Journal_Washington_Journal/CSPAN_20260101_150300_Washington_Journal_Washington_Journal.mp4?t=6847/6907&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CSPAN_20260101_150300_Washington_Journal_Washington_Journal/CSPAN_20260101_150300_Washington_Journal_Washington_Journal.thumbs/CSPAN_20260101_150300_Washington_Journal_Washington_Journal_006839.jpg",
+      "archive_url": "https://archive.org/details/CSPAN_20260101_150300_Washington_Journal_Washington_Journal",
+      "embed_url": "https://archive.org/embed/CSPAN_20260101_150300_Washington_Journal_Washington_Journal"
+    }
+  ]
+}

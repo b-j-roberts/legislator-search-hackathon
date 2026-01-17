@@ -1,0 +1,67 @@
+{
+  "bioguide_id": "C001035",
+  "name": "Susan M. Collins",
+  "total_found": 44,
+  "filtered_count": 5,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "-BjgO0fnSM8",
+      "title": "The 2016 McKinney-Vento Awards (U.S. Senator Susan Collins' Interview)",
+      "url": "https://www.youtube.com/watch?v=-BjgO0fnSM8",
+      "channel": "Maria Foscarinis (NLCHP)",
+      "channel_id": "UCdJRWWjmVSQjFgsujA8-lTA",
+      "upload_date": null,
+      "duration": 115.0,
+      "view_count": 26,
+      "description": ""
+    },
+    {
+      "video_id": "z72hB7KQtGo",
+      "title": "Sen. Susan Collins using position on Appropriations Committee to bring federal dollars to Maine",
+      "url": "https://www.youtube.com/watch?v=z72hB7KQtGo",
+      "channel": "NEWS CENTER Maine",
+      "channel_id": "UCQAUoXXSGHSntpTPvWwvXbg",
+      "upload_date": null,
+      "duration": 392.0,
+      "view_count": 520,
+      "description": ""
+    },
+    {
+      "video_id": "vZh7toKFT9A",
+      "title": "Senator Collins holds WMD threat hearing",
+      "url": "https://www.youtube.com/watch?v=vZh7toKFT9A",
+      "channel": "SenatorSusanCollins",
+      "channel_id": "UC6GYaBx5kT2r4PN8KENxC-w",
+      "upload_date": null,
+      "duration": 468.0,
+      "view_count": 375,
+      "description": ""
+    },
+    {
+      "video_id": "rokm1kmL6eI",
+      "title": "FBI investigating donations to Maine Senator Susan Collins' 2020 campaign",
+      "url": "https://www.youtube.com/watch?v=rokm1kmL6eI",
+      "channel": "CBS News",
+      "channel_id": "UC8p1vwvWtl6T73JiExfWs1g",
+      "upload_date": null,
+      "duration": 329.0,
+      "view_count": 9571,
+      "description": ""
+    },
+    {
+      "video_id": "6wXUzb10tQE",
+      "title": "Pandemic Preparedness and Response Capabilities - Senate Hearing held on January 17, 2018",
+      "url": "https://www.youtube.com/watch?v=6wXUzb10tQE",
+      "channel": "Eric VanDussen",
+      "channel_id": "UC1FJJKS1aS6iQp5dMa_9cYg",
+      "upload_date": null,
+      "duration": 7436.0,
+      "view_count": 24,
+      "description": ""
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "bioguide_id": "A000382",
+  "name": "Angela D. Alsobrooks",
+  "total_found": 45,
+  "filtered_count": 7,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "gqDBnzoksMM",
+      "title": "Angie Ange Interviews Prince George's County Executive Angela D. Alsobrooks",
+      "url": "https://www.youtube.com/watch?v=gqDBnzoksMM",
+      "channel": "Radio One D.C.",
+      "channel_id": "UCziPyLv8Mr6zdjcD6tUnYvA",
+      "upload_date": null,
+      "duration": 739.0,
+      "view_count": 284,
+      "description": ""
+    },
+    {
+      "video_id": "fLlbT778NFs",
+      "title": "Maryland Decides: Angela Alsobrooks running for U.S. Senate",
+      "url": "https://www.youtube.com/watch?v=fLlbT778NFs",
+      "channel": "WUSA9",
+      "channel_id": "UCcT6w3xUyVshyR2_2vrMp1w",
+      "upload_date": null,
+      "duration": 144.0,
+      "view_count": 745,
+      "description": ""
+    },
+    {
+      "video_id": "-1KkRU-o1hk",
+      "title": "Different Look interview with Angela Alsobrooks and Bill Hanbury",
+      "url": "https://www.youtube.com/watch?v=-1KkRU-o1hk",
+      "channel": "PGCTV",
+      "channel_id": "UC6EAL2STZASwy3SpqKjI6jA",
+      "upload_date": null,
+      "duration": 985.0,
+      "view_count": 491,
+      "description": ""
+    },
+    {
+      "video_id": "19SffRNgr3Q",
+      "title": "County Executive Angela D. Alsobrooks -  Prayer Breakfast Speech",
+      "url": "https://www.youtube.com/watch?v=19SffRNgr3Q",
+      "channel": "Gateway Second Chance Foundation",
+      "channel_id": "UCHbL9Az6Dm7hekXI2wFkIZQ",
+      "upload_date": null,
+      "duration": 1537.0,
+      "view_count": 59,
+      "description": ""
+    },
+    {
+      "video_id": "Lfr4K1zB4rw",
+      "title": "Prince George\u2019s County Executive Angela Alsobrooks addresses crime prevention efforts  | FOX 5 DC",
+      "url": "https://www.youtube.com/watch?v=Lfr4K1zB4rw",
+      "channel": "FOX 5 Washington DC",
+      "channel_id": "UCHLyP4MuA-JAFBCwxXOEDdA",
+      "upload_date": null,
+      "duration": 2611.0,
+      "view_count": 1580,
+      "description": ""
+    },
+    {
+      "video_id": "4hsE3pketKI",
+      "title": "Gary Peters at Political Action Committee Reception - MPC 14",
+      "url": "https://www.youtube.com/watch?v=4hsE3pketKI",
+      "channel": "Detroit PBS",
+      "channel_id": "UCeKem7g09AKfD1KNR1ytjhA",
+      "upload_date": null,
+      "duration": 1643.0,
+      "view_count": 84,
+      "description": ""
+    },
+    {
+      "video_id": "MM-HJhFamxc",
+      "title": "Maryland Rep. David Trone runs for US Senate",
+      "url": "https://www.youtube.com/watch?v=MM-HJhFamxc",
+      "channel": "WUSA9",
+      "channel_id": "UCcT6w3xUyVshyR2_2vrMp1w",
+      "upload_date": null,
+      "duration": 211.0,
+      "view_count": 547,
+      "description": ""
+    }
+  ]
+}

@@ -1,0 +1,265 @@
+{
+  "bioguide_id": "W000806",
+  "name": "Daniel Webster",
+  "total_found": 45,
+  "filtered_count": 23,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "RBtsG7ZPapw",
+      "title": "Global Health Now: Interview with Daniel Webster",
+      "url": "https://www.youtube.com/watch?v=RBtsG7ZPapw",
+      "channel": "Johns Hopkins Bloomberg School of Public Health",
+      "channel_id": "UC_AK324Za3GR5O55EhKGSMA",
+      "upload_date": null,
+      "duration": 347.0,
+      "view_count": 1249,
+      "description": ""
+    },
+    {
+      "video_id": "09fEjef3SlE",
+      "title": "Congressman Daniel Webster Interview",
+      "url": "https://www.youtube.com/watch?v=09fEjef3SlE",
+      "channel": "Leadership Prayer Breakfast of Lake County",
+      "channel_id": "UC-yP9v66T2sjpb-UzKLBTtA",
+      "upload_date": null,
+      "duration": 99.0,
+      "view_count": 72,
+      "description": ""
+    },
+    {
+      "video_id": "qJF7Z9VR02Y",
+      "title": "Neil Cavuto of Fox Business Channel Interviews Congressman Webster",
+      "url": "https://www.youtube.com/watch?v=qJF7Z9VR02Y",
+      "channel": "Daniel Webster for Congress",
+      "channel_id": "UCvaY5rdb6FMvR-SaG-Pge5w",
+      "upload_date": null,
+      "duration": 186.0,
+      "view_count": 99,
+      "description": ""
+    },
+    {
+      "video_id": "R79hYih9TSM",
+      "title": "Congressman Daniel Webster",
+      "url": "https://www.youtube.com/watch?v=R79hYih9TSM",
+      "channel": "Orlando Memory",
+      "channel_id": "UC-aKP4qUSCIjpY0v28q40Og",
+      "upload_date": null,
+      "duration": 294.0,
+      "view_count": 94,
+      "description": ""
+    },
+    {
+      "video_id": "0IskcBrNvdc",
+      "title": "Webster TV Interview",
+      "url": "https://www.youtube.com/watch?v=0IskcBrNvdc",
+      "channel": "Mike Connifey",
+      "channel_id": "UCTolllghnoSp5RvbykaROEA",
+      "upload_date": null,
+      "duration": 320.0,
+      "view_count": 14,
+      "description": ""
+    },
+    {
+      "video_id": "AHHJ83TFeuE",
+      "title": "Congressman Daniel Webster on CNN",
+      "url": "https://www.youtube.com/watch?v=AHHJ83TFeuE",
+      "channel": "Daniel Webster for Congress",
+      "channel_id": "UCvaY5rdb6FMvR-SaG-Pge5w",
+      "upload_date": null,
+      "duration": 327.0,
+      "view_count": 523,
+      "description": ""
+    },
+    {
+      "video_id": "OWcZyPAbBJ8",
+      "title": "Today's Veteran: Congressman Daniel Webster",
+      "url": "https://www.youtube.com/watch?v=OWcZyPAbBJ8",
+      "channel": "Polk Government",
+      "channel_id": "UC288cyeF-MUbVY0RMSVYF4g",
+      "upload_date": null,
+      "duration": 1551.0,
+      "view_count": 149,
+      "description": ""
+    },
+    {
+      "video_id": "JPZSAJpHMG8",
+      "title": "Daniel Webster Interview",
+      "url": "https://www.youtube.com/watch?v=JPZSAJpHMG8",
+      "channel": "Emily Cichoski",
+      "channel_id": "UCaysIAQUpWeA3CrPj8ic5dA",
+      "upload_date": null,
+      "duration": 524.0,
+      "view_count": 11,
+      "description": ""
+    },
+    {
+      "video_id": "RQhMjPdAaYY",
+      "title": "Interview with Daniel Webster",
+      "url": "https://www.youtube.com/watch?v=RQhMjPdAaYY",
+      "channel": "SpeakoutTV",
+      "channel_id": "UC3n3rPgjmRFmWc9CH4Mbbew",
+      "upload_date": null,
+      "duration": 1799.0,
+      "view_count": 32,
+      "description": ""
+    },
+    {
+      "video_id": "wCtk3-BhM0w",
+      "title": "Amplify Baltimore Episode 12: Violence Prevention-Full Dr. Daniel Webster Interview",
+      "url": "https://www.youtube.com/watch?v=wCtk3-BhM0w",
+      "channel": "Amplify Baltimore",
+      "channel_id": "UCgZKrx1s5DGgbCyCAclC5Rw",
+      "upload_date": null,
+      "duration": 699.0,
+      "view_count": 141,
+      "description": ""
+    },
+    {
+      "video_id": "upP8lVfXGsw",
+      "title": "Newsmax interview with Congressman Daniel Webster",
+      "url": "https://www.youtube.com/watch?v=upP8lVfXGsw",
+      "channel": "Daniel Webster for Congress",
+      "channel_id": "UCvaY5rdb6FMvR-SaG-Pge5w",
+      "upload_date": null,
+      "duration": 268.0,
+      "view_count": 91,
+      "description": ""
+    },
+    {
+      "video_id": "yzCM7ewYR8s",
+      "title": "Great Speeches: Daniel Webster's Plymouth Oration",
+      "url": "https://www.youtube.com/watch?v=yzCM7ewYR8s",
+      "channel": "LearnOutLoud",
+      "channel_id": "UCMHnERucFEQNDb-BrWhmTCA",
+      "upload_date": null,
+      "duration": 1044.0,
+      "view_count": 16500,
+      "description": ""
+    },
+    {
+      "video_id": "EdVVXIencdA",
+      "title": "Newsmax Prime | Rep. Daniel Webster on why he wants to replace John Boehner as Speaker of the House",
+      "url": "https://www.youtube.com/watch?v=EdVVXIencdA",
+      "channel": "Newsmax",
+      "channel_id": "UCx6h-dWzJ5NpAlja1YsApdg",
+      "upload_date": null,
+      "duration": 268.0,
+      "view_count": 225,
+      "description": ""
+    },
+    {
+      "video_id": "bprRSO8xo3g",
+      "title": "Hearing today on releasing videos showing shooting of officer Webster",
+      "url": "https://www.youtube.com/watch?v=bprRSO8xo3g",
+      "channel": "KOAT",
+      "channel_id": "UC41xJSNY2xCPC4-gOsRcDcg",
+      "upload_date": null,
+      "duration": 82.0,
+      "view_count": 137,
+      "description": ""
+    },
+    {
+      "video_id": "pVfUAXG7ErQ",
+      "title": "Rep. Daniel Webster\u2019s Opening Remarks From Hearing on FEMA Priorities",
+      "url": "https://www.youtube.com/watch?v=pVfUAXG7ErQ",
+      "channel": "Rep. Daniel Webster",
+      "channel_id": "UCCoX4VdU7U11eGEA0lbRtLw",
+      "upload_date": null,
+      "duration": 119.0,
+      "view_count": 155,
+      "description": ""
+    },
+    {
+      "video_id": "a71kgHIBqQw",
+      "title": "Rep. Daniel Webster's Opening Statement at Emergency Management Subcommittee Hearing",
+      "url": "https://www.youtube.com/watch?v=a71kgHIBqQw",
+      "channel": "Rep. Daniel Webster",
+      "channel_id": "UCCoX4VdU7U11eGEA0lbRtLw",
+      "upload_date": null,
+      "duration": 116.0,
+      "view_count": 183,
+      "description": ""
+    },
+    {
+      "video_id": "yMjta69LawA",
+      "title": "RM Daniel Webster's Opening Statement at 11-2-2021 Public Buildings Subcommittee Hearing",
+      "url": "https://www.youtube.com/watch?v=yMjta69LawA",
+      "channel": "T&I Committee Republicans",
+      "channel_id": "UCP4BbluxW-H6i0VreCszbFA",
+      "upload_date": null,
+      "duration": 172.0,
+      "view_count": 21,
+      "description": ""
+    },
+    {
+      "video_id": "GRcwzoyxyeQ",
+      "title": "DANIEL WEBSTER- WHEN I WAS SPEAKER IN FL",
+      "url": "https://www.youtube.com/watch?v=GRcwzoyxyeQ",
+      "channel": "CNN",
+      "channel_id": "UCupvZG-5ko_eiXAupbDfxWw",
+      "upload_date": null,
+      "duration": 30.0,
+      "view_count": 348,
+      "description": ""
+    },
+    {
+      "video_id": "G8EoSsyqkqQ",
+      "title": "7th March 1850: Daniel Webster makes his \"Seventh of March\" speech in favour of Compromise of 1850",
+      "url": "https://www.youtube.com/watch?v=G8EoSsyqkqQ",
+      "channel": "HistoryPod",
+      "channel_id": "UCQD8u6YFRiGwObqpqpq7JFA",
+      "upload_date": null,
+      "duration": 149.0,
+      "view_count": 1978,
+      "description": ""
+    },
+    {
+      "video_id": "bXfU2AaJDEQ",
+      "title": "devil and daniel webster - speech about soul and freedom.",
+      "url": "https://www.youtube.com/watch?v=bXfU2AaJDEQ",
+      "channel": "meir0n",
+      "channel_id": "UCe3bskZ6nznXMLyfRoNCImA",
+      "upload_date": null,
+      "duration": 367.0,
+      "view_count": 62295,
+      "description": ""
+    },
+    {
+      "video_id": "ggv0MO3u0Eg",
+      "title": "Daniel Webster\u2019s \"Liberty and Union\" speech from January 1830",
+      "url": "https://www.youtube.com/watch?v=ggv0MO3u0Eg",
+      "channel": "Famous Speeches of History",
+      "channel_id": "UCAlYMuCWc1lrHvw0nvLk84Q",
+      "upload_date": null,
+      "duration": 367.0,
+      "view_count": 57,
+      "description": ""
+    },
+    {
+      "video_id": "OkcSzz5ePYY",
+      "title": "Daniel Webster's final stump speech: \"You could pray.\"",
+      "url": "https://www.youtube.com/watch?v=OkcSzz5ePYY",
+      "channel": "The Franklin Center",
+      "channel_id": "UCrz516XcbLZXwf4ZYIRZpGg",
+      "upload_date": null,
+      "duration": 95.0,
+      "view_count": 3102,
+      "description": ""
+    },
+    {
+      "video_id": "CKWU5fsJMrA",
+      "title": "Dedicating the new marker at the site of Daniel Webster's last speech",
+      "url": "https://www.youtube.com/watch?v=CKWU5fsJMrA",
+      "channel": "WICKED LOCAL South - Marshfield",
+      "channel_id": "UC4DukFFYYGVx-EJxxXTv9gg",
+      "upload_date": null,
+      "duration": 169.0,
+      "view_count": 61,
+      "description": ""
+    }
+  ]
+}

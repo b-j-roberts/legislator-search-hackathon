@@ -1,0 +1,40 @@
+{
+  "bioguide_id": "F000471",
+  "name": "Scott Fitzgerald",
+  "total_found": 2,
+  "items_fetched": 2,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "FBC_20260105_110000_Mornings_With_Maria_Bartiromo",
+      "title": "Mornings With Maria Bartiromo : FBC : January 5, 2026 6:00am-7:01am EST",
+      "date": "2026-01-05",
+      "snippet": "joining me is wisconsin congressman scott fitzgerald., thanks for joining us this morning on your first day back here. your reaction to all that has occurred? >> yeah, listen, maria, i think the moree analysis and the morei hear those that have legitimate opinion about what happened and if you just take kind of what secretary hegseth said kind of at face value, this is strictly a law enforcement type of operation with support from the u.s. military. they can debate all they want the monroe doctrine, which i would say i think one of the things that's been missing in the discussion is that president roosevelt revisited this, teddy roosevelt, and made it very clear that this is about each hemisphere as well globally and our ability to make sure that countries that are located in our backyard are not a threat to the states and that's why i think they can debate this all day in the u.s. senate which they're known for but at the end of the day it was a law enforcement action. maria: it's really interesting to see the priorities of the democrat",
+      "network": "FBC",
+      "collection": "TV-FBC",
+      "start_time": "1733",
+      "end_time": "",
+      "video_url": "https://archive.org/download/FBC_20260105_110000_Mornings_With_Maria_Bartiromo/FBC_20260105_110000_Mornings_With_Maria_Bartiromo.mp4?t=1733/1793&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/FBC_20260105_110000_Mornings_With_Maria_Bartiromo/FBC_20260105_110000_Mornings_With_Maria_Bartiromo.thumbs/FBC_20260105_110000_Mornings_With_Maria_Bartiromo_001708.jpg",
+      "archive_url": "https://archive.org/details/FBC_20260105_110000_Mornings_With_Maria_Bartiromo",
+      "embed_url": "https://archive.org/embed/FBC_20260105_110000_Mornings_With_Maria_Bartiromo"
+    },
+    {
+      "identifier": "KNTV_20260110_083700_Late_Night_With_Seth_Meyers",
+      "title": "Late Night With Seth Meyers : KNTV : January 10, 2026 12:37am-1:37am PST",
+      "date": "2026-01-10",
+      "snippet": "scott fitzgerald. [ laughter ] okay. >> seth: all right, this one is with an italian accent. >> for met. \"vente cortata cappuccino pesto nespresso espresso for ernesto. >> seth: that was your best one yet. >> why was that good? >> seth: you have to start doing more stuff in an italian accent. >> i got to do that more. no. [ laughter ] >> seth: you want me do it? all right, here we. ready? and go. one iced matcha for the basic bitch. [ laughter ] >> you're not allowed to call women bitches. >> seth: i know, it's fine though. >> that's honestly because i said you were a seven. now it's on. >> seth: it's on? >> now it's on. >> seth: i'm sorry, you haven't turned it on yet? you seven'd me? >> i thought seven was sort of giving. i thought seven was there's room to grow. i don't know, like i thought seven was more than five. >> seth: you think 51-year-olds grow? >> yes. you think your life is over? >> seth: oh, my god. this is like -- i feel like i just met a ghost on christmas. [ laughter ] >> future, past, present. probably present. [ laughter ] >> seth: you're like, i'm from the future. y",
+      "network": "KNTV",
+      "collection": "TV-KNTV",
+      "start_time": "850",
+      "end_time": "",
+      "video_url": "https://archive.org/download/KNTV_20260110_083700_Late_Night_With_Seth_Meyers/KNTV_20260110_083700_Late_Night_With_Seth_Meyers.mp4?t=850/910&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/KNTV_20260110_083700_Late_Night_With_Seth_Meyers/KNTV_20260110_083700_Late_Night_With_Seth_Meyers.thumbs/KNTV_20260110_083700_Late_Night_With_Seth_Meyers_000839.jpg",
+      "archive_url": "https://archive.org/details/KNTV_20260110_083700_Late_Night_With_Seth_Meyers",
+      "embed_url": "https://archive.org/embed/KNTV_20260110_083700_Late_Night_With_Seth_Meyers"
+    }
+  ]
+}

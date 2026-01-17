@@ -1,0 +1,26 @@
+{
+  "bioguide_id": "D000197",
+  "name": "Diana DeGette",
+  "total_found": 1,
+  "items_fetched": 1,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "FOXNEWSW_20260103_150000_Saturday_in_America",
+      "title": "Saturday in America : FOXNEWSW : January 3, 2026 7:00am-8:01am PST",
+      "date": "2026-01-03",
+      "snippet": "diana degette from colorado called this a rogue activity from this administration, said that republicansad abdicated their responsibility. jeanne shaheen, the democrat from new hampshire, she's the top democrat on the senate foreign regulars committee, and she said -- relations committee, and she said in these briefings they had about the military activity in the caribbean just before christmas, that the administration repeatly denied any intention -- repeatedly denied any intention of conducting regime change. she says we have no understanding of what comes next. and her word here, she says they misled the congress. now, from some more on the left, far to the right -- excuse me, far to the left of jeanne shaheen to, you have greg ca czar, the chairman of the progressive caucus, and he says i thought we were told no new wars. and alexandria ocasio-cortez, the democrat from new york city, she says that this is the about oil and regime change. now, as you say, republicans have mostly been supportive here. we've had a statement here from mike johnson, the speaker of the house, that has allu",
+      "network": "FOXNEWSW",
+      "collection": "TV-FOXNEWSW",
+      "start_time": "1942",
+      "end_time": "",
+      "video_url": "https://archive.org/download/FOXNEWSW_20260103_150000_Saturday_in_America/FOXNEWSW_20260103_150000_Saturday_in_America.mp4?t=1942/2002&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/FOXNEWSW_20260103_150000_Saturday_in_America/FOXNEWSW_20260103_150000_Saturday_in_America.thumbs/FOXNEWSW_20260103_150000_Saturday_in_America_001919.jpg",
+      "archive_url": "https://archive.org/details/FOXNEWSW_20260103_150000_Saturday_in_America",
+      "embed_url": "https://archive.org/embed/FOXNEWSW_20260103_150000_Saturday_in_America"
+    }
+  ]
+}

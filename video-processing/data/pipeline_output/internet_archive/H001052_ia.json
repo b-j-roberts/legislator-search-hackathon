@@ -1,0 +1,26 @@
+{
+  "bioguide_id": "H001052",
+  "name": "Andy Harris",
+  "total_found": 1,
+  "items_fetched": 1,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "CSPAN_20260109_115900_Washington_Journal_01092026",
+      "title": "Washington Journal 01/09/2026 : CSPAN : January 9, 2026 6:59am-9:00am EST",
+      "date": "2026-01-09",
+      "snippet": "host: a brief statement from andy harris saying he does not see compromise on the hyde amendment.m the hill newspaper, \"why the long-standing hyde amendment another some laws prevent federal funds from being used to cover abortions do not prohibit aca marketplace plans from covering abortions so as long as they are funded by state or private dollars some states allow or require aca marketplace plans to include abortion coverage. the abortion issue and a republican desire for expanded hyde amendment protections have been a major impediment to getting a deal to extend order form the obama care subsidies in's democrats do not want to impose do abortion restrictions and argue current law sufficiently prevents federal funds from going directly to abortion services.\" that is the latest on negotiations on capitol hill on the affordable care act subsidies. this morning your thoughts on republican defections on war powers and aca subsidies. bill and buffalo, new york, independent. your turn. caller: i have one thing there is a question or comment. i was listening to the vice president talk",
+      "network": "CSPAN",
+      "collection": "TV-CSPAN",
+      "start_time": "2246",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CSPAN_20260109_115900_Washington_Journal_01092026/CSPAN_20260109_115900_Washington_Journal_01092026.mp4?t=2246/2306&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CSPAN_20260109_115900_Washington_Journal_01092026/CSPAN_20260109_115900_Washington_Journal_01092026.thumbs/CSPAN_20260109_115900_Washington_Journal_01092026_002217.jpg",
+      "archive_url": "https://archive.org/details/CSPAN_20260109_115900_Washington_Journal_01092026",
+      "embed_url": "https://archive.org/embed/CSPAN_20260109_115900_Washington_Journal_01092026"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "bioguide_id": "V000130",
+  "name": "Juan Vargas",
+  "total_found": 2,
+  "items_fetched": 2,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "KSTS_20260117_020000_Noticiero_Telemundo_48",
+      "title": "Noticiero Telemundo 48 : KSTS : January 16, 2026 6:00pm-6:30pm PST",
+      "date": "2026-01-17",
+      "snippet": "la polic\u00eda de san pablo confirm\u00f3 la detenci\u00f3n en m\u00e9xico y posterior extradici\u00f3n de juan vargas, de 26e estar\u00eda relacionado con pandillas. por ahora, vargas permanece detenido sin derecho a fianza. al regresar, el gobernador de california anuncia m\u00e1s de 400 millones de d\u00f3lares en fondos para combatir la falta de vivienda. he podido utilizar esta plataforma para tratar de hacer un bien en nuestra comunidad. somos latinos. le presentamos la historia de un residente de hayward que apoya en las redes sociales para brindar asesor\u00eda econ\u00f3mica a nuestra comunidad con\u00f3zcalo en cuanto a las condiciones del tiempo. tardes con temperaturas hasta los 70 grados, contin\u00faa la mala calidad del aire aqu\u00ed en el \u00e1rea de la bah\u00eda. perou\u00e9a q v ya estamos de vuelta. y ahora le contamos que el gobernrnador de california anunci\u00f3 nuevos fondos para combatir la falta de vivienda en el \u00e1rea de la bah\u00eda. aseguraron en esta reuni\u00f3n en san francisco que la ciudad reporta avances con 600 nuevas camas, una reducci\u00f3n del 44% en campamentos y la llegada de 419 millones de d\u00f3lares para programas estatales de vivienda, a",
+      "network": "KSTS",
+      "collection": "TV-KSTS",
+      "start_time": "701",
+      "end_time": "",
+      "video_url": "https://archive.org/download/KSTS_20260117_020000_Noticiero_Telemundo_48/KSTS_20260117_020000_Noticiero_Telemundo_48.mp4?t=701/761&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/KSTS_20260117_020000_Noticiero_Telemundo_48/KSTS_20260117_020000_Noticiero_Telemundo_48.thumbs/KSTS_20260117_020000_Noticiero_Telemundo_48_000688.jpg",
+      "archive_url": "https://archive.org/details/KSTS_20260117_020000_Noticiero_Telemundo_48",
+      "embed_url": "https://archive.org/embed/KSTS_20260117_020000_Noticiero_Telemundo_48"
+    },
+    {
+      "identifier": "KSTS_20260117_070000_Noticiero_Telemundo_48",
+      "title": "Noticiero Telemundo 48 : KSTS : January 16, 2026 11:00pm-11:35pm PST",
+      "date": "2026-01-17",
+      "snippet": "pablo, capt\u00f3 el momento cuando el ahora acusado de homicidio identificado por las autoridades como juan vargasesta licorer\u00eda ubicada sobre la cuadra 2000 y la calle 23 en san pablo. aqu\u00ed se ve a la v\u00edctima salir de la licorer\u00eda y que fue identificada como emmanuel rodr\u00edguez flores, de 26 a\u00f1os. la c\u00e1mara capta el momento cuando vargas saca lo que parece ser una pistola y le dispara varias veces a manuel, al punto de que la v\u00edctima cae al piso. luego se ve al sospechoso huir. despu\u00e9s de casi un a\u00f1o de estar pr\u00f3fugo de las autoridades, el 11 de enero, la polic\u00eda de san pablo recibi\u00f3 la noticia de que vargas hab\u00eda sido localizado y detenido en m\u00e9xico. muchos negociantes no quisieron hablar con nosotros por temor a represalias, ya que, aseguran vargas es conocido en el sector. pero si hablamos con una mujer que frecuenta esta plaza, prefiri\u00f3 no ser identificada. me dice no sab\u00eda de lo ocurrido. le preocupa que algo as\u00ed haya ocurrido aqu\u00ed? s\u00ed, porque yo vengo con mi ni\u00f1o, con mi esposo. cualquier cosa puede pasar. 1 viene a comer, agarrar algo y nos puede pasar cualquier cosa. y nosotros sin deberla",
+      "network": "KSTS",
+      "collection": "TV-KSTS",
+      "start_time": "144",
+      "end_time": "",
+      "video_url": "https://archive.org/download/KSTS_20260117_070000_Noticiero_Telemundo_48/KSTS_20260117_070000_Noticiero_Telemundo_48.mp4?t=144/204&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/KSTS_20260117_070000_Noticiero_Telemundo_48/KSTS_20260117_070000_Noticiero_Telemundo_48.thumbs/KSTS_20260117_070000_Noticiero_Telemundo_48_000118.jpg",
+      "archive_url": "https://archive.org/details/KSTS_20260117_070000_Noticiero_Telemundo_48",
+      "embed_url": "https://archive.org/embed/KSTS_20260117_070000_Noticiero_Telemundo_48"
+    }
+  ]
+}

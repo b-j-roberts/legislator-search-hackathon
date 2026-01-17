@@ -1,0 +1,40 @@
+{
+  "bioguide_id": "S001211",
+  "name": "Greg Stanton",
+  "total_found": 2,
+  "items_fetched": 2,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "BBCNEWS_20260103_230000_BBC_News",
+      "title": "BBC News : BBCNEWS : January 3, 2026 11:00pm-11:30pm GMT",
+      "date": "2026-01-03",
+      "snippet": "i'm joined joined now live by democratic congressman congressman greg stanton of arizona. arizona. also on the house foreign foreign affairs committee. congressman, congressman, thanks indeed for joining joining us here on bbc news. quite quite the event for the us to wake wake up to this morning. what is is your reaction to what we're learning? learning? two things. first, the the incredible admiration that i i and all americans have for the the us military. what an amazing amazing operation apparently done done flawlessly without a single single injury or damage to american american property. so our hats off <font color=\"#ff",
+      "network": "BBCNEWS",
+      "collection": "TV-BBCNEWS",
+      "start_time": "271",
+      "end_time": "",
+      "video_url": "https://archive.org/download/BBCNEWS_20260103_230000_BBC_News/BBCNEWS_20260103_230000_BBC_News.mp4?t=271/331&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/BBCNEWS_20260103_230000_BBC_News/BBCNEWS_20260103_230000_BBC_News.thumbs/BBCNEWS_20260103_230000_BBC_News_000268.jpg",
+      "archive_url": "https://archive.org/details/BBCNEWS_20260103_230000_BBC_News",
+      "embed_url": "https://archive.org/embed/BBCNEWS_20260103_230000_BBC_News"
+    },
+    {
+      "identifier": "MSNOW_20260104_180000_Alex_Witt_Reports",
+      "title": "Alex Witt Reports : MSNOW : January 4, 2026 10:00am-1:01pm PST",
+      "date": "2026-01-04",
+      "snippet": "well, joining me right now we have arizona congressman greg stanton. he serves on foreign affairs and transportation and infrastructure committees. congressman, welcome to you, sir. so the administration is characterizing this as a law enforcement operation against drug traffickers, whom it claims are supported by maduro. but the operation involved large scale strikes inside a sovereign nation and the arrest of its leader without informing congress. is this an unconstitutional act of war, and what can congress do to block further military action without its approval? >> it's absolutely unconstitutional. the president has been taking action against venezuela for months now. under federal law and our constitution, acts of war have to be approved by the united states congress. so this is completely illegal. but just think about the context. this is the president who ran in 2016 against the bush family and neo con activity in iraq, saying we invaded without a plan. and guess what? it's now 2026 and this president has taken this action against venezuela and",
+      "network": "MSNOW",
+      "collection": "TV-MSNOW",
+      "start_time": "628",
+      "end_time": "",
+      "video_url": "https://archive.org/download/MSNOW_20260104_180000_Alex_Witt_Reports/MSNOW_20260104_180000_Alex_Witt_Reports.mp4?t=628/688&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/MSNOW_20260104_180000_Alex_Witt_Reports/MSNOW_20260104_180000_Alex_Witt_Reports.thumbs/MSNOW_20260104_180000_Alex_Witt_Reports_000627.jpg",
+      "archive_url": "https://archive.org/details/MSNOW_20260104_180000_Alex_Witt_Reports",
+      "embed_url": "https://archive.org/embed/MSNOW_20260104_180000_Alex_Witt_Reports"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "bioguide_id": "B001295",
+  "name": "Mike Bost",
+  "total_found": 1,
+  "items_fetched": 1,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "CSPAN3_20260115_222900_The_Courts_Supreme_Court_Hears_Case_on_Lawsuit_Against_Illinois_Mail-In...",
+      "title": "The Courts Supreme Court Hears Case on Lawsuit Against Illinois Mail-In Ballot Law : CSPAN3 : January 15, 2026 5:29pm-7:17pm EST",
+      "date": "2026-01-15",
+      "snippet": "supreme court ruled illinois republican congressman mike bost can proceed in suing the state over its law that allows mail in ballots to be counted after election day. the lower courts previously ruled the representative lacked standing to sue, however chief justice john roberts, the author of the majority opinion, ruled candidates were entitled to \"a fair process.\" justices barrett and kagan conferred and justice sotomayor dissented. here is the argument in the case. it >> mr. chief justice and made it please the court, illinois received mail-in ballots up to two weeks before the election. petitioners contend under controlling federal law, that is two weeks too long. as a result, if the petitioner's merit credited which it must be for evaluating standing, then illinois is counting unlawful ballots. those could cost congressman bosc the election or reduce the margin of victory. and he has to campaign for two extra weeks. all of that means congressman bost has standing three times over. >> especially those that address which ballots are going to be counted and when. at a bare minimum, ",
+      "network": "CSPAN3",
+      "collection": "TV-CSPAN3",
+      "start_time": "52",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CSPAN3_20260115_222900_The_Courts_Supreme_Court_Hears_Case_on_Lawsuit_Against_Illinois_Mail-In.../CSPAN3_20260115_222900_The_Courts_Supreme_Court_Hears_Case_on_Lawsuit_Against_Illinois_Mail-In....mp4?t=52/112&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CSPAN3_20260115_222900_The_Courts_Supreme_Court_Hears_Case_on_Lawsuit_Against_Illinois_Mail-In.../CSPAN3_20260115_222900_The_Courts_Supreme_Court_Hears_Case_on_Lawsuit_Against_Illinois_Mail-In....thumbs/CSPAN3_20260115_222900_The_Courts_Supreme_Court_Hears_Case_on_Lawsuit_Against_Illinois_Mail-In..._000058.jpg",
+      "archive_url": "https://archive.org/details/CSPAN3_20260115_222900_The_Courts_Supreme_Court_Hears_Case_on_Lawsuit_Against_Illinois_Mail-In...",
+      "embed_url": "https://archive.org/embed/CSPAN3_20260115_222900_The_Courts_Supreme_Court_Hears_Case_on_Lawsuit_Against_Illinois_Mail-In..."
+    }
+  ]
+}

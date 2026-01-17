@@ -1,0 +1,26 @@
+{
+  "bioguide_id": "C001131",
+  "name": "Greg Casar",
+  "total_found": 1,
+  "items_fetched": 1,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "MSNOW_20260117_030000_The_Last_Word_With_Lawrence_ODonnell",
+      "title": "The Last Word With Lawrence O'Donnell : MSNOW : January 16, 2026 7:00pm-8:00pm PST",
+      "date": "2026-01-17",
+      "snippet": "joining us now is the democratic congressman, greg casar of texas.essional progressive caucus. he's also a member of the house oversight and education and workforce committees. congressman, good to see you. thank you for being with us. >> thanks so much for covering this really important story. >> i'm fascinated because this government doesn't ever apologize for anything. they usually double down. someone has said that they made a mistake. there was a systems error. but you still in honduras. you're still not back in the united states of america. and, you know, prior examples in the last year have led me to believe that this administration can can slow walk things. >> well, look, the trump administration has kind of lost the benefit of the doubt on this one. they deported annie, a college student. she grew up here in my district working class, got into one of the top business schools in the country. her only crime was trying to surprise her family for thanksgiving. she was deported. we said it was illegal to deport her, and the trump administration d",
+      "network": "MSNOW",
+      "collection": "TV-MSNOW",
+      "start_time": "1649",
+      "end_time": "",
+      "video_url": "https://archive.org/download/MSNOW_20260117_030000_The_Last_Word_With_Lawrence_ODonnell/MSNOW_20260117_030000_The_Last_Word_With_Lawrence_ODonnell.mp4?t=1649/1709&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/MSNOW_20260117_030000_The_Last_Word_With_Lawrence_ODonnell/MSNOW_20260117_030000_The_Last_Word_With_Lawrence_ODonnell.thumbs/MSNOW_20260117_030000_The_Last_Word_With_Lawrence_ODonnell_001648.jpg",
+      "archive_url": "https://archive.org/details/MSNOW_20260117_030000_The_Last_Word_With_Lawrence_ODonnell",
+      "embed_url": "https://archive.org/embed/MSNOW_20260117_030000_The_Last_Word_With_Lawrence_ODonnell"
+    }
+  ]
+}

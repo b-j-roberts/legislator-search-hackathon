@@ -1,0 +1,100 @@
+{
+  "bioguide_id": "S001148",
+  "name": "Michael K. Simpson",
+  "total_found": 24,
+  "filtered_count": 8,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "57mrVoozyyU",
+      "title": "Dr. Michael K. Simpson interview with Spacebit Founder about New Space",
+      "url": "https://www.youtube.com/watch?v=57mrVoozyyU",
+      "channel": "Spacebit Company",
+      "channel_id": "UCA6QCG7U9OENkaKZqVEI6Ow",
+      "upload_date": null,
+      "duration": 1339.0,
+      "view_count": 1380,
+      "description": ""
+    },
+    {
+      "video_id": "-ZljKrlydnc",
+      "title": "Enabling Space Faring Nations to Work Together as a Team: Panel Discussion at Global Space Congress",
+      "url": "https://www.youtube.com/watch?v=-ZljKrlydnc",
+      "channel": "Global Space Congress",
+      "channel_id": "UCoy9VVusAA5uO3KtrKWF2Iw",
+      "upload_date": null,
+      "duration": 2033.0,
+      "view_count": 215,
+      "description": ""
+    },
+    {
+      "video_id": "4MOKi6RbHpA",
+      "title": "SHSSP-14 Interview with Dr. Michael Simpson - Secure World Foundation Executive Director (part 1)",
+      "url": "https://www.youtube.com/watch?v=4MOKi6RbHpA",
+      "channel": "ISU SHSSP",
+      "channel_id": "UCMCTS-u8LuXZYUB8mhDmdkw",
+      "upload_date": null,
+      "duration": 230.0,
+      "view_count": 69,
+      "description": ""
+    },
+    {
+      "video_id": "2qeMNQJqEN0",
+      "title": "Spacebit Interview with PT Scientists",
+      "url": "https://www.youtube.com/watch?v=2qeMNQJqEN0",
+      "channel": "Spacebit Company",
+      "channel_id": "UCA6QCG7U9OENkaKZqVEI6Ow",
+      "upload_date": null,
+      "duration": 831.0,
+      "view_count": 627,
+      "description": ""
+    },
+    {
+      "video_id": "o90a9nYzzDo",
+      "title": "135 GOP Reps Supported Red Flags. Was YOUR Congress Critter One Of Them?",
+      "url": "https://www.youtube.com/watch?v=o90a9nYzzDo",
+      "channel": "ARFCOM News",
+      "channel_id": "UCbiiqvaU4DuhAn33LqCz0qA",
+      "upload_date": null,
+      "duration": 661.0,
+      "view_count": 10090,
+      "description": ""
+    },
+    {
+      "video_id": "25yE2cbXS-U",
+      "title": "Interview with Spacebit founder, Pavlo Tanasyuk",
+      "url": "https://www.youtube.com/watch?v=25yE2cbXS-U",
+      "channel": "The Cryptonomist",
+      "channel_id": "UC1c3005U60gq2DQAbsT1vcg",
+      "upload_date": null,
+      "duration": 1469.0,
+      "view_count": 2962,
+      "description": ""
+    },
+    {
+      "video_id": "73JoFLHxC0M",
+      "title": "7.11.2018 Full Committee Markup 10:15 AM",
+      "url": "https://www.youtube.com/watch?v=73JoFLHxC0M",
+      "channel": "House Committee on Natural Resources GOP",
+      "channel_id": "UCY08wEbJ8fztRofQ9eZs0-g",
+      "upload_date": null,
+      "duration": 1753.0,
+      "view_count": 197,
+      "description": ""
+    },
+    {
+      "video_id": "Vb7SKbXVIFM",
+      "title": "Space Generation Congress Opening and Spotlight Speaker for the Society Working Group",
+      "url": "https://www.youtube.com/watch?v=Vb7SKbXVIFM",
+      "channel": "spacegeneration",
+      "channel_id": "UCwLXLtDMTvuwvR-EWQzuF1A",
+      "upload_date": null,
+      "duration": 1983.0,
+      "view_count": 264,
+      "description": ""
+    }
+  ]
+}
