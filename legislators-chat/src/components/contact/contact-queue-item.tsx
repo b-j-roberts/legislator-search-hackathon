@@ -7,17 +7,23 @@ import { motion } from "framer-motion";
 import { GripVertical, Phone, Mail, SkipForward, X, Check, MapPin } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import type { Legislator, Party } from "@/lib/types";
+import type { Legislator, Party, ContactMethod } from "@/lib/types";
 import type { ContactStatus } from "@/hooks/use-contact";
+import { getContactAvailability } from "@/lib/queue-storage";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { ContactMethodSelector, ContactMethodBadge } from "./contact-method-selector";
 
 export interface ContactQueueItemProps {
   legislator: Legislator;
   status: ContactStatus;
   index: number;
+  /** Current contact method for this legislator */
+  contactMethod?: ContactMethod;
+  /** Called when contact method changes */
+  onContactMethodChange?: (method: ContactMethod) => void;
   onSkip?: () => void;
   onRemove?: () => void;
   onSetActive?: () => void;
@@ -62,6 +68,8 @@ export function ContactQueueItem({
   legislator,
   status,
   index,
+  contactMethod = "email",
+  onContactMethodChange,
   onSkip,
   onRemove,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -81,6 +89,16 @@ export function ContactQueueItem({
   const location = district ? `${state}-${district}` : state;
   const isActive = status === "active";
   const isContacted = status === "contacted";
+
+  // Get contact availability for this legislator
+  const availability = getContactAvailability(legislator);
+  const { hasPhone, hasEmail, hasBoth } = availability;
+
+  // Handle method toggle for badge click
+  const handleMethodToggle = () => {
+    if (!hasBoth || !onContactMethodChange) return;
+    onContactMethodChange(contactMethod === "call" ? "email" : "call");
+  };
 
   return (
     <div ref={setNodeRef} style={style} className={cn("touch-none", isDragging && "z-50")}>
@@ -161,36 +179,59 @@ export function ContactQueueItem({
               {statusConfig[status].label}
             </Badge>
 
+            {/* Contact method badge - mobile compact view */}
+            {!isContacted && (
+              <div className="sm:hidden">
+                <ContactMethodBadge
+                  method={contactMethod}
+                  hasPhone={hasPhone}
+                  hasEmail={hasEmail}
+                  onToggle={hasBoth ? handleMethodToggle : undefined}
+                />
+              </div>
+            )}
+
             {/* Actions */}
-            <div className="flex items-center gap-1 flex-shrink-0">
-              {/* Contact buttons - only show for active/pending */}
+            <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+              {/* Contact method selector - desktop */}
+              {!isContacted && hasBoth && onContactMethodChange && (
+                <div className="hidden sm:block">
+                  <ContactMethodSelector
+                    value={contactMethod}
+                    onChange={onContactMethodChange}
+                    hasPhone={hasPhone}
+                    hasEmail={hasEmail}
+                    size="sm"
+                  />
+                </div>
+              )}
+
+              {/* Primary contact button based on selected method */}
               {!isContacted && (
-                <>
-                  {contact.phone && (
-                    <Button
-                      variant={isActive ? "default" : "outline"}
-                      size="icon-sm"
-                      asChild
-                      className="hidden sm:inline-flex"
-                    >
-                      <a href={`tel:${contact.phone}`} aria-label={`Call ${name}`}>
-                        <Phone className="size-3.5" />
-                      </a>
-                    </Button>
+                <Button
+                  variant={isActive ? "default" : "outline"}
+                  size="icon-sm"
+                  asChild
+                  className="hidden sm:inline-flex"
+                >
+                  {contactMethod === "call" && hasPhone ? (
+                    <a href={`tel:${contact.phone}`} aria-label={`Call ${name}`}>
+                      <Phone className="size-3.5" />
+                    </a>
+                  ) : hasEmail ? (
+                    <a href={`mailto:${contact.email}`} aria-label={`Email ${name}`}>
+                      <Mail className="size-3.5" />
+                    </a>
+                  ) : hasPhone ? (
+                    <a href={`tel:${contact.phone}`} aria-label={`Call ${name}`}>
+                      <Phone className="size-3.5" />
+                    </a>
+                  ) : (
+                    <span className="opacity-50">
+                      <Mail className="size-3.5" />
+                    </span>
                   )}
-                  {contact.email && (
-                    <Button
-                      variant={isActive ? "default" : "outline"}
-                      size="icon-sm"
-                      asChild
-                      className="hidden sm:inline-flex"
-                    >
-                      <a href={`mailto:${contact.email}`} aria-label={`Email ${name}`}>
-                        <Mail className="size-3.5" />
-                      </a>
-                    </Button>
-                  )}
-                </>
+                </Button>
               )}
 
               {/* Skip button */}
@@ -228,22 +269,46 @@ export function ContactQueueItem({
               animate={{ opacity: 1, height: "auto" }}
               className="sm:hidden mt-3 pt-3 border-t border-border"
             >
+              {/* Contact method selector for mobile */}
+              {hasBoth && onContactMethodChange && (
+                <div className="flex justify-center mb-3">
+                  <ContactMethodSelector
+                    value={contactMethod}
+                    onChange={onContactMethodChange}
+                    hasPhone={hasPhone}
+                    hasEmail={hasEmail}
+                    size="default"
+                  />
+                </div>
+              )}
+
+              {/* Primary action button based on selected method */}
               <div className="flex gap-2">
-                {contact.phone && (
+                {contactMethod === "call" && hasPhone ? (
                   <Button variant="default" size="sm" asChild className="flex-1 gap-1.5">
                     <a href={`tel:${contact.phone}`}>
                       <Phone className="size-3.5" />
-                      Call
+                      Call {name.split(" ")[0]}
                     </a>
                   </Button>
-                )}
-                {contact.email && (
+                ) : hasEmail ? (
                   <Button variant="default" size="sm" asChild className="flex-1 gap-1.5">
                     <a href={`mailto:${contact.email}`}>
                       <Mail className="size-3.5" />
-                      Email
+                      Email {name.split(" ")[0]}
                     </a>
                   </Button>
+                ) : hasPhone ? (
+                  <Button variant="default" size="sm" asChild className="flex-1 gap-1.5">
+                    <a href={`tel:${contact.phone}`}>
+                      <Phone className="size-3.5" />
+                      Call {name.split(" ")[0]}
+                    </a>
+                  </Button>
+                ) : (
+                  <p className="text-sm text-muted-foreground text-center flex-1">
+                    No contact methods available
+                  </p>
                 )}
               </div>
             </motion.div>

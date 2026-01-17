@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import type { Legislator } from "@/lib/types";
+import type { ContactMethod } from "@/lib/types";
 import {
   type QueueStorage,
   type QueueItem,
@@ -18,6 +19,10 @@ import {
   getContactedCount,
   getRemainingCount,
   isQueueComplete,
+  setContactMethod,
+  setDefaultContactMethod,
+  getEffectiveContactMethod,
+  getContactAvailability,
 } from "@/lib/queue-storage";
 
 // =============================================================================
@@ -28,7 +33,8 @@ import {
 export type ContactStep = "research" | "contact" | "complete";
 
 /** Re-export queue types for consumers */
-export type { QueueItem, ContactStatus };
+export type { QueueItem, ContactStatus, ContactMethod };
+export { getEffectiveContactMethod, getContactAvailability };
 
 interface ContactContextValue {
   /** Currently selected legislators */
@@ -83,6 +89,14 @@ interface ContactContextValue {
   isComplete: boolean;
   /** Get the currently active queue item */
   activeItem: QueueItem | null;
+
+  // Contact Method Management
+  /** Set the contact method for a specific legislator */
+  setLegislatorContactMethod: (legislatorId: string, method: ContactMethod) => void;
+  /** Set the default contact method (optionally apply to all pending) */
+  setDefaultMethod: (method: ContactMethod, applyToAll?: boolean) => void;
+  /** Get the current default contact method */
+  defaultContactMethod: ContactMethod;
 }
 
 type ContactAction =
@@ -318,12 +332,32 @@ export function ContactProvider({ children }: ContactProviderProps) {
     dispatch({ type: "SET_QUEUE", payload: null });
   }, []);
 
+  // Contact method management
+  const setLegislatorContactMethod = React.useCallback(
+    (legislatorId: string, method: ContactMethod) => {
+      if (!state.queue) return;
+      const newQueue = setContactMethod(state.queue, legislatorId, method);
+      dispatch({ type: "SET_QUEUE", payload: newQueue });
+    },
+    [state.queue]
+  );
+
+  const setDefaultMethod = React.useCallback(
+    (method: ContactMethod, applyToAll: boolean = false) => {
+      if (!state.queue) return;
+      const newQueue = setDefaultContactMethod(state.queue, method, applyToAll);
+      dispatch({ type: "SET_QUEUE", payload: newQueue });
+    },
+    [state.queue]
+  );
+
   // Derived queue values
   const contactedCount = state.queue ? getContactedCount(state.queue) : 0;
   const remainingCount = state.queue ? getRemainingCount(state.queue) : 0;
   const isComplete = state.queue ? isQueueComplete(state.queue) : false;
   const activeItem =
     state.queue && state.queue.activeIndex >= 0 ? state.queue.items[state.queue.activeIndex] : null;
+  const defaultContactMethod: ContactMethod = state.queue?.defaultContactMethod ?? "email";
 
   const value: ContactContextValue = {
     selectedLegislators: state.selectedLegislators,
@@ -352,6 +386,10 @@ export function ContactProvider({ children }: ContactProviderProps) {
     remainingCount,
     isComplete,
     activeItem,
+    // Contact method management
+    setLegislatorContactMethod,
+    setDefaultMethod,
+    defaultContactMethod,
   };
 
   return <ContactContext.Provider value={value}>{children}</ContactContext.Provider>;

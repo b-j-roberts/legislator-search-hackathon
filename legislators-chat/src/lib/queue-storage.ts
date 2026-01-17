@@ -6,7 +6,7 @@
  * currently active legislator.
  */
 
-import type { Legislator } from "./types";
+import type { Legislator, ContactMethod } from "./types";
 
 // =============================================================================
 // Types
@@ -21,6 +21,8 @@ export interface QueueItem {
   status: ContactStatus;
   contactedAt?: string;
   notes?: string;
+  /** Preferred contact method for this legislator */
+  contactMethod?: ContactMethod;
 }
 
 /** Storage format for the contact queue */
@@ -28,6 +30,8 @@ export interface QueueStorage {
   items: QueueItem[];
   activeIndex: number;
   researchContext: string | null;
+  /** User's default contact method preference */
+  defaultContactMethod: ContactMethod;
   version: number;
 }
 
@@ -105,15 +109,19 @@ export function clearQueue(): void {
  */
 export function createQueue(
   legislators: Legislator[],
-  researchContext: string | null = null
+  researchContext: string | null = null,
+  defaultContactMethod: ContactMethod = "email"
 ): QueueStorage {
   return {
     items: legislators.map((legislator, index) => ({
       legislator,
       status: index === 0 ? "active" : "pending",
+      // Default to email if no phone, otherwise use default preference
+      contactMethod: !legislator.contact.phone ? "email" : defaultContactMethod,
     })),
     activeIndex: legislators.length > 0 ? 0 : -1,
     researchContext,
+    defaultContactMethod,
     version: CURRENT_VERSION,
   };
 }
@@ -122,11 +130,21 @@ export function createQueue(
  * Migrate queue from older versions
  */
 function migrateQueue(queue: QueueStorage): QueueStorage {
-  // Future migrations can be handled here
-  return {
+  // Add defaultContactMethod if missing (from v1 to v2)
+  const migrated: QueueStorage = {
     ...queue,
+    defaultContactMethod: queue.defaultContactMethod ?? "email",
     version: CURRENT_VERSION,
   };
+
+  // Ensure all items have contactMethod set
+  migrated.items = migrated.items.map((item) => ({
+    ...item,
+    contactMethod:
+      item.contactMethod ?? (!item.legislator.contact.phone ? "email" : migrated.defaultContactMethod),
+  }));
+
+  return migrated;
 }
 
 // =============================================================================
@@ -325,4 +343,123 @@ export function getRemainingCount(queue: QueueStorage): number {
  */
 export function isQueueComplete(queue: QueueStorage): boolean {
   return queue.items.every((item) => item.status === "contacted");
+}
+
+// =============================================================================
+// Contact Method Functions
+// =============================================================================
+
+/**
+ * Set the contact method for a specific legislator in the queue
+ */
+export function setContactMethod(
+  queue: QueueStorage,
+  legislatorId: string,
+  method: ContactMethod
+): QueueStorage {
+  const itemIndex = queue.items.findIndex((item) => item.legislator.id === legislatorId);
+
+  if (itemIndex === -1) {
+    return queue;
+  }
+
+  const legislator = queue.items[itemIndex].legislator;
+
+  // If trying to set call but no phone, keep email
+  if (method === "call" && !legislator.contact.phone) {
+    return queue;
+  }
+
+  // If trying to set email but no email, keep call
+  if (method === "email" && !legislator.contact.email) {
+    return queue;
+  }
+
+  const newItems = [...queue.items];
+  newItems[itemIndex] = {
+    ...newItems[itemIndex],
+    contactMethod: method,
+  };
+
+  return {
+    ...queue,
+    items: newItems,
+  };
+}
+
+/**
+ * Set the default contact method and optionally apply to all pending items
+ */
+export function setDefaultContactMethod(
+  queue: QueueStorage,
+  method: ContactMethod,
+  applyToAll: boolean = false
+): QueueStorage {
+  const newQueue: QueueStorage = {
+    ...queue,
+    defaultContactMethod: method,
+  };
+
+  if (applyToAll) {
+    newQueue.items = queue.items.map((item) => {
+      // Only update pending/active items, not contacted ones
+      if (item.status === "contacted") {
+        return item;
+      }
+
+      // Respect availability - can't set call if no phone
+      if (method === "call" && !item.legislator.contact.phone) {
+        return item;
+      }
+      // Can't set email if no email
+      if (method === "email" && !item.legislator.contact.email) {
+        return item;
+      }
+
+      return {
+        ...item,
+        contactMethod: method,
+      };
+    });
+  }
+
+  return newQueue;
+}
+
+/**
+ * Get the effective contact method for a legislator (respecting availability)
+ */
+export function getEffectiveContactMethod(item: QueueItem): ContactMethod {
+  const { legislator, contactMethod } = item;
+  const preferred = contactMethod ?? "email";
+
+  // If preferred is call but no phone, fall back to email
+  if (preferred === "call" && !legislator.contact.phone) {
+    return "email";
+  }
+
+  // If preferred is email but no email, fall back to call
+  if (preferred === "email" && !legislator.contact.email) {
+    return "call";
+  }
+
+  return preferred;
+}
+
+/**
+ * Check what contact methods are available for a legislator
+ */
+export function getContactAvailability(legislator: Legislator): {
+  hasPhone: boolean;
+  hasEmail: boolean;
+  hasBoth: boolean;
+} {
+  const hasPhone = Boolean(legislator.contact.phone);
+  const hasEmail = Boolean(legislator.contact.email);
+
+  return {
+    hasPhone,
+    hasEmail,
+    hasBoth: hasPhone && hasEmail,
+  };
 }

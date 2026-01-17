@@ -91,6 +91,7 @@ export function ContactQueue({ className }: ContactQueueProps) {
     setActiveLegislator,
     contactedCount,
     isComplete,
+    setLegislatorContactMethod,
   } = useContact();
 
   const sensors = useSensors(
@@ -143,6 +144,7 @@ export function ContactQueue({ className }: ContactQueueProps) {
               legislator={item.legislator}
               status={item.status}
               index={index}
+              contactMethod={item.contactMethod}
               onRemove={() => removeFromQueueById(item.legislator.id)}
             />
           ))}
@@ -179,6 +181,10 @@ export function ContactQueue({ className }: ContactQueueProps) {
                     legislator={item.legislator}
                     status={item.status}
                     index={index}
+                    contactMethod={item.contactMethod}
+                    onContactMethodChange={(method) =>
+                      setLegislatorContactMethod(item.legislator.id, method)
+                    }
                     onSkip={
                       item.status !== "contacted"
                         ? () => {

@@ -17,26 +17,6 @@ After implementing the feature, please provide a concise step-by-step instructio
 
 Enable users to transition from research/chat phase to taking action by contacting their representatives with AI-generated, personalized call scripts and email drafts.
 
-## 1.1 Contact Queue Management
-
-**Description**: Display and manage the list of representatives to contact.
-
-**Requirements**:
-- [ ] Create ContactQueue component showing ordered list of legislators
-- [ ] Display legislator card with name, photo, role, party, contact info
-- [ ] Show progress indicator (e.g., "3 of 7 contacted")
-- [ ] Enable drag-and-drop reordering of queue
-- [ ] Add skip/defer button to move person to end of queue
-- [ ] Add remove button to drop person from queue entirely
-- [ ] Highlight currently active legislator being worked on
-
-**Implementation Notes**:
-- Use @dnd-kit or similar for drag-and-drop
-- Store queue order in local storage for persistence
-- Show visual distinction between completed, active, and pending
-
----
-
 ## 1.2 Contact Method Selection
 
 **Description**: Let users choose between call script or email for each representative.

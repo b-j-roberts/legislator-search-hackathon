@@ -389,3 +389,20 @@ export interface PanelState {
 
 /** Theme preference */
 export type Theme = "light" | "dark" | "system";
+
+// =============================================================================
+// Contact Method Types
+// =============================================================================
+
+/** Preferred method for contacting a legislator */
+export type ContactMethod = "call" | "email";
+
+/** Contact availability for a legislator */
+export interface ContactAvailability {
+  /** Whether phone contact is available */
+  hasPhone: boolean;
+  /** Whether email contact is available */
+  hasEmail: boolean;
+  /** Office hours note (e.g., "9AM-5PM EST") */
+  phoneHours?: string;
+}
