@@ -1,4 +1,4 @@
-//! Source model (content sources like YouTube channels, congressional records, etc.)
+//! Source model (content sources like `YouTube` channels, congressional records, etc.)
 
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
@@ -7,18 +7,15 @@ use uuid::Uuid;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, sqlx::Type)]
 #[sqlx(type_name = "VARCHAR", rename_all = "snake_case")]
+#[derive(Default)]
 pub enum SourceType {
+    #[default]
     Audio,
     YouTube,
     CongressionalRecord,
     DocumentCollection,
 }
 
-impl Default for SourceType {
-    fn default() -> Self {
-        Self::Audio
-    }
-}
 
 #[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
 pub struct Source {

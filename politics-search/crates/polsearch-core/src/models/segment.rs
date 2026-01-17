@@ -1,4 +1,4 @@
-//! Segment model - minimal metadata linking to LanceDB
+//! Segment model - minimal metadata linking to `LanceDB`
 
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
@@ -6,7 +6,7 @@ use sqlx::FromRow;
 use uuid::Uuid;
 
 /// Minimal segment metadata stored in Postgres
-/// Actual text and embeddings are stored in LanceDB
+/// Actual text and embeddings are stored in `LanceDB`
 #[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
 pub struct Segment {
     pub id: Uuid,
@@ -58,7 +58,7 @@ impl Segment {
 
     /// Returns the duration of this segment in milliseconds (None for documents)
     #[must_use]
-    pub fn duration_ms(&self) -> Option<i32> {
+    pub const fn duration_ms(&self) -> Option<i32> {
         match (self.start_time_ms, self.end_time_ms) {
             (Some(start), Some(end)) => Some(end - start),
             _ => None,
