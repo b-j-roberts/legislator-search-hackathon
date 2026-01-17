@@ -1,0 +1,57 @@
+[package]
+name = "polsearch-pipeline"
+description = "Content processing pipeline for PolSearch"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+# Workspace deps
+tokio.workspace = true
+sqlx.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+color-eyre.workspace = true
+tracing.workspace = true
+uuid.workspace = true
+chrono.workspace = true
+reqwest.workspace = true
+futures.workspace = true
+
+# Workspace crates
+polsearch-core.workspace = true
+polsearch-db.workspace = true
+polsearch-archive.workspace = true
+
+# CLI and config
+clap = { version = "4", features = ["derive", "env"] }
+figment2 = { version = "0.11", features = ["yaml", "env"] }
+serde-inline-default = "0.2"
+
+# Retry logic
+backon = "1.6"
+
+# Embeddings
+fastembed = "5"
+lancedb = "0.23"
+
+# Arrow (must match lancedb's version)
+arrow-schema = "56"
+arrow-array = "56"
+
+# Error handling (for fastembed anyhow compatibility)
+anyhow = "1"
+
+# Utilities
+colored = "2"
+md-5 = "0.10"
+rand = "0.8"
+tokio-stream = "0.1"
+
+# Audio metadata
+symphonia.workspace = true

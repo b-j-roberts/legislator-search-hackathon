@@ -1,0 +1,259 @@
+# Bitcoin Podcasts Configuration
+# RSS URLs should be verified before running RSS ingestion phase
+#
+# Tier 1: High-volume shows (500+ episodes or 400+ hours)
+# Tier 2: Established shows (100-500 episodes)
+# Tier 3: Specialized & newer shows
+
+podcasts:
+  # ============ TIER 1: High-Volume Shows ============
+
+  - name: "Bitcoin Audible"
+    rss_url: "https://feeds.castos.com/mj96z"
+    tier: 1
+    known_hosts:
+      - "Guy Swann"
+
+  - name: "What Bitcoin Did"
+    rss_url: "https://feeds.fountain.fm/UZSKQcrOnhqYS1JopxGg"
+    tier: 1
+    known_hosts:
+      - "Danny Knowles"
+
+  - name: "The Peter McCormack Show"
+    rss_url: "https://whatbitcoindid.libsyn.com/rss"
+    tier: 1
+    known_hosts:
+      - "Peter McCormack"
+
+  - name: "TFTC"
+    rss_url: "https://feeds.fountain.fm/ZwwaDULvAj0yZvJ5kdB9"
+    tier: 1
+    known_hosts:
+      - "Marty Bent"
+
+  - name: "Bitcoin Magazine Podcast"
+    rss_url: "https://anchor.fm/s/cefa18a0/podcast/rss"
+    tier: 1
+    known_hosts:
+      - "Various"
+
+  - name: "Stephan Livera Podcast"
+    rss_url: "https://anchor.fm/s/7d083a4/podcast/rss"
+    tier: 1
+    known_hosts:
+      - "Stephan Livera"
+
+  - name: "What is Money?"
+    rss_url: "https://feeds.simplecast.com/MLdpYXYI"
+    tier: 1
+    known_hosts:
+      - "Robert Breedlove"
+
+  - name: "Once Bitten!"
+    rss_url: "https://feeds.fountain.fm/sokYhfsuGnDIQ10FLdqm"
+    tier: 1
+    known_hosts:
+      - "Daniel Prince"
+
+  - name: "Coin Stories"
+    rss_url: "https://rss.libsyn.com/shows/344543/destinations/2813255.xml"
+    tier: 1
+    known_hosts:
+      - "Natalie Brunell"
+
+  - name: "The Bitcoin Layer"
+    rss_url: "https://feeds.simplecast.com/Y2219Riv"
+    tier: 1
+    known_hosts:
+      - "Nik Bhatia"
+
+  # ============ TIER 2: Established Shows ============
+
+  - name: "The Bitcoin Standard Podcast"
+    rss_url: "https://rss.buzzsprout.com/1849151.rss"
+    tier: 2
+    known_hosts:
+      - "Saifedean Ammous"
+
+  - name: "Canadian Bitcoiners"
+    rss_url: "https://anchor.fm/s/538d43f4/podcast/rss"
+    tier: 2
+    known_hosts:
+      - "Joey"
+      - "Len"
+
+  - name: "Bitcoin Rapid-Fire"
+    rss_url: "https://anchor.fm/s/2a4e8034/podcast/rss"
+    tier: 2
+    known_hosts:
+      - "John Vallis"
+
+  - name: "The Bitcoin Matrix"
+    rss_url: "https://feeds.fountain.fm/paBeJqepFBns3bT2OAtC"
+    tier: 2
+    known_hosts:
+      - "Cedric Youngelman"
+
+  - name: "Citadel Dispatch"
+    rss_url: "https://serve.podhome.fm/rss/c90e609a-df1e-596a-bd5e-57bcc8aad6cc"
+    tier: 2
+    known_hosts:
+      - "Matt Odell"
+
+  - name: "Bitcoin Fundamentals"
+    rss_url: "https://feeds.megaphone.fm/PPLLC8974708240"
+    tier: 2
+    known_hosts:
+      - "Preston Pysh"
+
+  - name: "Swan Signal"
+    rss_url: "https://feeds.simplecast.com/Z1tu2Hds"
+    tier: 2
+    known_hosts:
+      - "Brady Swenson"
+
+  - name: "Bitcoin Optech Podcast"
+    rss_url: "https://anchor.fm/s/d9918154/podcast/rss"
+    tier: 2
+    known_hosts:
+      - "Mark Erhardt"
+      - "Mike Schmidt"
+
+  - name: "The Mining Pod"
+    rss_url: "https://feeds.megaphone.fm/theminingpod"
+    tier: 2
+    known_hosts:
+      - "Blockspace Media"
+
+  - name: "Bitcoin Takeover"
+    rss_url: "https://bitcoin-takeover.com/audio/feed.xml"
+    tier: 2
+    known_hosts:
+      - "Vlad Costea"
+
+  - name: "Bitcoin.Review"
+    rss_url: "https://serve.podhome.fm/rss/7cd0202b-463c-5b2e-b252-d4845cb71466"
+    tier: 2
+    known_hosts:
+      - "NVK"
+
+  # ============ TIER 3: Specialized & Newer Shows ============
+
+  - name: "The Chaincode Podcast"
+    rss_url: "https://anchor.fm/s/12fe0620/podcast/rss"
+    tier: 3
+    known_hosts:
+      - "Chaincode Labs"
+
+  - name: "Ungovernable Misfits"
+    rss_url: "https://serve.podhome.fm/rss/23c0e268-b6a5-4ae7-b73a-1bb0cf853978"
+    tier: 3
+    known_hosts:
+      - "Max"
+      - "Q"
+
+  - name: "POD256"
+    rss_url: "https://serve.podhome.fm/rss/c0be02f5-0e88-59a3-84cb-b76041a83264"
+    tier: 3
+    known_hosts:
+      - "bitkite"
+      - "Econoalchemist"
+
+  - name: "Lightning Junkies"
+    rss_url: "https://anchor.fm/s/ce6ee00/podcast/rss"
+    tier: 3
+    known_hosts:
+      - "Various"
+
+  - name: "Noded"
+    rss_url: "https://wavlake.com/feed/music/89a9dbac-e121-4f8e-91cc-8119a741c31d"
+    tier: 3
+    known_hosts:
+      - "Michael Goldstein"
+      - "Pierre Rochard"
+
+  - name: "BTC Sessions"
+    rss_url: "https://anchor.fm/s/11e95d20/podcast/rss"
+    tier: 3
+    known_hosts:
+      - "Ben Perrin"
+
+  - name: "Bitcoin Kindergarten"
+    rss_url: "https://anchor.fm/s/20a9fcc0/podcast/rss"
+    tier: 3
+    known_hosts:
+      - "Various"
+
+  - name: "Bitcoin Echo Chamber"
+    rss_url: "https://anchor.fm/s/8f267c0/podcast/rss"
+    tier: 3
+    known_hosts:
+      - "Various"
+
+  - name: "Pleb Underground"
+    rss_url: "https://anchor.fm/s/add2abc4/podcast/rss"
+    tier: 3
+    known_hosts:
+      - "Various"
+
+  - name: "Fun With Bitcoin"
+    rss_url: "https://anchor.fm/s/889e768/podcast/rss"
+    tier: 3
+    known_hosts:
+      - "Various"
+
+  - name: "This Week in Bitcoin"
+    rss_url: "https://feeds.jupiterbroadcasting.com/twib"
+    tier: 3
+    known_hosts:
+      - "Chris Fisher"
+
+  - name: "Difficulty Adjusted"
+    rss_url: "https://anchor.fm/s/9b9b2abc/podcast/rss"
+    tier: 3
+    known_hosts:
+      - "Storm Rund"
+
+  - name: "Rock Paper Bitcoin"
+    rss_url: "https://serve.podhome.fm/rss/bde061bb-4401-5bd7-b334-e798e41f157a"
+    tier: 3
+    known_hosts:
+      - "Business Cat"
+
+  - name: "Bitcoin Not Crypto"
+    rss_url: "https://anchor.fm/s/265ba10/podcast/rss"
+    tier: 3
+    known_hosts:
+      - "Forrest Stevens"
+
+  - name: "Closing the Loop"
+    rss_url: "https://closing-the-loop.github.io/feed.xml"
+    tier: 3
+    known_hosts:
+      - "John Vallis"
+
+  - name: "Unhashed Podcast"
+    rss_url: "https://www.spreaker.com/show/3478708/episodes/feed"
+    tier: 3
+    known_hosts:
+      - "Various"
+
+  - name: "The Bitcoin Development Podcast"
+    rss_url: "https://anchor.fm/s/6bf36dec/podcast/rss"
+    tier: 3
+    known_hosts:
+      - "Brink"
+
+  - name: "The Path to Bitcoin"
+    rss_url: "https://thepathtobitcoin.com/feed/podcast"
+    tier: 3
+    known_hosts:
+      - "Anon"
+
+  - name: "Bitcoin And..."
+    rss_url: "https://anchor.fm/s/1070513f8/podcast/rss"
+    tier: 3
+    known_hosts:
+      - "David Bennett"
+

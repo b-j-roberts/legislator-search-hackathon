@@ -1,0 +1,9 @@
+.jj
+!_plans
+/target
+/logs
+/swift/*/.build
+/swift/*/Package.resolved
+/data
+/.fastembed_cache
+/.sqlx

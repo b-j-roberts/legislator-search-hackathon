@@ -1,0 +1,93 @@
+# Enable positional arguments for proper quoting
+set positional-arguments
+
+# List available recipes
+[default]
+list:
+    @just --list
+
+# ------------------------------------------------------------------------------
+# build
+# ------------------------------------------------------------------------------
+
+# Build Rust CLI
+[group('build')]
+build:
+    cargo build -p polsearch-cli
+
+# Build release and optionally install locally
+[group('build')]
+release target="local":
+    cargo xtask release {{target}}
+
+# ------------------------------------------------------------------------------
+# lint
+# ------------------------------------------------------------------------------
+
+# Format code
+[group('lint')]
+fmt:
+    cargo fmt
+
+# Run clippy
+[group('lint')]
+clippy:
+    cargo clippy --all-targets
+
+# ------------------------------------------------------------------------------
+# run
+# ------------------------------------------------------------------------------
+
+# Run the CLI in release mode
+[group('run')]
+run *args:
+    cargo run --release -p polsearch-cli -- "$@"
+
+# ------------------------------------------------------------------------------
+# database
+# ------------------------------------------------------------------------------
+
+# Run database migrations
+[group('db')]
+migrate:
+    sqlx migrate run --source crates/polsearch-db/migrations
+
+# Create FTS index on text embeddings
+[group('db')]
+index:
+    cargo run -p polsearch-cli -- db index
+
+# Backup both Postgres and LanceDB
+[group('db')]
+backup: backup-pg backup-lancedb
+
+# Backup Postgres database
+[group('db')]
+backup-pg:
+    mkdir -p ~/backups
+    pg_dump -Fc polsearch > ~/backups/polsearch_$(date +%Y%m%d_%H%M).dump
+
+# Backup LanceDB
+[group('db')]
+backup-lancedb:
+    mkdir -p ~/backups
+    tar -czf ~/backups/lancedb_$(date +%Y%m%d_%H%M).tar.gz -C ~/.polsearch lancedb
+
+# ------------------------------------------------------------------------------
+# utils
+# ------------------------------------------------------------------------------
+
+# Run xtask commands
+[group('utils')]
+xtask *args:
+    cargo xtask "$@"
+
+# Bump version (major, minor, or patch)
+[group('utils')]
+bump type:
+    just xtask bump-version {{type}}
+
+# Clean all build artifacts
+[group('utils')]
+clean:
+    cargo clean

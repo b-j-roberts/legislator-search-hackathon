@@ -1,0 +1,23 @@
+# Ingestion pipeline configuration
+# Loaded from: config/ingestion.yaml
+#
+# Precedence (lowest to highest):
+# 1. Hardcoded defaults
+# 2. This config file
+# 3. Environment variables (PODSEARCH_*)
+# 4. CLI arguments
+
+# Concurrency settings
+max_concurrent_episodes: 5    # Episodes processed in parallel (Apalis)
+fluidaudio_concurrency: 1     # FluidAudio semaphore (usually 1 - ANE bottleneck)
+
+# Audio file handling
+audio_dir: ./audio
+delete_after_processing: true
+
+# Vector database
+lancedb_path: ./data/lancedb
+# For S3: lancedb_path: s3://polsearch-vectors/lancedb
+
+# Database URL - set via DATABASE_URL env var or --database-url CLI arg
+# database_url: postgres://localhost/polsearch

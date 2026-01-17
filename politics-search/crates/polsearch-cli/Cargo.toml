@@ -1,0 +1,46 @@
+[package]
+name = "polsearch-cli"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[[bin]]
+name = "polsearch"
+path = "src/main.rs"
+
+[dependencies]
+polsearch-core = { workspace = true }
+polsearch-db = { workspace = true }
+polsearch-pipeline = { workspace = true }
+polsearch-util = { workspace = true }
+polsearch-archive = { workspace = true }
+
+chrono = { workspace = true }
+colored = "2"
+shellexpand = "3"
+clap = { workspace = true }
+anstyle = { workspace = true }
+color-eyre = { workspace = true }
+dotenvy = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+serde_yaml = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+uuid = { workspace = true }
+reqwest = { workspace = true }
+feed-rs = { workspace = true }
+futures = { workspace = true }
+
+# LanceDB inspection
+lancedb = "0.23"
+arrow-array = "56"
+arrow-schema = "56"
+sqlx = { workspace = true }
+num_cpus = "1.17.0"
+
+[lints]
+workspace = true

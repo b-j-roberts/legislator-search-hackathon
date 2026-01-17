@@ -1,0 +1,28 @@
+[package]
+name = "polsearch-archive"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[dependencies]
+# SQLite for archive storage (uses libsqlite3-sys 0.30 to be compatible with sqlx-sqlite)
+rusqlite = { version = "0.32" }
+
+# Compression for float/int arrays
+zstd = "0.13"
+
+# Core types
+uuid = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+
+# Serialization for arrays
+bytemuck = { version = "1", features = ["derive"] }
+
+# Home directory detection
+dirs = "6"
+
+[lints]
+workspace = true

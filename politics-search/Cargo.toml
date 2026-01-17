@@ -1,0 +1,64 @@
+[workspace]
+resolver = "2"
+members = ["crates/*"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+license = "MIT"
+authors = ["Praveen Perera"]
+
+[workspace.dependencies]
+# Async runtime
+tokio = { version = "1", features = ["full"] }
+
+# Database
+sqlx = { version = "0.8", features = ["runtime-tokio", "tls-rustls", "postgres", "uuid", "chrono", "json"] }
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+serde_yaml = "0.9"
+
+# Error handling
+thiserror = "2"
+color-eyre = "0.6"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# CLI
+clap = { version = "4", features = ["derive", "color"] }
+anstyle = "1"
+
+# Utilities
+uuid = { version = "1", features = ["v7", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+dotenvy = "0.15"
+slug = "0.1"
+
+# HTTP & RSS
+reqwest = { version = "0.13", features = ["json", "stream"] }
+feed-rs = "2"
+futures = "0.3"
+
+# Audio
+symphonia = { version = "0.5", features = ["mp3", "isomp4", "aac", "wav"] }
+
+# Workspace crates
+polsearch-core = { path = "crates/polsearch-core" }
+polsearch-util = { path = "crates/polsearch-util" }
+polsearch-db = { path = "crates/polsearch-db" }
+polsearch-pipeline = { path = "crates/polsearch-pipeline" }
+polsearch-archive = { path = "crates/polsearch-archive" }
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+all = { level = "warn", priority = -1 }
+nursery = { level = "warn", priority = -1 }
+unwrap_used = "warn"
+doc_markdown = "warn"
