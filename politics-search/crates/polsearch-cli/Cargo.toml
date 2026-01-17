@@ -41,6 +41,9 @@ arrow-array = "56"
 arrow-schema = "56"
 sqlx = { workspace = true }
 num_cpus = "1.17.0"
+walkdir = "2.5.0"
+rayon = "1.10"
+dashmap = "6"
 
 [lints]
 workspace = true
