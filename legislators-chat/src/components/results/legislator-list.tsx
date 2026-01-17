@@ -16,6 +16,12 @@ export interface LegislatorListProps {
   skeletonCount?: number;
   /** Custom message when list is empty */
   emptyMessage?: string;
+  /** Whether legislators can be selected */
+  selectable?: boolean;
+  /** IDs of selected legislators */
+  selectedIds?: string[];
+  /** Callback when a legislator is toggled */
+  onToggleSelect?: (legislator: Legislator) => void;
 }
 
 const itemVariants = {
@@ -56,6 +62,9 @@ export function LegislatorList({
   className,
   skeletonCount = 3,
   emptyMessage,
+  selectable = false,
+  selectedIds = [],
+  onToggleSelect,
 }: LegislatorListProps) {
   if (isLoading) {
     return <LoadingState count={skeletonCount} />;
@@ -82,7 +91,12 @@ export function LegislatorList({
                 delay: index * 0.03, // Stagger effect
               }}
             >
-              <LegislatorCard legislator={legislator} />
+              <LegislatorCard
+                legislator={legislator}
+                selectable={selectable}
+                isSelected={selectedIds.includes(legislator.id)}
+                onToggleSelect={onToggleSelect}
+              />
             </motion.div>
           ))}
         </AnimatePresence>

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { ThemeProvider, ChatProvider } from "@/components/providers";
+import { ThemeProvider, ChatProvider, ContactProvider } from "@/components/providers";
 import { Header } from "@/components/layout";
 import { ConversationSidebar } from "@/components/conversation/conversation-sidebar";
 import { Toaster } from "@/components/ui/sonner";
@@ -41,12 +41,14 @@ export default function RootLayout({
       >
         <ThemeProvider>
           <ChatProvider>
-            <ConversationSidebar />
-            <div className="flex flex-1 flex-col min-h-0 overflow-hidden">
-              <Header />
-              {children}
-            </div>
-            <Toaster position="top-right" richColors closeButton />
+            <ContactProvider>
+              <ConversationSidebar />
+              <div className="flex flex-1 flex-col min-h-0 overflow-hidden">
+                <Header />
+                {children}
+              </div>
+              <Toaster position="top-right" richColors closeButton />
+            </ContactProvider>
           </ChatProvider>
         </ThemeProvider>
       </body>

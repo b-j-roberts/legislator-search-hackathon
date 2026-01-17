@@ -1,8 +1,9 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Users, FileText, Vote, ChevronUp } from "lucide-react";
+import { Users, FileText, Vote, ChevronUp, Send, CheckSquare, Square } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import type {
@@ -21,6 +22,7 @@ import { Button } from "@/components/ui/button";
 import { LegislatorList } from "./legislator-list";
 import { FilterBar, FilterChips } from "@/components/filters";
 import { useFilters, type FilterState } from "@/hooks/use-filters";
+import { useContact } from "@/hooks/use-contact";
 
 export type ResultsTab = "people" | "documents" | "votes";
 
@@ -84,8 +86,21 @@ export function ResultsPanel({
   onTabChange,
   className,
 }: ResultsPanelProps) {
+  const router = useRouter();
   const [currentTab, setCurrentTab] = React.useState<ResultsTab>(activeTab);
   const [isMobileExpanded, setIsMobileExpanded] = React.useState(false);
+  const [isSelectionMode, setIsSelectionMode] = React.useState(false);
+
+  // Contact context for selection management
+  const {
+    selectedLegislators,
+    toggleLegislator,
+    clearSelections,
+    setSelectedLegislators,
+    setCurrentStep,
+    selectionCount,
+    hasSelections,
+  } = useContact();
 
   // Filter and sort state
   const {
@@ -107,6 +122,12 @@ export function ResultsPanel({
     [legislators, applyFilters]
   );
 
+  // Get selected IDs for the list
+  const selectedIds = React.useMemo(
+    () => selectedLegislators.map((l) => l.id),
+    [selectedLegislators]
+  );
+
   // Calculate counts for tabs (filtered for legislators)
   const tabs: TabConfig[] = [
     { id: "people", label: "People", icon: Users, count: filteredLegislators.length },
@@ -126,8 +147,25 @@ export function ResultsPanel({
     setIsMobileExpanded(!isMobileExpanded);
   };
 
+  const handleToggleSelectionMode = () => {
+    if (isSelectionMode) {
+      // Exiting selection mode - clear selections
+      clearSelections();
+    }
+    setIsSelectionMode(!isSelectionMode);
+  };
+
+  const handleSelectAll = () => {
+    setSelectedLegislators(filteredLegislators);
+  };
+
+  const handleContactRepresentatives = () => {
+    setCurrentStep("contact");
+    router.push("/contact");
+  };
+
   return (
-    <div className={cn("flex flex-col h-full bg-background", className)}>
+    <div className={cn("flex flex-col flex-1 min-h-0 bg-background", className)}>
       {/* Mobile/Tablet toggle bar - only visible below desktop */}
       <div className="lg:hidden border-b border-border">
         <Button
@@ -213,6 +251,50 @@ export function ResultsPanel({
                 onRemoveState={toggleState}
                 onRemoveStance={toggleStance}
               />
+              {/* Selection mode controls */}
+              <div className="flex items-center justify-between pt-1">
+                <Button
+                  variant={isSelectionMode ? "secondary" : "outline"}
+                  size="sm"
+                  onClick={handleToggleSelectionMode}
+                  className="gap-1.5"
+                >
+                  {isSelectionMode ? (
+                    <>
+                      <CheckSquare className="size-4" />
+                      <span className="hidden sm:inline">Done selecting</span>
+                      <span className="sm:hidden">Done</span>
+                    </>
+                  ) : (
+                    <>
+                      <Square className="size-4" />
+                      <span className="hidden sm:inline">Select to contact</span>
+                      <span className="sm:hidden">Select</span>
+                    </>
+                  )}
+                </Button>
+                {isSelectionMode && (
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleSelectAll}
+                      disabled={selectedIds.length === filteredLegislators.length}
+                    >
+                      Select all
+                    </Button>
+                    {hasSelections && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={clearSelections}
+                      >
+                        Clear
+                      </Button>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
@@ -227,6 +309,9 @@ export function ResultsPanel({
                     ? "No legislators match your filters. Try adjusting or clearing filters."
                     : undefined
                 }
+                selectable={isSelectionMode}
+                selectedIds={selectedIds}
+                onToggleSelect={toggleLegislator}
               />
             </TabsContent>
 
@@ -333,6 +418,25 @@ export function ResultsPanel({
             </TabsContent>
           </div>
         </Tabs>
+
+        {/* Contact Representatives CTA - fixed at bottom, outside Tabs */}
+        {currentTab === "people" && hasSelections && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            className="flex-shrink-0 p-3 border-t border-border bg-background"
+          >
+            <Button
+              onClick={handleContactRepresentatives}
+              className="w-full gap-2"
+              size="lg"
+            >
+              <Send className="size-4" />
+              Contact {selectionCount} Representative{selectionCount !== 1 ? "s" : ""}
+            </Button>
+          </motion.div>
+        )}
       </div>
     </div>
   );

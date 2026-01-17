@@ -158,7 +158,7 @@ export function AppLayout({ children, resultsPanel, className }: AppLayoutProps)
               "flex-shrink-0 max-h-[40vh] md:max-h-[45vh]",
               "border-t",
               // Desktop: dynamic width side panel with collapse support
-              "lg:max-h-none lg:flex-none",
+              "lg:max-h-none lg:h-full lg:flex-none",
               "lg:border-t-0 lg:border-l",
               effectiveIsCollapsed && "lg:hidden"
             )}

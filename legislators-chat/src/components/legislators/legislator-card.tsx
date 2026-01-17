@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Phone, Mail, Globe, ChevronDown, MapPin, Building2 } from "lucide-react";
+import { Phone, Mail, Globe, ChevronDown, MapPin, Building2, Check } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import type { Legislator, Party, Chamber } from "@/lib/types";
@@ -16,12 +16,19 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Checkbox } from "@/components/ui/checkbox";
 import { StanceBadge } from "./stance-badge";
 
 export interface LegislatorCardProps {
   legislator: Legislator;
   className?: string;
   defaultExpanded?: boolean;
+  /** Whether the card is in selection mode */
+  selectable?: boolean;
+  /** Whether the legislator is selected */
+  isSelected?: boolean;
+  /** Callback when selection is toggled */
+  onToggleSelect?: (legislator: Legislator) => void;
 }
 
 const partyConfig: Record<Party, { label: string; className: string; color: string }> = {
@@ -87,6 +94,9 @@ export function LegislatorCard({
   legislator,
   className,
   defaultExpanded = false,
+  selectable = false,
+  isSelected = false,
+  onToggleSelect,
 }: LegislatorCardProps) {
   const [isExpanded, setIsExpanded] = React.useState(defaultExpanded);
 
@@ -126,6 +136,10 @@ export function LegislatorCard({
     }
   };
 
+  const handleToggleSelect = () => {
+    onToggleSelect?.(legislator);
+  };
+
   return (
     <motion.div
       variants={cardVariants}
@@ -134,9 +148,32 @@ export function LegislatorCard({
       exit="exit"
       transition={{ duration: 0.2 }}
     >
-      <Card className={cn("overflow-hidden", className)}>
+      <Card
+        className={cn(
+          "overflow-hidden transition-colors",
+          isSelected && "ring-2 ring-primary bg-primary/5",
+          selectable && "cursor-pointer",
+          className
+        )}
+        onClick={selectable ? handleToggleSelect : undefined}
+      >
         <CardHeader>
           <div className="flex items-start gap-3">
+            {/* Selection checkbox */}
+            {selectable && (
+              <div
+                className="flex-shrink-0 pt-1"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <Checkbox
+                  checked={isSelected}
+                  onCheckedChange={handleToggleSelect}
+                  aria-label={`Select ${name}`}
+                  className="data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                />
+              </div>
+            )}
+
             {/* Avatar with party color ring */}
             <div className={cn("rounded-full p-0.5", partyColor)}>
               <Avatar className="size-12">

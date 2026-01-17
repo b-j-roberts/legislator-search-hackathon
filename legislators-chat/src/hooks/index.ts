@@ -5,3 +5,5 @@ export { useNetworkStatus } from "./use-network-status";
 export type { NetworkStatus } from "./use-network-status";
 export { usePanelPreferences } from "./use-panel-preferences";
 export type { PanelPreferences } from "./use-panel-preferences";
+export { ContactProvider, useContact } from "./use-contact";
+export type { ContactStep } from "./use-contact";
