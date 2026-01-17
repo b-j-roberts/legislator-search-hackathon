@@ -2,59 +2,49 @@
 
 use crate::models::{Chamber, FloorSpeech};
 use eyre::{Context, Result};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use std::thread;
 use std::time::Duration;
 
 const GOVINFO_BASE_URL: &str = "https://api.govinfo.gov";
-const RATE_LIMIT_DELAY_MS: u64 = 200;
+const RATE_LIMIT_DELAY_MS: u64 = 100;
 
 pub struct GovInfoClient {
     api_key: String,
     client: reqwest::blocking::Client,
 }
 
-// API response structs - fields may be unused but match the API schema
-#[allow(dead_code)]
-#[derive(Debug, Deserialize)]
-struct CollectionResponse {
-    packages: Option<Vec<Package>>,
-    #[serde(rename = "nextPage")]
-    next_page: Option<String>,
-    count: Option<u32>,
+// Search API request/response structs
+#[derive(Serialize)]
+struct SearchRequest {
+    query: String,
+    #[serde(rename = "pageSize")]
+    page_size: u32,
+    #[serde(rename = "offsetMark")]
+    offset_mark: String,
 }
 
 #[allow(dead_code)]
 #[derive(Debug, Deserialize)]
-struct Package {
-    #[serde(rename = "packageId")]
-    package_id: String,
+struct SearchResponse {
+    results: Option<Vec<SearchResult>>,
+    count: Option<u32>,
+    #[serde(rename = "nextPage")]
+    next_page: Option<String>,
+}
+
+#[allow(dead_code)]
+#[derive(Debug, Deserialize)]
+struct SearchResult {
     title: Option<String>,
+    #[serde(rename = "packageId")]
+    package_id: Option<String>,
+    #[serde(rename = "granuleId")]
+    granule_id: Option<String>,
     #[serde(rename = "dateIssued")]
     date_issued: Option<String>,
-    #[serde(rename = "packageLink")]
-    package_link: Option<String>,
-}
-
-#[allow(dead_code)]
-#[derive(Debug, Deserialize)]
-struct GranulesResponse {
-    granules: Option<Vec<Granule>>,
-    #[serde(rename = "nextPage")]
-    next_page: Option<String>,
-    count: Option<u32>,
-}
-
-#[allow(dead_code)]
-#[derive(Debug, Deserialize)]
-struct Granule {
-    #[serde(rename = "granuleId")]
-    granule_id: String,
-    title: Option<String>,
-    #[serde(rename = "granuleClass")]
-    granule_class: Option<String>,
-    #[serde(rename = "granuleLink")]
-    granule_link: Option<String>,
+    #[serde(rename = "collectionCode")]
+    collection_code: Option<String>,
 }
 
 impl GovInfoClient {
@@ -107,22 +97,54 @@ impl GovInfoClient {
         end_date: &str,
     ) -> Result<Vec<Package>> {
         let mut all_packages = Vec::new();
-        // API requires ISO datetime format: yyyy-MM-dd'T'HH:mm:ss'Z'
-        let start_datetime = format!("{}T00:00:00Z", start_date);
-        let end_datetime = format!("{}T23:59:59Z", end_date);
+        // Extract year from start_date for package ID filtering (CREC-YYYY-MM-DD format)
+        let start_year = &start_date[..4];
+        let end_year = &end_date[..4];
+
+        // Use offsetMark pagination (required by API)
         let mut url = format!(
-            "{}/collections/CREC/{}?offset=0&pageSize=100&startDate={}&endDate={}",
-            GOVINFO_BASE_URL, start_datetime, start_datetime, end_datetime
+            "{}/collections/CREC/{}T00:00:00Z?offsetMark=*&pageSize=100",
+            GOVINFO_BASE_URL, start_date
         );
 
+        eprintln!("Fetching CREC packages for {} to {}...", start_date, end_date);
+
+        let mut consecutive_misses = 0;
+        let max_consecutive_misses = 5; // Stop if we see 5 pages with no matches
+
         loop {
-            eprintln!("Fetching CREC packages: {}...", &url[..80.min(url.len())]);
+            eprintln!("  Fetching batch (have {} matching packages)...", all_packages.len());
             let response: CollectionResponse = self.fetch_json(&url)?;
 
+            let mut found_in_batch = 0;
             if let Some(packages) = response.packages {
-                let count = packages.len();
-                all_packages.extend(packages);
-                eprintln!("  Got {} packages (total: {})", count, all_packages.len());
+                // Filter by package ID year (CREC-YYYY-MM-DD format)
+                for p in packages {
+                    // Package ID format: CREC-2024-01-15
+                    if p.package_id.len() >= 9 {
+                        let pkg_year = &p.package_id[5..9];
+                        if pkg_year >= start_year && pkg_year <= end_year {
+                            // Also check full date if same year boundaries
+                            if let Some(date) = &p.date_issued {
+                                if date.as_str() >= start_date && date.as_str() <= end_date {
+                                    all_packages.push(p);
+                                    found_in_batch += 1;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if found_in_batch > 0 {
+                eprintln!("    Found {} packages in date range", found_in_batch);
+                consecutive_misses = 0;
+            } else {
+                consecutive_misses += 1;
+                if consecutive_misses >= max_consecutive_misses {
+                    eprintln!("    No matches in {} consecutive batches, stopping", max_consecutive_misses);
+                    break;
+                }
             }
 
             match response.next_page {
@@ -131,6 +153,7 @@ impl GovInfoClient {
             }
         }
 
+        eprintln!("  Total packages in range: {}", all_packages.len());
         Ok(all_packages)
     }
 
