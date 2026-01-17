@@ -1,0 +1,26 @@
+{
+  "bioguide_id": "G000581",
+  "name": "Vicente Gonzalez",
+  "total_found": 1,
+  "items_fetched": 1,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "MSNOW_20260116_190000_Katy_Tur_Reports",
+      "title": "Katy Tur Reports : MSNOW : January 16, 2026 11:00am-1:00pm PST",
+      "date": "2026-01-16",
+      "snippet": "for example, texas's 34th district, vicente gonzalez, california's 13th district in the central valleyied about 48% of the hispanic vote in 2024. but according to our poll tracker, his approval rating among hispanic voters is 35%. that's almost double the erosion and support we've seen for trump, among other voters, among independents. trump won about 48% of self independents in 2024, according to our poll tracker. he sits at 30%. this is consistent with the type of of advantage for democrats that we saw in 2018. we've seen it in special elections like tennessee seven, which featured a 13 point swing towards the democrats from 2020. for democrats only need a fraction of that swing to retake the house majority this time. i'd say the warning sign, though, for democrats is money. they don't have nearly the money advantage that they had eight years ago during trump's first term. maga inc pac ended 2025 with $304 million in the bank. the dnc only has about a fifth of the cash on hand that the rnc does. and most observers expect the supreme court will strike down limits on on coordination be",
+      "network": "MSNOW",
+      "collection": "TV-MSNOW",
+      "start_time": "2650",
+      "end_time": "",
+      "video_url": "https://archive.org/download/MSNOW_20260116_190000_Katy_Tur_Reports/MSNOW_20260116_190000_Katy_Tur_Reports.mp4?t=2650/2710&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/MSNOW_20260116_190000_Katy_Tur_Reports/MSNOW_20260116_190000_Katy_Tur_Reports.thumbs/MSNOW_20260116_190000_Katy_Tur_Reports_002638.jpg",
+      "archive_url": "https://archive.org/details/MSNOW_20260116_190000_Katy_Tur_Reports",
+      "embed_url": "https://archive.org/embed/MSNOW_20260116_190000_Katy_Tur_Reports"
+    }
+  ]
+}

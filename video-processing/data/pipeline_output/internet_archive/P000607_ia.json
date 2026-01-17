@@ -1,0 +1,40 @@
+{
+  "bioguide_id": "P000607",
+  "name": "Mark Pocan",
+  "total_found": 2,
+  "items_fetched": 2,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "MSNOW_20260116_030000_The_Last_Word_With_Lawrence_ODonnell",
+      "title": "The Last Word With Lawrence O'Donnell : MSNOW : January 15, 2026 7:00pm-8:00pm PST",
+      "date": "2026-01-16",
+      "snippet": "joining us now is democratic congressman mark pocan of wisconsin.essman pocan. thank you very much for joining us tonight. you can't even you can't call it a health care plan. it's not only is it not written in legislative language, it'll never be written as a bill. there won't ever be a bill. i hate to break the suspense for you, but there won't ever be a bill introduced in the senate or the house coming from anything that donald trump said today. >> now, remember in middle school, when you had that assignment for a couple months and the night before you put something together and you never read the book, and, you know, that's what donald trump tried to do. he didn't quite get there. he has one page, one side only, with a bunch of platitudes, as you showed. and, you know, this guy's had ten years to come up with a health care plan. instead, they cut health care for 15 million people. they raised all of our rates in the process. and the best he could do was come up with that. and, you know, it's really embarrassing. but i don't know if donald trump ",
+      "network": "MSNOW",
+      "collection": "TV-MSNOW",
+      "start_time": "2429",
+      "end_time": "",
+      "video_url": "https://archive.org/download/MSNOW_20260116_030000_The_Last_Word_With_Lawrence_ODonnell/MSNOW_20260116_030000_The_Last_Word_With_Lawrence_ODonnell.mp4?t=2429/2489&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/MSNOW_20260116_030000_The_Last_Word_With_Lawrence_ODonnell/MSNOW_20260116_030000_The_Last_Word_With_Lawrence_ODonnell.thumbs/MSNOW_20260116_030000_The_Last_Word_With_Lawrence_ODonnell_002428.jpg",
+      "archive_url": "https://archive.org/details/MSNOW_20260116_030000_The_Last_Word_With_Lawrence_ODonnell",
+      "embed_url": "https://archive.org/embed/MSNOW_20260116_030000_The_Last_Word_With_Lawrence_ODonnell"
+    },
+    {
+      "identifier": "MSNOW_20260116_170000_Chris_Jansing_Reports",
+      "title": "Chris Jansing Reports : MSNOW : January 16, 2026 9:00am-11:00am PST",
+      "date": "2026-01-16",
+      "snippet": "so, congressman, democratic rep mark pocan told my colleague lawrence o'donnell last night that this's what he said. why? >> remember in middle school when you had that assignment for a couple months and the night before you put something together and you never read the book? and, you know, that's what donald trump tried to do. he didn't quite get there. he has one page, one side only, with a bunch of platitudes, as you showed. and, you know, this guy's had ten years to come up with a health care plan. instead, they cut health care for 15 million people. >> so given that this plan really isn't as we would know it, or you in congress would know it as a real plan, what do republicans in congress do now? can they just do nothing? >> well, i think the congressman made a fair point. actually. if the president has a serious health care plan, he should present it to the united states congress in bill form, and then we can see what it will actually cost, how many people will be covered, and more importantly, how many people will lose coverage. that's what congress needs to see. the congressi",
+      "network": "MSNOW",
+      "collection": "TV-MSNOW",
+      "start_time": "3258",
+      "end_time": "",
+      "video_url": "https://archive.org/download/MSNOW_20260116_170000_Chris_Jansing_Reports/MSNOW_20260116_170000_Chris_Jansing_Reports.mp4?t=3258/3318&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/MSNOW_20260116_170000_Chris_Jansing_Reports/MSNOW_20260116_170000_Chris_Jansing_Reports.thumbs/MSNOW_20260116_170000_Chris_Jansing_Reports_003237.jpg",
+      "archive_url": "https://archive.org/details/MSNOW_20260116_170000_Chris_Jansing_Reports",
+      "embed_url": "https://archive.org/embed/MSNOW_20260116_170000_Chris_Jansing_Reports"
+    }
+  ]
+}

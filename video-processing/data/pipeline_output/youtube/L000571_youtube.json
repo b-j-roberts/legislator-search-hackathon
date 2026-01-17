@@ -1,0 +1,45 @@
+{
+  "bioguide_id": "L000571",
+  "name": "Cynthia M. Lummis",
+  "total_found": 13,
+  "filtered_count": 3,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "AqTBXIAs694",
+      "title": "Senator Lummis Questions Witness at Space & Science Subcommittee Hearing",
+      "url": "https://www.youtube.com/watch?v=AqTBXIAs694",
+      "channel": "Senator Cynthia Lummis",
+      "channel_id": "UCzcpXOLTeXtBLZBqvdUji-w",
+      "upload_date": null,
+      "duration": 616.0,
+      "view_count": 104,
+      "description": "The Importance of the Nasa Advisory Council's Regulatory Policy Committee\u00a0..."
+    },
+    {
+      "video_id": "xTNgHtMCJ4A",
+      "title": "Breaking Down The New US Senate Crypto Bill | Crypto News",
+      "url": "https://www.youtube.com/watch?v=xTNgHtMCJ4A",
+      "channel": "Generation Crypto",
+      "channel_id": "UCDRtxsvpRFX654CBuRsGE8g",
+      "upload_date": null,
+      "duration": 448.0,
+      "view_count": 438,
+      "description": ""
+    },
+    {
+      "video_id": "_Yb8t8k7BU4",
+      "title": "Sen. Lummis calls for \u2018tolerance\u2019",
+      "url": "https://www.youtube.com/watch?v=_Yb8t8k7BU4",
+      "channel": "Washington Post",
+      "channel_id": "UCHd62-u_v4DvJ8TCFtpi4GA",
+      "upload_date": null,
+      "duration": 108.0,
+      "view_count": 2371,
+      "description": ""
+    }
+  ]
+}

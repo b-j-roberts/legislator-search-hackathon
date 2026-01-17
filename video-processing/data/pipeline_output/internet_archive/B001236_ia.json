@@ -1,11 +1,26 @@
 {
   "bioguide_id": "B001236",
   "name": "John Boozman",
-  "total_found": 0,
-  "items_fetched": 0,
+  "total_found": 1,
+  "items_fetched": 1,
   "search_params": {
     "start_date": "2020-01-01",
     "end_date": "2026-12-31"
   },
-  "appearances": []
+  "appearances": [
+    {
+      "identifier": "CSPAN3_20260114_195900_President_Trump_Holds_Signing_Ceremony_on_Milk_Legislation",
+      "title": "President Trump Holds Signing Ceremony on Milk Legislation : CSPAN3 : January 14, 2026 2:59pm-3:48pm EST",
+      "date": "2026-01-14",
+      "snippet": "senators john boozman and mike crapo. roger marshall. peter welch. as well as representative g.t. thompson and tim walberg. all great people. also with us today is usda national nutrition advisor, dr. ben carson, my friend for a long time. we went head-to-head and it was not easy going head-to-head with ben. where is he? he still looks good. [laughter] that's because he drinks a lot of milk. [laughter] and some of our nation's wonderful dairy farmers and their children are going to be farmers for a long time, we hope. as it currently stands, schools participating in the national school lunch program are only able to offer students low or non-fat milk options. that was changed during the obama administration and a lot of people disagreed with it at the time. with this legislation, schools will finally be able to expand their offerings to include nutritious whole milk. it's actually a definition. whole milk. and it's whole with a w. for those of you that have a problem. most of the media knows. [laughter] this is the perfect follow-up to the new real food pyramid and secretary kenne",
+      "network": "CSPAN3",
+      "collection": "TV-CSPAN3",
+      "start_time": "371",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CSPAN3_20260114_195900_President_Trump_Holds_Signing_Ceremony_on_Milk_Legislation/CSPAN3_20260114_195900_President_Trump_Holds_Signing_Ceremony_on_Milk_Legislation.mp4?t=371/431&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CSPAN3_20260114_195900_President_Trump_Holds_Signing_Ceremony_on_Milk_Legislation/CSPAN3_20260114_195900_President_Trump_Holds_Signing_Ceremony_on_Milk_Legislation.thumbs/CSPAN3_20260114_195900_President_Trump_Holds_Signing_Ceremony_on_Milk_Legislation_000358.jpg",
+      "archive_url": "https://archive.org/details/CSPAN3_20260114_195900_President_Trump_Holds_Signing_Ceremony_on_Milk_Legislation",
+      "embed_url": "https://archive.org/embed/CSPAN3_20260114_195900_President_Trump_Holds_Signing_Ceremony_on_Milk_Legislation"
+    }
+  ]
 }

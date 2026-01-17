@@ -1,0 +1,26 @@
+{
+  "bioguide_id": "W000829",
+  "name": "Tony Wied",
+  "total_found": 1,
+  "items_fetched": 1,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "CSPAN_20260108_150000_U.S._House_of_Representatives_U.S._House_of_Representatives",
+      "title": "U.S. House of Representatives U.S. House of Representatives : CSPAN : January 8, 2026 10:00am-11:50am EST",
+      "date": "2026-01-08",
+      "snippet": "january 8th, 2026 i hereby appoint the honorable tony wied to act as speaker pro tempore on this day. signed mike johnson, speaker of the house of representatives. >> pursuant to the order of the house of january 6th, 2026, the chair will now recognize members from lists submitted by the majority and minority leaders for morning hour debate. the chair will alternate recognition between the parties, with time equally allocated between the parties and each member other than the majority and minority leaders, and the minority whip limited to five minutes, but in no event shall debate continue beyond 11:50 a.m. the chair now recognizes the gentleman from california, mr. mcclintock, for five minutes. >> mr. speaker, there is much to unpack from the arrest of venezuelan dictator nicolas maduro. above all, there is the stark contrast between the american socialists, who are bitterly denouncing the ouster of this socialist dictator and the masses of ordinary venezuelans celebrating their deliverance from him. socialism under chavez and maduro utterly destroyed the prosperity and freedom of ve",
+      "network": "CSPAN",
+      "collection": "TV-CSPAN",
+      "start_time": "86",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CSPAN_20260108_150000_U.S._House_of_Representatives_U.S._House_of_Representatives/CSPAN_20260108_150000_U.S._House_of_Representatives_U.S._House_of_Representatives.mp4?t=86/146&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CSPAN_20260108_150000_U.S._House_of_Representatives_U.S._House_of_Representatives/CSPAN_20260108_150000_U.S._House_of_Representatives_U.S._House_of_Representatives.thumbs/CSPAN_20260108_150000_U.S._House_of_Representatives_U.S._House_of_Representatives_000058.jpg",
+      "archive_url": "https://archive.org/details/CSPAN_20260108_150000_U.S._House_of_Representatives_U.S._House_of_Representatives",
+      "embed_url": "https://archive.org/embed/CSPAN_20260108_150000_U.S._House_of_Representatives_U.S._House_of_Representatives"
+    }
+  ]
+}

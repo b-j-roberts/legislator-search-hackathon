@@ -1,11 +1,40 @@
 {
   "bioguide_id": "C001047",
   "name": "Shelley Moore Capito",
-  "total_found": 0,
-  "items_fetched": 0,
+  "total_found": 2,
+  "items_fetched": 2,
   "search_params": {
     "start_date": "2020-01-01",
     "end_date": "2026-12-31"
   },
-  "appearances": []
+  "appearances": [
+    {
+      "identifier": "CSPAN2_20260116_133000_U.S._Senate_U.S._Senate",
+      "title": "U.S. Senate U.S. Senate : CSPAN2 : January 16, 2026 8:30am-8:47am EST",
+      "date": "2026-01-16",
+      "snippet": "of rule 1, paragraph 3, of the standing rules of the senate, i hereby appoint the honorable shelley moore capito, a senator from the state of west virginia, to perform the duties of the chair. signed: chuck grassley, president pro tempore. the presiding officer: under the previous order, the senate stands in recess until 10:00 a.m. on tuesday, january 20, a.m. on tuesday, january 20, >> that wraps up this pro forma session in the u.s. senate. lawmakers will be any state work. back next week before returning to work the last week in january. more coverage when senators return right here on c-span2. we will takedi you back now to r scheduled program. we join it in progress. >> simulate relationships and emotional bonds causing to rely on technology or social and emotional needs and spend hours every day talking to the chatbot. more addictivell algorithms, moe influence design component of this data collection get to each of the petalsai from yes or no, degree ai chatbots pose new and unique risk to young people? >> best. >> desk. >> yes. >> i completely agree. if we'rear learned anything over the ",
+      "network": "CSPAN2",
+      "collection": "TV-CSPAN2",
+      "start_time": "128",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CSPAN2_20260116_133000_U.S._Senate_U.S._Senate/CSPAN2_20260116_133000_U.S._Senate_U.S._Senate.mp4?t=128/188&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CSPAN2_20260116_133000_U.S._Senate_U.S._Senate/CSPAN2_20260116_133000_U.S._Senate_U.S._Senate.thumbs/CSPAN2_20260116_133000_U.S._Senate_U.S._Senate_000118.jpg",
+      "archive_url": "https://archive.org/details/CSPAN2_20260116_133000_U.S._Senate_U.S._Senate",
+      "embed_url": "https://archive.org/embed/CSPAN2_20260116_133000_U.S._Senate_U.S._Senate"
+    },
+    {
+      "identifier": "FOXNEWSW_20260113_140000_Americas_Newsroom",
+      "title": "America's Newsroom : FOXNEWSW : January 13, 2026 6:00am-7:00am PST",
+      "date": "2026-01-13",
+      "snippet": "riley gaines and karrie urbahn and shelley moore capito. thank you. [shouting] >> bill: all that was just from yesterday. anti-ice protests raging on in minnesota. that state now suing the trump administration in response to the immigration crackdown. the border czar is tom homan. he has a lot of questions and is here to respond. we'll talk to him momentarily. >> dana: president trump is hitting the road to tout the economy. where he is headed and the progress he is pointing to as we get new data out this morning. >> bill: the chaos in iran has not let up. a warning for americans who live there. try to discern what we know about what's happening in realtime for these protests today. [shouting] over the years, you've talked to her about boys. you've talked to her till you were blue in the face. you've talked about parenting tips... ...college prep... ...and who's in the family photos. now, it's time to talk about what living looks like for you. for over 30 years, right at home has been providing seniors the tools they need to plan the next chapter of t",
+      "network": "FOXNEWSW",
+      "collection": "TV-FOXNEWSW",
+      "start_time": "890",
+      "end_time": "",
+      "video_url": "https://archive.org/download/FOXNEWSW_20260113_140000_Americas_Newsroom/FOXNEWSW_20260113_140000_Americas_Newsroom.mp4?t=890/950&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/FOXNEWSW_20260113_140000_Americas_Newsroom/FOXNEWSW_20260113_140000_Americas_Newsroom.thumbs/FOXNEWSW_20260113_140000_Americas_Newsroom_000869.jpg",
+      "archive_url": "https://archive.org/details/FOXNEWSW_20260113_140000_Americas_Newsroom",
+      "embed_url": "https://archive.org/embed/FOXNEWSW_20260113_140000_Americas_Newsroom"
+    }
+  ]
 }

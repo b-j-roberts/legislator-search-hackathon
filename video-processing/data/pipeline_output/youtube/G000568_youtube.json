@@ -1,0 +1,166 @@
+{
+  "bioguide_id": "G000568",
+  "name": "H. Morgan Griffith",
+  "total_found": 26,
+  "filtered_count": 14,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "Iw04J8_KPTs",
+      "title": "EXCLUSIVE: Congressman Morgan Griffith addresses issues affecting coal miners",
+      "url": "https://www.youtube.com/watch?v=Iw04J8_KPTs",
+      "channel": "WJHL",
+      "channel_id": "UC1Gz1YkPBoLzQSBKbswBHAw",
+      "upload_date": null,
+      "duration": 196.0,
+      "view_count": 70,
+      "description": ""
+    },
+    {
+      "video_id": "sDEprQtClQg",
+      "title": "Congressman Guthrie questions Healthcare.gov contractors",
+      "url": "https://www.youtube.com/watch?v=sDEprQtClQg",
+      "channel": "BrettGuthrie",
+      "channel_id": "UCdJhDw-YbdH0RHfWK0sIfiw",
+      "upload_date": null,
+      "duration": 316.0,
+      "view_count": 69,
+      "description": ""
+    },
+    {
+      "video_id": "07JZNKuZ2Rc",
+      "title": "Rep. Susan Brooks on heroin epidemic, presidential politics",
+      "url": "https://www.youtube.com/watch?v=07JZNKuZ2Rc",
+      "channel": "HeraldBulletin",
+      "channel_id": "UCNl3fSGYt2iO4aaOlaiAcaA",
+      "upload_date": null,
+      "duration": 812.0,
+      "view_count": 238,
+      "description": ""
+    },
+    {
+      "video_id": "TZky9GaSFEQ",
+      "title": "Congress: Best & Worst Voting Records on Civil Liberties: FISA, CISPA, NDAA, Audit the Fed",
+      "url": "https://www.youtube.com/watch?v=TZky9GaSFEQ",
+      "channel": "aligzanduh",
+      "channel_id": "UCJMePpqaLvVaXxLSBiI47rw",
+      "upload_date": null,
+      "duration": 840.0,
+      "view_count": 259,
+      "description": ""
+    },
+    {
+      "video_id": "8SBXtSCzqCc",
+      "title": "US House E&C 2019 Hearing: Rep McKinley Questions EPA OCSPP Assistant Administrator Dunn on Asbestos",
+      "url": "https://www.youtube.com/watch?v=8SBXtSCzqCc",
+      "channel": "Asbestos Disease Awareness Organization ADAO",
+      "channel_id": "UC_4VpV2ZLpFa_k-tqQfqAcA",
+      "upload_date": null,
+      "duration": 324.0,
+      "view_count": 24,
+      "description": ""
+    },
+    {
+      "video_id": "6ldpEGpHl9Q",
+      "title": "Congressman Morgan Griffith in an Oversight and Investigations Hearing Regarding Cybersecurity",
+      "url": "https://www.youtube.com/watch?v=6ldpEGpHl9Q",
+      "channel": "RepMorganGriffith",
+      "channel_id": "UCzxqD7EY_Rdvbc0spbaYkJA",
+      "upload_date": null,
+      "duration": 308.0,
+      "view_count": 384,
+      "description": ""
+    },
+    {
+      "video_id": "S55463OgH6g",
+      "title": "Guthrie Opening Statement at Opioid Hearing",
+      "url": "https://www.youtube.com/watch?v=S55463OgH6g",
+      "channel": "BrettGuthrie",
+      "channel_id": "UCdJhDw-YbdH0RHfWK0sIfiw",
+      "upload_date": null,
+      "duration": 41.0,
+      "view_count": 30,
+      "description": ""
+    },
+    {
+      "video_id": "AMJwG_Hk-uo",
+      "title": "100213__Congressman Mullin Comments During Hearing on FEMA and First Responders",
+      "url": "https://www.youtube.com/watch?v=AMJwG_Hk-uo",
+      "channel": "Markwayne Mullin",
+      "channel_id": "UCLQlm-cbGbJj9baZC6oFsag",
+      "upload_date": null,
+      "duration": 105.0,
+      "view_count": 630,
+      "description": ""
+    },
+    {
+      "video_id": "wxfUiOKdFTI",
+      "title": "Rep. McKinley addresses a hearing on EPA rules that threaten electric reliability and affordability.",
+      "url": "https://www.youtube.com/watch?v=wxfUiOKdFTI",
+      "channel": "Rep. David McKinley",
+      "channel_id": "UCt7BWx4b8ubXa-PneAu103g",
+      "upload_date": null,
+      "duration": 315.0,
+      "view_count": 499,
+      "description": ""
+    },
+    {
+      "video_id": "5GtaFULmxJE",
+      "title": "Greg Walden Measles Hearing",
+      "url": "https://www.youtube.com/watch?v=5GtaFULmxJE",
+      "channel": "Former Rep Greg Walden",
+      "channel_id": "UCyaDp6ANSM9tvW7Y3LT_4KQ",
+      "upload_date": null,
+      "duration": 255.0,
+      "view_count": 86,
+      "description": ""
+    },
+    {
+      "video_id": "cVD4d3ONgck",
+      "title": "Committee Ranking Member Greg Walden (R-OR) Questions Dr. Diane Foley",
+      "url": "https://www.youtube.com/watch?v=cVD4d3ONgck",
+      "channel": "prolifeinformation",
+      "channel_id": "UCi7rBJ2NmsFgfC7efGEWB-w",
+      "upload_date": null,
+      "duration": 316.0,
+      "view_count": 16,
+      "description": ""
+    },
+    {
+      "video_id": "_C6M6J0NcH4",
+      "title": "Subcommittee Ranking Member Brett Guthrie (R-KY) Questions Dr. Diane Foley on Colocation",
+      "url": "https://www.youtube.com/watch?v=_C6M6J0NcH4",
+      "channel": "prolifeinformation",
+      "channel_id": "UCi7rBJ2NmsFgfC7efGEWB-w",
+      "upload_date": null,
+      "duration": 308.0,
+      "view_count": 5,
+      "description": ""
+    },
+    {
+      "video_id": "ZjEwgGxCU1I",
+      "title": "Rep. Brooks Asks Questions During E&C Hearing on Combating the Opioid Crisis",
+      "url": "https://www.youtube.com/watch?v=ZjEwgGxCU1I",
+      "channel": "Susan W. Brooks",
+      "channel_id": "UCMd7LzaBcbQ06aKHoj9KkSQ",
+      "upload_date": null,
+      "duration": 414.0,
+      "view_count": 21,
+      "description": ""
+    },
+    {
+      "video_id": "bAGEVBEEQ7k",
+      "title": "Recordings of the House of Delegates Sessions, 14 January 1998",
+      "url": "https://www.youtube.com/watch?v=bAGEVBEEQ7k",
+      "channel": "LibraryofVa",
+      "channel_id": "UC8rZypeG4_Pu8aDkigY-Nbg",
+      "upload_date": null,
+      "duration": 5852.0,
+      "view_count": 3189,
+      "description": ""
+    }
+  ]
+}

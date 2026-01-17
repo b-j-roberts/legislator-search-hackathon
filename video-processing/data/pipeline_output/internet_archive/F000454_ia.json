@@ -1,0 +1,40 @@
+{
+  "bioguide_id": "F000454",
+  "name": "Bill Foster",
+  "total_found": 2,
+  "items_fetched": 2,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "CSPAN3_20260110_043400_Sen._Mark_Kelly_on_Artificial_Intelligence__Innovation",
+      "title": "Sen. Mark Kelly on Artificial Intelligence & Innovation : CSPAN3 : January 9, 2026 11:34pm-12:35am EST",
+      "date": "2026-01-10",
+      "snippet": "we've seen a lot of proposals from representatives ted lieu, bill foster regarding legislation on ai and then we've also seen the trump administration try and push preemption of state ai laws in things like the ndaa and other sort of and other sort of bills as well. i'm curious what you think whether federal federal legislation on ai exists. your opinion on state preemption of ai laws, do you think that might be a good thing, bad thing? >> you mean whether it exists right now? >> should we preempt or should it be possible for the federal government to preempt state law? >> like in the event that federal legislation on ai laws exists like ted lee's proposal, do you think we should preempt? >> i think generally, you know, if you have a federal law that really, you know, really strongly addresses issues, i think the states should follow those laws. right now we don't have that, and i think it's up to the states to be able to protect their citizens in those states, you know, state legislatures and the governor, uh, when they see that there's a problem. it's, it's not only their right, it",
+      "network": "CSPAN3",
+      "collection": "TV-CSPAN3",
+      "start_time": "2458",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CSPAN3_20260110_043400_Sen._Mark_Kelly_on_Artificial_Intelligence__Innovation/CSPAN3_20260110_043400_Sen._Mark_Kelly_on_Artificial_Intelligence__Innovation.mp4?t=2458/2518&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CSPAN3_20260110_043400_Sen._Mark_Kelly_on_Artificial_Intelligence__Innovation/CSPAN3_20260110_043400_Sen._Mark_Kelly_on_Artificial_Intelligence__Innovation.thumbs/CSPAN3_20260110_043400_Sen._Mark_Kelly_on_Artificial_Intelligence__Innovation_002428.jpg",
+      "archive_url": "https://archive.org/details/CSPAN3_20260110_043400_Sen._Mark_Kelly_on_Artificial_Intelligence__Innovation",
+      "embed_url": "https://archive.org/embed/CSPAN3_20260110_043400_Sen._Mark_Kelly_on_Artificial_Intelligence__Innovation"
+    },
+    {
+      "identifier": "CSPAN3_20260115_013400_The_Hearing_Room_Nasdaq__Wall_Street_Executives_Testify_on_AI",
+      "title": "The Hearing Room Nasdaq & Wall Street Executives Testify on AI : CSPAN3 : January 14, 2026 8:34pm-12:12am EST",
+      "date": "2026-01-15",
+      "snippet": "alas a congressman, congress and bill foster and i spoke on speaker johnson minority leader jeffries bipartisan congressional a.i. task force. congressman steve lynch and i lead this committee on the a.i. working group. in both forms we examine how regulators are approaching artificial intelligence, analyzing its benefits and risk in a highly regulated environment. just this past fall digital assets financial technology artificial intelligence subcommittee led by chairman brian style held a hearing were members evaluated help financial regulators and firms are using a.i. today's hearing of builds on earlier at work last congress and this congress will help us further examine a.i. use cases in the financial and housing industries. we will also consider how agencies are providing clear regulatory environment where existing laws may fall short or require modernization and explore ways to foster innovation. for decades the financial services industry has pioneered the real-world application of a.i. and continues to be a standout leader. a.i. has shown transformative and potential to resh",
+      "network": "CSPAN3",
+      "collection": "TV-CSPAN3",
+      "start_time": "146",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CSPAN3_20260115_013400_The_Hearing_Room_Nasdaq__Wall_Street_Executives_Testify_on_AI/CSPAN3_20260115_013400_The_Hearing_Room_Nasdaq__Wall_Street_Executives_Testify_on_AI.mp4?t=146/206&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CSPAN3_20260115_013400_The_Hearing_Room_Nasdaq__Wall_Street_Executives_Testify_on_AI/CSPAN3_20260115_013400_The_Hearing_Room_Nasdaq__Wall_Street_Executives_Testify_on_AI.thumbs/CSPAN3_20260115_013400_The_Hearing_Room_Nasdaq__Wall_Street_Executives_Testify_on_AI_000117.jpg",
+      "archive_url": "https://archive.org/details/CSPAN3_20260115_013400_The_Hearing_Room_Nasdaq__Wall_Street_Executives_Testify_on_AI",
+      "embed_url": "https://archive.org/embed/CSPAN3_20260115_013400_The_Hearing_Room_Nasdaq__Wall_Street_Executives_Testify_on_AI"
+    }
+  ]
+}

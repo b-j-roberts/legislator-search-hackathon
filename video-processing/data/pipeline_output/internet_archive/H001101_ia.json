@@ -1,0 +1,26 @@
+{
+  "bioguide_id": "H001101",
+  "name": "Pat Harrigan",
+  "total_found": 1,
+  "items_fetched": 1,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "FBC_20260102_120000_Mornings_With_Maria_Bartiromo",
+      "title": "Mornings With Maria Bartiromo : FBC : January 2, 2026 7:00am-8:01am EST",
+      "date": "2026-01-02",
+      "snippet": "cheryl: congressman pat harrigan, thank you for being with us this morning.appreciate your time. happy new year, sir. >> happy new year to you, cheryl. thanks for having me. cheryl: we'll see you soon. we'll be watching your work next week. president trump sending a clear message to iran overnight asthmas i've protests put the country on the verge of a political reckoning. former state department senior advisor christian whiton is here to weigh in next. you're watching \"mornings with maria\" live on fox business. \u266a he sure knows these parts well. folks say the plains whisper to him. (\u266a) [gps voice] outlaws in 500 feet, rerouting. making a left! innovation changes everything. man, he's good. with one investment, you can access the nasdaq-100 innovators who are rethinking the world. before investing, carefully read and consider fund investment objectives, risks, charges, expenses, and more in prospectus at invesco.com. cheryl: protests in iran escalating with deadly clashes between demonstrators and security forces, both prot protestsers and security personnel k",
+      "network": "FBC",
+      "collection": "TV-FBC",
+      "start_time": "2020",
+      "end_time": "",
+      "video_url": "https://archive.org/download/FBC_20260102_120000_Mornings_With_Maria_Bartiromo/FBC_20260102_120000_Mornings_With_Maria_Bartiromo.mp4?t=2020/2080&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/FBC_20260102_120000_Mornings_With_Maria_Bartiromo/FBC_20260102_120000_Mornings_With_Maria_Bartiromo.thumbs/FBC_20260102_120000_Mornings_With_Maria_Bartiromo_002007.jpg",
+      "archive_url": "https://archive.org/details/FBC_20260102_120000_Mornings_With_Maria_Bartiromo",
+      "embed_url": "https://archive.org/embed/FBC_20260102_120000_Mornings_With_Maria_Bartiromo"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "bioguide_id": "C001126",
+  "name": "Mike Carey",
+  "total_found": 2,
+  "items_fetched": 2,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "CSPAN_20260110_165800_Washington_Journal_Washington_Journal",
+      "title": "Washington Journal Washington Journal : CSPAN : January 10, 2026 11:58am-12:56pm EST",
+      "date": "2026-01-10",
+      "snippet": "then it is fda commissioner mark mike carey on the future of medicine in light of technological innovationsthe governors of alaska in the governors of alaska in nevada discuss innovation and economic growth. later a pair of fcc commissioners are joined by national telecommunications and information administration administrator in a conversation about the top priorities for u.s. leadership and universal connectivity, free speech and leading in a i innovation among other topics. now republican fcc chairman brendan carr comments on the fcc's key regulatory efforts under his leadership and about the future of tech policy. hour. cooksey joined an fcc in 2012 pretty span of vocal advocate for policies that support broadband deployment. that strength and infrastructure and ensure the communication networks keep peace with the pace of innovation at his work touches every corner of technology in the communication landscape. the agency has had some big wins last year",
+      "network": "CSPAN",
+      "collection": "TV-CSPAN",
+      "start_time": "3414",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CSPAN_20260110_165800_Washington_Journal_Washington_Journal/CSPAN_20260110_165800_Washington_Journal_Washington_Journal.mp4?t=3414/3474&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CSPAN_20260110_165800_Washington_Journal_Washington_Journal/CSPAN_20260110_165800_Washington_Journal_Washington_Journal.thumbs/CSPAN_20260110_165800_Washington_Journal_Washington_Journal_003387.jpg",
+      "archive_url": "https://archive.org/details/CSPAN_20260110_165800_Washington_Journal_Washington_Journal",
+      "embed_url": "https://archive.org/embed/CSPAN_20260110_165800_Washington_Journal_Washington_Journal"
+    },
+    {
+      "identifier": "CNNW_20260109_120000_CNN_News_Central",
+      "title": "CNN News Central : CNNW : January 9, 2026 4:00am-5:00am PST",
+      "date": "2026-01-09",
+      "snippet": "which is actually a pretty big number and includes people like derrick van orden, rob wittman, mike carey, you know, jake, your friend jake sherman over a punchbowl. these are not your normal republicans who break from the president on what's considered to be more moderate issues here. what are those numbers? and those people tell you, doug. >> it tells me that they're looking at what the numbers are going to be for obamacare costs. my premiums went up $90 a month. i just paid that yesterday. and they're seeing and hearing from their constituents that they're concerned about this, who don't want to foot bigger and bigger health care bills. and ultimately, yes, on some level, this is defying donald trump. but it also may be helping trump and helping congressional republicans who are looking at election year that historically we know shouldn't go well for republicans. >> what do you think about that, simon >> yeah, i think we saw four votes yesterday in one day where the republicans rebuked the president. there were three votes in the house. there was a significant vote in the senate to rei",
+      "network": "CNNW",
+      "collection": "TV-CNNW",
+      "start_time": "2419",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CNNW_20260109_120000_CNN_News_Central/CNNW_20260109_120000_CNN_News_Central.mp4?t=2419/2479&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CNNW_20260109_120000_CNN_News_Central/CNNW_20260109_120000_CNN_News_Central.thumbs/CNNW_20260109_120000_CNN_News_Central_002397.jpg",
+      "archive_url": "https://archive.org/details/CNNW_20260109_120000_CNN_News_Central",
+      "embed_url": "https://archive.org/embed/CNNW_20260109_120000_CNN_News_Central"
+    }
+  ]
+}

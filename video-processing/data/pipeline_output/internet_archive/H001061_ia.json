@@ -1,11 +1,40 @@
 {
   "bioguide_id": "H001061",
   "name": "John Hoeven",
-  "total_found": 0,
-  "items_fetched": 0,
+  "total_found": 2,
+  "items_fetched": 2,
   "search_params": {
     "start_date": "2020-01-01",
     "end_date": "2026-12-31"
   },
-  "appearances": []
+  "appearances": [
+    {
+      "identifier": "CSPAN3_20260107_090700_Rep._David_Schweikert_R-AZ_Discusses_U.S._Economic_Growth",
+      "title": "Rep. David Schweikert R-AZ Discusses U.S. Economic Growth : CSPAN3 : January 7, 2026 4:07am-4:28am EST",
+      "date": "2026-01-07",
+      "snippet": "one of the most popular events i ever did was inviting senator john hoeven and senator joe manchin to a talk on how lousy was being a senator compared to governor. i want to ask you, now is you are running for governor of arizona, i'm interested in what weather you are going to change. what would happen if you could reduce obesity by one third, one half? there is things we have advocated that federal level.",
+      "network": "CSPAN3",
+      "collection": "TV-CSPAN3",
+      "start_time": "1101",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CSPAN3_20260107_090700_Rep._David_Schweikert_R-AZ_Discusses_U.S._Economic_Growth/CSPAN3_20260107_090700_Rep._David_Schweikert_R-AZ_Discusses_U.S._Economic_Growth.mp4?t=1101/1161&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CSPAN3_20260107_090700_Rep._David_Schweikert_R-AZ_Discusses_U.S._Economic_Growth/CSPAN3_20260107_090700_Rep._David_Schweikert_R-AZ_Discusses_U.S._Economic_Growth.thumbs/CSPAN3_20260107_090700_Rep._David_Schweikert_R-AZ_Discusses_U.S._Economic_Growth_001078.jpg",
+      "archive_url": "https://archive.org/details/CSPAN3_20260107_090700_Rep._David_Schweikert_R-AZ_Discusses_U.S._Economic_Growth",
+      "embed_url": "https://archive.org/embed/CSPAN3_20260107_090700_Rep._David_Schweikert_R-AZ_Discusses_U.S._Economic_Growth"
+    },
+    {
+      "identifier": "FBC_20260102_210000_Kudlow",
+      "title": "Kudlow : FBC : January 2, 2026 4:00pm-5:01pm EST",
+      "date": "2026-01-02",
+      "snippet": "joining me now is north dakota senator john hoeven, with more on this. golden the congressman from new york saying i spoke to somebody in her 60s who told me her aca premium is more than doubling because republicans refuse to employee tend the tax subsidies for low income americans but here is what democrats promised us when they signed on to obamacare, the so-called affordable care act about a dozen years ago. roll tape. >> a lot of americans will pay significantly less for their insurance than they do now. 95% of uninsured americans will see their premiums cost less than was expected. >> millions of americans are seeing lower cost and higher coverage thanks to the affordable care act. david: well, senator? the premiums have not gone down. they have tripled. they have gone up three times with obamacare. that was an absolute lie that they were selling us. i've never seen snake oil sold more successfully or for a higher cost than what they did, and now they're blaming republicans for the rates going up. >> exactly. david, the one thing we know for sure ab",
+      "network": "FBC",
+      "collection": "TV-FBC",
+      "start_time": "3028",
+      "end_time": "",
+      "video_url": "https://archive.org/download/FBC_20260102_210000_Kudlow/FBC_20260102_210000_Kudlow.mp4?t=3028/3088&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/FBC_20260102_210000_Kudlow/FBC_20260102_210000_Kudlow.thumbs/FBC_20260102_210000_Kudlow_002998.jpg",
+      "archive_url": "https://archive.org/details/FBC_20260102_210000_Kudlow",
+      "embed_url": "https://archive.org/embed/FBC_20260102_210000_Kudlow"
+    }
+  ]
 }

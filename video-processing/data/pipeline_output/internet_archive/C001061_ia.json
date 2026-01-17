@@ -1,0 +1,26 @@
+{
+  "bioguide_id": "C001061",
+  "name": "Emanuel Cleaver",
+  "total_found": 1,
+  "items_fetched": 1,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "CNNW_20260116_220000_The_Lead_With_Jake_Tapper",
+      "title": "The Lead With Jake Tapper : CNNW : January 16, 2026 2:00pm-3:00pm PST",
+      "date": "2026-01-16",
+      "snippet": "and insurance subcommittee, worked with all the democrats, by the way, including maxine waters, emanuel cleaver and we have housing affordability reform legislation that's ready to be voted on in the house. the senate, working in a bipartisan way, has the same. and the president is working with us to deliver this. just today, president trump at the white house held a roundtable on rural health care. the $50 billion that the republican won. big, beautiful bill is pushing across america. i mean we are at the table on affordability. we're also addressing fraud the fraud in minnesota, the fraud in california. this is something that americans want to get under control. and the and the trump white house has gotten no credit from anyone on a lot of the networks for what we've done to close the border, to stop the flow of fentanyl into our communities, to make crime go lower and to address safety. so i really think 2026, the voters are going to have an opportunity to see what's coming, when we get these trade deals figured out, it's going to really allow us to have some sustainability and better tradin",
+      "network": "CNNW",
+      "collection": "TV-CNNW",
+      "start_time": "1058",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CNNW_20260116_220000_The_Lead_With_Jake_Tapper/CNNW_20260116_220000_The_Lead_With_Jake_Tapper.mp4?t=1058/1118&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CNNW_20260116_220000_The_Lead_With_Jake_Tapper/CNNW_20260116_220000_The_Lead_With_Jake_Tapper.thumbs/CNNW_20260116_220000_The_Lead_With_Jake_Tapper_001047.jpg",
+      "archive_url": "https://archive.org/details/CNNW_20260116_220000_The_Lead_With_Jake_Tapper",
+      "embed_url": "https://archive.org/embed/CNNW_20260116_220000_The_Lead_With_Jake_Tapper"
+    }
+  ]
+}

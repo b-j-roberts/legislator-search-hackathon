@@ -1,0 +1,40 @@
+{
+  "bioguide_id": "W000816",
+  "name": "Roger Williams",
+  "total_found": 2,
+  "items_fetched": 2,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "IRINN_20260105_010000",
+      "title": "IRINN : January 5, 2026 4:30am-5:01am IRST",
+      "date": "2026-01-05",
+      "snippet": "the fate of fatima hospital , roger williams medical center , depends on the decision of the departmenthealth and the attorney general. this means sacrificing the lives of patients for the sake of greater shareholder profits. an experience that has happened repeatedly in other states in the united states, and has sparked a wave of protests. you guys are very, very far apart. both of these guys were big sponsors of the deal that transferred ownership of the hospitals to a private equity firm and its partner in island day in 2014. what went through your mind when you heard that this private equity firm was coming? it was like a white savior coming to save us. what made us feel that way? because they came and promised to do something that would make us successful. they would create financial stability and that was essential for the hospital to continue operating. we thought it might be good, we might keep our jobs, so let's see how much this happiness of yours is worth . i don't think it even lasted two months . what did you really see that worried you? they started laying off not only man",
+      "network": "IRINN",
+      "collection": "TV-IRINN",
+      "start_time": "254",
+      "end_time": "",
+      "video_url": "https://archive.org/download/IRINN_20260105_010000/IRINN_20260105_010000.mp4?t=254/314&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/IRINN_20260105_010000/IRINN_20260105_010000.thumbs/IRINN_20260105_010000_000238.jpg",
+      "archive_url": "https://archive.org/details/IRINN_20260105_010000",
+      "embed_url": "https://archive.org/embed/IRINN_20260105_010000"
+    },
+    {
+      "identifier": "GBN_20260108_150000_Martin_Daubney",
+      "title": "Martin Daubney : GBN : January 8, 2026 3:00pm-6:01pm GMT",
+      "date": "2026-01-08",
+      "snippet": "roger williams the show a pleasure to have your company and a very, very belated happy new year to youn for you. is it too soon to be making a drama about huw edwards like this? >> i think it is, but it might be. there might never be a right time. i mean, i think that there's a vast difference between making a documentary where you've got new evidence and you present that and you have do it. and making a drama like this. the problem is with drama is it wants to have a clear narrative line. you want to have a very satisfying conclusion, and maybe the facts don't allow you to do that. maybe you don't know enough. and then there's the question of what about individual's rights? innocent people have been involved in this. do they have the right to be consulted? they probably have been, but it should include, for example, huw edwards family. i mean, if they see themselves presented, do they have any rights about the way they presented? these are very, very difficult issues. and the other thing that often happens that dramatists, in order with the best of intentions, often invent scenes for ",
+      "network": "GBN",
+      "collection": "TV-GBN",
+      "start_time": "10179",
+      "end_time": "",
+      "video_url": "https://archive.org/download/GBN_20260108_150000_Martin_Daubney/GBN_20260108_150000_Martin_Daubney.mp4?t=10179/10239&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/GBN_20260108_150000_Martin_Daubney/GBN_20260108_150000_Martin_Daubney.thumbs/GBN_20260108_150000_Martin_Daubney_010168.jpg",
+      "archive_url": "https://archive.org/details/GBN_20260108_150000_Martin_Daubney",
+      "embed_url": "https://archive.org/embed/GBN_20260108_150000_Martin_Daubney"
+    }
+  ]
+}

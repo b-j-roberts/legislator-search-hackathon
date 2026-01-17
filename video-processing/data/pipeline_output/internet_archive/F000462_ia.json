@@ -1,0 +1,26 @@
+{
+  "bioguide_id": "F000462",
+  "name": "Lois Frankel",
+  "total_found": 1,
+  "items_fetched": 1,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "CSPAN_20260114_183000_U.S._House_of_Representatives_U.S._House_of_Representatives",
+      "title": "U.S. House of Representatives U.S. House of Representatives : CSPAN : January 14, 2026 1:30pm-3:42pm EST",
+      "date": "2026-01-14",
+      "snippet": "ranking member, steny hoyer on financial services lois frankel on national security. department of state who led these negotiations and secured important provisions which we can all be proud of. the appropriations committee staff, in particular, matt smith. aaron philip tyson at etscorn, and laurie mcnown, who worked tirelessly to produce this legislation. and our counterparts in the majority, led by my friend chairman cole and the subcommittee chairs, david joyce and mario diaz-balart. these two bills are a continuation of our efforts to reassert congress's power of the purse, reject $163 billion in cuts proposed by the trump administration, constrain the white house's abuse of the budget process and protect democratic priorities at home and abroad. this bill supports the small businesses and entrepreneurs that fuel the american economy by providing more than $1 billion for the small business administration and increasing funding for entrepreneurial development programs by $13 million. small businesses employ nearly half of the american workforce. at a time when so m",
+      "network": "CSPAN",
+      "collection": "TV-CSPAN",
+      "start_time": "2686",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CSPAN_20260114_183000_U.S._House_of_Representatives_U.S._House_of_Representatives/CSPAN_20260114_183000_U.S._House_of_Representatives_U.S._House_of_Representatives.mp4?t=2686/2746&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CSPAN_20260114_183000_U.S._House_of_Representatives_U.S._House_of_Representatives/CSPAN_20260114_183000_U.S._House_of_Representatives_U.S._House_of_Representatives.thumbs/CSPAN_20260114_183000_U.S._House_of_Representatives_U.S._House_of_Representatives_002669.jpg",
+      "archive_url": "https://archive.org/details/CSPAN_20260114_183000_U.S._House_of_Representatives_U.S._House_of_Representatives",
+      "embed_url": "https://archive.org/embed/CSPAN_20260114_183000_U.S._House_of_Representatives_U.S._House_of_Representatives"
+    }
+  ]
+}

@@ -90,7 +90,7 @@ def search_youtube_ytdlp(
                         "upload_date": video.get("upload_date"),
                         "duration": video.get("duration"),
                         "view_count": video.get("view_count"),
-                        "description": video.get("description", "")[:500],
+                        "description": (video.get("description") or "")[:500],
                     })
                 except json.JSONDecodeError:
                     continue

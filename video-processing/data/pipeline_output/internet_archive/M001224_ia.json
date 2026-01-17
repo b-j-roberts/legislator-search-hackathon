@@ -1,0 +1,26 @@
+{
+  "bioguide_id": "M001224",
+  "name": "Nathaniel Moran",
+  "total_found": 1,
+  "items_fetched": 1,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "CSPAN_20260112_200000_U.S._House_of_Representatives_U.S._House_of_Representatives",
+      "title": "U.S. House of Representatives U.S. House of Representatives : CSPAN : January 12, 2026 3:00pm-6:09pm EST",
+      "date": "2026-01-12",
+      "snippet": "representatives derek schmidt, who we heard from and nathaniel moran stephanie bice jim costa and my dear, dear friend across the aisle, congresswoman debbie dingell, who i wish could have joined us today for this debate. i'd also like to to thank the house judiciary committee and the appropriations committee, who had a strong hand in this, and leader scalise, for working with my team to bring this bill to the floor. and, of course, congresswoman lucy mcbath, for her tremendous support and her testimony to just the terrible injustice and travesty that s has endured. i want to thank her for her support and her management of this piece of legislation, h.r. 909, across the aisle. through our collaboration, we were able to include strong language, ensuring a comprehensive audit of the cvff will be delivered to congress. the information from this audit will help us do our jobs as policymakers and properly plan for the future of the cvff, and avoid another crisis like this to the dozens and dozens and dozens of supporting organizations that stood with me in this fight, including the nation",
+      "network": "CSPAN",
+      "collection": "TV-CSPAN",
+      "start_time": "2609",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CSPAN_20260112_200000_U.S._House_of_Representatives_U.S._House_of_Representatives/CSPAN_20260112_200000_U.S._House_of_Representatives_U.S._House_of_Representatives.mp4?t=2609/2669&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CSPAN_20260112_200000_U.S._House_of_Representatives_U.S._House_of_Representatives/CSPAN_20260112_200000_U.S._House_of_Representatives_U.S._House_of_Representatives.thumbs/CSPAN_20260112_200000_U.S._House_of_Representatives_U.S._House_of_Representatives_002608.jpg",
+      "archive_url": "https://archive.org/details/CSPAN_20260112_200000_U.S._House_of_Representatives_U.S._House_of_Representatives",
+      "embed_url": "https://archive.org/embed/CSPAN_20260112_200000_U.S._House_of_Representatives_U.S._House_of_Representatives"
+    }
+  ]
+}

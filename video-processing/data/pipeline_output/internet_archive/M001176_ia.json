@@ -1,11 +1,54 @@
 {
   "bioguide_id": "M001176",
   "name": "Jeff Merkley",
-  "total_found": 0,
-  "items_fetched": 0,
+  "total_found": 3,
+  "items_fetched": 3,
   "search_params": {
     "start_date": "2020-01-01",
     "end_date": "2026-12-31"
   },
-  "appearances": []
+  "appearances": [
+    {
+      "identifier": "CNNW_20260105_140000_CNN_News_Central",
+      "title": "CNN News Central : CNNW : January 5, 2026 6:00am-7:00am PST",
+      "date": "2026-01-05",
+      "snippet": "senator jeff merkley, thank you so much, john. >> thank you. >> all right.st minutes away from the opening bell on wall street. now, the dow, nasdaq and s&p all up a little bit this morning, the u.s. action in venezuela pushing gold prices higher oil prices this morning are slightly. now oil prices are slightly up. shares in the oil sector led by chevron and conocophillips. some good news here. regardless of the uncertainty in venezuela, forecasters say in 2026, gas prices will be cheaper, some of the cheapest they have seen since the pandemic. >> before the bell, brought to you by viking exploring the world inin comfort. . >> sail ththrough ththe heart o histororic cities s anand unforgrgettable scscenery witht viviking. unpack oncnce and get clososer to iconicic landmarksk locacal life andnd cultural l treasures.s. b because whehen y experirience europope on a v vi longshship, you'll spendnd less time gettiting there andnd moree being ththere viking expxplorine worlrld in comfortrt. >> dululcolax. >> gooood morning.g. hey. good mornrning. >> dulcolax liqui",
+      "network": "CNNW",
+      "collection": "TV-CNNW",
+      "start_time": "1716",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CNNW_20260105_140000_CNN_News_Central/CNNW_20260105_140000_CNN_News_Central.mp4?t=1716/1776&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CNNW_20260105_140000_CNN_News_Central/CNNW_20260105_140000_CNN_News_Central.thumbs/CNNW_20260105_140000_CNN_News_Central_001708.jpg",
+      "archive_url": "https://archive.org/details/CNNW_20260105_140000_CNN_News_Central",
+      "embed_url": "https://archive.org/embed/CNNW_20260105_140000_CNN_News_Central"
+    },
+    {
+      "identifier": "CSPAN2_20260112_195900_U.S._Senate_U.S._Senate",
+      "title": "U.S. Senate U.S. Senate : CSPAN2 : January 12, 2026 2:59pm-6:56pm EST",
+      "date": "2026-01-12",
+      "snippet": "i want to commend the subcommittee chair, lisa murkowski, and the ranking member jeff merkley for theirforts in crafting this legislation. finally, the energy and water development bill will improve water infrastructure and promote american energy independence. it will also strengthen our nuclear deterrence posture, ensure that our nuclear stockpiles' readiness and safety, and prepare for existing and future nuclear threats. subcommittee chair john kennedy and ranking member patty murray worked tirelessly on this bill, and they have my appreciation. mr. president, members ought to have a voice in the funding decisions that affects all of our states and constituents back home. the bills in this package were drafted with input from nearly every senator. together, senators submitted literally thousands of requests to the committee for consideration. in some cases, these were programmatic requests, supporting programs that they know well from their own state's experience. in other cases, they were a community development project request, cds's, and the legislation before us incorporates man",
+      "network": "CSPAN2",
+      "collection": "TV-CSPAN2",
+      "start_time": "9286",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CSPAN2_20260112_195900_U.S._Senate_U.S._Senate/CSPAN2_20260112_195900_U.S._Senate_U.S._Senate.mp4?t=9286/9346&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CSPAN2_20260112_195900_U.S._Senate_U.S._Senate/CSPAN2_20260112_195900_U.S._Senate_U.S._Senate.thumbs/CSPAN2_20260112_195900_U.S._Senate_U.S._Senate_009267.jpg",
+      "archive_url": "https://archive.org/details/CSPAN2_20260112_195900_U.S._Senate_U.S._Senate",
+      "embed_url": "https://archive.org/embed/CSPAN2_20260112_195900_U.S._Senate_U.S._Senate"
+    },
+    {
+      "identifier": "CSPAN_20260113_213100_U.S._House_of_Representatives_U.S._House_of_Representatives",
+      "title": "U.S. House of Representatives U.S. House of Representatives : CSPAN : January 13, 2026 4:31pm-9:30pm EST",
+      "date": "2026-01-13",
+      "snippet": "senator jeff merkley likened ice operations to fascism and claimed officers are doing nothing but terrorizingour communities. senator bernie sanders asked people to, quote, stop ice from what they are doing as soon as possible. senator elizabeth warren claimed ice is, quote, intentionally stoking fear and tearing communiti apart. senator ruben gallego said ice exists, quote, to scare the american public. senator mark warner equated ice officers to a brutal dictator. senator dick blumenthal accused ice of spreading lawlessness and recklessness. senator alex padilla accused of indiscriminate violence. senator dick durbin accused ice of officers of committing atrocities. representative ilhan omar said ice is, quote, state violence called officers, quote vile and beyond cruel and stated quote, abolishing ice is not enough. end quote. representative pramila jayapal called ice officers, quote deranged, accused them of, quote, kidnaping and said, quote, resistance to ice is quote inspiring and claimed ice officers will quote, shoot at you and kill you. end quote. representative eric swalwell smeared",
+      "network": "CSPAN",
+      "collection": "TV-CSPAN",
+      "start_time": "11695",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CSPAN_20260113_213100_U.S._House_of_Representatives_U.S._House_of_Representatives/CSPAN_20260113_213100_U.S._House_of_Representatives_U.S._House_of_Representatives.mp4?t=11695/11755&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CSPAN_20260113_213100_U.S._House_of_Representatives_U.S._House_of_Representatives/CSPAN_20260113_213100_U.S._House_of_Representatives_U.S._House_of_Representatives.thumbs/CSPAN_20260113_213100_U.S._House_of_Representatives_U.S._House_of_Representatives_011667.jpg",
+      "archive_url": "https://archive.org/details/CSPAN_20260113_213100_U.S._House_of_Representatives_U.S._House_of_Representatives",
+      "embed_url": "https://archive.org/embed/CSPAN_20260113_213100_U.S._House_of_Representatives_U.S._House_of_Representatives"
+    }
+  ]
 }

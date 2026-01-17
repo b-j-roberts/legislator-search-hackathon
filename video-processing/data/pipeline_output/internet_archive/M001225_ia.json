@@ -1,0 +1,26 @@
+{
+  "bioguide_id": "M001225",
+  "name": "Kevin Mullin",
+  "total_found": 1,
+  "items_fetched": 1,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "KNTV_20260111_023000_NBC_Bay_Area_News_Special",
+      "title": "NBC Bay Area News Special : KNTV : January 10, 2026 6:30pm-7:00pm PST",
+      "date": "2026-01-11",
+      "snippet": "kevin mullin: absolutely. bigad: congressman kevin mullin represents parts of california's silicon valley. kevin: the technology is moving so rapidly that we are playing catch up. but you also don't want to put a set of rules in place that will very quickly be outdated by the advance of technology. bigad: do you worry what might happen in the absence of federal regulation? kevin: absolutely, i worry. bigad: real concerns over a problem that is only becoming more real. male: i forgot my login information. would you mind sharing it? bigad: it's scary how quickly it can do it. bigad: sarah barrington was able to clone my voice in less than 30 seconds. sarah: and imagine now that we pipe that through a phone. so you've got background noise coming in, you've got a low quality call. it's even harder to tell if this is your identity or not. bigad: and now she warns just about anyone can do it with a few bucks and an internet connection. bigad shaban, \"nbc bay area\" news, we investigate. candice: okay, there is no ai ",
+      "network": "KNTV",
+      "collection": "TV-KNTV",
+      "start_time": "1178",
+      "end_time": "",
+      "video_url": "https://archive.org/download/KNTV_20260111_023000_NBC_Bay_Area_News_Special/KNTV_20260111_023000_NBC_Bay_Area_News_Special.mp4?t=1178/1238&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/KNTV_20260111_023000_NBC_Bay_Area_News_Special/KNTV_20260111_023000_NBC_Bay_Area_News_Special.thumbs/KNTV_20260111_023000_NBC_Bay_Area_News_Special_001169.jpg",
+      "archive_url": "https://archive.org/details/KNTV_20260111_023000_NBC_Bay_Area_News_Special",
+      "embed_url": "https://archive.org/embed/KNTV_20260111_023000_NBC_Bay_Area_News_Special"
+    }
+  ]
+}

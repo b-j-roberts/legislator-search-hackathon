@@ -1,0 +1,26 @@
+{
+  "bioguide_id": "L000583",
+  "name": "Barry Loudermilk",
+  "total_found": 1,
+  "items_fetched": 1,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "MSNOW_20260106_110000_Morning_Joe",
+      "title": "Morning Joe : MSNOW : January 6, 2026 3:00am-7:01am PST",
+      "date": "2026-01-06",
+      "snippet": "engaged in in this behavior and were here on campus on january 6th, the day before, you know, he, barry loudermilkt set of facts. they don't want to talk about these individuals coming to the capitol and in in engaging in the insurrection at the request of donald trump. they want to talk about other things. they want to change the subject, and they continually want to get away from the true topic at hand, which is donald trump sat in the white house for three hours while the capitol was being attacked, and many of these republicans were here in the building at the time. and yet donald trump doesn't want to acknowledge it. and this is the party of donald trump, so they won't acknowledge it. >> reports at the time that the president was watching on tv and even rewound some of the more violent clashes so we could see them again. congressman, let's switch gears now to venezuela. it certainly seems that the administration has signaled that this is more than just a quick one off removing of nicolas maduro. at minimum, there's going to be some sort of american presence to try to get the oil. the presiden",
+      "network": "MSNOW",
+      "collection": "TV-MSNOW",
+      "start_time": "11747",
+      "end_time": "",
+      "video_url": "https://archive.org/download/MSNOW_20260106_110000_Morning_Joe/MSNOW_20260106_110000_Morning_Joe.mp4?t=11747/11807&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/MSNOW_20260106_110000_Morning_Joe/MSNOW_20260106_110000_Morning_Joe.thumbs/MSNOW_20260106_110000_Morning_Joe_011729.jpg",
+      "archive_url": "https://archive.org/details/MSNOW_20260106_110000_Morning_Joe",
+      "embed_url": "https://archive.org/embed/MSNOW_20260106_110000_Morning_Joe"
+    }
+  ]
+}

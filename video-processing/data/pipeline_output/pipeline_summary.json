@@ -1,5 +1,5 @@
 {
-  "run_date": "2026-01-17T14:19:07.603132",
+  "run_date": "2026-01-17T15:31:37.042013",
   "legislators_processed": 100,
   "date_range": {
     "start": "2020-01-01",
@@ -10,8 +10,8 @@
     "legislators_with_results": 0
   },
   "youtube": {
-    "total_videos": 0,
-    "legislators_with_results": 0
+    "total_videos": 2507,
+    "legislators_with_results": 99
   },
   "transcripts": {
     "extracted": 0,

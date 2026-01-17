@@ -1,11 +1,26 @@
 {
   "bioguide_id": "H001104",
   "name": "Jon Husted",
-  "total_found": 0,
-  "items_fetched": 0,
+  "total_found": 1,
+  "items_fetched": 1,
   "search_params": {
     "start_date": "2020-01-01",
     "end_date": "2026-12-31"
   },
-  "appearances": []
+  "appearances": [
+    {
+      "identifier": "FOXNEWSW_20260109_110000_FOX_and_Friends",
+      "title": "FOX and Friends : FOXNEWSW : January 9, 2026 3:00am-4:00am PST",
+      "date": "2026-01-09",
+      "snippet": "sunni we'll be joined by senators jon husted, mike rounds and john cornyn along with senate candidates mike rogers and michael whatley. the prer err kicks off at 10:00 a.m. eastern time from mcallen, texas, focus on how the big beautiful bill tax cuts are border security and economy. college football we go. miami hurricanes are heading home to play for a national championship after defeating ole miss 31-27 in the fest that bowl with only 18 seconds remaining, miami's quarterback carson beck was able to seal the deal. >> to the left. looking that way. beck with his legs puts miami on top. >> carley: that was it. miami will face the winner of tonight's beach poll game between indiana and oregon and the title game will be held at hard rock stadium in miami and those are your headlines, griff, this one hit close to home. ole miss alum and your money is going to miami. >> griff: it is indeed i couldn't be more damn proud of my ole miss. praise prays before every game with his mom. came out of nowhere. wasn't ranked out of high school. a division 2 state and now playing in the big game. you ",
+      "network": "FOXNEWSW",
+      "collection": "TV-FOXNEWSW",
+      "start_time": "1403",
+      "end_time": "",
+      "video_url": "https://archive.org/download/FOXNEWSW_20260109_110000_FOX_and_Friends/FOXNEWSW_20260109_110000_FOX_and_Friends.mp4?t=1403/1463&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/FOXNEWSW_20260109_110000_FOX_and_Friends/FOXNEWSW_20260109_110000_FOX_and_Friends.thumbs/FOXNEWSW_20260109_110000_FOX_and_Friends_001379.jpg",
+      "archive_url": "https://archive.org/details/FOXNEWSW_20260109_110000_FOX_and_Friends",
+      "embed_url": "https://archive.org/embed/FOXNEWSW_20260109_110000_FOX_and_Friends"
+    }
+  ]
 }

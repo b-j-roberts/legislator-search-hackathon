@@ -1,0 +1,34 @@
+{
+  "bioguide_id": "F000459",
+  "name": "Charles J. \"Chuck\" Fleischmann",
+  "total_found": 2,
+  "filtered_count": 2,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "o90a9nYzzDo",
+      "title": "135 GOP Reps Supported Red Flags. Was YOUR Congress Critter One Of Them?",
+      "url": "https://www.youtube.com/watch?v=o90a9nYzzDo",
+      "channel": "ARFCOM News",
+      "channel_id": "UCbiiqvaU4DuhAn33LqCz0qA",
+      "upload_date": null,
+      "duration": 661.0,
+      "view_count": 10090,
+      "description": ""
+    },
+    {
+      "video_id": "BQKQWpjszKk",
+      "title": "1.17.18 Full Committee Markup 10:15 AM",
+      "url": "https://www.youtube.com/watch?v=BQKQWpjszKk",
+      "channel": "House Committee on Natural Resources GOP",
+      "channel_id": "UCY08wEbJ8fztRofQ9eZs0-g",
+      "upload_date": null,
+      "duration": 2474.0,
+      "view_count": 1096,
+      "description": ""
+    }
+  ]
+}

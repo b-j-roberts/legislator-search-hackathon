@@ -1,11 +1,82 @@
 {
   "bioguide_id": "M000934",
   "name": "Jerry Moran",
-  "total_found": 0,
-  "items_fetched": 0,
+  "total_found": 5,
+  "items_fetched": 5,
   "search_params": {
     "start_date": "2020-01-01",
     "end_date": "2026-12-31"
   },
-  "appearances": []
+  "appearances": [
+    {
+      "identifier": "CSPAN2_20260103_170000_U.S._Senate_U.S._Senate",
+      "title": "U.S. Senate U.S. Senate : CSPAN2 : January 3, 2026 12:00pm-12:17pm EST",
+      "date": "2026-01-03",
+      "snippet": "provisions of rule 1, paragraph 3, of the standing rules of the senate, i hereby appoint the honorable jerry moran a senator from the state of kansas to perform the duties of the chair. signed: chuck grassley, president pro tempore. the presiding officer: under the previous order, the senate stands adjourned until 3:00 p.m., monday, january 5, 2026.in first few mor that they weren't expectingw mor right. so if you want to benchmark iraq performance, these are terrible benchmarks, but people them all the time. couple more soldiers and we'll be in one more soldier then we'll be done. lucky last man. i want to talk about dennis green. he was in the grenadier company of. the fifth regiment fought discharged in june 1783. and this is his discharge document. all this demographic material i've been giving you ages where they're born come most from discharge documents like. these that is a real ones are now you know i'm not a pathological liar. there are documents behind this stuff. there are thousands upon thousands of these in the british national archives. and i know this because i've read about 25,000",
+      "network": "CSPAN2",
+      "collection": "TV-CSPAN2",
+      "start_time": "61",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CSPAN2_20260103_170000_U.S._Senate_U.S._Senate/CSPAN2_20260103_170000_U.S._Senate_U.S._Senate.mp4?t=61/121&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CSPAN2_20260103_170000_U.S._Senate_U.S._Senate/CSPAN2_20260103_170000_U.S._Senate_U.S._Senate.thumbs/CSPAN2_20260103_170000_U.S._Senate_U.S._Senate_000058.jpg",
+      "archive_url": "https://archive.org/details/CSPAN2_20260103_170000_U.S._Senate_U.S._Senate",
+      "embed_url": "https://archive.org/embed/CSPAN2_20260103_170000_U.S._Senate_U.S._Senate"
+    },
+    {
+      "identifier": "FOXNEWSW_20260103_190000_The_Journal_Editorial_Report",
+      "title": "The Journal Editorial Report : FOXNEWSW : January 3, 2026 11:00am-12:00pm PST",
+      "date": "2026-01-03",
+      "snippet": "republican senator jerry moran is a member of the intelligence committee he does not know what that termtty as to quote the united states does not want to be somebody running another country. meantime republican marinette miller meeks represents the swing district in eastern iowa from fox earlier today she said quote none of us went nationbuilding. iowans do not want troops on the ground in venezuela. gop indian senator todd young said he needs quote more answers about the next steps in venezuela. fox democratic arizona senator can seeded his estate was a seyfert with the maduro out of power but he said congress seems to authorize an operation like this. the secretary of state marco rubio says this type of maneuver does not lend itself to briefing congress. he responds quote that's absolute bs there is a push by democratic virginia senator 48 war powers of vote next week. senate minority leader chuck schumer accuse the administration of trying to distract from healthcare costs and the epstein files. senate intelligence committee tom cotton said the administration did not need authorizati",
+      "network": "FOXNEWSW",
+      "collection": "TV-FOXNEWSW",
+      "start_time": "2329",
+      "end_time": "",
+      "video_url": "https://archive.org/download/FOXNEWSW_20260103_190000_The_Journal_Editorial_Report/FOXNEWSW_20260103_190000_The_Journal_Editorial_Report.mp4?t=2329/2389&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/FOXNEWSW_20260103_190000_The_Journal_Editorial_Report/FOXNEWSW_20260103_190000_The_Journal_Editorial_Report.thumbs/FOXNEWSW_20260103_190000_The_Journal_Editorial_Report_002309.jpg",
+      "archive_url": "https://archive.org/details/FOXNEWSW_20260103_190000_The_Journal_Editorial_Report",
+      "embed_url": "https://archive.org/embed/FOXNEWSW_20260103_190000_The_Journal_Editorial_Report"
+    },
+    {
+      "identifier": "KGO_20260104_150000_Good_Morning_America",
+      "title": "Good Morning America : KGO : January 4, 2026 7:00am-8:00am PST",
+      "date": "2026-01-04",
+      "snippet": "democratic leaders this morning demanding an immediate briefing, one republican, kansas senator jerry moran, telling abc news, president trump has to be, quote, very cautious about the precedent this action may set, noting the rest of the world is watching both democrats and republicans making it clear there's no love lost for maduro. but still, some scrutinizing the way this operation was conducted. kentucky republican senator rand paul, often a critic of trump's use of military force, expressing concern that congress did not authorize this military action in venezuela. the trump administration is signaling this morning they believe they acted within their powers, in part because this was, officials argue, a law enforcement operation to capture what it says were wanted fugitives. maduro and his wife, despite the fact that the military, of course, was integral to this mission. one person in the president's party with the sharpest criticism this morning, marjorie taylor greene, her last day in congress, is tomorrow. she's resigning amid a falling out with president trump. she posted about th",
+      "network": "KGO",
+      "collection": "TV-KGO",
+      "start_time": "1171",
+      "end_time": "",
+      "video_url": "https://archive.org/download/KGO_20260104_150000_Good_Morning_America/KGO_20260104_150000_Good_Morning_America.mp4?t=1171/1231&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/KGO_20260104_150000_Good_Morning_America/KGO_20260104_150000_Good_Morning_America.thumbs/KGO_20260104_150000_Good_Morning_America_001168.jpg",
+      "archive_url": "https://archive.org/details/KGO_20260104_150000_Good_Morning_America",
+      "embed_url": "https://archive.org/embed/KGO_20260104_150000_Good_Morning_America"
+    },
+    {
+      "identifier": "MSNOW_20260114_190000_Katy_Tur_Reports",
+      "title": "Katy Tur Reports : MSNOW : January 14, 2026 11:00am-1:00pm PST",
+      "date": "2026-01-14",
+      "snippet": "mitch mcconnell, susan collins, james lankford, jerry moran, you know, there's a lot of folks who dot greenland, and they're worried it's going to harm our alliances and make russia feel emboldened. so it's not just an isolated one, senator, who's paying attention to this. i think everybody's treating it a lot more seriously than they did just a few weeks ago. >> burgess, here's a curveball for you. murkowski in the past had said that she would. i don't know if open is the right word, but she had been asked about whether she wanted to declare independence and caucus with the democrats. it seems like she's been on the opposing end of a lot of trump policies. and trump moves lately, especially. is that the sort of thing that comes up with her at all? >> you know, every two years as we get close to the midterms, i think it's a question that's asked of her. i know she's had that conversation before. she even told me in the past that she has had that conversation before with democrats. but would she switch caucuses? i think that it's not super likely, but i also think if she thought it wa",
+      "network": "MSNOW",
+      "collection": "TV-MSNOW",
+      "start_time": "6679",
+      "end_time": "",
+      "video_url": "https://archive.org/download/MSNOW_20260114_190000_Katy_Tur_Reports/MSNOW_20260114_190000_Katy_Tur_Reports.mp4?t=6679/6739&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/MSNOW_20260114_190000_Katy_Tur_Reports/MSNOW_20260114_190000_Katy_Tur_Reports.thumbs/MSNOW_20260114_190000_Katy_Tur_Reports_006658.jpg",
+      "archive_url": "https://archive.org/details/MSNOW_20260114_190000_Katy_Tur_Reports",
+      "embed_url": "https://archive.org/embed/MSNOW_20260114_190000_Katy_Tur_Reports"
+    },
+    {
+      "identifier": "CSPAN2_20260112_195900_U.S._Senate_U.S._Senate",
+      "title": "U.S. Senate U.S. Senate : CSPAN2 : January 12, 2026 2:59pm-6:56pm EST",
+      "date": "2026-01-12",
+      "snippet": "i want to express my thanks to subcommittee chairman jerry moran and ranking member chris van hollenr their hard work on the cgs bill. next, the interior bill provides resources for the management and conservation of public lands while fostering the economic development throughout critical -- through critical energy programs. it supports tribal programs across the country, helps ensure that americans have clean air, water, and soil, and provides federal firefighters with the tools they need to prepare for and suppress wildfires. it also includes funding to fight the devastating impact of the spruce budworm, which is being experienced right now in the state of maine and other states. i want to commend the subcommittee chair, lisa murkowski, and the ranking member jeff merkley for their efforts in crafting this legislation. finally, the energy and water development bill will improve water infrastructure and promote american energy independence. it will also strengthen our nuclear deterrence posture, ensure that our nuclear stockpiles' readiness and safety, and prepare for existing and ",
+      "network": "CSPAN2",
+      "collection": "TV-CSPAN2",
+      "start_time": "9219",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CSPAN2_20260112_195900_U.S._Senate_U.S._Senate/CSPAN2_20260112_195900_U.S._Senate_U.S._Senate.mp4?t=9219/9279&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CSPAN2_20260112_195900_U.S._Senate_U.S._Senate/CSPAN2_20260112_195900_U.S._Senate_U.S._Senate.thumbs/CSPAN2_20260112_195900_U.S._Senate_U.S._Senate_009207.jpg",
+      "archive_url": "https://archive.org/details/CSPAN2_20260112_195900_U.S._Senate_U.S._Senate",
+      "embed_url": "https://archive.org/embed/CSPAN2_20260112_195900_U.S._Senate_U.S._Senate"
+    }
+  ]
 }

@@ -1,0 +1,26 @@
+{
+  "bioguide_id": "D000399",
+  "name": "Lloyd Doggett",
+  "total_found": 1,
+  "items_fetched": 1,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "CSPAN_20260112_200000_U.S._House_of_Representatives_U.S._House_of_Representatives",
+      "title": "U.S. House of Representatives U.S. House of Representatives : CSPAN : January 12, 2026 3:00pm-6:09pm EST",
+      "date": "2026-01-12",
+      "snippet": ". >> i yield four minutes to the gentleman from texas, congressman lloyd doggett. >> the gentleman is recognized for four minutes. >> thank you. i support strengthening our relations with african countries through the african growth and opportunity act. i think increased trade, economic activity, development that respects human rights, labor rights and the environment can benefit both americans and africans. i think that trade is especially important at this time, after the profound damage done by the consistent disrespect by president trump of africans, unless they happen to be white afrikaners, and more importantly, by his abrupt and unjustified termination of the agency for international development, which has cost tens of thousands of lives in africa and other places, and thousands of american jobs. agoa cannot undo all of that harm, but it can be part of responsible engagement if it's done right. it's important, however, to understand that this reauthorization does not guarantee a single african country the benefits of this bill. if they fall out of favor with president trump. th",
+      "network": "CSPAN",
+      "collection": "TV-CSPAN",
+      "start_time": "8378",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CSPAN_20260112_200000_U.S._House_of_Representatives_U.S._House_of_Representatives/CSPAN_20260112_200000_U.S._House_of_Representatives_U.S._House_of_Representatives.mp4?t=8378/8438&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CSPAN_20260112_200000_U.S._House_of_Representatives_U.S._House_of_Representatives/CSPAN_20260112_200000_U.S._House_of_Representatives_U.S._House_of_Representatives.thumbs/CSPAN_20260112_200000_U.S._House_of_Representatives_U.S._House_of_Representatives_008367.jpg",
+      "archive_url": "https://archive.org/details/CSPAN_20260112_200000_U.S._House_of_Representatives_U.S._House_of_Representatives",
+      "embed_url": "https://archive.org/embed/CSPAN_20260112_200000_U.S._House_of_Representatives_U.S._House_of_Representatives"
+    }
+  ]
+}

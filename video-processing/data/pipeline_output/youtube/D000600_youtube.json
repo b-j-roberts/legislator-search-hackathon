@@ -1,0 +1,353 @@
+{
+  "bioguide_id": "D000600",
+  "name": "Mario Diaz-Balart",
+  "total_found": 45,
+  "filtered_count": 31,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "RI4g8564hng",
+      "title": "A Conversation with Florida Congressman Mario D\u00edaz-Balart",
+      "url": "https://www.youtube.com/watch?v=RI4g8564hng",
+      "channel": "TrippScottFlorida",
+      "channel_id": "UCHWwMx9w3PXw0IVLjQjJXYA",
+      "upload_date": null,
+      "duration": 674.0,
+      "view_count": 123,
+      "description": ""
+    },
+    {
+      "video_id": "ncYEK9b5OcY",
+      "title": "Mario Diaz-Balart speaks live on Fox Business about Jobs, the Economy and the so-called Stimulus",
+      "url": "https://www.youtube.com/watch?v=ncYEK9b5OcY",
+      "channel": "Mario Diaz-Balart (Rep. Mario Diaz-Balart)",
+      "channel_id": "UCpEEd0Plxx5D78pI4a4mFTQ",
+      "upload_date": null,
+      "duration": 159.0,
+      "view_count": 682,
+      "description": ""
+    },
+    {
+      "video_id": "IpO9Wsk1L7k",
+      "title": "Interview with U.S. Representative Mario Diaz-Balart",
+      "url": "https://www.youtube.com/watch?v=IpO9Wsk1L7k",
+      "channel": "Naples Daily News",
+      "channel_id": "UCvByPqIQZjFQfBwkHSHq8fw",
+      "upload_date": null,
+      "duration": 160.0,
+      "view_count": 117,
+      "description": ""
+    },
+    {
+      "video_id": "pvIq8JLjqdw",
+      "title": "Rep. Mario D\u00edaz-Balart praises capture of Nicol\u00e1s Maduro",
+      "url": "https://www.youtube.com/watch?v=pvIq8JLjqdw",
+      "channel": "CBS News",
+      "channel_id": "UC8p1vwvWtl6T73JiExfWs1g",
+      "upload_date": null,
+      "duration": 539.0,
+      "view_count": 759,
+      "description": ""
+    },
+    {
+      "video_id": "fhdLjYrEZFA",
+      "title": "Rep. Mario Diaz-Balart Speaks Out After Testing Positive For Coronavirus | NBC Nightly News",
+      "url": "https://www.youtube.com/watch?v=fhdLjYrEZFA",
+      "channel": "NBC News",
+      "channel_id": "UCeY0bbntWzzVIaj2z3QigXg",
+      "upload_date": null,
+      "duration": 168.0,
+      "view_count": 97238,
+      "description": ""
+    },
+    {
+      "video_id": "H91GjuSNJW0",
+      "title": "Interview with the Honorable Mario Diaz-Balart",
+      "url": "https://www.youtube.com/watch?v=H91GjuSNJW0",
+      "channel": "FIU Maurice A Ferr\u00e9 Institute for Civic Leadership",
+      "channel_id": "UCMDRDAZK8S1AwKBZF_kmxbA",
+      "upload_date": null,
+      "duration": 84.0,
+      "view_count": 26,
+      "description": ""
+    },
+    {
+      "video_id": "fGC5OQaRAYc",
+      "title": "Rep. Mario Diaz-Balart first congressman to test positive for coronavirus",
+      "url": "https://www.youtube.com/watch?v=fGC5OQaRAYc",
+      "channel": "WPLG Local 10",
+      "channel_id": "UCgVZ0mrM3liHNhRYC5Mchgg",
+      "upload_date": null,
+      "duration": 207.0,
+      "view_count": 2040,
+      "description": ""
+    },
+    {
+      "video_id": "rw3l0I5ujBY",
+      "title": "Rep. Mario Diaz-Balart Floor Speech on H.R.2, the Secure the Border Act",
+      "url": "https://www.youtube.com/watch?v=rw3l0I5ujBY",
+      "channel": "Mario Diaz-Balart (Rep. Mario Diaz-Balart)",
+      "channel_id": "UCpEEd0Plxx5D78pI4a4mFTQ",
+      "upload_date": null,
+      "duration": 143.0,
+      "view_count": 765,
+      "description": ""
+    },
+    {
+      "video_id": "x9PXYUu8M6A",
+      "title": "The Full UNEDITED Mario Diaz-Balart/Jeff Lytle Interview (Part 1 of 3)",
+      "url": "https://www.youtube.com/watch?v=x9PXYUu8M6A",
+      "channel": "tim50295",
+      "channel_id": "UC2J1ZQNTJv5jB71rYLT0I7A",
+      "upload_date": null,
+      "duration": 460.0,
+      "view_count": 49,
+      "description": ""
+    },
+    {
+      "video_id": "MvNmJVE7tW0",
+      "title": "Mario Diaz-Balart: Hearing on Aviation Consumer Issues",
+      "url": "https://www.youtube.com/watch?v=MvNmJVE7tW0",
+      "channel": "Mario Diaz-Balart (Rep. Mario Diaz-Balart)",
+      "channel_id": "UCpEEd0Plxx5D78pI4a4mFTQ",
+      "upload_date": null,
+      "duration": 95.0,
+      "view_count": 25,
+      "description": ""
+    },
+    {
+      "video_id": "pC1CafAA5C4",
+      "title": "Mario Diaz-Balart Takes Part in Hurricane Research Hearing",
+      "url": "https://www.youtube.com/watch?v=pC1CafAA5C4",
+      "channel": "Mario Diaz-Balart (Rep. Mario Diaz-Balart)",
+      "channel_id": "UCpEEd0Plxx5D78pI4a4mFTQ",
+      "upload_date": null,
+      "duration": 438.0,
+      "view_count": 398,
+      "description": ""
+    },
+    {
+      "video_id": "T_LLROm7iE8",
+      "title": "Mario Diaz-Balart Questions Treasury Secretary Timothy Geithner in Budget Hearing",
+      "url": "https://www.youtube.com/watch?v=T_LLROm7iE8",
+      "channel": "Mario Diaz-Balart (Rep. Mario Diaz-Balart)",
+      "channel_id": "UCpEEd0Plxx5D78pI4a4mFTQ",
+      "upload_date": null,
+      "duration": 198.0,
+      "view_count": 1417,
+      "description": ""
+    },
+    {
+      "video_id": "b0SgR8SZkSM",
+      "title": "Mario Diaz-Balart Discusses Alternative Fuels in Hearing",
+      "url": "https://www.youtube.com/watch?v=b0SgR8SZkSM",
+      "channel": "Mario Diaz-Balart (Rep. Mario Diaz-Balart)",
+      "channel_id": "UCpEEd0Plxx5D78pI4a4mFTQ",
+      "upload_date": null,
+      "duration": 419.0,
+      "view_count": 46,
+      "description": ""
+    },
+    {
+      "video_id": "I1sG_a7X6hg",
+      "title": "Mario Diaz-Balart Amendment at Budget Hearing 3-5-08",
+      "url": "https://www.youtube.com/watch?v=I1sG_a7X6hg",
+      "channel": "Mario Diaz-Balart (Rep. Mario Diaz-Balart)",
+      "channel_id": "UCpEEd0Plxx5D78pI4a4mFTQ",
+      "upload_date": null,
+      "duration": 230.0,
+      "view_count": 105,
+      "description": ""
+    },
+    {
+      "video_id": "LiZvJhctsDE",
+      "title": "Diaz-Balart: GSA Stimulus Hearing",
+      "url": "https://www.youtube.com/watch?v=LiZvJhctsDE",
+      "channel": "T&I Committee Republicans",
+      "channel_id": "UCP4BbluxW-H6i0VreCszbFA",
+      "upload_date": null,
+      "duration": 519.0,
+      "view_count": 87,
+      "description": ""
+    },
+    {
+      "video_id": "X8ltb0M4yE8",
+      "title": "Congressman Diaz-Balart Questions New IRS Commissioner During Hearing",
+      "url": "https://www.youtube.com/watch?v=X8ltb0M4yE8",
+      "channel": "Mario Diaz-Balart (Rep. Mario Diaz-Balart)",
+      "channel_id": "UCpEEd0Plxx5D78pI4a4mFTQ",
+      "upload_date": null,
+      "duration": 345.0,
+      "view_count": 259,
+      "description": ""
+    },
+    {
+      "video_id": "gkr0WeBd3xs",
+      "title": "Diaz-Balart offers remarks at a Oversight & Government Reform hearing on identity theft & tax fraud",
+      "url": "https://www.youtube.com/watch?v=gkr0WeBd3xs",
+      "channel": "Mario Diaz-Balart (Rep. Mario Diaz-Balart)",
+      "channel_id": "UCpEEd0Plxx5D78pI4a4mFTQ",
+      "upload_date": null,
+      "duration": 260.0,
+      "view_count": 36,
+      "description": ""
+    },
+    {
+      "video_id": "UIYkQVFpDDk",
+      "title": "Diaz-Balart Asks HUD Sec. Carson Regarding Reverse Mortgages at Subcommittee Hearing",
+      "url": "https://www.youtube.com/watch?v=UIYkQVFpDDk",
+      "channel": "Mario Diaz-Balart (Rep. Mario Diaz-Balart)",
+      "channel_id": "UCpEEd0Plxx5D78pI4a4mFTQ",
+      "upload_date": null,
+      "duration": 120.0,
+      "view_count": 123,
+      "description": ""
+    },
+    {
+      "video_id": "uz-zL4Qgu6k",
+      "title": "Congressman Diaz-Balart questions Secretary Kerry at SFOPS Hearing, 2-25-15",
+      "url": "https://www.youtube.com/watch?v=uz-zL4Qgu6k",
+      "channel": "Mario Diaz-Balart (Rep. Mario Diaz-Balart)",
+      "channel_id": "UCpEEd0Plxx5D78pI4a4mFTQ",
+      "upload_date": null,
+      "duration": 473.0,
+      "view_count": 152,
+      "description": ""
+    },
+    {
+      "video_id": "UhHh8jCQXW8",
+      "title": "Ranking Member Diaz-Balart:  GSA Stimulus Hearing",
+      "url": "https://www.youtube.com/watch?v=UhHh8jCQXW8",
+      "channel": "Mario Diaz-Balart (Rep. Mario Diaz-Balart)",
+      "channel_id": "UCpEEd0Plxx5D78pI4a4mFTQ",
+      "upload_date": null,
+      "duration": 517.0,
+      "view_count": 27,
+      "description": ""
+    },
+    {
+      "video_id": "YqxN7sAo56Q",
+      "title": "Diaz-Balart asks AG Holder on current drug policy during CJS Hearing",
+      "url": "https://www.youtube.com/watch?v=YqxN7sAo56Q",
+      "channel": "Mario Diaz-Balart (Rep. Mario Diaz-Balart)",
+      "channel_id": "UCpEEd0Plxx5D78pI4a4mFTQ",
+      "upload_date": null,
+      "duration": 546.0,
+      "view_count": 41,
+      "description": ""
+    },
+    {
+      "video_id": "iypDOXParpY",
+      "title": "Rules Committee Hearing Senate Amendment H.R. 4",
+      "url": "https://www.youtube.com/watch?v=iypDOXParpY",
+      "channel": "Mario Diaz-Balart (Rep. Mario Diaz-Balart)",
+      "channel_id": "UCpEEd0Plxx5D78pI4a4mFTQ",
+      "upload_date": null,
+      "duration": 135.0,
+      "view_count": 57,
+      "description": ""
+    },
+    {
+      "video_id": "2YFeugDqrKs",
+      "title": "Congressman Diaz-Balart Delivers Remarks at President Trump's Cuba Policy Announcement",
+      "url": "https://www.youtube.com/watch?v=2YFeugDqrKs",
+      "channel": "Mario Diaz-Balart (Rep. Mario Diaz-Balart)",
+      "channel_id": "UCpEEd0Plxx5D78pI4a4mFTQ",
+      "upload_date": null,
+      "duration": 541.0,
+      "view_count": 1672,
+      "description": ""
+    },
+    {
+      "video_id": "JvMAhnODn3U",
+      "title": "FULL SPEECH: Congressman Mario Diaz-Balart speaks at October 7th Remembrance Event - 10/7/24",
+      "url": "https://www.youtube.com/watch?v=JvMAhnODn3U",
+      "channel": "Right Side Broadcasting Network",
+      "channel_id": "UCHqC-yWZ1kri4YzwRSt6RGQ",
+      "upload_date": null,
+      "duration": 165.0,
+      "view_count": 227,
+      "description": ""
+    },
+    {
+      "video_id": "gi6WcFOU4Hg",
+      "title": "Congressman Mario Diaz-Balart: 2019 Congressional Champion Honoree",
+      "url": "https://www.youtube.com/watch?v=gi6WcFOU4Hg",
+      "channel": "GHTC",
+      "channel_id": "UCkpAEWFbIMPPvQMOJ6ODH-A",
+      "upload_date": null,
+      "duration": 38.0,
+      "view_count": 47,
+      "description": ""
+    },
+    {
+      "video_id": "xC675-gnHP8",
+      "title": "Congressman Mario Diaz-Balart: 2019 Congressional Champion Honoree",
+      "url": "https://www.youtube.com/watch?v=xC675-gnHP8",
+      "channel": "GHTC",
+      "channel_id": "UCkpAEWFbIMPPvQMOJ6ODH-A",
+      "upload_date": null,
+      "duration": 35.0,
+      "view_count": 30,
+      "description": ""
+    },
+    {
+      "video_id": "HCFvVE44fLw",
+      "title": "Mario Diaz-Balart Discusses Economy and Congress' Failure to Pass Budget.wmv",
+      "url": "https://www.youtube.com/watch?v=HCFvVE44fLw",
+      "channel": "Mario Diaz-Balart (Rep. Mario Diaz-Balart)",
+      "channel_id": "UCpEEd0Plxx5D78pI4a4mFTQ",
+      "upload_date": null,
+      "duration": 972.0,
+      "view_count": 177,
+      "description": ""
+    },
+    {
+      "video_id": "5M6RIPPV8-8",
+      "title": "Diaz-Balart Delivers Floor Speech on Repression in Cuba",
+      "url": "https://www.youtube.com/watch?v=5M6RIPPV8-8",
+      "channel": "Mario Diaz-Balart (Rep. Mario Diaz-Balart)",
+      "channel_id": "UCpEEd0Plxx5D78pI4a4mFTQ",
+      "upload_date": null,
+      "duration": 83.0,
+      "view_count": 1479,
+      "description": ""
+    },
+    {
+      "video_id": "UwfaY76NfTs",
+      "title": "Mario Diaz-Balart Debates the President's Budget on the House Floor",
+      "url": "https://www.youtube.com/watch?v=UwfaY76NfTs",
+      "channel": "Mario Diaz-Balart (Rep. Mario Diaz-Balart)",
+      "channel_id": "UCpEEd0Plxx5D78pI4a4mFTQ",
+      "upload_date": null,
+      "duration": 141.0,
+      "view_count": 191,
+      "description": ""
+    },
+    {
+      "video_id": "Dj4B85d0AcA",
+      "title": "Diaz-Balart Delivers Floor Speech on Cuba",
+      "url": "https://www.youtube.com/watch?v=Dj4B85d0AcA",
+      "channel": "Mario Diaz-Balart (Rep. Mario Diaz-Balart)",
+      "channel_id": "UCpEEd0Plxx5D78pI4a4mFTQ",
+      "upload_date": null,
+      "duration": 71.0,
+      "view_count": 345,
+      "description": ""
+    },
+    {
+      "video_id": "f5Q2tNq54Do",
+      "title": "Diaz-Balart delivers floor speech against Rep. Tlaib\u2019s amendment to provide concessions to Cuba",
+      "url": "https://www.youtube.com/watch?v=f5Q2tNq54Do",
+      "channel": "Mario Diaz-Balart (Rep. Mario Diaz-Balart)",
+      "channel_id": "UCpEEd0Plxx5D78pI4a4mFTQ",
+      "upload_date": null,
+      "duration": 111.0,
+      "view_count": 1021,
+      "description": ""
+    }
+  ]
+}

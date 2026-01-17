@@ -1,0 +1,26 @@
+{
+  "bioguide_id": "S001159",
+  "name": "Marilyn Strickland",
+  "total_found": 1,
+  "items_fetched": 1,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "MSNOW_20260103_220000_PoliticsNation",
+      "title": "PoliticsNation : MSNOW : January 3, 2026 2:00pm-3:01pm PST",
+      "date": "2026-01-03",
+      "snippet": "joining us, democratic congresswoman marilyn strickland of washington state.she is a member of the armed services committee. congresswoman, thank you very much for joining us. what is your reaction? >> well, my reaction this morning was we did what? and i say this because congress got no warning and no heads up that this was coming. and before we left for the holiday break, there were two war powers resolutions that were brought to the floor that barely failed. and so i would expect that when we get back to dc on tuesday, which, by the way, is january 6th, that there will be an attempt to bring those back. there were a few republicans who voted with us on that, but unfortunately it failed. and i'll also point this out to, you know, this whole conversation, i think it was mentioned by one of your earlier speakers that donald trump is transactional. what he wants is access to those oil reserves. at the same time, this is also a big distraction. look at the timing of this. we go back in session on tuesday. we are going to talk about the affordable care act premiu",
+      "network": "MSNOW",
+      "collection": "TV-MSNOW",
+      "start_time": "2461",
+      "end_time": "",
+      "video_url": "https://archive.org/download/MSNOW_20260103_220000_PoliticsNation/MSNOW_20260103_220000_PoliticsNation.mp4?t=2461/2521&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/MSNOW_20260103_220000_PoliticsNation/MSNOW_20260103_220000_PoliticsNation.thumbs/MSNOW_20260103_220000_PoliticsNation_002459.jpg",
+      "archive_url": "https://archive.org/details/MSNOW_20260103_220000_PoliticsNation",
+      "embed_url": "https://archive.org/embed/MSNOW_20260103_220000_PoliticsNation"
+    }
+  ]
+}

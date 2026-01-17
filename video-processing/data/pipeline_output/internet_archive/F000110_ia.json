@@ -1,0 +1,26 @@
+{
+  "bioguide_id": "F000110",
+  "name": "Cleo Fields",
+  "total_found": 1,
+  "items_fetched": 1,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "MSNOW_20260111_220000_PoliticsNation",
+      "title": "PoliticsNation : MSNOW : January 11, 2026 2:00pm-3:00pm PST",
+      "date": "2026-01-11",
+      "snippet": "of cleo fields, one of your colleagues in louisiana. this is about the entire bill could be nullified. >> absolutely. we we talked about the affordable care act, health care. people are seeing their their their premiums spike right as we speak. we need the senate to act on this immediately. and so we're applying pressure, and we're asking all of our people to do so. and tied to that is the affordability crisis. our people are really suffering under the weight. energy costs have gone up, grocery costs have gone up. you know, shelter housing has been astronomical. you add that to health care. and again, you know, the focus on what we need to do to navigate the american people, particularly black communities that have been the brunt of anti-blackness coming out of this administration from historic erasure of of our presence and our prominence in civil society. you add that to what has happened in terms of the job market and the shedding of jobs and black women in particular, being targeted in this space. there's a lot of work that we see b",
+      "network": "MSNOW",
+      "collection": "TV-MSNOW",
+      "start_time": "537",
+      "end_time": "",
+      "video_url": "https://archive.org/download/MSNOW_20260111_220000_PoliticsNation/MSNOW_20260111_220000_PoliticsNation.mp4?t=537/597&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/MSNOW_20260111_220000_PoliticsNation/MSNOW_20260111_220000_PoliticsNation.thumbs/MSNOW_20260111_220000_PoliticsNation_000508.jpg",
+      "archive_url": "https://archive.org/details/MSNOW_20260111_220000_PoliticsNation",
+      "embed_url": "https://archive.org/embed/MSNOW_20260111_220000_PoliticsNation"
+    }
+  ]
+}

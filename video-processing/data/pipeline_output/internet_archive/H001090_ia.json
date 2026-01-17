@@ -1,0 +1,40 @@
+{
+  "bioguide_id": "H001090",
+  "name": "Josh Harder",
+  "total_found": 2,
+  "items_fetched": 2,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "KTVU_20260116_020000_KTVU_FOX_2_News_at_6pm",
+      "title": "KTVU FOX 2 News at 6pm : KTVU : January 15, 2026 6:00pm-6:31pm PST",
+      "date": "2026-01-16",
+      "snippet": "congressman josh harder of stockton sent a letter to attorney general pam bondi calling for the department of justice to drop its legal challenge against california's ban on ice agents covering their faces and badges. >> all i'm asking for is for ice to operate the same as any other law enforcement agency. if you're following lawful orders, there's no reason to cover your face or your agency identification. >> the public could have another opportunity to weigh in on this plan for ice free zones in alameda county if it goes before the full board on january 27th for a vote. reporting from oakland jana katsuyama, ktvu, fox two news. >> in 12 months time, we have become known around the world as a city on the rise. >> coming up next at six, san francisco mayor daniel lurie, reflecting on his first year in office what he says is his north star when it comes to setting goals for the next 12 months. >> and another beautiful day upon us, all thanks to an area of high pressure. now the rest of your week, your weekend, i got details for you. p on the right track to tackle some of its biggest challen",
+      "network": "KTVU",
+      "collection": "TV-KTVU",
+      "start_time": "734",
+      "end_time": "",
+      "video_url": "https://archive.org/download/KTVU_20260116_020000_KTVU_FOX_2_News_at_6pm/KTVU_20260116_020000_KTVU_FOX_2_News_at_6pm.mp4?t=734/794&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/KTVU_20260116_020000_KTVU_FOX_2_News_at_6pm/KTVU_20260116_020000_KTVU_FOX_2_News_at_6pm.thumbs/KTVU_20260116_020000_KTVU_FOX_2_News_at_6pm_000718.jpg",
+      "archive_url": "https://archive.org/details/KTVU_20260116_020000_KTVU_FOX_2_News_at_6pm",
+      "embed_url": "https://archive.org/embed/KTVU_20260116_020000_KTVU_FOX_2_News_at_6pm"
+    },
+    {
+      "identifier": "KTVU_20260116_010000_KTVU_FOX_2_News_at_5pm",
+      "title": "KTVU FOX 2 News at 5pm : KTVU : January 15, 2026 5:00pm-6:01pm PST",
+      "date": "2026-01-16",
+      "snippet": ". >> congressman josh harder of stockton sent a letter to attorney general pam bondi calling for the department of justice to drop its legal challenge against california's ban on ice agents covering their faces and badges. >> all i'm asking for is for ice to operate the same as any other law enforcement agency. if you're following lawful orders, there's no reason to cover your face or your agency identification. and we know that when law enforcement hides its identity, that accountability disappears and abuses thrive. >> our partners. >> this committee is expected to vote on those ice free zones within the hour, and it is expected to pass the committee. it will then go to the full board as soon as possibly january 27th for an approval. again, that is for these ice free zones. and we will see at that time. there will also be an opportunity for more public comment reporting live in oakland. jana katsuyama, ktvu, fox two news. >> coming up, an alarming crime in the south bay. police say a teen was kidnaped and sexually assaulted. the technology that helped police find the suspect. >> 33",
+      "network": "KTVU",
+      "collection": "TV-KTVU",
+      "start_time": "636",
+      "end_time": "",
+      "video_url": "https://archive.org/download/KTVU_20260116_010000_KTVU_FOX_2_News_at_5pm/KTVU_20260116_010000_KTVU_FOX_2_News_at_5pm.mp4?t=636/696&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/KTVU_20260116_010000_KTVU_FOX_2_News_at_5pm/KTVU_20260116_010000_KTVU_FOX_2_News_at_5pm.thumbs/KTVU_20260116_010000_KTVU_FOX_2_News_at_5pm_000628.jpg",
+      "archive_url": "https://archive.org/details/KTVU_20260116_010000_KTVU_FOX_2_News_at_5pm",
+      "embed_url": "https://archive.org/embed/KTVU_20260116_010000_KTVU_FOX_2_News_at_5pm"
+    }
+  ]
+}

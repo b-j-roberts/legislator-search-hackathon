@@ -1,0 +1,54 @@
+{
+  "bioguide_id": "T000486",
+  "name": "Ritchie Torres",
+  "total_found": 3,
+  "items_fetched": 3,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "CNBC_20260109_110000_Squawk_Box",
+      "title": "Squawk Box : CNBC : January 9, 2026 6:00am-9:00am EST",
+      "date": "2026-01-09",
+      "snippet": "and later, congressman ritchie torres is going to join us.g in prediction markets by public officials. it's an important conversation. do not just one scoop, ok? what if i told you you didn't have to choose just one? don't pick and choose. pick bitw. the world's first and largest crypto index fund. learn more about bitw at bitwetp.com. not suitable for all investors. an investment in the fund is not a direct investment in crypto assets. investors should read the fund's prospectus for more complete information about the issuer and this offering. marketing agent, foreside fund services llc. if ma june had godaddy airo she could create logos faster than a rifle lobotomy. and make her brand blast off with social media posts. holy (bleep) start your digital wasteland journey at godaddy.com/fallout >> welcome back to squawk box. a proposed wealth tax on california billionaires, sparking a high stakes debate over inequality in the states innovation economy. one democrat speaking out against the proposed measure joins us right now. san jose mayor mat",
+      "network": "CNBC",
+      "collection": "TV-CNBC",
+      "start_time": "5825",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CNBC_20260109_110000_Squawk_Box/CNBC_20260109_110000_Squawk_Box.mp4?t=5825/5885&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CNBC_20260109_110000_Squawk_Box/CNBC_20260109_110000_Squawk_Box.thumbs/CNBC_20260109_110000_Squawk_Box_005817.jpg",
+      "archive_url": "https://archive.org/details/CNBC_20260109_110000_Squawk_Box",
+      "embed_url": "https://archive.org/embed/CNBC_20260109_110000_Squawk_Box"
+    },
+    {
+      "identifier": "MSNOW_20260109_110000_Morning_Joe",
+      "title": "Morning Joe : MSNOW : January 9, 2026 3:00am-7:00am PST",
+      "date": "2026-01-09",
+      "snippet": "plus, democratic congressman ritchie torres joins us to preview new legislation that would ban lawmakersfrom betting on political prediction markets. this after one mystery trader made $400,000 placing a wager on nicolas maduro's downfall. you're watching morning joe. we'll be right liberty mutual customizes\u2014 wait\u2014am i in one of those liberty mutual commercials? where they stand in front of the statue of liberty and talk about how liberty mutual customizes your car insurance so you only pay for what you need? uh... yes! huh. what happens in this one? seagulls. oh. i like it. how are you doing\u2014 (seagulls squawking) only pay for what you need. \u266a liberty. liberty. liberty. liberty. \u266a hi, this is sona. how can i help you? with quo's business phone system, you can train your own ai agent to help customers even when you're fast asleep. quo. no missed calls, no missed customers. try for free today. this is bombas. they took socks and asked \u201cwhat if they could be way more comfortable\u201d. what if comfort could be for everyone? at bombas, one purchased equals one donated. get 20% off your first orde",
+      "network": "MSNOW",
+      "collection": "TV-MSNOW",
+      "start_time": "1573",
+      "end_time": "",
+      "video_url": "https://archive.org/download/MSNOW_20260109_110000_Morning_Joe/MSNOW_20260109_110000_Morning_Joe.mp4?t=1573/1633&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/MSNOW_20260109_110000_Morning_Joe/MSNOW_20260109_110000_Morning_Joe.thumbs/MSNOW_20260109_110000_Morning_Joe_001559.jpg",
+      "archive_url": "https://archive.org/details/MSNOW_20260109_110000_Morning_Joe",
+      "embed_url": "https://archive.org/embed/MSNOW_20260109_110000_Morning_Joe"
+    },
+    {
+      "identifier": "CNBC_20260106_190000_Power_Lunch",
+      "title": "Power Lunch : CNBC : January 6, 2026 2:00pm-3:01pm EST",
+      "date": "2026-01-06",
+      "snippet": "new york congressman ritchie torres is introducing legislation that would make it illegal for government to use prediction markets to bet on political events using nonpublic or privileged information. now the move comes after a timely bet on the fate of venezuela's nicolas maduro. take a look at the numbers from the bottom of your screen. a brand new account on polymarket wagered more than $30,000 last friday that he would be ousted this month. just hours later, he went into custody. that bet paid out by more than $400,000. i kind of a provocative point of view on this because i want the information in the market like, to some extent that information became public through that bet. but obviously i can understand the need to kind of rein people in. >> why you shouldn't have insiders making profits off. >> don't we want to know about the inside? but maybe they don't keep the profits. >> let's talk about stock trading now in congress. >> thanks for watching power lunch. >> closing bell starts right now. >> and welcome to closing bell. i'm scott wapner live from post nine here at the new yor",
+      "network": "CNBC",
+      "collection": "TV-CNBC",
+      "start_time": "3589",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CNBC_20260106_190000_Power_Lunch/CNBC_20260106_190000_Power_Lunch.mp4?t=3589/3649&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CNBC_20260106_190000_Power_Lunch/CNBC_20260106_190000_Power_Lunch.thumbs/CNBC_20260106_190000_Power_Lunch_003567.jpg",
+      "archive_url": "https://archive.org/details/CNBC_20260106_190000_Power_Lunch",
+      "embed_url": "https://archive.org/embed/CNBC_20260106_190000_Power_Lunch"
+    }
+  ]
+}

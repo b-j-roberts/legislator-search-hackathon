@@ -1,0 +1,100 @@
+{
+  "bioguide_id": "C001088",
+  "name": "Christopher A. Coons",
+  "total_found": 32,
+  "filtered_count": 8,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "HWMjiMnKvvQ",
+      "title": "Congressional Trip to East Asia: A Debrief From Senator Christopher A. Coons",
+      "url": "https://www.youtube.com/watch?v=HWMjiMnKvvQ",
+      "channel": "Council on Foreign Relations",
+      "channel_id": "UCL_A4jkwvKuMyToAPy3FQKQ",
+      "upload_date": null,
+      "duration": 3728.0,
+      "view_count": 830,
+      "description": ""
+    },
+    {
+      "video_id": "b89ACOBYEQc",
+      "title": "Coons calls for Kavanaugh hearing delay following new allegation",
+      "url": "https://www.youtube.com/watch?v=b89ACOBYEQc",
+      "channel": "Washington Post",
+      "channel_id": "UCHd62-u_v4DvJ8TCFtpi4GA",
+      "upload_date": null,
+      "duration": 186.0,
+      "view_count": 5173,
+      "description": ""
+    },
+    {
+      "video_id": "W2VKyLZPxIg",
+      "title": "Amy Coney Barrett pressed for her stance on birth control",
+      "url": "https://www.youtube.com/watch?v=W2VKyLZPxIg",
+      "channel": "Washington Post",
+      "channel_id": "UCHd62-u_v4DvJ8TCFtpi4GA",
+      "upload_date": null,
+      "duration": 215.0,
+      "view_count": 7469,
+      "description": ""
+    },
+    {
+      "video_id": "K_ba4x1bGgQ",
+      "title": "11/6/19 Senate Special Committee On Aging - Operation Protect Veterans",
+      "url": "https://www.youtube.com/watch?v=K_ba4x1bGgQ",
+      "channel": "US Postal Inspection Service",
+      "channel_id": "UCSDPeYyj8pBF4BiAPlb8KMQ",
+      "upload_date": null,
+      "duration": 1551.0,
+      "view_count": 751,
+      "description": ""
+    },
+    {
+      "video_id": "6tHKZ71SEsk",
+      "title": "30 Years of the Senate's reading of Washington's Farewell Address (1988-2020)",
+      "url": "https://www.youtube.com/watch?v=6tHKZ71SEsk",
+      "channel": "Daniel Meeks",
+      "channel_id": "UC-hTNobvl0o0vsPBF1J1BfA",
+      "upload_date": null,
+      "duration": 3182.0,
+      "view_count": 1080,
+      "description": ""
+    },
+    {
+      "video_id": "OfXd3no0pdQ",
+      "title": "Senate Judiciary Approves Gorsuch-Full Debate And Vote",
+      "url": "https://www.youtube.com/watch?v=OfXd3no0pdQ",
+      "channel": "Michael McIntee",
+      "channel_id": "UCDIPsk87a6D3QqS0DeAUMPA",
+      "upload_date": null,
+      "duration": 16202.0,
+      "view_count": 4378,
+      "description": ""
+    },
+    {
+      "video_id": "l5fcQ-O-nbw",
+      "title": "Senator Doug Jones Statement on Congressional Delegation Trip to Afghanistan, Iraq",
+      "url": "https://www.youtube.com/watch?v=l5fcQ-O-nbw",
+      "channel": "Senator Doug Jones",
+      "channel_id": "UCL8akobkoN2lB5U3kaEjdBw",
+      "upload_date": null,
+      "duration": 231.0,
+      "view_count": 121,
+      "description": ""
+    },
+    {
+      "video_id": "uqejPsypfDQ",
+      "title": "Chris Coons announces his campaign for U.S. Senate",
+      "url": "https://www.youtube.com/watch?v=uqejPsypfDQ",
+      "channel": "Douglas Rainey",
+      "channel_id": "UCZldX-jsZfu3gof2e4eJTOw",
+      "upload_date": null,
+      "duration": 576.0,
+      "view_count": 203,
+      "description": ""
+    }
+  ]
+}

@@ -1,11 +1,68 @@
 {
   "bioguide_id": "B001230",
   "name": "Tammy Baldwin",
-  "total_found": 0,
-  "items_fetched": 0,
+  "total_found": 4,
+  "items_fetched": 4,
   "search_params": {
     "start_date": "2020-01-01",
     "end_date": "2026-12-31"
   },
-  "appearances": []
+  "appearances": [
+    {
+      "identifier": "CNNW_20260108_140000_CNN_News_Central",
+      "title": "CNN News Central : CNNW : January 8, 2026 6:00am-7:00am PST",
+      "date": "2026-01-08",
+      "snippet": "joining us is democratic senator from wisconsin, tammy baldwin. senator baldwin, thanks so much for being with us. and we're going to keep some of these pictures up while we speak with you. i don't know if you've had a chance to see what's happening in saint paul, just outside minneapolis, at this federal facility this morning. but your reaction? >> well, first of all, with regard to the tragedy yesterday, it is a tragedy. and i was absolutely taken aback by the social media posts by donald trump, by this administration prejudging and trying to create a narrative before an investigation has even happened. look, when you put in thousands of masked armed agents into residential neighborhoods across any city in america, tensions clearly rise. and i call on everybody to de-escalate. please continue to exercise your first amendment rights and protest, but do so peacefully, peaceably, because we do not need to give this president an excuse to declare some sort of state of emergency to double down on the type of actions that he's taken already >> you tal",
+      "network": "CNNW",
+      "collection": "TV-CNNW",
+      "start_time": "1763",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CNNW_20260108_140000_CNN_News_Central/CNNW_20260108_140000_CNN_News_Central.mp4?t=1763/1823&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CNNW_20260108_140000_CNN_News_Central/CNNW_20260108_140000_CNN_News_Central.thumbs/CNNW_20260108_140000_CNN_News_Central_001738.jpg",
+      "archive_url": "https://archive.org/details/CNNW_20260108_140000_CNN_News_Central",
+      "embed_url": "https://archive.org/embed/CNNW_20260108_140000_CNN_News_Central"
+    },
+    {
+      "identifier": "CSPAN3_20260107_080700_Sen._Susan_Collins_Discusses_Govt_Funding__Alzheimers_Research",
+      "title": "Sen. Susan Collins Discusses Gov't Funding & Alzheimer's Research : CSPAN3 : January 7, 2026 3:07am-3:49am EST",
+      "date": "2026-01-07",
+      "snippet": "shelly moore capito and tammy baldwin are the chair and ranking members of that subcommittee. patty murray's my counterpart at the full committee. we all worked as a team to make sure that didn't go through. the bill also includes language requiring us, the appropriations committee, to be notified if grants are being clawed back or paused. so that we can evaluate whether or not it's justified or whether or not it's an attempt to get around the increased funding that we have. so that's an important guardrail as well. andrew: you mentioned the 26-3 vote in the appropriations committee. i think what a lot of people don't realize is that it's actually been republicans in the senate taking the lead in pushing back against the administration on some of these rescissions and proposed funding cuts. when you see a piece of legislation passed by that big of a margin in any senate committee, i think that represents some pretty strong pushback to the administration. sen. collins: it definitely does. and i'm really proud that we could put together that strong a vote. now we're trying to br",
+      "network": "CSPAN3",
+      "collection": "TV-CSPAN3",
+      "start_time": "1034",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CSPAN3_20260107_080700_Sen._Susan_Collins_Discusses_Govt_Funding__Alzheimers_Research/CSPAN3_20260107_080700_Sen._Susan_Collins_Discusses_Govt_Funding__Alzheimers_Research.mp4?t=1034/1094&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CSPAN3_20260107_080700_Sen._Susan_Collins_Discusses_Govt_Funding__Alzheimers_Research/CSPAN3_20260107_080700_Sen._Susan_Collins_Discusses_Govt_Funding__Alzheimers_Research.thumbs/CSPAN3_20260107_080700_Sen._Susan_Collins_Discusses_Govt_Funding__Alzheimers_Research_001019.jpg",
+      "archive_url": "https://archive.org/details/CSPAN3_20260107_080700_Sen._Susan_Collins_Discusses_Govt_Funding__Alzheimers_Research",
+      "embed_url": "https://archive.org/embed/CSPAN3_20260107_080700_Sen._Susan_Collins_Discusses_Govt_Funding__Alzheimers_Research"
+    },
+    {
+      "identifier": "ALJAZ_20260101_063000",
+      "title": "ALJAZ : January 1, 2026 9:30am-10:00am AST",
+      "date": "2026-01-01",
+      "snippet": "what's going wrong with this, the total combat ship today, wisconsin center tammy baldwin, and now there will be 3 new material cost that should be funded through the national defense authorization. the l. c. s. program. employ thousands of people as a matter of state helping the big 5 to win government contracts is that cozy relationship with the primary customer, the pentagon form of defense secretary, so top generals 6 on the bolts of all 5 of some formal weapons executives move back in the other direction to the department of defense, the pencil guns has failed all of its life. 7 financial audits. a cons accounts for the majority of his assets. cases of fraud like weapons companies overcharging the governments a common place. we requested interviews with all of the big 5 us alms funds. no one responded. so we tried our look at the headquarters of 2 of them are, how are you all cx refused to speak to us and asked us to leave. and we go a similar welcome, a general dynamics who were not allowed to so you can't do anything about that. no allowed to get access to the yeah, that's fine. i",
+      "network": "ALJAZ",
+      "collection": "TV-ALJAZ",
+      "start_time": "1135",
+      "end_time": "",
+      "video_url": "https://archive.org/download/ALJAZ_20260101_063000/ALJAZ_20260101_063000.mp4?t=1135/1195&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/ALJAZ_20260101_063000/ALJAZ_20260101_063000.thumbs/ALJAZ_20260101_063000_001110.jpg",
+      "archive_url": "https://archive.org/details/ALJAZ_20260101_063000",
+      "embed_url": "https://archive.org/embed/ALJAZ_20260101_063000"
+    },
+    {
+      "identifier": "CNNW_20260108_230000_The_Lead_With_Jake_Tapper",
+      "title": "The Lead With Jake Tapper : CNNW : January 8, 2026 3:00pm-4:00pm PST",
+      "date": "2026-01-08",
+      "snippet": "i fully support tammy baldwin's bill, senate 2150.that would basically make sure that women have the right to to to terminate or continue an abortion through viability, and that protects physicians and other health care professionals from the absolutely absurd things that are going on in some of the states, like in texas, where basically they're turning people into stasi informers against their co-citizens. no, look, i don't i honestly think that when people get to hear what i have to say on issues, they're going to say, well, that's perfectly reasonable. i agree, i agree with that, and i look forward to talking about all those issues. >> all right, george conway, well, don't be a stranger. thanks so much. really appreciate it. there. we're showing you right now, largely peaceful protests in the united states after yesterday's ice shooting in minneapolis, not entirely, but largely overseas. a different scene, anti-government demonstrations turning violent in iran. a fierce critic of the regime once hunted down by would be assassins se",
+      "network": "CNNW",
+      "collection": "TV-CNNW",
+      "start_time": "2276",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CNNW_20260108_230000_The_Lead_With_Jake_Tapper/CNNW_20260108_230000_The_Lead_With_Jake_Tapper.mp4?t=2276/2336&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CNNW_20260108_230000_The_Lead_With_Jake_Tapper/CNNW_20260108_230000_The_Lead_With_Jake_Tapper.thumbs/CNNW_20260108_230000_The_Lead_With_Jake_Tapper_002249.jpg",
+      "archive_url": "https://archive.org/details/CNNW_20260108_230000_The_Lead_With_Jake_Tapper",
+      "embed_url": "https://archive.org/embed/CNNW_20260108_230000_The_Lead_With_Jake_Tapper"
+    }
+  ]
 }

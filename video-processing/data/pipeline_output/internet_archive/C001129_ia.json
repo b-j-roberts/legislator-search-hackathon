@@ -1,0 +1,40 @@
+{
+  "bioguide_id": "C001129",
+  "name": "Mike Collins",
+  "total_found": 2,
+  "items_fetched": 2,
+  "search_params": {
+    "start_date": "2020-01-01",
+    "end_date": "2026-12-31"
+  },
+  "appearances": [
+    {
+      "identifier": "CSPAN_20260102_064300_Apollo_8_Reunion",
+      "title": "Apollo 8 Reunion : CSPAN : January 2, 2026 1:43am-2:01am EST",
+      "date": "2026-01-02",
+      "snippet": "mike collins was the third person on the original crew of apollo eight at the time, maybe nine, i forget. mike had a medical problem, so i replaced him. i was the odd ball guy out. when the decision was made to go to the moon, personally i was elated. i was not looking forward to another earth orbital flight with frank borman. [laughter] you see, i spent 14 days with this gentleman. >> they came back engaged. [laughter] that's ok today. >> the way things are now, we could get married. [laughter] >> where do i go from here? [laughter] don't ask. what they are referring to, the gemini flights are the precursors to apollo, a two man capsule. it was about half the size of a volkswagen. they flew a 14 day mission. all of those gemini flights were a steppingstone to apollo. it was mostly involved in developing rendezvous techniques because we knew at that point there would have to be rendezvous early on. there was a decision to do lunar rendezvous. all those things had to work right. it was that experience that made it a success. let's keep going through the flight. you have gone through launc",
+      "network": "CSPAN",
+      "collection": "TV-CSPAN",
+      "start_time": "721",
+      "end_time": "",
+      "video_url": "https://archive.org/download/CSPAN_20260102_064300_Apollo_8_Reunion/CSPAN_20260102_064300_Apollo_8_Reunion.mp4?t=721/781&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/CSPAN_20260102_064300_Apollo_8_Reunion/CSPAN_20260102_064300_Apollo_8_Reunion.thumbs/CSPAN_20260102_064300_Apollo_8_Reunion_000718.jpg",
+      "archive_url": "https://archive.org/details/CSPAN_20260102_064300_Apollo_8_Reunion",
+      "embed_url": "https://archive.org/embed/CSPAN_20260102_064300_Apollo_8_Reunion"
+    },
+    {
+      "identifier": "KQED_20260106_230000_PBS_News_Hour",
+      "title": "PBS News Hour : KQED : January 6, 2026 3:00pm-4:01pm PST",
+      "date": "2026-01-06",
+      "snippet": "lisa: and last january 6, georgia republican congressman mike collins said thousands of peaceful grandmotherson unauthorized tour of the u.s. capitol building. she was that grandmother, recording everything she saw. marching up the street. clashes with police. climbing the steps of the east front. and walking through the halls of the capitol. >> there were a lot of people who as we have gotten farther from january 6 have said things including it wasn't violent, no one broke the law. what did you actually see compared to what people are saying? >> we know they are delusional. of course it was violent. they all had the attitude, it is our house, we can do what we want, we own it, this arrogance, this violent attitude. >> the video is indisputable. more than 140 police officers were seriously injured on january 6. there were brutal battles on the steps and in the center of the capitol. yes, some rioters follow the mob and mostly walked around, but even they and i spoke with them were therefore an illegal takeover of the capitol itself. initially, some republicans saw the event as a reckoning. >>",
+      "network": "KQED",
+      "collection": "TV-KQED",
+      "start_time": "1783",
+      "end_time": "",
+      "video_url": "https://archive.org/download/KQED_20260106_230000_PBS_News_Hour/KQED_20260106_230000_PBS_News_Hour.mp4?t=1783/1843&ignore=x.mp4",
+      "thumbnail": "//archive.org/download/KQED_20260106_230000_PBS_News_Hour/KQED_20260106_230000_PBS_News_Hour.thumbs/KQED_20260106_230000_PBS_News_Hour_001768.jpg",
+      "archive_url": "https://archive.org/details/KQED_20260106_230000_PBS_News_Hour",
+      "embed_url": "https://archive.org/embed/KQED_20260106_230000_PBS_News_Hour"
+    }
+  ]
+}
