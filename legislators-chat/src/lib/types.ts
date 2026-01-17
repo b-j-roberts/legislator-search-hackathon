@@ -236,6 +236,26 @@ export interface ChatRequest {
 }
 
 // =============================================================================
+// Conversation Types
+// =============================================================================
+
+/** A saved conversation */
+export interface Conversation {
+  id: string;
+  title: string;
+  messages: ChatMessage[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+/** Storage format for conversations */
+export interface ConversationsStorage {
+  conversations: Conversation[];
+  activeConversationId: string | null;
+  version: number;
+}
+
+// =============================================================================
 // State Management Types
 // =============================================================================
 

@@ -1,18 +1,24 @@
 "use client";
 
 import * as React from "react";
-import type {
-  ChatMessage,
-  ChatState,
-  MessageRole,
-} from "@/lib/types";
+import type { ChatMessage, Conversation, ConversationsStorage, MessageRole } from "@/lib/types";
 import { sendChatMessageStream, ApiClientError } from "@/lib/api";
+import {
+  loadConversations,
+  saveConversations,
+  createConversation,
+  deleteConversation as deleteConv,
+  setActiveConversation,
+  addMessageToConversation,
+  updateMessageInConversation,
+  generateMessageId,
+  getActiveConversation,
+} from "@/lib/conversation-storage";
 
 // =============================================================================
 // Constants
 // =============================================================================
 
-const STORAGE_KEY = "legislators-chat-history";
 const MAX_RETRY_ATTEMPTS = 3;
 const RETRY_DELAY_MS = 1000;
 
@@ -20,70 +26,67 @@ const RETRY_DELAY_MS = 1000;
 // Types
 // =============================================================================
 
-interface ChatContextValue extends ChatState {
+interface ChatContextValue {
+  /** Current messages */
+  messages: ChatMessage[];
+  /** Loading state */
+  isLoading: boolean;
+  /** Error message */
+  error: string | null;
+  /** Current conversation ID */
+  conversationId: string | undefined;
+  /** All conversations */
+  conversations: Conversation[];
+  /** Active conversation */
+  activeConversation: Conversation | undefined;
   /** Send a new message */
   sendMessage: (content: string) => Promise<void>;
   /** Retry a failed message */
   retryMessage: (messageId: string) => Promise<void>;
-  /** Clear all messages */
+  /** Clear current conversation messages */
   clearMessages: () => void;
   /** Clear error state */
   clearError: () => void;
+  /** Create a new conversation */
+  newConversation: () => void;
+  /** Switch to a different conversation */
+  switchConversation: (id: string) => void;
+  /** Delete a conversation */
+  deleteConversation: (id: string) => void;
+  /** Rename a conversation */
+  renameConversation: (id: string, title: string) => void;
+  /** Sidebar open state */
+  isSidebarOpen: boolean;
+  /** Toggle sidebar */
+  toggleSidebar: () => void;
+  /** Set sidebar state */
+  setSidebarOpen: (open: boolean) => void;
 }
 
 type ChatAction =
-  | { type: "ADD_USER_MESSAGE"; payload: ChatMessage }
-  | { type: "ADD_ASSISTANT_MESSAGE"; payload: ChatMessage }
-  | { type: "UPDATE_MESSAGE"; payload: { id: string; updates: Partial<ChatMessage> } }
+  | { type: "LOAD_STORAGE"; payload: ConversationsStorage }
   | { type: "SET_LOADING"; payload: boolean }
   | { type: "SET_ERROR"; payload: string | null }
-  | { type: "SET_CONVERSATION_ID"; payload: string }
+  | { type: "ADD_MESSAGE"; payload: { conversationId: string; message: ChatMessage } }
+  | { type: "UPDATE_MESSAGE"; payload: { conversationId: string; messageId: string; updates: Partial<ChatMessage> } }
+  | { type: "NEW_CONVERSATION"; payload: Conversation }
+  | { type: "SWITCH_CONVERSATION"; payload: string }
+  | { type: "DELETE_CONVERSATION"; payload: string }
+  | { type: "RENAME_CONVERSATION"; payload: { id: string; title: string } }
   | { type: "CLEAR_MESSAGES" }
-  | { type: "LOAD_MESSAGES"; payload: ChatMessage[] };
+  | { type: "TOGGLE_SIDEBAR" }
+  | { type: "SET_SIDEBAR"; payload: boolean };
+
+interface ChatState {
+  storage: ConversationsStorage;
+  isLoading: boolean;
+  error: string | null;
+  isSidebarOpen: boolean;
+}
 
 // =============================================================================
 // Utilities
 // =============================================================================
-
-/** Generate a unique message ID */
-function generateMessageId(): string {
-  return `msg_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
-}
-
-/** Generate a unique conversation ID */
-function generateConversationId(): string {
-  return `conv_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
-}
-
-/** Load messages from localStorage */
-function loadMessagesFromStorage(): ChatMessage[] {
-  if (typeof window === "undefined") return [];
-
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (!stored) return [];
-
-    const parsed = JSON.parse(stored);
-    if (Array.isArray(parsed)) {
-      return parsed;
-    }
-    return [];
-  } catch {
-    console.warn("Failed to load chat history from localStorage");
-    return [];
-  }
-}
-
-/** Save messages to localStorage */
-function saveMessagesToStorage(messages: ChatMessage[]): void {
-  if (typeof window === "undefined") return;
-
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
-  } catch {
-    console.warn("Failed to save chat history to localStorage");
-  }
-}
 
 /** Sleep utility for retry delays */
 function sleep(ms: number): Promise<void> {
@@ -96,26 +99,10 @@ function sleep(ms: number): Promise<void> {
 
 function chatReducer(state: ChatState, action: ChatAction): ChatState {
   switch (action.type) {
-    case "ADD_USER_MESSAGE":
+    case "LOAD_STORAGE":
       return {
         ...state,
-        messages: [...state.messages, action.payload],
-      };
-
-    case "ADD_ASSISTANT_MESSAGE":
-      return {
-        ...state,
-        messages: [...state.messages, action.payload],
-      };
-
-    case "UPDATE_MESSAGE":
-      return {
-        ...state,
-        messages: state.messages.map((msg) =>
-          msg.id === action.payload.id
-            ? { ...msg, ...action.payload.updates }
-            : msg
-        ),
+        storage: action.payload,
       };
 
     case "SET_LOADING":
@@ -130,24 +117,99 @@ function chatReducer(state: ChatState, action: ChatAction): ChatState {
         error: action.payload,
       };
 
-    case "SET_CONVERSATION_ID":
+    case "ADD_MESSAGE": {
+      const newStorage = addMessageToConversation(
+        state.storage,
+        action.payload.conversationId,
+        action.payload.message
+      );
       return {
         ...state,
-        conversationId: action.payload,
+        storage: newStorage,
       };
+    }
 
-    case "CLEAR_MESSAGES":
+    case "UPDATE_MESSAGE": {
+      const newStorage = updateMessageInConversation(
+        state.storage,
+        action.payload.conversationId,
+        action.payload.messageId,
+        action.payload.updates
+      );
       return {
         ...state,
-        messages: [],
-        conversationId: undefined,
+        storage: newStorage,
+      };
+    }
+
+    case "NEW_CONVERSATION": {
+      return {
+        ...state,
+        storage: {
+          ...state.storage,
+          conversations: [action.payload, ...state.storage.conversations],
+          activeConversationId: action.payload.id,
+        },
+      };
+    }
+
+    case "SWITCH_CONVERSATION": {
+      return {
+        ...state,
+        storage: setActiveConversation(state.storage, action.payload),
         error: null,
       };
+    }
 
-    case "LOAD_MESSAGES":
+    case "DELETE_CONVERSATION": {
       return {
         ...state,
-        messages: action.payload,
+        storage: deleteConv(state.storage, action.payload),
+      };
+    }
+
+    case "RENAME_CONVERSATION": {
+      return {
+        ...state,
+        storage: {
+          ...state.storage,
+          conversations: state.storage.conversations.map((c) =>
+            c.id === action.payload.id
+              ? { ...c, title: action.payload.title, updatedAt: new Date().toISOString() }
+              : c
+          ),
+        },
+      };
+    }
+
+    case "CLEAR_MESSAGES": {
+      const activeId = state.storage.activeConversationId;
+      if (!activeId) return state;
+
+      return {
+        ...state,
+        storage: {
+          ...state.storage,
+          conversations: state.storage.conversations.map((c) =>
+            c.id === activeId
+              ? { ...c, messages: [], title: "New Conversation", updatedAt: new Date().toISOString() }
+              : c
+          ),
+        },
+        error: null,
+      };
+    }
+
+    case "TOGGLE_SIDEBAR":
+      return {
+        ...state,
+        isSidebarOpen: !state.isSidebarOpen,
+      };
+
+    case "SET_SIDEBAR":
+      return {
+        ...state,
+        isSidebarOpen: action.payload,
       };
 
     default:
@@ -171,33 +233,47 @@ interface ChatProviderProps {
 
 export function ChatProvider({ children }: ChatProviderProps) {
   const [state, dispatch] = React.useReducer(chatReducer, {
-    messages: [],
+    storage: {
+      conversations: [],
+      activeConversationId: null,
+      version: 1,
+    },
     isLoading: false,
     error: null,
+    isSidebarOpen: false,
   });
 
-  // Load messages from localStorage on mount
+  // Load conversations from localStorage on mount
   React.useEffect(() => {
-    const storedMessages = loadMessagesFromStorage();
-    if (storedMessages.length > 0) {
-      dispatch({ type: "LOAD_MESSAGES", payload: storedMessages });
-    }
+    const loaded = loadConversations();
+    dispatch({ type: "LOAD_STORAGE", payload: loaded });
   }, []);
 
-  // Persist messages to localStorage when they change
+  // Persist conversations to localStorage when they change
   React.useEffect(() => {
-    saveMessagesToStorage(state.messages);
-  }, [state.messages]);
+    // Only save if we have conversations (avoid saving on initial load)
+    if (state.storage.conversations.length > 0 || state.storage.activeConversationId) {
+      saveConversations(state.storage);
+    }
+  }, [state.storage]);
+
+  // Derived state
+  const activeConversation = getActiveConversation(state.storage);
+  const messages = activeConversation?.messages || [];
+  const conversationId = state.storage.activeConversationId || undefined;
 
   /**
    * Send a message to the chat API with streaming support
    */
   const sendMessage = React.useCallback(
     async (content: string) => {
-      // Generate conversation ID if this is the first message
-      const conversationId = state.conversationId || generateConversationId();
-      if (!state.conversationId) {
-        dispatch({ type: "SET_CONVERSATION_ID", payload: conversationId });
+      // Create a new conversation if we don't have one
+      let currentConversationId = state.storage.activeConversationId;
+
+      if (!currentConversationId) {
+        const { conversation } = createConversation(state.storage);
+        dispatch({ type: "NEW_CONVERSATION", payload: conversation });
+        currentConversationId = conversation.id;
       }
 
       // Create user message
@@ -219,15 +295,16 @@ export function ChatProvider({ children }: ChatProviderProps) {
         status: "sending",
       };
 
-      dispatch({ type: "ADD_USER_MESSAGE", payload: userMessage });
-      dispatch({ type: "ADD_ASSISTANT_MESSAGE", payload: assistantMessage });
+      dispatch({ type: "ADD_MESSAGE", payload: { conversationId: currentConversationId, message: userMessage } });
+      dispatch({ type: "ADD_MESSAGE", payload: { conversationId: currentConversationId, message: assistantMessage } });
       dispatch({ type: "SET_LOADING", payload: true });
       dispatch({ type: "SET_ERROR", payload: null });
 
       try {
         // Build context from previous messages
+        const currentConv = state.storage.conversations.find((c) => c.id === currentConversationId);
         const previousMessages: Array<{ role: MessageRole; content: string }> =
-          state.messages.map((msg) => ({
+          (currentConv?.messages || []).map((msg) => ({
             role: msg.role,
             content: msg.content,
           }));
@@ -238,7 +315,7 @@ export function ChatProvider({ children }: ChatProviderProps) {
         await sendChatMessageStream(
           {
             message: content,
-            conversationId,
+            conversationId: currentConversationId,
             context: { previousMessages },
           },
           (chunk, done) => {
@@ -247,7 +324,8 @@ export function ChatProvider({ children }: ChatProviderProps) {
               dispatch({
                 type: "UPDATE_MESSAGE",
                 payload: {
-                  id: assistantMessageId,
+                  conversationId: currentConversationId!,
+                  messageId: assistantMessageId,
                   updates: {
                     status: "sent",
                     sources: [],
@@ -261,7 +339,8 @@ export function ChatProvider({ children }: ChatProviderProps) {
               dispatch({
                 type: "UPDATE_MESSAGE",
                 payload: {
-                  id: assistantMessageId,
+                  conversationId: currentConversationId!,
+                  messageId: assistantMessageId,
                   updates: { content: streamedContent },
                 },
               });
@@ -280,7 +359,8 @@ export function ChatProvider({ children }: ChatProviderProps) {
         dispatch({
           type: "UPDATE_MESSAGE",
           payload: {
-            id: assistantMessageId,
+            conversationId: currentConversationId!,
+            messageId: assistantMessageId,
             updates: {
               status: "error",
               error: errorMessage,
@@ -292,7 +372,7 @@ export function ChatProvider({ children }: ChatProviderProps) {
         dispatch({ type: "SET_LOADING", payload: false });
       }
     },
-    [state.conversationId, state.messages]
+    [state.storage]
   );
 
   /**
@@ -300,17 +380,21 @@ export function ChatProvider({ children }: ChatProviderProps) {
    */
   const retryMessage = React.useCallback(
     async (messageId: string) => {
+      const currentConversationId = state.storage.activeConversationId;
+      if (!currentConversationId) return;
+
+      const conversation = state.storage.conversations.find((c) => c.id === currentConversationId);
+      if (!conversation) return;
+
       // Find the failed message
-      const messageIndex = state.messages.findIndex(
-        (msg) => msg.id === messageId
-      );
+      const messageIndex = conversation.messages.findIndex((msg) => msg.id === messageId);
 
       if (messageIndex === -1) {
         console.warn(`Message ${messageId} not found`);
         return;
       }
 
-      const message = state.messages[messageIndex];
+      const message = conversation.messages[messageIndex];
 
       if (message.status !== "error") {
         console.warn(`Message ${messageId} is not in error state`);
@@ -320,8 +404,8 @@ export function ChatProvider({ children }: ChatProviderProps) {
       // Find the user message that triggered this response
       let userMessage: ChatMessage | undefined;
       for (let i = messageIndex - 1; i >= 0; i--) {
-        if (state.messages[i].role === "user") {
-          userMessage = state.messages[i];
+        if (conversation.messages[i].role === "user") {
+          userMessage = conversation.messages[i];
           break;
         }
       }
@@ -336,7 +420,8 @@ export function ChatProvider({ children }: ChatProviderProps) {
       dispatch({
         type: "UPDATE_MESSAGE",
         payload: {
-          id: messageId,
+          conversationId: currentConversationId,
+          messageId,
           updates: { status: "sending", error: undefined, content: "" },
         },
       });
@@ -352,7 +437,7 @@ export function ChatProvider({ children }: ChatProviderProps) {
 
           // Build context from messages up to the user message
           const previousMessages: Array<{ role: MessageRole; content: string }> =
-            state.messages.slice(0, messageIndex - 1).map((msg) => ({
+            conversation.messages.slice(0, messageIndex - 1).map((msg) => ({
               role: msg.role,
               content: msg.content,
             }));
@@ -362,7 +447,7 @@ export function ChatProvider({ children }: ChatProviderProps) {
           await sendChatMessageStream(
             {
               message: userMessage.content,
-              conversationId: state.conversationId,
+              conversationId: currentConversationId,
               context: { previousMessages },
             },
             (chunk, done) => {
@@ -370,7 +455,8 @@ export function ChatProvider({ children }: ChatProviderProps) {
                 dispatch({
                   type: "UPDATE_MESSAGE",
                   payload: {
-                    id: messageId,
+                    conversationId: currentConversationId,
+                    messageId,
                     updates: {
                       status: "sent",
                       sources: [],
@@ -384,7 +470,8 @@ export function ChatProvider({ children }: ChatProviderProps) {
                 dispatch({
                   type: "UPDATE_MESSAGE",
                   payload: {
-                    id: messageId,
+                    conversationId: currentConversationId,
+                    messageId,
                     updates: { content: streamedContent },
                   },
                 });
@@ -404,7 +491,8 @@ export function ChatProvider({ children }: ChatProviderProps) {
       dispatch({
         type: "UPDATE_MESSAGE",
         payload: {
-          id: messageId,
+          conversationId: currentConversationId,
+          messageId,
           updates: {
             status: "error",
             error: errorMessage,
@@ -414,17 +502,14 @@ export function ChatProvider({ children }: ChatProviderProps) {
       dispatch({ type: "SET_ERROR", payload: errorMessage });
       dispatch({ type: "SET_LOADING", payload: false });
     },
-    [state.messages, state.conversationId]
+    [state.storage]
   );
 
   /**
-   * Clear all messages
+   * Clear current conversation messages
    */
   const clearMessages = React.useCallback(() => {
     dispatch({ type: "CLEAR_MESSAGES" });
-    if (typeof window !== "undefined") {
-      localStorage.removeItem(STORAGE_KEY);
-    }
   }, []);
 
   /**
@@ -434,12 +519,67 @@ export function ChatProvider({ children }: ChatProviderProps) {
     dispatch({ type: "SET_ERROR", payload: null });
   }, []);
 
+  /**
+   * Create a new conversation
+   */
+  const newConversation = React.useCallback(() => {
+    const { conversation } = createConversation(state.storage);
+    dispatch({ type: "NEW_CONVERSATION", payload: conversation });
+  }, [state.storage]);
+
+  /**
+   * Switch to a different conversation
+   */
+  const switchConversation = React.useCallback((id: string) => {
+    dispatch({ type: "SWITCH_CONVERSATION", payload: id });
+  }, []);
+
+  /**
+   * Delete a conversation
+   */
+  const deleteConversation = React.useCallback((id: string) => {
+    dispatch({ type: "DELETE_CONVERSATION", payload: id });
+  }, []);
+
+  /**
+   * Rename a conversation
+   */
+  const renameConversation = React.useCallback((id: string, title: string) => {
+    dispatch({ type: "RENAME_CONVERSATION", payload: { id, title } });
+  }, []);
+
+  /**
+   * Toggle sidebar
+   */
+  const toggleSidebar = React.useCallback(() => {
+    dispatch({ type: "TOGGLE_SIDEBAR" });
+  }, []);
+
+  /**
+   * Set sidebar state
+   */
+  const setSidebarOpen = React.useCallback((open: boolean) => {
+    dispatch({ type: "SET_SIDEBAR", payload: open });
+  }, []);
+
   const value: ChatContextValue = {
-    ...state,
+    messages,
+    isLoading: state.isLoading,
+    error: state.error,
+    conversationId,
+    conversations: state.storage.conversations,
+    activeConversation,
     sendMessage,
     retryMessage,
     clearMessages,
     clearError,
+    newConversation,
+    switchConversation,
+    deleteConversation,
+    renameConversation,
+    isSidebarOpen: state.isSidebarOpen,
+    toggleSidebar,
+    setSidebarOpen,
   };
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
@@ -458,4 +598,3 @@ export function useChat(): ChatContextValue {
 
   return context;
 }
-

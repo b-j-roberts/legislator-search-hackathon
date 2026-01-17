@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider, ChatProvider } from "@/components/providers";
 import { Header } from "@/components/layout";
+import { ConversationSidebar } from "@/components/conversation/conversation-sidebar";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
@@ -36,12 +37,15 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased h-dvh flex flex-col overflow-hidden`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased h-dvh flex overflow-hidden`}
       >
         <ThemeProvider>
           <ChatProvider>
-            <Header />
-            {children}
+            <ConversationSidebar />
+            <div className="flex flex-1 flex-col min-h-0 overflow-hidden">
+              <Header />
+              {children}
+            </div>
             <Toaster position="top-right" richColors closeButton />
           </ChatProvider>
         </ThemeProvider>
