@@ -13,7 +13,7 @@ interface AppLayoutProps {
  * Main application layout with responsive split-view design.
  *
  * Desktop (>= 1024px): Chat on left (60%), Results on right (40%)
- * Mobile (< 768px): Stacked layout
+ * Mobile (< 1024px): Chat on top, Results panel collapsible below
  */
 export function AppLayout({ children, resultsPanel, className }: AppLayoutProps) {
   return (
@@ -24,13 +24,13 @@ export function AppLayout({ children, resultsPanel, className }: AppLayoutProps)
       )}
     >
       {/* Main Content / Chat Area */}
-      <main className="flex flex-1 flex-col lg:w-[60%] lg:flex-none overflow-hidden">
+      <main className="flex flex-1 flex-col lg:w-[60%] lg:flex-none overflow-hidden min-h-0">
         {children}
       </main>
 
-      {/* Results Panel - Desktop: side panel, Mobile: collapsed/hidden */}
+      {/* Results Panel - Desktop: side panel, Mobile: collapsible below chat */}
       {resultsPanel && (
-        <aside className="hidden lg:flex lg:w-[40%] flex-col border-l border-border overflow-hidden">
+        <aside className="flex lg:w-[40%] flex-col border-t lg:border-t-0 lg:border-l border-border overflow-hidden">
           {resultsPanel}
         </aside>
       )}

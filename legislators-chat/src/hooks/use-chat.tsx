@@ -482,8 +482,109 @@ async function simulatedResponse(message: string): Promise<ChatResponse> {
   const truncatedMessage =
     message.length > 50 ? `${message.slice(0, 50)}...` : message;
 
+  // Check if message mentions legislators to return sample data
+  const lowerMessage = message.toLowerCase();
+  const mentionsLegislators =
+    lowerMessage.includes("senator") ||
+    lowerMessage.includes("representative") ||
+    lowerMessage.includes("legislator") ||
+    lowerMessage.includes("congress") ||
+    lowerMessage.includes("climate") ||
+    lowerMessage.includes("healthcare") ||
+    lowerMessage.includes("who");
+
+  if (mentionsLegislators) {
+    return {
+      message: `I found several legislators relevant to your question about "${truncatedMessage}". Here are some key members who have been active on this issue.`,
+      legislators: [
+        {
+          id: "S001181",
+          name: "Jeanne Shaheen",
+          party: "D",
+          chamber: "Senate",
+          state: "NH",
+          stance: "for",
+          stanceSummary: "Strong advocate for climate action and renewable energy initiatives. Co-sponsored multiple clean energy bills.",
+          contact: {
+            phone: "(202) 224-2841",
+            email: "senator@shaheen.senate.gov",
+            website: "https://shaheen.senate.gov",
+            office: "506 Hart Senate Office Building, Washington, DC 20510",
+            socialMedia: { twitter: "SenatorShaheen" },
+          },
+          termStart: "2009-01-06",
+          nextElection: "2026",
+        },
+        {
+          id: "C001098",
+          name: "Ted Cruz",
+          party: "R",
+          chamber: "Senate",
+          state: "TX",
+          stance: "against",
+          stanceSummary: "Opposes federal climate regulations. Advocates for energy independence through fossil fuels.",
+          contact: {
+            phone: "(202) 224-5922",
+            email: "senator@cruz.senate.gov",
+            website: "https://cruz.senate.gov",
+            office: "127A Russell Senate Office Building, Washington, DC 20510",
+            socialMedia: { twitter: "SenTedCruz" },
+          },
+          termStart: "2013-01-03",
+          nextElection: "2030",
+        },
+        {
+          id: "O000172",
+          name: "Alexandria Ocasio-Cortez",
+          party: "D",
+          chamber: "House",
+          state: "NY",
+          district: "14",
+          stance: "for",
+          stanceSummary: "Leading proponent of the Green New Deal. Advocates for aggressive climate action and environmental justice.",
+          contact: {
+            phone: "(202) 225-3965",
+            email: "rep@ocasiocortez.house.gov",
+            website: "https://ocasio-cortez.house.gov",
+            office: "229 Cannon House Office Building, Washington, DC 20515",
+            socialMedia: { twitter: "AOC" },
+          },
+          termStart: "2019-01-03",
+          nextElection: "2026",
+        },
+      ],
+      documents: [
+        {
+          id: "doc-1",
+          type: "bill",
+          title: "Clean Energy Innovation Act",
+          date: "2024-03-15",
+          summary: "Bipartisan legislation to invest in clean energy research and development.",
+          relevance: 0.92,
+        },
+      ],
+      votes: [
+        {
+          id: "vote-1",
+          billId: "HR-4567",
+          billTitle: "Renewable Energy Tax Credit Extension",
+          date: "2024-06-12",
+          chamber: "House",
+          result: "passed",
+          yeas: 245,
+          nays: 188,
+          present: 0,
+          notVoting: 2,
+          relevance: 0.88,
+        },
+      ],
+      sources: ["Congress.gov", "OpenSecrets", "VoteSmart"],
+      confidence: 0.92,
+    };
+  }
+
   return {
-    message: `I'm researching your question about "${truncatedMessage}". This is a simulated response - the actual API integration will provide real legislator data, voting records, and hearing information.`,
+    message: `I'm researching your question about "${truncatedMessage}". This is a simulated response - the actual API integration will provide real legislator data, voting records, and hearing information. Try asking about legislators, senators, or specific topics like "climate" or "healthcare" to see example results.`,
     sources: ["Simulated data"],
     confidence: 0.85,
   };
