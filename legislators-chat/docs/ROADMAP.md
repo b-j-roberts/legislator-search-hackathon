@@ -17,42 +17,15 @@ After implementing the feature, please provide a concise step-by-step instructio
 
 Features that enhance the experience but aren't required for initial launch.
 
-### 2.1 Chat History Persistence
+### 2.0 User Interface Enhancements
 
-**Description**: Save and restore chat history across sessions.
-
-**Requirements**:
-- [ ] Persist chat history to localStorage
-- [ ] Restore previous conversations on load
-- [ ] Add ability to start new conversation
-- [ ] Implement conversation list sidebar
-- [ ] Add delete conversation functionality
-
-**Implementation Notes**:
-- Consider data size limits of localStorage
-- May need to move to IndexedDB for large histories
-- Future: sync to backend for cross-device
-
----
-
-### 2.2 Advanced Filtering & Sorting
-
-**Description**: Allow users to filter and sort legislator results.
+**Description**: Improve UI/UX with better components and layouts.
 
 **Requirements**:
-- [ ] Filter by party (D/R/I)
-- [ ] Filter by chamber (House/Senate)
-- [ ] Filter by state
-- [ ] Filter by stance (for/against)
-- [ ] Sort by relevance, name, state
-- [ ] Persist filter preferences
-
-**Implementation Notes**:
-- Use shadcn Select/Checkbox for filters
-- Filters should update results in real-time
-- Consider filter chips for active filters
-
----
+- [ ] Add expand/collapse for ResultsPanel
+- [ ] Allow users to resize ResultsPanel width by dragging on border
+- [ ] Store panel size preference in local storage
+- [ ] Fix issue where live chat loading causes chat to jump and scroll out of view at the top of the screen
 
 ### 2.3 Document Viewer
 

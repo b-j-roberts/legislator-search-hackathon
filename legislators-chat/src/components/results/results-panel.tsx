@@ -5,10 +5,22 @@ import { motion } from "framer-motion";
 import { Users, FileText, Vote, ChevronUp } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import type { Legislator, Document, VoteRecord, Hearing } from "@/lib/types";
+import type {
+  Legislator,
+  Document,
+  VoteRecord,
+  Hearing,
+  Party,
+  Chamber,
+  Stance,
+  StateAbbreviation,
+  SortOption,
+} from "@/lib/types";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { LegislatorList } from "./legislator-list";
+import { FilterBar, FilterChips } from "@/components/filters";
+import { useFilters, type FilterState } from "@/hooks/use-filters";
 
 export type ResultsTab = "people" | "documents" | "votes";
 
@@ -75,14 +87,34 @@ export function ResultsPanel({
   const [currentTab, setCurrentTab] = React.useState<ResultsTab>(activeTab);
   const [isMobileExpanded, setIsMobileExpanded] = React.useState(false);
 
-  // Calculate counts for tabs
+  // Filter and sort state
+  const {
+    filters,
+    toggleParty,
+    toggleChamber,
+    toggleState,
+    toggleStance,
+    setSortBy,
+    clearFilters,
+    hasActiveFilters,
+    activeFilterCount,
+    applyFilters,
+  } = useFilters();
+
+  // Apply filters to legislators
+  const filteredLegislators = React.useMemo(
+    () => applyFilters(legislators),
+    [legislators, applyFilters]
+  );
+
+  // Calculate counts for tabs (filtered for legislators)
   const tabs: TabConfig[] = [
-    { id: "people", label: "People", icon: Users, count: legislators.length },
+    { id: "people", label: "People", icon: Users, count: filteredLegislators.length },
     { id: "documents", label: "Documents", icon: FileText, count: documents.length + hearings.length },
     { id: "votes", label: "Votes", icon: Vote, count: votes.length },
   ];
 
-  const totalResults = legislators.length + documents.length + votes.length + hearings.length;
+  const totalResults = filteredLegislators.length + documents.length + votes.length + hearings.length;
 
   const handleTabChange = (value: string) => {
     const tab = value as ResultsTab;
@@ -160,12 +192,41 @@ export function ResultsPanel({
             </TabsList>
           </div>
 
+          {/* Filter bar - only visible on People tab when there are legislators */}
+          {currentTab === "people" && legislators.length > 0 && (
+            <div className="flex-shrink-0 border-b border-border px-3 py-2 space-y-2">
+              <FilterBar
+                filters={filters}
+                onToggleParty={toggleParty}
+                onToggleChamber={toggleChamber}
+                onToggleState={toggleState}
+                onToggleStance={toggleStance}
+                onSetSortBy={setSortBy}
+                onClearFilters={clearFilters}
+                hasActiveFilters={hasActiveFilters}
+                activeFilterCount={activeFilterCount}
+              />
+              <FilterChips
+                filters={filters}
+                onRemoveParty={toggleParty}
+                onRemoveChamber={toggleChamber}
+                onRemoveState={toggleState}
+                onRemoveStance={toggleStance}
+              />
+            </div>
+          )}
+
           {/* Tab content */}
           <div className="flex-1 min-h-0 overflow-hidden">
             <TabsContent value="people" className="h-full overflow-auto m-0">
               <LegislatorList
-                legislators={legislators}
+                legislators={filteredLegislators}
                 isLoading={isLoading}
+                emptyMessage={
+                  hasActiveFilters && legislators.length > 0
+                    ? "No legislators match your filters. Try adjusting or clearing filters."
+                    : undefined
+                }
               />
             </TabsContent>
 
