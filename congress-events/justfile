@@ -1,0 +1,77 @@
+# Default recipe
+default:
+    @just --list
+
+# Build release binary
+build:
+    cargo build --release
+
+# Build debug binary
+build-debug:
+    cargo build
+
+# Run clippy
+lint:
+    cargo clippy --all-targets
+
+# Run tests
+test:
+    cargo test
+
+# Format code
+fmt:
+    cargo fmt
+
+# Check formatting
+fmt-check:
+    cargo fmt --check
+
+# Show hearings statistics
+stats:
+    cargo run --release -- stats -i ../congress-hearings/congressional_hearings_2020_2026.yaml
+
+# Parse all transcripts (parallel)
+parse-transcripts:
+    cargo run --release -- parse-transcripts \
+        -i ../congress-hearings/congressional_hearings_2020_2026.yaml \
+        -o ../data/transcripts \
+        --skip-existing
+
+# Parse transcripts with limit (for testing)
+parse-transcripts-sample limit="10":
+    cargo run --release -- parse-transcripts \
+        -i ../congress-hearings/congressional_hearings_2020_2026.yaml \
+        -o ../data/transcripts \
+        --limit {{limit}}
+
+# Merge events into master list (skip floor speeches)
+merge:
+    cargo run --release -- merge \
+        --hearings ../congress-hearings/congressional_hearings_2020_2026.yaml \
+        -o ../data/master_congressional_events.yaml \
+        --skip-speeches
+
+# Fetch floor speeches from GovInfo API
+fetch-speeches start="2020-01-01" end="2026-12-31":
+    cargo run --release -- floor-speeches \
+        --start-date {{start}} \
+        --end-date {{end}} \
+        -o ../data/floor_speeches.yaml
+
+# Convert hearings to our format
+convert-hearings:
+    cargo run --release -- hearings \
+        -i ../congress-hearings/congressional_hearings_2020_2026.yaml \
+        -o ../data/hearings.yaml
+
+# Count parsed transcripts
+count-transcripts:
+    @echo "Parsed transcripts:" && ls ../data/transcripts/*.json 2>/dev/null | wc -l
+    @echo "Total size:" && du -sh ../data/transcripts/ 2>/dev/null || echo "No transcripts directory"
+
+# Clean build artifacts
+clean:
+    cargo clean
+
+# Full rebuild
+rebuild: clean build

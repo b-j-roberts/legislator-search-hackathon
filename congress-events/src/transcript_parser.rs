@@ -1,6 +1,6 @@
 //! Transcript parser for congressional hearing transcripts from GovInfo
 
-use crate::models::{Chamber, Hearing, ParsedTranscript, Statement};
+use crate::models::{Hearing, ParsedTranscript, Statement};
 use eyre::{Context, Result};
 use regex::Regex;
 use std::collections::HashSet;
@@ -174,7 +174,7 @@ fn parse_statements(text: &str) -> Vec<Statement> {
     ).unwrap();
 
     // Also match speakers with just titles at start of line with 4 spaces
-    let alt_pattern = Regex::new(
+    let _alt_pattern = Regex::new(
         r"(?m)^\s{4}([A-Z][a-z]+(?:\s+[A-Z][a-zA-Z\-']+)?)\.\s+"
     ).unwrap();
 

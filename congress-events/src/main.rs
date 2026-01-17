@@ -6,11 +6,13 @@ mod congress_api;
 mod govinfo;
 mod models;
 mod output;
+mod transcript_parser;
 
 use congress_api::{load_hearings_from_yaml, HearingsStats};
 use govinfo::GovInfoClient;
 use models::Event;
 use output::{write_floor_speeches, write_hearings, write_master_list};
+use transcript_parser::TranscriptFetcher;
 
 #[derive(Parser)]
 #[command(name = "congress-events")]
@@ -85,6 +87,25 @@ enum Commands {
         #[arg(short, long)]
         input: PathBuf,
     },
+
+    /// Parse transcripts from hearings into structured JSON
+    ParseTranscripts {
+        /// Path to hearings YAML file
+        #[arg(short, long)]
+        input: PathBuf,
+
+        /// Output directory for JSON files
+        #[arg(short, long, default_value = "transcripts")]
+        output_dir: PathBuf,
+
+        /// Maximum number of transcripts to parse (for testing)
+        #[arg(long)]
+        limit: Option<usize>,
+
+        /// Skip transcripts that already exist in output directory
+        #[arg(long)]
+        skip_existing: bool,
+    },
 }
 
 fn main() -> Result<()> {
@@ -127,6 +148,15 @@ fn main() -> Result<()> {
 
         Commands::Stats { input } => {
             show_stats(&input)?;
+        }
+
+        Commands::ParseTranscripts {
+            input,
+            output_dir,
+            limit,
+            skip_existing,
+        } => {
+            parse_transcripts(&input, &output_dir, limit, skip_existing)?;
         }
     }
 
@@ -387,6 +417,123 @@ fn show_stats(input: &PathBuf) -> Result<()> {
     // Note about video duration
     println!();
     println!("Note: Video duration data not available in source (would require fetching each video page)");
+
+    Ok(())
+}
+
+fn parse_transcripts(
+    input: &Path,
+    output_dir: &Path,
+    limit: Option<usize>,
+    skip_existing: bool,
+) -> Result<()> {
+    use rayon::prelude::*;
+    use std::sync::atomic::{AtomicUsize, Ordering};
+
+    eprintln!("Loading hearings from {}...", input.display());
+    let hearings = load_hearings_from_yaml(input)?;
+
+    // Filter to hearings with transcripts
+    let with_transcript: Vec<_> = hearings
+        .into_iter()
+        .filter(|h| h.transcript.is_some())
+        .collect();
+
+    eprintln!(
+        "Found {} hearings with transcripts",
+        with_transcript.len()
+    );
+
+    // Apply limit if specified
+    let to_process: Vec<_> = match limit {
+        Some(n) => with_transcript.into_iter().take(n).collect(),
+        None => with_transcript,
+    };
+
+    // Filter out existing files if skip_existing
+    let to_process: Vec<_> = if skip_existing {
+        to_process
+            .into_iter()
+            .filter(|h| {
+                if let Some(url) = &h.transcript {
+                    if let Some(package_id) = TranscriptFetcher::extract_package_id(url) {
+                        let output_file = output_dir.join(format!("{}.json", package_id));
+                        return !output_file.exists();
+                    }
+                }
+                true
+            })
+            .collect()
+    } else {
+        to_process
+    };
+
+    eprintln!("Will parse {} transcripts (using parallel processing)", to_process.len());
+
+    if to_process.is_empty() {
+        eprintln!("Nothing to process.");
+        return Ok(());
+    }
+
+    // Create output directory
+    std::fs::create_dir_all(output_dir)
+        .wrap_err_with(|| format!("Failed to create output directory: {}", output_dir.display()))?;
+
+    let success_count = AtomicUsize::new(0);
+    let error_count = AtomicUsize::new(0);
+    let processed_count = AtomicUsize::new(0);
+    let total = to_process.len();
+    let output_dir = output_dir.to_path_buf();
+
+    // Process in parallel
+    to_process.par_iter().for_each(|hearing| {
+        let fetcher = TranscriptFetcher::new();
+        let transcript_url = hearing.transcript.as_ref().unwrap();
+
+        let package_id = match TranscriptFetcher::extract_package_id(transcript_url) {
+            Some(id) => id,
+            None => {
+                error_count.fetch_add(1, Ordering::Relaxed);
+                return;
+            }
+        };
+
+        let output_file = output_dir.join(format!("{}.json", package_id));
+        let current = processed_count.fetch_add(1, Ordering::Relaxed) + 1;
+
+        eprint!("\r  [{}/{}] Parsing {}...                    ", current, total, package_id);
+
+        match fetcher.parse_hearing_transcript(hearing) {
+            Ok(Some(parsed)) => {
+                match serde_json::to_string_pretty(&parsed) {
+                    Ok(json) => {
+                        if std::fs::write(&output_file, json).is_ok() {
+                            success_count.fetch_add(1, Ordering::Relaxed);
+                        } else {
+                            error_count.fetch_add(1, Ordering::Relaxed);
+                        }
+                    }
+                    Err(_) => {
+                        error_count.fetch_add(1, Ordering::Relaxed);
+                    }
+                }
+            }
+            Ok(None) => {
+                error_count.fetch_add(1, Ordering::Relaxed);
+            }
+            Err(e) => {
+                eprintln!("\n  Error parsing {}: {}", package_id, e);
+                error_count.fetch_add(1, Ordering::Relaxed);
+            }
+        }
+    });
+
+    eprintln!();
+    eprintln!();
+    eprintln!("=== Parsing Complete ===");
+    eprintln!("Successfully parsed: {}", success_count.load(Ordering::Relaxed));
+    eprintln!("Errors:              {}", error_count.load(Ordering::Relaxed));
+    eprintln!("Output directory:    {}", output_dir.display());
 
     Ok(())
 }
