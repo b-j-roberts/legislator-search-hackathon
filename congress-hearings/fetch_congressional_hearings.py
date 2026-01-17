@@ -482,14 +482,13 @@ def main():
             print(f"Fetching {congress}th Congress {chamber.title()}...")
             print(f"{'=' * 40}")
 
-            hearings = fetch_hearings_for_congress_chamber(congress, chamber)
-            all_hearings.extend(hearings)
+            hearings = fetch_hearings_for_congress_chamber(congress, chamber, all_hearings, output_file)
             completed.append((congress, chamber))
 
             # Save checkpoint and YAML after each chamber
             save_checkpoint(all_hearings, completed)
             save_yaml_output(all_hearings, output_file, is_complete=False)
-            print(f"  Total hearings so far: {len(all_hearings)}")
+            print(f"  Completed {chamber.title()}: {len(hearings)} hearings. Total: {len(all_hearings)}")
 
     print(f"\n{'=' * 60}")
     print(f"Total hearings collected: {len(all_hearings)}")
@@ -557,8 +556,8 @@ def dict_to_hearing(d: Dict) -> Hearing:
     )
 
 
-def fetch_hearings_for_congress_chamber(congress: int, chamber: str) -> List[Hearing]:
-    """Fetch all hearings for a specific congress and chamber."""
+def fetch_hearings_for_congress_chamber(congress: int, chamber: str, all_hearings: List[Hearing], output_file: str) -> List[Hearing]:
+    """Fetch all hearings for a specific congress and chamber. Saves every 50 hearings."""
     hearings = []
 
     print(f"  Fetching {chamber.title()} committee meetings...")
@@ -572,9 +571,6 @@ def fetch_hearings_for_congress_chamber(congress: int, chamber: str) -> List[Hea
     print(f"    Found {len(meetings)} meetings" + (", fetching details..." if not FAST_MODE else ""))
 
     for i, meeting in enumerate(meetings):
-        if i % 50 == 0 and i > 0:
-            print(f"    Processing meeting {i + 1}/{len(meetings)}...")
-
         details = None
         if not FAST_MODE:
             # Get detailed info for richer data
@@ -587,6 +583,12 @@ def fetch_hearings_for_congress_chamber(congress: int, chamber: str) -> List[Hea
         # Filter by date range
         if is_in_date_range(hearing):
             hearings.append(hearing)
+            all_hearings.append(hearing)
+
+        # Save every 50 hearings
+        if (i + 1) % 50 == 0:
+            print(f"    Processed {i + 1}/{len(meetings)} meetings... (saved {len(all_hearings)} total)")
+            save_yaml_output(all_hearings, output_file, is_complete=False)
 
     return hearings
 

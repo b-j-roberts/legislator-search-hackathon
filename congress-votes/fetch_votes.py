@@ -112,6 +112,14 @@ class SenateVoteFetcher:
 
     def __init__(self):
         self.session = requests.Session()
+        # Add browser-like headers to avoid WAF blocking
+        self.session.headers.update({
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Accept': 'application/xml,text/xml,*/*;q=0.9',
+            'Accept-Language': 'en-US,en;q=0.9',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Connection': 'keep-alive',
+        })
         self.base_url = "https://www.senate.gov/legislative/LIS/roll_call_votes"
 
     def get_vote_xml(self, congress: int, session: int, vote_number: int) -> Optional[ET.Element]:
@@ -120,8 +128,15 @@ class SenateVoteFetcher:
 
         try:
             response = self.session.get(url, timeout=30)
+            time.sleep(0.1)  # Small delay to avoid rate limiting
             if response.status_code == 404:
                 return None
+            if response.status_code == 403:
+                # WAF blocking - wait and retry once
+                time.sleep(1)
+                response = self.session.get(url, timeout=30)
+                if response.status_code != 200:
+                    return None
             response.raise_for_status()
             return ET.fromstring(response.content)
         except Exception:
@@ -536,7 +551,7 @@ def fetch_senate_votes_live(start_year: int, end_year: int, all_votes: List, sav
         processed = 0
         session_added = 0
 
-        with ThreadPoolExecutor(max_workers=10) as executor:
+        with ThreadPoolExecutor(max_workers=3) as executor:  # Reduced to avoid rate limiting
             futures = []
             for vote_num in range(1, max_vote + 1):
                 args = (fetcher, congress, session, vote_num, start_year, end_year)
