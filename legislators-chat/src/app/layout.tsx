@@ -20,13 +20,7 @@ export const metadata: Metadata = {
   title: "Legislators Chat",
   description:
     "AI-powered chat interface for researching US legislators, congressional hearings, and voting records.",
-  keywords: [
-    "congress",
-    "legislators",
-    "voting records",
-    "congressional hearings",
-    "civic tech",
-  ],
+  keywords: ["congress", "legislators", "voting records", "congressional hearings", "civic tech"],
 };
 
 export default function RootLayout({

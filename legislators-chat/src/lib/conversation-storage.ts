@@ -98,9 +98,7 @@ function migrateFromOldFormat(): ConversationsStorage | null {
       title,
       messages: oldMessages,
       createdAt: oldMessages[0]?.timestamp || new Date().toISOString(),
-      updatedAt:
-        oldMessages[oldMessages.length - 1]?.timestamp ||
-        new Date().toISOString(),
+      updatedAt: oldMessages[oldMessages.length - 1]?.timestamp || new Date().toISOString(),
     };
 
     // Clean up old storage
@@ -129,11 +127,7 @@ export function loadConversations(): ConversationsStorage {
       const parsed = JSON.parse(stored) as ConversationsStorage;
 
       // Validate structure
-      if (
-        parsed &&
-        Array.isArray(parsed.conversations) &&
-        typeof parsed.version === "number"
-      ) {
+      if (parsed && Array.isArray(parsed.conversations) && typeof parsed.version === "number") {
         return parsed;
       }
     }
@@ -160,18 +154,13 @@ export function saveConversations(storage: ConversationsStorage): void {
     // Enforce max conversations limit (keep most recent)
     if (storage.conversations.length > MAX_CONVERSATIONS) {
       storage.conversations = storage.conversations
-        .sort(
-          (a, b) =>
-            new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-        )
+        .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
         .slice(0, MAX_CONVERSATIONS);
 
       // Ensure active conversation is still in the list
       if (
         storage.activeConversationId &&
-        !storage.conversations.find(
-          (c) => c.id === storage.activeConversationId
-        )
+        !storage.conversations.find((c) => c.id === storage.activeConversationId)
       ) {
         storage.activeConversationId = storage.conversations[0]?.id || null;
       }
@@ -182,8 +171,7 @@ export function saveConversations(storage: ConversationsStorage): void {
     // Handle quota exceeded
     if (
       error instanceof DOMException &&
-      (error.name === "QuotaExceededError" ||
-        error.name === "NS_ERROR_DOM_QUOTA_REACHED")
+      (error.name === "QuotaExceededError" || error.name === "NS_ERROR_DOM_QUOTA_REACHED")
     ) {
       console.warn("localStorage quota exceeded, removing oldest conversations");
 
@@ -191,10 +179,7 @@ export function saveConversations(storage: ConversationsStorage): void {
       const reducedStorage = {
         ...storage,
         conversations: storage.conversations
-          .sort(
-            (a, b) =>
-              new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-          )
+          .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
           .slice(0, Math.floor(storage.conversations.length / 2)),
       };
 
@@ -244,9 +229,7 @@ export function getConversation(
 }
 
 /** Get the active conversation */
-export function getActiveConversation(
-  storage: ConversationsStorage
-): Conversation | undefined {
+export function getActiveConversation(storage: ConversationsStorage): Conversation | undefined {
   if (!storage.activeConversationId) return undefined;
   return getConversation(storage, storage.activeConversationId);
 }
@@ -260,9 +243,7 @@ export function updateConversation(
   return {
     ...storage,
     conversations: storage.conversations.map((c) =>
-      c.id === id
-        ? { ...c, ...updates, updatedAt: new Date().toISOString() }
-        : c
+      c.id === id ? { ...c, ...updates, updatedAt: new Date().toISOString() } : c
     ),
   };
 }
@@ -311,10 +292,7 @@ export function addMessageToConversation(
 
       // Update title if this is the first user message
       let newTitle = c.title;
-      if (
-        message.role === "user" &&
-        !c.messages.some((m) => m.role === "user")
-      ) {
+      if (message.role === "user" && !c.messages.some((m) => m.role === "user")) {
         newTitle = generateTitleFromMessage(message.content);
       }
 
@@ -342,9 +320,7 @@ export function updateMessageInConversation(
 
       return {
         ...c,
-        messages: c.messages.map((m) =>
-          m.id === messageId ? { ...m, ...updates } : m
-        ),
+        messages: c.messages.map((m) => (m.id === messageId ? { ...m, ...updates } : m)),
         updatedAt: new Date().toISOString(),
       };
     }),

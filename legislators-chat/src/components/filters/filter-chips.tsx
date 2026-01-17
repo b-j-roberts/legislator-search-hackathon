@@ -6,12 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import type {
-  Party,
-  Chamber,
-  Stance,
-  StateAbbreviation,
-} from "@/lib/types";
+import type { Party, Chamber, Stance, StateAbbreviation } from "@/lib/types";
 import {
   PARTY_OPTIONS,
   CHAMBER_OPTIONS,
@@ -68,9 +63,7 @@ function FilterChip({ label, category, onRemove, variant = "default" }: FilterCh
           variantClasses[variant]
         )}
       >
-        <span className="text-muted-foreground text-[10px] uppercase">
-          {category}:
-        </span>
+        <span className="text-muted-foreground text-[10px] uppercase">{category}:</span>
         {label}
         <button
           onClick={onRemove}

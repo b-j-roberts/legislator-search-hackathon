@@ -50,9 +50,7 @@ function EmptyDocumentsState() {
       <div className="rounded-full bg-muted p-4 mb-4">
         <FileText className="size-8 text-muted-foreground" />
       </div>
-      <h3 className="text-lg font-medium text-foreground mb-2">
-        No documents found
-      </h3>
+      <h3 className="text-lg font-medium text-foreground mb-2">No documents found</h3>
       <p className="text-sm text-muted-foreground max-w-xs">
         Relevant documents, hearings, and transcripts will appear here.
       </p>
@@ -66,9 +64,7 @@ function EmptyVotesState() {
       <div className="rounded-full bg-muted p-4 mb-4">
         <Vote className="size-8 text-muted-foreground" />
       </div>
-      <h3 className="text-lg font-medium text-foreground mb-2">
-        No votes found
-      </h3>
+      <h3 className="text-lg font-medium text-foreground mb-2">No votes found</h3>
       <p className="text-sm text-muted-foreground max-w-xs">
         Voting records related to your query will appear here.
       </p>
@@ -131,11 +127,17 @@ export function ResultsPanel({
   // Calculate counts for tabs (filtered for legislators)
   const tabs: TabConfig[] = [
     { id: "people", label: "People", icon: Users, count: filteredLegislators.length },
-    { id: "documents", label: "Documents", icon: FileText, count: documents.length + hearings.length },
+    {
+      id: "documents",
+      label: "Documents",
+      icon: FileText,
+      count: documents.length + hearings.length,
+    },
     { id: "votes", label: "Votes", icon: Vote, count: votes.length },
   ];
 
-  const totalResults = filteredLegislators.length + documents.length + votes.length + hearings.length;
+  const totalResults =
+    filteredLegislators.length + documents.length + votes.length + hearings.length;
 
   const handleTabChange = (value: string) => {
     const tab = value as ResultsTab;
@@ -284,11 +286,7 @@ export function ResultsPanel({
                       Select all
                     </Button>
                     {hasSelections && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={clearSelections}
-                      >
+                      <Button variant="ghost" size="sm" onClick={clearSelections}>
                         Clear
                       </Button>
                     )}
@@ -335,9 +333,7 @@ export function ResultsPanel({
                       key={doc.id}
                       className="p-3 rounded-lg border border-border bg-card hover:bg-accent/50 transition-colors"
                     >
-                      <h4 className="font-medium text-sm text-foreground">
-                        {doc.title}
-                      </h4>
+                      <h4 className="font-medium text-sm text-foreground">{doc.title}</h4>
                       <p className="text-xs text-muted-foreground mt-1">
                         {doc.date} - {doc.type}
                       </p>
@@ -353,9 +349,7 @@ export function ResultsPanel({
                       key={hearing.id}
                       className="p-3 rounded-lg border border-border bg-card hover:bg-accent/50 transition-colors"
                     >
-                      <h4 className="font-medium text-sm text-foreground">
-                        {hearing.title}
-                      </h4>
+                      <h4 className="font-medium text-sm text-foreground">{hearing.title}</h4>
                       <p className="text-xs text-muted-foreground mt-1">
                         {hearing.date} - {hearing.committee}
                       </p>
@@ -427,11 +421,7 @@ export function ResultsPanel({
             exit={{ opacity: 0, y: 20 }}
             className="flex-shrink-0 p-3 border-t border-border bg-background"
           >
-            <Button
-              onClick={handleContactRepresentatives}
-              className="w-full gap-2"
-              size="lg"
-            >
+            <Button onClick={handleContactRepresentatives} className="w-full gap-2" size="lg">
               <Send className="size-4" />
               Contact {selectionCount} Representative{selectionCount !== 1 ? "s" : ""}
             </Button>

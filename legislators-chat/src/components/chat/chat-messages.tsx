@@ -35,26 +35,22 @@ function EmptyState() {
       <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted">
         <MessageSquare className="h-8 w-8 text-muted-foreground" />
       </div>
-      <h2 className="mt-4 text-lg font-medium text-foreground">
-        Start a Conversation
-      </h2>
+      <h2 className="mt-4 text-lg font-medium text-foreground">Start a Conversation</h2>
       <p className="mt-2 max-w-sm text-sm text-muted-foreground">
-        Ask about legislators, congressional hearings, voting records, or any
-        topic you&apos;d like to research.
+        Ask about legislators, congressional hearings, voting records, or any topic you&apos;d like
+        to research.
       </p>
       <div className="mt-6 flex flex-wrap justify-center gap-2">
-        {[
-          "Who represents my district?",
-          "Recent climate votes",
-          "Healthcare hearings",
-        ].map((suggestion) => (
-          <span
-            key={suggestion}
-            className="rounded-full border border-border bg-muted/50 px-3 py-1.5 text-xs text-muted-foreground"
-          >
-            {suggestion}
-          </span>
-        ))}
+        {["Who represents my district?", "Recent climate votes", "Healthcare hearings"].map(
+          (suggestion) => (
+            <span
+              key={suggestion}
+              className="rounded-full border border-border bg-muted/50 px-3 py-1.5 text-xs text-muted-foreground"
+            >
+              {suggestion}
+            </span>
+          )
+        )}
       </div>
     </div>
   );
@@ -79,7 +75,9 @@ export function ChatMessages({
 
   // Get the actual scrollable viewport from ScrollArea
   const getScrollViewport = React.useCallback(() => {
-    return scrollAreaRef.current?.querySelector("[data-radix-scroll-area-viewport]") as HTMLElement | null;
+    return scrollAreaRef.current?.querySelector(
+      "[data-radix-scroll-area-viewport]"
+    ) as HTMLElement | null;
   }, []);
 
   // Check if user is near the bottom of the scroll area

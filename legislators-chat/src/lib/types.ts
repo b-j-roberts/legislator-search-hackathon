@@ -10,22 +10,72 @@
 // =============================================================================
 
 /** Political party affiliation */
-export type Party = 'D' | 'R' | 'I';
+export type Party = "D" | "R" | "I";
 
 /** Congressional chamber */
-export type Chamber = 'House' | 'Senate';
+export type Chamber = "House" | "Senate";
 
 /** Legislator stance on a topic */
-export type Stance = 'for' | 'against' | 'mixed' | 'unknown';
+export type Stance = "for" | "against" | "mixed" | "unknown";
 
 /** US State abbreviation */
 export type StateAbbreviation =
-  | 'AL' | 'AK' | 'AZ' | 'AR' | 'CA' | 'CO' | 'CT' | 'DE' | 'FL' | 'GA'
-  | 'HI' | 'ID' | 'IL' | 'IN' | 'IA' | 'KS' | 'KY' | 'LA' | 'ME' | 'MD'
-  | 'MA' | 'MI' | 'MN' | 'MS' | 'MO' | 'MT' | 'NE' | 'NV' | 'NH' | 'NJ'
-  | 'NM' | 'NY' | 'NC' | 'ND' | 'OH' | 'OK' | 'OR' | 'PA' | 'RI' | 'SC'
-  | 'SD' | 'TN' | 'TX' | 'UT' | 'VT' | 'VA' | 'WA' | 'WV' | 'WI' | 'WY'
-  | 'DC' | 'PR' | 'GU' | 'VI' | 'AS' | 'MP';
+  | "AL"
+  | "AK"
+  | "AZ"
+  | "AR"
+  | "CA"
+  | "CO"
+  | "CT"
+  | "DE"
+  | "FL"
+  | "GA"
+  | "HI"
+  | "ID"
+  | "IL"
+  | "IN"
+  | "IA"
+  | "KS"
+  | "KY"
+  | "LA"
+  | "ME"
+  | "MD"
+  | "MA"
+  | "MI"
+  | "MN"
+  | "MS"
+  | "MO"
+  | "MT"
+  | "NE"
+  | "NV"
+  | "NH"
+  | "NJ"
+  | "NM"
+  | "NY"
+  | "NC"
+  | "ND"
+  | "OH"
+  | "OK"
+  | "OR"
+  | "PA"
+  | "RI"
+  | "SC"
+  | "SD"
+  | "TN"
+  | "TX"
+  | "UT"
+  | "VT"
+  | "VA"
+  | "WA"
+  | "WV"
+  | "WI"
+  | "WY"
+  | "DC"
+  | "PR"
+  | "GU"
+  | "VI"
+  | "AS"
+  | "MP";
 
 // =============================================================================
 // Contact Information
@@ -57,7 +107,7 @@ export interface VoteSummary {
   id: string;
   billId: string;
   billTitle: string;
-  vote: 'yea' | 'nay' | 'present' | 'not_voting';
+  vote: "yea" | "nay" | "present" | "not_voting";
   date: string;
   description?: string;
 }
@@ -109,7 +159,7 @@ export interface Legislator {
 // =============================================================================
 
 /** Type of document */
-export type DocumentType = 'hearing' | 'bill' | 'vote' | 'statement' | 'transcript';
+export type DocumentType = "hearing" | "bill" | "vote" | "statement" | "transcript";
 
 /** A document from congressional records */
 export interface Document {
@@ -144,7 +194,7 @@ export interface VoteRecord {
   billTitle: string;
   date: string;
   chamber: Chamber;
-  result: 'passed' | 'failed';
+  result: "passed" | "failed";
   yeas: number;
   nays: number;
   present: number;
@@ -176,10 +226,10 @@ export interface Report {
 // =============================================================================
 
 /** Role of a message sender */
-export type MessageRole = 'user' | 'assistant' | 'system';
+export type MessageRole = "user" | "assistant" | "system";
 
 /** Status of a chat message */
-export type MessageStatus = 'sending' | 'sent' | 'error';
+export type MessageStatus = "sending" | "sent" | "error";
 
 /** A single chat message */
 export interface ChatMessage {
@@ -269,12 +319,12 @@ export interface ChatState {
 
 /** Filter options for results */
 export interface Filter {
-  type: 'party' | 'chamber' | 'state' | 'stance';
+  type: "party" | "chamber" | "state" | "stance";
   value: string;
 }
 
 /** Sort options for results */
-export type SortOption = 'relevance' | 'name' | 'state' | 'party' | 'date';
+export type SortOption = "relevance" | "name" | "state" | "party" | "date";
 
 /** Results state for filtering/sorting */
 export interface ResultsState {
@@ -329,7 +379,7 @@ export interface SearchParams {
 // =============================================================================
 
 /** Loading state for async operations */
-export type LoadingState = 'idle' | 'loading' | 'success' | 'error';
+export type LoadingState = "idle" | "loading" | "success" | "error";
 
 /** Panel visibility state */
 export interface PanelState {
@@ -338,4 +388,4 @@ export interface PanelState {
 }
 
 /** Theme preference */
-export type Theme = 'light' | 'dark' | 'system';
+export type Theme = "light" | "dark" | "system";

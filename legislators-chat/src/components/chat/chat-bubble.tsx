@@ -57,19 +57,13 @@ export function ChatBubble({
       animate="animate"
       exit="exit"
       transition={bubbleTransition}
-      className={cn(
-        "flex gap-3",
-        isUser ? "flex-row-reverse" : "flex-row",
-        className
-      )}
+      className={cn("flex gap-3", isUser ? "flex-row-reverse" : "flex-row", className)}
     >
       {/* Avatar */}
       <div
         className={cn(
           "flex h-8 w-8 shrink-0 items-center justify-center rounded-full",
-          isUser
-            ? "bg-primary text-primary-foreground"
-            : "bg-muted text-muted-foreground"
+          isUser ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
         )}
         aria-hidden="true"
       >
@@ -77,12 +71,7 @@ export function ChatBubble({
       </div>
 
       {/* Bubble content */}
-      <div
-        className={cn(
-          "flex max-w-[80%] flex-col gap-1",
-          isUser ? "items-end" : "items-start"
-        )}
-      >
+      <div className={cn("flex max-w-[80%] flex-col gap-1", isUser ? "items-end" : "items-start")}>
         {/* Message bubble */}
         <div
           className={cn(
@@ -118,9 +107,7 @@ export function ChatBubble({
           )}
 
           {/* Sending indicator */}
-          {status === "sending" && (
-            <span className="text-muted-foreground">Sending...</span>
-          )}
+          {status === "sending" && <span className="text-muted-foreground">Sending...</span>}
         </div>
 
         {/* Error message and retry button if present */}

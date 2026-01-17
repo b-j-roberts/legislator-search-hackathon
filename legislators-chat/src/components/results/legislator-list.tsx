@@ -36,11 +36,10 @@ function EmptyState({ message }: { message?: string }) {
       <div className="rounded-full bg-muted p-4 mb-4">
         <Users className="size-8 text-muted-foreground" />
       </div>
-      <h3 className="text-lg font-medium text-foreground mb-2">
-        No legislators found
-      </h3>
+      <h3 className="text-lg font-medium text-foreground mb-2">No legislators found</h3>
       <p className="text-sm text-muted-foreground max-w-xs">
-        {message || "Ask about a topic or issue to discover relevant legislators and their stances."}
+        {message ||
+          "Ask about a topic or issue to discover relevant legislators and their stances."}
       </p>
     </div>
   );

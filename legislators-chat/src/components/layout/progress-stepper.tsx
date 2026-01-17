@@ -47,10 +47,7 @@ export function ProgressStepper({ currentStep, className }: ProgressStepperProps
   return (
     <nav
       aria-label="Progress"
-      className={cn(
-        "flex items-center justify-center gap-1 sm:gap-2",
-        className
-      )}
+      className={cn("flex items-center justify-center gap-1 sm:gap-2", className)}
     >
       {steps.map((step, index) => {
         const isActive = step.id === currentStep;
@@ -99,9 +96,7 @@ export function ProgressStepper({ currentStep, className }: ProgressStepperProps
               <ChevronRight
                 className={cn(
                   "size-4 flex-shrink-0",
-                  index < currentStepIndex
-                    ? "text-primary"
-                    : "text-muted-foreground/50"
+                  index < currentStepIndex ? "text-primary" : "text-muted-foreground/50"
                 )}
               />
             )}

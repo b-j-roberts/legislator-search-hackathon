@@ -6,11 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Command,
   CommandEmpty,
@@ -27,13 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import type {
-  Party,
-  Chamber,
-  Stance,
-  StateAbbreviation,
-  SortOption,
-} from "@/lib/types";
+import type { Party, Chamber, Stance, StateAbbreviation, SortOption } from "@/lib/types";
 import {
   PARTY_OPTIONS,
   CHAMBER_OPTIONS,
@@ -129,10 +119,7 @@ interface StateSelectFilterProps {
   onToggle: (state: StateAbbreviation) => void;
 }
 
-function StateSelectFilter({
-  selectedStates,
-  onToggle,
-}: StateSelectFilterProps) {
+function StateSelectFilter({ selectedStates, onToggle }: StateSelectFilterProps) {
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -172,14 +159,10 @@ function StateSelectFilter({
                   <Check
                     className={cn(
                       "mr-2 size-4",
-                      selectedStates.includes(state.value)
-                        ? "opacity-100"
-                        : "opacity-0"
+                      selectedStates.includes(state.value) ? "opacity-100" : "opacity-0"
                     )}
                   />
-                  <span className="text-muted-foreground text-xs mr-1.5">
-                    {state.value}
-                  </span>
+                  <span className="text-muted-foreground text-xs mr-1.5">{state.value}</span>
                   {state.label}
                 </CommandItem>
               ))}
@@ -234,10 +217,7 @@ export function FilterBar({
         />
 
         {/* State filter */}
-        <StateSelectFilter
-          selectedStates={filters.states}
-          onToggle={onToggleState}
-        />
+        <StateSelectFilter selectedStates={filters.states} onToggle={onToggleState} />
 
         {/* Stance filter */}
         <MultiSelectFilter

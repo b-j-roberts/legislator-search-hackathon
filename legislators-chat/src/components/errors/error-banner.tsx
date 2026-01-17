@@ -71,9 +71,7 @@ export function ErrorBanner({
                   disabled={isRetrying}
                   className="h-7 text-xs"
                 >
-                  <RefreshCw
-                    className={cn("mr-1 h-3 w-3", isRetrying && "animate-spin")}
-                  />
+                  <RefreshCw className={cn("mr-1 h-3 w-3", isRetrying && "animate-spin")} />
                   {isRetrying ? "Retrying..." : "Try again"}
                 </Button>
               )}
@@ -99,14 +97,8 @@ export function ErrorBanner({
 /**
  * Wrapper component for animated error banner
  */
-export function AnimatedErrorBanner(
-  props: ErrorBannerProps & { visible: boolean }
-) {
+export function AnimatedErrorBanner(props: ErrorBannerProps & { visible: boolean }) {
   const { visible, ...errorProps } = props;
 
-  return (
-    <AnimatePresence>
-      {visible && <ErrorBanner {...errorProps} />}
-    </AnimatePresence>
-  );
+  return <AnimatePresence>{visible && <ErrorBanner {...errorProps} />}</AnimatePresence>;
 }

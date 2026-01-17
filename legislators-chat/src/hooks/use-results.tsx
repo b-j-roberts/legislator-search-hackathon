@@ -1,13 +1,7 @@
 "use client";
 
 import * as React from "react";
-import type {
-  ChatMessage,
-  Legislator,
-  Document,
-  VoteRecord,
-  Hearing,
-} from "@/lib/types";
+import type { ChatMessage, Legislator, Document, VoteRecord, Hearing } from "@/lib/types";
 import type { ResultsTab } from "@/components/results";
 
 // =============================================================================

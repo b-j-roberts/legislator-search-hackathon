@@ -68,7 +68,10 @@ type ChatAction =
   | { type: "SET_LOADING"; payload: boolean }
   | { type: "SET_ERROR"; payload: string | null }
   | { type: "ADD_MESSAGE"; payload: { conversationId: string; message: ChatMessage } }
-  | { type: "UPDATE_MESSAGE"; payload: { conversationId: string; messageId: string; updates: Partial<ChatMessage> } }
+  | {
+      type: "UPDATE_MESSAGE";
+      payload: { conversationId: string; messageId: string; updates: Partial<ChatMessage> };
+    }
   | { type: "NEW_CONVERSATION"; payload: Conversation }
   | { type: "SWITCH_CONVERSATION"; payload: string }
   | { type: "DELETE_CONVERSATION"; payload: string }
@@ -192,7 +195,12 @@ function chatReducer(state: ChatState, action: ChatAction): ChatState {
           ...state.storage,
           conversations: state.storage.conversations.map((c) =>
             c.id === activeId
-              ? { ...c, messages: [], title: "New Conversation", updatedAt: new Date().toISOString() }
+              ? {
+                  ...c,
+                  messages: [],
+                  title: "New Conversation",
+                  updatedAt: new Date().toISOString(),
+                }
               : c
           ),
         },
@@ -295,19 +303,26 @@ export function ChatProvider({ children }: ChatProviderProps) {
         status: "sending",
       };
 
-      dispatch({ type: "ADD_MESSAGE", payload: { conversationId: currentConversationId, message: userMessage } });
-      dispatch({ type: "ADD_MESSAGE", payload: { conversationId: currentConversationId, message: assistantMessage } });
+      dispatch({
+        type: "ADD_MESSAGE",
+        payload: { conversationId: currentConversationId, message: userMessage },
+      });
+      dispatch({
+        type: "ADD_MESSAGE",
+        payload: { conversationId: currentConversationId, message: assistantMessage },
+      });
       dispatch({ type: "SET_LOADING", payload: true });
       dispatch({ type: "SET_ERROR", payload: null });
 
       try {
         // Build context from previous messages
         const currentConv = state.storage.conversations.find((c) => c.id === currentConversationId);
-        const previousMessages: Array<{ role: MessageRole; content: string }> =
-          (currentConv?.messages || []).map((msg) => ({
-            role: msg.role,
-            content: msg.content,
-          }));
+        const previousMessages: Array<{ role: MessageRole; content: string }> = (
+          currentConv?.messages || []
+        ).map((msg) => ({
+          role: msg.role,
+          content: msg.content,
+        }));
 
         let streamedContent = "";
 

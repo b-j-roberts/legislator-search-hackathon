@@ -24,13 +24,8 @@ const MAX_PANEL_WIDTH = 80;
  * Mobile (< 768px): Full-width chat with Results in collapsible drawer below
  */
 export function AppLayout({ children, resultsPanel, className }: AppLayoutProps) {
-  const {
-    panelWidth,
-    isCollapsed,
-    isHydrated,
-    setPanelWidth,
-    toggleCollapsed,
-  } = usePanelPreferences();
+  const { panelWidth, isCollapsed, isHydrated, setPanelWidth, toggleCollapsed } =
+    usePanelPreferences();
 
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = React.useState(false);
@@ -88,13 +83,10 @@ export function AppLayout({ children, resultsPanel, className }: AppLayoutProps)
   const effectiveIsCollapsed = isHydrated ? isCollapsed : false;
 
   // Calculate styles for desktop only
-  const mainStyle: CSSProperties = isDesktop && !effectiveIsCollapsed
-    ? { width: `${100 - effectivePanelWidth}%` }
-    : {};
+  const mainStyle: CSSProperties =
+    isDesktop && !effectiveIsCollapsed ? { width: `${100 - effectivePanelWidth}%` } : {};
 
-  const asideStyle: CSSProperties = isDesktop
-    ? { width: `${effectivePanelWidth}%` }
-    : {};
+  const asideStyle: CSSProperties = isDesktop ? { width: `${effectivePanelWidth}%` } : {};
 
   return (
     <div
@@ -183,9 +175,7 @@ export function AppLayout({ children, resultsPanel, className }: AppLayoutProps)
       )}
 
       {/* Drag overlay to prevent iframe/selection issues during drag */}
-      {isDragging && (
-        <div className="fixed inset-0 z-50 cursor-col-resize" />
-      )}
+      {isDragging && <div className="fixed inset-0 z-50 cursor-col-resize" />}
     </div>
   );
 }

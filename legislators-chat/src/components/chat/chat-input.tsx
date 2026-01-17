@@ -89,12 +89,9 @@ export function ChatInput({
     [handleSend]
   );
 
-  const handleChange = React.useCallback(
-    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      setValue(e.target.value);
-    },
-    []
-  );
+  const handleChange = React.useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setValue(e.target.value);
+  }, []);
 
   return (
     <div className="border-t border-border bg-background p-3 md:p-4">
@@ -123,7 +120,8 @@ export function ChatInput({
             rows={MIN_ROWS}
             className={cn(
               "min-h-[44px] resize-none pr-4 text-base leading-6",
-              isOverLimit && "border-destructive focus-visible:border-destructive focus-visible:ring-destructive/50"
+              isOverLimit &&
+                "border-destructive focus-visible:border-destructive focus-visible:ring-destructive/50"
             )}
             aria-label="Chat message input"
             aria-describedby="char-count"
@@ -155,17 +153,21 @@ export function ChatInput({
           className="shrink-0 min-w-[44px] min-h-[44px] touch-manipulation"
           aria-label={isLoading ? "Sending message..." : "Send message"}
         >
-          {isLoading ? (
-            <Loader2 className="h-5 w-5 animate-spin" />
-          ) : (
-            <Send className="h-5 w-5" />
-          )}
+          {isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
         </Button>
       </div>
 
       {/* Helper text - hidden on mobile for space efficiency */}
       <p className="mt-2 text-xs text-muted-foreground hidden sm:block">
-        Press <kbd className="rounded border border-border bg-muted px-1 py-0.5 font-mono text-[10px]">Enter</kbd> to send, <kbd className="rounded border border-border bg-muted px-1 py-0.5 font-mono text-[10px]">Shift+Enter</kbd> for new line
+        Press{" "}
+        <kbd className="rounded border border-border bg-muted px-1 py-0.5 font-mono text-[10px]">
+          Enter
+        </kbd>{" "}
+        to send,{" "}
+        <kbd className="rounded border border-border bg-muted px-1 py-0.5 font-mono text-[10px]">
+          Shift+Enter
+        </kbd>{" "}
+        for new line
       </p>
     </div>
   );

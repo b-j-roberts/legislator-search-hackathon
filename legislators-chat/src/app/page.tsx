@@ -14,16 +14,8 @@ import { MOCK_LEGISLATORS, MOCK_DOCUMENTS, MOCK_HEARINGS, MOCK_VOTES } from "@/l
 const USE_MOCK_DATA = process.env.NODE_ENV === "development";
 
 export default function Home() {
-  const { messages, isLoading, error, sendMessage, retryMessage, clearError } =
-    useChat();
-  const {
-    legislators,
-    documents,
-    votes,
-    hearings,
-    activeTab,
-    setActiveTab,
-  } = useResults(messages);
+  const { messages, isLoading, error, sendMessage, retryMessage, clearError } = useChat();
+  const { legislators, documents, votes, hearings, activeTab, setActiveTab } = useResults(messages);
   const { isOnline, wasOffline, resetWasOffline } = useNetworkStatus();
 
   // Show toast when coming back online
@@ -76,18 +68,11 @@ export default function Home() {
   );
 
   // Use mock data in development for testing
-  const displayLegislators = USE_MOCK_DATA && legislators.length === 0
-    ? MOCK_LEGISLATORS
-    : legislators;
-  const displayDocuments = USE_MOCK_DATA && documents.length === 0
-    ? MOCK_DOCUMENTS
-    : documents;
-  const displayHearings = USE_MOCK_DATA && hearings.length === 0
-    ? MOCK_HEARINGS
-    : hearings;
-  const displayVotes = USE_MOCK_DATA && votes.length === 0
-    ? MOCK_VOTES
-    : votes;
+  const displayLegislators =
+    USE_MOCK_DATA && legislators.length === 0 ? MOCK_LEGISLATORS : legislators;
+  const displayDocuments = USE_MOCK_DATA && documents.length === 0 ? MOCK_DOCUMENTS : documents;
+  const displayHearings = USE_MOCK_DATA && hearings.length === 0 ? MOCK_HEARINGS : hearings;
+  const displayVotes = USE_MOCK_DATA && votes.length === 0 ? MOCK_VOTES : votes;
 
   return (
     <AppLayout
@@ -131,11 +116,7 @@ export default function Home() {
 
         {/* Chat Input - fixed at bottom */}
         <div className="flex-shrink-0">
-          <ChatInput
-            onSend={handleSendMessage}
-            isLoading={isLoading}
-            disabled={!isOnline}
-          />
+          <ChatInput onSend={handleSendMessage} isLoading={isLoading} disabled={!isOnline} />
         </div>
       </div>
     </AppLayout>

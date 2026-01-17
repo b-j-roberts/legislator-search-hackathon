@@ -203,10 +203,7 @@ function saveToStorage(state: FilterState): void {
   }
 }
 
-function sortLegislators(
-  legislators: Legislator[],
-  sortBy: SortOption
-): Legislator[] {
+function sortLegislators(legislators: Legislator[], sortBy: SortOption): Legislator[] {
   const sorted = [...legislators];
 
   switch (sortBy) {

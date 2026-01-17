@@ -8,10 +8,7 @@ export interface StanceBadgeProps {
   className?: string;
 }
 
-const stanceConfig: Record<
-  Stance,
-  { label: string; className: string }
-> = {
+const stanceConfig: Record<Stance, { label: string; className: string }> = {
   for: {
     label: "Supports",
     className: "bg-green-900/50 text-green-400 border-green-700",

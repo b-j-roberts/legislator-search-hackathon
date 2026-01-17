@@ -17,25 +17,6 @@ After implementing the feature, please provide a concise step-by-step instructio
 
 Enable users to transition from research/chat phase to taking action by contacting their representatives with AI-generated, personalized call scripts and email drafts.
 
-## 1.0 Navigation & Flow
-
-**Description**: Connect the chat/research phase to the contact phase.
-
-**Requirements**:
-- [ ] Add "Contact Representatives" CTA button in ResultsPanel when legislators are present
-- [ ] Create `/contact` route for the contact phase
-- [ ] Pass selected legislators from ResultsPanel to contact phase
-- [ ] Add breadcrumb/stepper showing: Research → Contact → Complete
-- [ ] Allow navigation back to chat phase to continue research
-- [ ] Persist chat context when transitioning to contact phase
-
-**Implementation Notes**:
-- Use URL state or context to pass legislator IDs
-- Consider a slide-over transition or full page navigation
-- Preserve chat history so users can reference research
-
----
-
 ## 1.1 Contact Queue Management
 
 **Description**: Display and manage the list of representatives to contact.

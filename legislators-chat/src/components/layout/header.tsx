@@ -9,12 +9,7 @@ import { useChat } from "@/hooks/use-chat";
 import { useContact } from "@/hooks/use-contact";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { ProgressStepper } from "./progress-stepper";
 
 function ThemeToggle() {
@@ -46,11 +41,7 @@ function ThemeToggle() {
           onClick={toggleTheme}
           aria-label={`Switch to ${resolvedTheme === "dark" ? "light" : "dark"} mode`}
         >
-          {resolvedTheme === "dark" ? (
-            <Sun className="h-4 w-4" />
-          ) : (
-            <Moon className="h-4 w-4" />
-          )}
+          {resolvedTheme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
         </Button>
       </TooltipTrigger>
       <TooltipContent>
@@ -96,9 +87,7 @@ export function Header() {
             {/* Logo and Branding */}
             <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
               <Landmark className="h-6 w-6 text-primary" />
-              <span className="text-lg font-semibold tracking-tight">
-                Legislators Chat
-              </span>
+              <span className="text-lg font-semibold tracking-tight">Legislators Chat</span>
             </Link>
           </div>
 
@@ -115,12 +104,7 @@ export function Header() {
             {hasSelections && !isContactFlow && (
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    asChild
-                    className="gap-1.5"
-                  >
+                  <Button variant="outline" size="sm" asChild className="gap-1.5">
                     <Link href="/contact">
                       <Users className="h-4 w-4" />
                       <span className="hidden sm:inline">Contact</span>
@@ -131,7 +115,10 @@ export function Header() {
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>Contact {selectionCount} selected representative{selectionCount !== 1 ? "s" : ""}</p>
+                  <p>
+                    Contact {selectionCount} selected representative
+                    {selectionCount !== 1 ? "s" : ""}
+                  </p>
                 </TooltipContent>
               </Tooltip>
             )}

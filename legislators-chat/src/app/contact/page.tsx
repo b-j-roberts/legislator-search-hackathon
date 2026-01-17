@@ -4,118 +4,14 @@ import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import {
-  ArrowLeft,
-  Phone,
-  Mail,
-  Users,
-  AlertCircle,
-  ChevronRight,
-} from "lucide-react";
+import { ArrowLeft, Phone, Mail, Users, AlertCircle, CheckCircle2 } from "lucide-react";
 
-import { cn } from "@/lib/utils";
 import { useContact } from "@/hooks/use-contact";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "@/components/ui/card";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ProgressStepper } from "@/components/layout";
-import type { Legislator, Party } from "@/lib/types";
-
-const partyConfig: Record<Party, { label: string; color: string }> = {
-  D: { label: "Democrat", color: "bg-blue-500" },
-  R: { label: "Republican", color: "bg-red-500" },
-  I: { label: "Independent", color: "bg-purple-500" },
-};
-
-function getInitials(name: string): string {
-  return name
-    .split(" ")
-    .map((part) => part[0])
-    .filter(Boolean)
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
-}
-
-interface LegislatorContactCardProps {
-  legislator: Legislator;
-  onRemove: (id: string) => void;
-}
-
-function LegislatorContactCard({ legislator, onRemove }: LegislatorContactCardProps) {
-  const { name, party, state, chamber, district, contact, imageUrl } = legislator;
-  const partyColor = partyConfig[party].color;
-  const location = district ? `${state}-${district}` : state;
-
-  return (
-    <Card className="overflow-hidden">
-      <CardHeader className="pb-3">
-        <div className="flex items-start gap-3">
-          <div className={cn("rounded-full p-0.5", partyColor)}>
-            <Avatar className="size-10">
-              {imageUrl && <AvatarImage src={imageUrl} alt={name} />}
-              <AvatarFallback className="text-sm font-medium">
-                {getInitials(name)}
-              </AvatarFallback>
-            </Avatar>
-          </div>
-          <div className="flex-1 min-w-0">
-            <CardTitle className="text-base truncate">{name}</CardTitle>
-            <CardDescription>
-              {chamber === "House" ? "Representative" : "Senator"} · {location}
-            </CardDescription>
-          </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => onRemove(legislator.id)}
-            className="text-muted-foreground hover:text-destructive"
-          >
-            Remove
-          </Button>
-        </div>
-      </CardHeader>
-      <CardContent className="pt-0">
-        <div className="flex flex-wrap gap-2">
-          {contact.phone && (
-            <Button
-              variant="outline"
-              size="sm"
-              asChild
-              className="gap-1.5"
-            >
-              <a href={`tel:${contact.phone}`}>
-                <Phone className="size-3.5" />
-                {contact.phone}
-              </a>
-            </Button>
-          )}
-          {contact.email && (
-            <Button
-              variant="outline"
-              size="sm"
-              asChild
-              className="gap-1.5"
-            >
-              <a href={`mailto:${contact.email}`}>
-                <Mail className="size-3.5" />
-                Email
-              </a>
-            </Button>
-          )}
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
+import { ContactQueue } from "@/components/contact";
 
 function EmptyState() {
   return (
@@ -123,11 +19,9 @@ function EmptyState() {
       <div className="rounded-full bg-muted p-4 mb-4">
         <Users className="size-8 text-muted-foreground" />
       </div>
-      <h3 className="text-lg font-medium text-foreground mb-2">
-        No representatives selected
-      </h3>
+      <h3 className="text-lg font-medium text-foreground mb-2">No representatives selected</h3>
       <p className="text-sm text-muted-foreground max-w-xs mb-6">
-        Go back to the research phase to select representatives you'd like to contact.
+        Go back to the research phase to select representatives you&apos;d like to contact.
       </p>
       <Button asChild>
         <Link href="/">
@@ -142,25 +36,49 @@ function EmptyState() {
 export default function ContactPage() {
   const router = useRouter();
   const {
-    selectedLegislators,
-    deselectLegislator,
     currentStep,
     setCurrentStep,
     hasSelections,
     selectionCount,
+    queue,
+    initializeQueue,
+    markCurrentContacted,
+    contactedCount,
+    isComplete,
+    activeItem,
   } = useContact();
 
-  // Ensure we're on the contact step
+  // Ensure we're on the contact step and initialize queue if needed
   React.useEffect(() => {
     if (currentStep !== "contact") {
       setCurrentStep("contact");
     }
   }, [currentStep, setCurrentStep]);
 
+  // Initialize queue when entering contact page with selections but no queue
+  React.useEffect(() => {
+    if (hasSelections && !queue) {
+      initializeQueue();
+    }
+  }, [hasSelections, queue, initializeQueue]);
+
   const handleBack = () => {
     setCurrentStep("research");
     router.push("/");
   };
+
+  const handleMarkContacted = () => {
+    markCurrentContacted();
+  };
+
+  // Calculate progress text
+  const progressText = queue
+    ? isComplete
+      ? `All ${queue.items.length} representative${queue.items.length !== 1 ? "s" : ""} contacted`
+      : `${contactedCount} of ${queue.items.length} contacted`
+    : hasSelections
+      ? `${selectionCount} representative${selectionCount !== 1 ? "s" : ""} selected`
+      : "Select representatives to contact them";
 
   return (
     <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
@@ -168,26 +86,15 @@ export default function ContactPage() {
       <div className="flex-shrink-0 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between mb-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleBack}
-              className="gap-1.5"
-            >
+            <Button variant="ghost" size="sm" onClick={handleBack} className="gap-1.5">
               <ArrowLeft className="size-4" />
               Back to Research
             </Button>
             <ProgressStepper currentStep="contact" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-foreground">
-              Contact Your Representatives
-            </h1>
-            <p className="text-muted-foreground mt-1">
-              {hasSelections
-                ? `You have ${selectionCount} representative${selectionCount !== 1 ? "s" : ""} selected`
-                : "Select representatives to contact them"}
-            </p>
+            <h1 className="text-2xl font-bold text-foreground">Contact Your Representatives</h1>
+            <p className="text-muted-foreground mt-1">{progressText}</p>
           </div>
         </div>
       </div>
@@ -195,7 +102,7 @@ export default function ContactPage() {
       {/* Main content */}
       <ScrollArea className="flex-1">
         <div className="max-w-4xl mx-auto px-4 py-6">
-          {!hasSelections ? (
+          {!hasSelections && !queue ? (
             <EmptyState />
           ) : (
             <motion.div
@@ -204,47 +111,38 @@ export default function ContactPage() {
               className="space-y-6"
             >
               {/* Info banner */}
-              <div className="flex items-start gap-3 p-4 rounded-lg border border-border bg-muted/50">
-                <AlertCircle className="size-5 text-primary flex-shrink-0 mt-0.5" />
-                <div className="text-sm">
-                  <p className="font-medium text-foreground">
-                    Ready to make your voice heard
-                  </p>
-                  <p className="text-muted-foreground mt-1">
-                    Use the contact information below to reach out to your representatives.
-                    Call scripts and email templates are coming soon.
-                  </p>
+              {!isComplete && activeItem && (
+                <div className="flex items-start gap-3 p-4 rounded-lg border border-border bg-muted/50">
+                  <AlertCircle className="size-5 text-primary flex-shrink-0 mt-0.5" />
+                  <div className="text-sm flex-1">
+                    <p className="font-medium text-foreground">
+                      Currently contacting: {activeItem.legislator.name}
+                    </p>
+                    <p className="text-muted-foreground mt-1">
+                      Drag items to reorder your queue. Use skip to move someone to the end.
+                    </p>
+                  </div>
+                  <Button
+                    variant="default"
+                    size="sm"
+                    onClick={handleMarkContacted}
+                    className="gap-1.5 flex-shrink-0"
+                  >
+                    <CheckCircle2 className="size-4" />
+                    Mark Contacted
+                  </Button>
                 </div>
-              </div>
+              )}
 
-              {/* Selected legislators */}
+              {/* Contact Queue */}
               <div className="space-y-4">
-                <h2 className="text-lg font-semibold text-foreground">
-                  Selected Representatives
-                </h2>
-                <div className="space-y-3">
-                  {selectedLegislators.map((legislator, index) => (
-                    <motion.div
-                      key={legislator.id}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{ delay: index * 0.05 }}
-                    >
-                      <LegislatorContactCard
-                        legislator={legislator}
-                        onRemove={deselectLegislator}
-                      />
-                    </motion.div>
-                  ))}
-                </div>
+                <h2 className="text-lg font-semibold text-foreground">Contact Queue</h2>
+                <ContactQueue />
               </div>
 
               {/* Coming soon section */}
               <div className="space-y-4">
-                <h2 className="text-lg font-semibold text-foreground">
-                  Coming Soon
-                </h2>
+                <h2 className="text-lg font-semibold text-foreground">Coming Soon</h2>
                 <div className="grid gap-4 sm:grid-cols-2">
                   <Card className="opacity-60">
                     <CardContent className="pt-6">

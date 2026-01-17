@@ -2,6 +2,23 @@
 
 import * as React from "react";
 import type { Legislator } from "@/lib/types";
+import {
+  type QueueStorage,
+  type QueueItem,
+  type ContactStatus,
+  loadQueue,
+  saveQueue,
+  clearQueue,
+  createQueue,
+  reorderQueue,
+  markContacted,
+  skipCurrent,
+  removeFromQueue,
+  setActive,
+  getContactedCount,
+  getRemainingCount,
+  isQueueComplete,
+} from "@/lib/queue-storage";
 
 // =============================================================================
 // Types
@@ -9,6 +26,9 @@ import type { Legislator } from "@/lib/types";
 
 /** Contact flow step */
 export type ContactStep = "research" | "contact" | "complete";
+
+/** Re-export queue types for consumers */
+export type { QueueItem, ContactStatus };
 
 interface ContactContextValue {
   /** Currently selected legislators */
@@ -37,6 +57,32 @@ interface ContactContextValue {
   hasSelections: boolean;
   /** Number of selections */
   selectionCount: number;
+
+  // Queue Management
+  /** The contact queue */
+  queue: QueueStorage | null;
+  /** Initialize queue from selected legislators */
+  initializeQueue: () => void;
+  /** Reorder queue items */
+  reorderQueueItems: (fromIndex: number, toIndex: number) => void;
+  /** Mark current legislator as contacted and move to next */
+  markCurrentContacted: () => void;
+  /** Skip current legislator (move to end of queue) */
+  skipCurrentLegislator: () => void;
+  /** Remove a legislator from the queue */
+  removeFromQueueById: (legislatorId: string) => void;
+  /** Set a specific legislator as active */
+  setActiveLegislator: (legislatorId: string) => void;
+  /** Clear the queue */
+  clearQueueData: () => void;
+  /** Number of contacted legislators */
+  contactedCount: number;
+  /** Number of remaining legislators */
+  remainingCount: number;
+  /** Whether all legislators have been contacted */
+  isComplete: boolean;
+  /** Get the currently active queue item */
+  activeItem: QueueItem | null;
 }
 
 type ContactAction =
@@ -46,12 +92,15 @@ type ContactAction =
   | { type: "CLEAR" }
   | { type: "SET_ALL"; payload: Legislator[] }
   | { type: "SET_STEP"; payload: ContactStep }
-  | { type: "SET_RESEARCH_CONTEXT"; payload: string | null };
+  | { type: "SET_RESEARCH_CONTEXT"; payload: string | null }
+  | { type: "SET_QUEUE"; payload: QueueStorage | null }
+  | { type: "HYDRATE_QUEUE"; payload: QueueStorage };
 
 interface ContactState {
   selectedLegislators: Legislator[];
   currentStep: ContactStep;
   researchContext: string | null;
+  queue: QueueStorage | null;
 }
 
 // =============================================================================
@@ -74,22 +123,16 @@ function contactReducer(state: ContactState, action: ContactAction): ContactStat
     case "DESELECT": {
       return {
         ...state,
-        selectedLegislators: state.selectedLegislators.filter(
-          (l) => l.id !== action.payload
-        ),
+        selectedLegislators: state.selectedLegislators.filter((l) => l.id !== action.payload),
       };
     }
 
     case "TOGGLE": {
-      const isSelected = state.selectedLegislators.some(
-        (l) => l.id === action.payload.id
-      );
+      const isSelected = state.selectedLegislators.some((l) => l.id === action.payload.id);
       if (isSelected) {
         return {
           ...state,
-          selectedLegislators: state.selectedLegislators.filter(
-            (l) => l.id !== action.payload.id
-          ),
+          selectedLegislators: state.selectedLegislators.filter((l) => l.id !== action.payload.id),
         };
       }
       return {
@@ -102,6 +145,7 @@ function contactReducer(state: ContactState, action: ContactAction): ContactStat
       return {
         ...state,
         selectedLegislators: [],
+        queue: null,
       };
     }
 
@@ -123,6 +167,24 @@ function contactReducer(state: ContactState, action: ContactAction): ContactStat
       return {
         ...state,
         researchContext: action.payload,
+      };
+    }
+
+    case "SET_QUEUE": {
+      return {
+        ...state,
+        queue: action.payload,
+      };
+    }
+
+    case "HYDRATE_QUEUE": {
+      // Hydrate queue from localStorage and sync selectedLegislators
+      const legislators = action.payload.items.map((item) => item.legislator);
+      return {
+        ...state,
+        queue: action.payload,
+        selectedLegislators: legislators,
+        researchContext: action.payload.researchContext,
       };
     }
 
@@ -150,7 +212,23 @@ export function ContactProvider({ children }: ContactProviderProps) {
     selectedLegislators: [],
     currentStep: "research",
     researchContext: null,
+    queue: null,
   });
+
+  // Hydrate queue from localStorage on mount
+  React.useEffect(() => {
+    const storedQueue = loadQueue();
+    if (storedQueue) {
+      dispatch({ type: "HYDRATE_QUEUE", payload: storedQueue });
+    }
+  }, []);
+
+  // Persist queue to localStorage when it changes
+  React.useEffect(() => {
+    if (state.queue) {
+      saveQueue(state.queue);
+    }
+  }, [state.queue]);
 
   const selectLegislator = React.useCallback((legislator: Legislator) => {
     dispatch({ type: "SELECT", payload: legislator });
@@ -172,6 +250,7 @@ export function ContactProvider({ children }: ContactProviderProps) {
   );
 
   const clearSelections = React.useCallback(() => {
+    clearQueue();
     dispatch({ type: "CLEAR" });
   }, []);
 
@@ -187,6 +266,65 @@ export function ContactProvider({ children }: ContactProviderProps) {
     dispatch({ type: "SET_RESEARCH_CONTEXT", payload: context });
   }, []);
 
+  // Queue management functions
+  const initializeQueue = React.useCallback(() => {
+    const newQueue = createQueue(state.selectedLegislators, state.researchContext);
+    dispatch({ type: "SET_QUEUE", payload: newQueue });
+  }, [state.selectedLegislators, state.researchContext]);
+
+  const reorderQueueItems = React.useCallback(
+    (fromIndex: number, toIndex: number) => {
+      if (!state.queue) return;
+      const newQueue = reorderQueue(state.queue, fromIndex, toIndex);
+      dispatch({ type: "SET_QUEUE", payload: newQueue });
+    },
+    [state.queue]
+  );
+
+  const markCurrentContacted = React.useCallback(() => {
+    if (!state.queue) return;
+    const newQueue = markContacted(state.queue);
+    dispatch({ type: "SET_QUEUE", payload: newQueue });
+  }, [state.queue]);
+
+  const skipCurrentLegislator = React.useCallback(() => {
+    if (!state.queue) return;
+    const newQueue = skipCurrent(state.queue);
+    dispatch({ type: "SET_QUEUE", payload: newQueue });
+  }, [state.queue]);
+
+  const removeFromQueueById = React.useCallback(
+    (legislatorId: string) => {
+      if (!state.queue) return;
+      const newQueue = removeFromQueue(state.queue, legislatorId);
+      // Also remove from selectedLegislators
+      dispatch({ type: "DESELECT", payload: legislatorId });
+      dispatch({ type: "SET_QUEUE", payload: newQueue });
+    },
+    [state.queue]
+  );
+
+  const setActiveLegislator = React.useCallback(
+    (legislatorId: string) => {
+      if (!state.queue) return;
+      const newQueue = setActive(state.queue, legislatorId);
+      dispatch({ type: "SET_QUEUE", payload: newQueue });
+    },
+    [state.queue]
+  );
+
+  const clearQueueData = React.useCallback(() => {
+    clearQueue();
+    dispatch({ type: "SET_QUEUE", payload: null });
+  }, []);
+
+  // Derived queue values
+  const contactedCount = state.queue ? getContactedCount(state.queue) : 0;
+  const remainingCount = state.queue ? getRemainingCount(state.queue) : 0;
+  const isComplete = state.queue ? isQueueComplete(state.queue) : false;
+  const activeItem =
+    state.queue && state.queue.activeIndex >= 0 ? state.queue.items[state.queue.activeIndex] : null;
+
   const value: ContactContextValue = {
     selectedLegislators: state.selectedLegislators,
     selectLegislator,
@@ -201,11 +339,22 @@ export function ContactProvider({ children }: ContactProviderProps) {
     setResearchContext,
     hasSelections: state.selectedLegislators.length > 0,
     selectionCount: state.selectedLegislators.length,
+    // Queue management
+    queue: state.queue,
+    initializeQueue,
+    reorderQueueItems,
+    markCurrentContacted,
+    skipCurrentLegislator,
+    removeFromQueueById,
+    setActiveLegislator,
+    clearQueueData,
+    contactedCount,
+    remainingCount,
+    isComplete,
+    activeItem,
   };
 
-  return (
-    <ContactContext.Provider value={value}>{children}</ContactContext.Provider>
-  );
+  return <ContactContext.Provider value={value}>{children}</ContactContext.Provider>;
 }
 
 // =============================================================================

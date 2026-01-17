@@ -161,10 +161,7 @@ export function LegislatorCard({
           <div className="flex items-start gap-3">
             {/* Selection checkbox */}
             {selectable && (
-              <div
-                className="flex-shrink-0 pt-1"
-                onClick={(e) => e.stopPropagation()}
-              >
+              <div className="flex-shrink-0 pt-1" onClick={(e) => e.stopPropagation()}>
                 <Checkbox
                   checked={isSelected}
                   onCheckedChange={handleToggleSelect}
@@ -178,9 +175,7 @@ export function LegislatorCard({
             <div className={cn("rounded-full p-0.5", partyColor)}>
               <Avatar className="size-12">
                 {imageUrl && <AvatarImage src={imageUrl} alt={name} />}
-                <AvatarFallback className="text-sm font-medium">
-                  {getInitials(name)}
-                </AvatarFallback>
+                <AvatarFallback className="text-sm font-medium">{getInitials(name)}</AvatarFallback>
               </Avatar>
             </div>
 
@@ -214,31 +209,19 @@ export function LegislatorCard({
 
           {/* Stance summary */}
           {stanceSummary && (
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              {stanceSummary}
-            </p>
+            <p className="text-sm text-muted-foreground leading-relaxed">{stanceSummary}</p>
           )}
 
           {/* Contact buttons */}
           <div className="flex items-center gap-2">
             {contact.phone && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleCall}
-                className="gap-1.5"
-              >
+              <Button variant="outline" size="sm" onClick={handleCall} className="gap-1.5">
                 <Phone className="size-3.5" />
                 Call
               </Button>
             )}
             {contact.email && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleEmail}
-                className="gap-1.5"
-              >
+              <Button variant="outline" size="sm" onClick={handleEmail} className="gap-1.5">
                 <Mail className="size-3.5" />
                 Email
               </Button>
@@ -263,10 +246,7 @@ export function LegislatorCard({
             className="w-full justify-center text-muted-foreground hover:text-foreground"
           >
             <span>{isExpanded ? "Show less" : "Show more"}</span>
-            <motion.div
-              animate={{ rotate: isExpanded ? 180 : 0 }}
-              transition={{ duration: 0.2 }}
-            >
+            <motion.div animate={{ rotate: isExpanded ? 180 : 0 }} transition={{ duration: 0.2 }}>
               <ChevronDown className="size-4" />
             </motion.div>
           </Button>

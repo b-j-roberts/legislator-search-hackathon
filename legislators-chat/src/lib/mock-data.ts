@@ -32,7 +32,8 @@ export const MOCK_LEGISLATORS: Legislator[] = [
     state: "CA",
     district: "11",
     stance: "for",
-    stanceSummary: "Supports comprehensive climate legislation and green infrastructure investment.",
+    stanceSummary:
+      "Supports comprehensive climate legislation and green infrastructure investment.",
     contact: {
       phone: "(202) 225-4965",
       email: "sf.nancy@mail.house.gov",
@@ -52,7 +53,8 @@ export const MOCK_LEGISLATORS: Legislator[] = [
     chamber: "Senate",
     state: "TX",
     stance: "against",
-    stanceSummary: "Opposes most climate regulations, favors energy independence through fossil fuels.",
+    stanceSummary:
+      "Opposes most climate regulations, favors energy independence through fossil fuels.",
     contact: {
       phone: "(202) 224-5922",
       email: "senator@cruz.senate.gov",
@@ -133,7 +135,8 @@ export const MOCK_LEGISLATORS: Legislator[] = [
     chamber: "Senate",
     state: "SC",
     stance: "mixed",
-    stanceSummary: "Has shown some support for nuclear energy as climate solution, mixed on regulations.",
+    stanceSummary:
+      "Has shown some support for nuclear energy as climate solution, mixed on regulations.",
     contact: {
       phone: "(202) 224-5972",
       email: "senator@lgraham.senate.gov",
@@ -214,7 +217,8 @@ export const MOCK_LEGISLATORS: Legislator[] = [
     chamber: "Senate",
     state: "LA",
     stance: "mixed",
-    stanceSummary: "Supports some climate adaptation measures, balances with energy industry interests.",
+    stanceSummary:
+      "Supports some climate adaptation measures, balances with energy industry interests.",
     contact: {
       phone: "(202) 224-5824",
       email: "senator@cassidy.senate.gov",
@@ -258,7 +262,8 @@ export const MOCK_DOCUMENTS: Document[] = [
     type: "bill",
     title: "H.R. 3684 - Infrastructure Investment and Jobs Act",
     date: "2021-11-15",
-    summary: "Bipartisan infrastructure law investing in roads, bridges, clean energy, and broadband. Includes $550 billion in new federal spending over five years.",
+    summary:
+      "Bipartisan infrastructure law investing in roads, bridges, clean energy, and broadband. Includes $550 billion in new federal spending over five years.",
     url: "https://www.congress.gov/bill/117th-congress/house-bill/3684",
     relevance: 0.95,
   },
@@ -267,7 +272,8 @@ export const MOCK_DOCUMENTS: Document[] = [
     type: "bill",
     title: "H.R. 5376 - Inflation Reduction Act of 2022",
     date: "2022-08-16",
-    summary: "Major climate and energy legislation providing $369 billion for clean energy investments, tax credits for EVs, and Medicare drug price negotiations.",
+    summary:
+      "Major climate and energy legislation providing $369 billion for clean energy investments, tax credits for EVs, and Medicare drug price negotiations.",
     url: "https://www.congress.gov/bill/117th-congress/house-bill/5376",
     relevance: 0.92,
   },
@@ -276,7 +282,8 @@ export const MOCK_DOCUMENTS: Document[] = [
     type: "statement",
     title: "Sen. Sanders Floor Speech on Climate Emergency",
     date: "2023-07-12",
-    summary: "Senator Bernie Sanders calls for declaration of climate emergency and outlines $16 trillion Green New Deal proposal.",
+    summary:
+      "Senator Bernie Sanders calls for declaration of climate emergency and outlines $16 trillion Green New Deal proposal.",
     relevance: 0.88,
   },
   {
@@ -284,7 +291,8 @@ export const MOCK_DOCUMENTS: Document[] = [
     type: "transcript",
     title: "House Energy Committee Markup - Clean Energy Standards",
     date: "2023-03-22",
-    summary: "Committee debate on proposed clean electricity standard requiring 80% carbon-free power by 2030.",
+    summary:
+      "Committee debate on proposed clean electricity standard requiring 80% carbon-free power by 2030.",
     relevance: 0.85,
   },
   {
@@ -292,7 +300,8 @@ export const MOCK_DOCUMENTS: Document[] = [
     type: "bill",
     title: "S. 2093 - CLEAN Future Act",
     date: "2023-06-28",
-    summary: "Comprehensive climate legislation setting economy-wide emissions reduction targets and establishing clean energy standards.",
+    summary:
+      "Comprehensive climate legislation setting economy-wide emissions reduction targets and establishing clean energy standards.",
     url: "https://www.congress.gov/bill/118th-congress/senate-bill/2093",
     relevance: 0.82,
   },
@@ -307,7 +316,8 @@ export const MOCK_HEARINGS: Hearing[] = [
     title: "The Climate Crisis: Urgent Action Needed",
     date: "2023-09-14",
     committee: "Senate Environment and Public Works Committee",
-    summary: "Hearing examining latest climate science and policy options. Featured testimony from NOAA Administrator and climate scientists.",
+    summary:
+      "Hearing examining latest climate science and policy options. Featured testimony from NOAA Administrator and climate scientists.",
     witnesses: ["Dr. Jane Lubchenco", "Dr. Michael Mann", "EPA Administrator"],
     relevance: 0.94,
   },
@@ -317,7 +327,8 @@ export const MOCK_HEARINGS: Hearing[] = [
     date: "2023-08-03",
     committee: "House Education and the Workforce Committee",
     subcommittee: "Subcommittee on Higher Education and Workforce Development",
-    summary: "Examining training programs needed for transition to clean energy economy. Discussed apprenticeship programs and community college partnerships.",
+    summary:
+      "Examining training programs needed for transition to clean energy economy. Discussed apprenticeship programs and community college partnerships.",
     witnesses: ["Secretary of Energy", "AFL-CIO Representative", "Solar Industry CEO"],
     relevance: 0.87,
   },
@@ -326,7 +337,8 @@ export const MOCK_HEARINGS: Hearing[] = [
     title: "Electric Vehicle Infrastructure Deployment",
     date: "2023-07-19",
     committee: "Senate Commerce, Science, and Transportation Committee",
-    summary: "Progress update on EV charging network buildout under Infrastructure Investment and Jobs Act.",
+    summary:
+      "Progress update on EV charging network buildout under Infrastructure Investment and Jobs Act.",
     witnesses: ["DOT Secretary", "ChargePoint CEO", "State DOT Officials"],
     videoUrl: "https://www.c-span.org/video/example",
     relevance: 0.83,
@@ -337,7 +349,8 @@ export const MOCK_HEARINGS: Hearing[] = [
     date: "2023-06-08",
     committee: "House Natural Resources Committee",
     subcommittee: "Subcommittee on Energy and Mineral Resources",
-    summary: "Examination of federal offshore wind leasing program and environmental review processes.",
+    summary:
+      "Examination of federal offshore wind leasing program and environmental review processes.",
     witnesses: ["BOEM Director", "Orsted Americas President", "Fishing Industry Representative"],
     relevance: 0.79,
   },
@@ -388,7 +401,8 @@ export const MOCK_VOTES: VoteRecord[] = [
     nays: 57,
     present: 43,
     notVoting: 0,
-    description: "Procedural vote on Green New Deal resolution. Most Democrats voted 'present' in protest.",
+    description:
+      "Procedural vote on Green New Deal resolution. Most Democrats voted 'present' in protest.",
     relevance: 0.89,
   },
   {
@@ -430,7 +444,8 @@ export const MOCK_VOTES: VoteRecord[] = [
     nays: 20,
     present: 0,
     notVoting: 5,
-    description: "Bipartisan support for advanced nuclear reactor development and licensing reform.",
+    description:
+      "Bipartisan support for advanced nuclear reactor development and licensing reform.",
     relevance: 0.78,
   },
 ];
