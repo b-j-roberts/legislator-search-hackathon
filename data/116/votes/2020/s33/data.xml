@@ -1,0 +1,114 @@
+<roll where="senate" session="116" year="2020" roll="33" source="senate.gov"
+  datetime="2020-02-05T16:09:00-05:00" updated="2026-01-17T13:39:48-05:00"
+  aye="0" nay="0" nv="0" present="0">
+  <category>conviction</category>
+  <type>Guilty or Not Guilty H.Res. 755</type>
+  <question>Guilty or Not Guilty H.Res. 755</question>
+  <required>2/3</required>
+  <result>Not Guilty</result>
+  <bill session="116" type="hr" number="755"/>
+  <option key="+">Guilty</option>
+  <option key="-">Not Guilty</option>
+  <option key="P">Present</option>
+  <option key="0">Not Voting</option>
+  <voter id="S354" vote="+" value="Guilty" state="WI"/>
+  <voter id="S330" vote="+" value="Guilty" state="CO"/>
+  <voter id="S341" vote="+" value="Guilty" state="CT"/>
+  <voter id="S370" vote="+" value="Guilty" state="NJ"/>
+  <voter id="S307" vote="+" value="Guilty" state="OH"/>
+  <voter id="S275" vote="+" value="Guilty" state="WA"/>
+  <voter id="S308" vote="+" value="Guilty" state="MD"/>
+  <voter id="S277" vote="+" value="Guilty" state="DE"/>
+  <voter id="S309" vote="+" value="Guilty" state="PA"/>
+  <voter id="S337" vote="+" value="Guilty" state="DE"/>
+  <voter id="S385" vote="+" value="Guilty" state="NV"/>
+  <voter id="S386" vote="+" value="Guilty" state="IL"/>
+  <voter id="S253" vote="+" value="Guilty" state="IL"/>
+  <voter id="S221" vote="+" value="Guilty" state="CA"/>
+  <voter id="S331" vote="+" value="Guilty" state="NY"/>
+  <voter id="S387" vote="+" value="Guilty" state="CA"/>
+  <voter id="S388" vote="+" value="Guilty" state="NH"/>
+  <voter id="S359" vote="+" value="Guilty" state="NM"/>
+  <voter id="S361" vote="+" value="Guilty" state="HI"/>
+  <voter id="S393" vote="+" value="Guilty" state="AL"/>
+  <voter id="S362" vote="+" value="Guilty" state="VA"/>
+  <voter id="S363" vote="+" value="Guilty" state="ME"/>
+  <voter id="S311" vote="+" value="Guilty" state="MN"/>
+  <voter id="S057" vote="+" value="Guilty" state="VT"/>
+  <voter id="S338" vote="+" value="Guilty" state="WV"/>
+  <voter id="S369" vote="+" value="Guilty" state="MA"/>
+  <voter id="S306" vote="+" value="Guilty" state="NJ"/>
+  <voter id="S322" vote="+" value="Guilty" state="OR"/>
+  <voter id="S364" vote="+" value="Guilty" state="CT"/>
+  <voter id="S229" vote="+" value="Guilty" state="WA"/>
+  <voter id="S380" vote="+" value="Guilty" state="MI"/>
+  <voter id="S259" vote="+" value="Guilty" state="RI"/>
+  <voter id="S401" vote="+" value="Guilty" state="UT"/>
+  <voter id="S402" vote="+" value="Guilty" state="NV"/>
+  <voter id="S313" vote="+" value="Guilty" state="VT"/>
+  <voter id="S353" vote="+" value="Guilty" state="HI"/>
+  <voter id="S270" vote="+" value="Guilty" state="NY"/>
+  <voter id="S324" vote="+" value="Guilty" state="NH"/>
+  <voter id="S403" vote="+" value="Guilty" state="AZ"/>
+  <voter id="S394" vote="+" value="Guilty" state="MN"/>
+  <voter id="S284" vote="+" value="Guilty" state="MI"/>
+  <voter id="S314" vote="+" value="Guilty" state="MT"/>
+  <voter id="S326" vote="+" value="Guilty" state="NM"/>
+  <voter id="S390" vote="+" value="Guilty" state="MD"/>
+  <voter id="S327" vote="+" value="Guilty" state="VA"/>
+  <voter id="S366" vote="+" value="Guilty" state="MA"/>
+  <voter id="S316" vote="+" value="Guilty" state="RI"/>
+  <voter id="S247" vote="+" value="Guilty" state="OR"/>
+  <voter id="S289" vote="-" value="Not Guilty" state="TN"/>
+  <voter id="S317" vote="-" value="Not Guilty" state="WY"/>
+  <voter id="S396" vote="-" value="Not Guilty" state="TN"/>
+  <voter id="S342" vote="-" value="Not Guilty" state="MO"/>
+  <voter id="S343" vote="-" value="Not Guilty" state="AR"/>
+  <voter id="S397" vote="-" value="Not Guilty" state="IN"/>
+  <voter id="S300" vote="-" value="Not Guilty" state="NC"/>
+  <voter id="S372" vote="-" value="Not Guilty" state="WV"/>
+  <voter id="S373" vote="-" value="Not Guilty" state="LA"/>
+  <voter id="S252" vote="-" value="Not Guilty" state="ME"/>
+  <voter id="S287" vote="-" value="Not Guilty" state="TX"/>
+  <voter id="S374" vote="-" value="Not Guilty" state="AR"/>
+  <voter id="S398" vote="-" value="Not Guilty" state="ND"/>
+  <voter id="S266" vote="-" value="Not Guilty" state="ID"/>
+  <voter id="S355" vote="-" value="Not Guilty" state="TX"/>
+  <voter id="S375" vote="-" value="Not Guilty" state="MT"/>
+  <voter id="S254" vote="-" value="Not Guilty" state="WY"/>
+  <voter id="S376" vote="-" value="Not Guilty" state="IA"/>
+  <voter id="S357" vote="-" value="Not Guilty" state="NE"/>
+  <voter id="S377" vote="-" value="Not Guilty" state="CO"/>
+  <voter id="S293" vote="-" value="Not Guilty" state="SC"/>
+  <voter id="S153" vote="-" value="Not Guilty" state="IA"/>
+  <voter id="S399" vote="-" value="Not Guilty" state="MO"/>
+  <voter id="S344" vote="-" value="Not Guilty" state="ND"/>
+  <voter id="S395" vote="-" value="Not Guilty" state="MS"/>
+  <voter id="S236" vote="-" value="Not Guilty" state="OK"/>
+  <voter id="S345" vote="-" value="Not Guilty" state="WI"/>
+  <voter id="S389" vote="-" value="Not Guilty" state="LA"/>
+  <voter id="S378" vote="-" value="Not Guilty" state="OK"/>
+  <voter id="S346" vote="-" value="Not Guilty" state="UT"/>
+  <voter id="S405" vote="-" value="Not Guilty" state="GA"/>
+  <voter id="S174" vote="-" value="Not Guilty" state="KY"/>
+  <voter id="S400" vote="-" value="Not Guilty" state="AZ"/>
+  <voter id="S347" vote="-" value="Not Guilty" state="KS"/>
+  <voter id="S288" vote="-" value="Not Guilty" state="AK"/>
+  <voter id="S348" vote="-" value="Not Guilty" state="KY"/>
+  <voter id="S379" vote="-" value="Not Guilty" state="GA"/>
+  <voter id="S349" vote="-" value="Not Guilty" state="OH"/>
+  <voter id="S323" vote="-" value="Not Guilty" state="ID"/>
+  <voter id="S260" vote="-" value="Not Guilty" state="KS"/>
+  <voter id="S381" vote="-" value="Not Guilty" state="SD"/>
+  <voter id="S350" vote="-" value="Not Guilty" state="FL"/>
+  <voter id="S382" vote="-" value="Not Guilty" state="NE"/>
+  <voter id="S404" vote="-" value="Not Guilty" state="FL"/>
+  <voter id="S365" vote="-" value="Not Guilty" state="SC"/>
+  <voter id="S184" vote="-" value="Not Guilty" state="AL"/>
+  <voter id="S383" vote="-" value="Not Guilty" state="AK"/>
+  <voter id="S303" vote="-" value="Not Guilty" state="SD"/>
+  <voter id="S384" vote="-" value="Not Guilty" state="NC"/>
+  <voter id="S351" vote="-" value="Not Guilty" state="PA"/>
+  <voter id="S318" vote="-" value="Not Guilty" state="MS"/>
+  <voter id="S391" vote="-" value="Not Guilty" state="IN"/>
+</roll>

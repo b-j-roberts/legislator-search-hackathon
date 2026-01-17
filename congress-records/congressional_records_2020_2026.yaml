@@ -1,0 +1,14 @@
+metadata:
+  generated_at: '2026-01-17T13:36:33.945824'
+  date_range:
+    start: '2020-01-01'
+    end: '2026-12-31'
+  congresses:
+  - 118
+  total_records: 0
+  total_articles: 0
+  article_types: {}
+  mode: fast
+  status: complete
+  source: Congress.gov API (api.congress.gov)
+records: []
