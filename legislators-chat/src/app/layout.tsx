@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { ThemeProvider } from "@/components/providers";
+import { ThemeProvider, ChatProvider } from "@/components/providers";
 import { Header } from "@/components/layout";
 import "./globals.css";
 
@@ -38,8 +38,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
         <ThemeProvider>
-          <Header />
-          {children}
+          <ChatProvider>
+            <Header />
+            {children}
+          </ChatProvider>
         </ThemeProvider>
       </body>
     </html>

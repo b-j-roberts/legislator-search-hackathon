@@ -1,14 +1,28 @@
 "use client";
 
+import * as React from "react";
 import { Moon, Sun, Landmark } from "lucide-react";
 import { useTheme } from "next-themes";
 
 function ThemeToggle() {
+  const [mounted, setMounted] = React.useState(false);
   const { resolvedTheme, setTheme } = useTheme();
+
+  // Avoid hydration mismatch by only rendering after mount
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const toggleTheme = () => {
     setTheme(resolvedTheme === "dark" ? "light" : "dark");
   };
+
+  // Render placeholder with same dimensions to avoid layout shift
+  if (!mounted) {
+    return (
+      <div className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-input bg-background" />
+    );
+  }
 
   return (
     <button

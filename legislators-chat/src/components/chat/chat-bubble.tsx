@@ -2,8 +2,9 @@
 
 import * as React from "react";
 import { motion } from "framer-motion";
-import { Bot, User, AlertCircle } from "lucide-react";
+import { Bot, User, AlertCircle, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import type { MessageRole, MessageStatus } from "@/lib/types";
 
 export interface ChatBubbleProps {
@@ -13,6 +14,8 @@ export interface ChatBubbleProps {
   status?: MessageStatus;
   error?: string;
   className?: string;
+  /** Callback for retrying failed messages */
+  onRetry?: () => void;
 }
 
 const bubbleVariants = {
@@ -42,6 +45,7 @@ export function ChatBubble({
   status,
   error,
   className,
+  onRetry,
 }: ChatBubbleProps) {
   const isUser = role === "user";
   const hasError = status === "error";
@@ -119,9 +123,22 @@ export function ChatBubble({
           )}
         </div>
 
-        {/* Error message if present */}
-        {hasError && error && (
-          <p className="mt-1 text-xs text-destructive">{error}</p>
+        {/* Error message and retry button if present */}
+        {hasError && (
+          <div className="mt-1 flex items-center gap-2">
+            {error && <p className="text-xs text-destructive">{error}</p>}
+            {onRetry && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onRetry}
+                className="h-6 px-2 text-xs text-destructive hover:text-destructive"
+              >
+                <RefreshCw className="mr-1 h-3 w-3" />
+                Retry
+              </Button>
+            )}
+          </div>
         )}
       </div>
     </motion.div>

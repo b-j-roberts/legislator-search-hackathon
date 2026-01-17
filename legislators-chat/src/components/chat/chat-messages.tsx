@@ -13,6 +13,8 @@ export interface ChatMessagesProps {
   messages: ChatMessage[];
   isLoading?: boolean;
   className?: string;
+  /** Callback to retry a failed message */
+  onRetryMessage?: (messageId: string) => void;
 }
 
 const containerVariants = {
@@ -58,6 +60,7 @@ export function ChatMessages({
   messages,
   isLoading = false,
   className,
+  onRetryMessage,
 }: ChatMessagesProps) {
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const bottomRef = React.useRef<HTMLDivElement>(null);
@@ -94,6 +97,11 @@ export function ChatMessages({
                 timestamp={message.timestamp}
                 status={message.status}
                 error={message.error}
+                onRetry={
+                  message.status === "error" && onRetryMessage
+                    ? () => onRetryMessage(message.id)
+                    : undefined
+                }
               />
             ))}
           </AnimatePresence>
