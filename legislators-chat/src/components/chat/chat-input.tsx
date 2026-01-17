@@ -97,15 +97,15 @@ export function ChatInput({
   );
 
   return (
-    <div className="border-t border-border bg-background p-4">
-      <div className="flex items-end gap-3">
+    <div className="border-t border-border bg-background p-3 md:p-4">
+      <div className="flex items-end gap-2 md:gap-3">
         {/* Voice input placeholder button */}
         <Button
           type="button"
           variant="ghost"
           size="icon"
           disabled
-          className="shrink-0 text-muted-foreground"
+          className="shrink-0 text-muted-foreground min-w-[44px] min-h-[44px] touch-manipulation"
           aria-label="Voice input (coming soon)"
         >
           <Mic className="h-5 w-5" />
@@ -152,19 +152,19 @@ export function ChatInput({
           size="icon"
           onClick={handleSend}
           disabled={!canSend}
-          className="shrink-0"
+          className="shrink-0 min-w-[44px] min-h-[44px] touch-manipulation"
           aria-label={isLoading ? "Sending message..." : "Send message"}
         >
           {isLoading ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
+            <Loader2 className="h-5 w-5 animate-spin" />
           ) : (
-            <Send className="h-4 w-4" />
+            <Send className="h-5 w-5" />
           )}
         </Button>
       </div>
 
-      {/* Helper text */}
-      <p className="mt-2 text-xs text-muted-foreground">
+      {/* Helper text - hidden on mobile for space efficiency */}
+      <p className="mt-2 text-xs text-muted-foreground hidden sm:block">
         Press <kbd className="rounded border border-border bg-muted px-1 py-0.5 font-mono text-[10px]">Enter</kbd> to send, <kbd className="rounded border border-border bg-muted px-1 py-0.5 font-mono text-[10px]">Shift+Enter</kbd> for new line
       </p>
     </div>

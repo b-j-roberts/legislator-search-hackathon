@@ -38,44 +38,6 @@ Core features required for initial usable product.
 
 ---
 
-### 1.5 Legislator Card Component
-
-**Description**: Create card component for displaying legislator information.
-
-**Requirements**:
-- [ ] Create LegislatorCard component
-- [ ] Display name, party, state, chamber
-- [ ] Show stance badge (for/against/mixed)
-- [ ] Display stance summary text
-- [ ] Show primary contact info (phone, email)
-- [ ] Add click-to-call/email functionality
-- [ ] Add expand/collapse for full details
-
-**Implementation Notes**:
-- Use shadcn Card as base
-- Party colors: D=blue, R=red, I=purple
-- Stance badges: for=green, against=red, mixed=yellow, unknown=gray
-
----
-
-### 1.6 Results Panel
-
-**Description**: Create the panel that displays structured results alongside chat.
-
-**Requirements**:
-- [ ] Create ResultsPanel container component
-- [ ] Implement LegislatorList to display multiple cards
-- [ ] Add empty state for no results
-- [ ] Add loading state with skeletons
-- [ ] Implement responsive behavior (below chat on mobile)
-
-**Implementation Notes**:
-- Panel should update after each AI response
-- Consider tabs for different result types (People, Documents, Votes)
-- Animate list changes with Framer Motion
-
----
-
 ### 1.7 Responsive Layout
 
 **Description**: Implement responsive layout for desktop and mobile views.
@@ -86,6 +48,7 @@ Core features required for initial usable product.
 - [ ] Mobile: full-width chat with results below or in drawer
 - [ ] Ensure touch-friendly tap targets
 - [ ] Test on various viewport sizes
+- [ ] Ensure app always takes full viewport height, and does not overflow/scroll, all scrolling should be nested within scrollable areas ( chat history, results panel)
 
 **Implementation Notes**:
 - Use Tailwind responsive prefixes (sm:, md:, lg:)

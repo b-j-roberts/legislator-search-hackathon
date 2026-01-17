@@ -31,7 +31,7 @@ export default function Home() {
         />
       }
     >
-      <div className="flex flex-1 flex-col min-h-0">
+      <div className="flex flex-1 flex-col min-h-0 overflow-hidden">
         {/* Chat Messages Area */}
         <ChatMessages
           messages={messages}
@@ -39,8 +39,10 @@ export default function Home() {
           onRetryMessage={retryMessage}
         />
 
-        {/* Chat Input */}
-        <ChatInput onSend={sendMessage} isLoading={isLoading} />
+        {/* Chat Input - fixed at bottom */}
+        <div className="flex-shrink-0">
+          <ChatInput onSend={sendMessage} isLoading={isLoading} />
+        </div>
       </div>
     </AppLayout>
   );

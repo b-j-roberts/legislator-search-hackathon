@@ -80,7 +80,7 @@ export function ChatMessages({
   }
 
   return (
-    <ScrollArea className={cn("flex-1", className)}>
+    <ScrollArea className={cn("flex-1 min-h-0", className)}>
       <div ref={scrollRef} className="flex flex-col p-4">
         <motion.div
           variants={containerVariants}

@@ -96,18 +96,20 @@ export function ResultsPanel({
 
   return (
     <div className={cn("flex flex-col h-full bg-background", className)}>
-      {/* Mobile toggle bar - only visible on mobile */}
+      {/* Mobile/Tablet toggle bar - only visible below desktop */}
       <div className="lg:hidden border-b border-border">
         <Button
           variant="ghost"
           onClick={toggleMobileExpand}
-          className="w-full flex items-center justify-between py-3 px-4 h-auto rounded-none"
+          className="w-full flex items-center justify-between min-h-[48px] py-3 px-4 h-auto rounded-none touch-manipulation"
+          aria-expanded={isMobileExpanded}
+          aria-controls="results-panel-content"
         >
           <span className="flex items-center gap-2 text-sm font-medium">
-            <Users className="size-4" />
+            <Users className="size-5" />
             Results
             {totalResults > 0 && (
-              <span className="bg-primary text-primary-foreground text-xs px-2 py-0.5 rounded-full">
+              <span className="bg-primary text-primary-foreground text-xs px-2 py-0.5 rounded-full min-w-[24px] text-center">
                 {totalResults}
               </span>
             )}
@@ -116,16 +118,17 @@ export function ResultsPanel({
             animate={{ rotate: isMobileExpanded ? 180 : 0 }}
             transition={{ duration: 0.2 }}
           >
-            <ChevronUp className="size-4" />
+            <ChevronUp className="size-5" />
           </motion.div>
         </Button>
       </div>
 
       {/* Panel content - single Tabs instance with responsive visibility */}
       <div
+        id="results-panel-content"
         className={cn(
-          "flex-col flex-1 overflow-hidden transition-all duration-200",
-          // Mobile: hidden by default, shown when expanded
+          "flex-col flex-1 min-h-0 overflow-hidden transition-all duration-200",
+          // Mobile/Tablet: hidden by default, shown when expanded
           isMobileExpanded ? "flex" : "hidden",
           // Desktop: always visible
           "lg:flex"
@@ -137,18 +140,18 @@ export function ResultsPanel({
           className="flex flex-col flex-1 overflow-hidden"
         >
           {/* Tab navigation */}
-          <div className="flex-shrink-0 border-b border-border p-3">
-            <TabsList className="w-full grid grid-cols-3">
+          <div className="flex-shrink-0 border-b border-border p-2 md:p-3">
+            <TabsList className="w-full grid grid-cols-3 h-auto">
               {tabs.map((tab) => (
                 <TabsTrigger
                   key={tab.id}
                   value={tab.id}
-                  className="flex items-center gap-1.5"
+                  className="flex items-center justify-center gap-1.5 min-h-[44px] px-2 md:px-3 touch-manipulation"
                 >
-                  <tab.icon className="size-4" />
-                  <span className="hidden sm:inline">{tab.label}</span>
+                  <tab.icon className="size-4 md:size-5 flex-shrink-0" />
+                  <span className="hidden md:inline text-sm">{tab.label}</span>
                   {tab.count > 0 && (
-                    <span className="text-xs bg-muted-foreground/20 px-1.5 py-0.5 rounded-full">
+                    <span className="text-xs bg-muted-foreground/20 px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
                       {tab.count}
                     </span>
                   )}
@@ -158,7 +161,7 @@ export function ResultsPanel({
           </div>
 
           {/* Tab content */}
-          <div className="flex-1 overflow-hidden">
+          <div className="flex-1 min-h-0 overflow-hidden">
             <TabsContent value="people" className="h-full overflow-auto m-0">
               <LegislatorList
                 legislators={legislators}
