@@ -22,7 +22,9 @@ import type {
   Document,
   VoteRecord,
   Hearing,
+  SearchResultData,
 } from "@/lib/types";
+import { getContentTypeDisplayName } from "@/lib/search-service";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -40,6 +42,8 @@ export interface ResultsPanelProps {
   documents?: Document[];
   votes?: VoteRecord[];
   hearings?: Hearing[];
+  /** Search results from PolSearch API - takes precedence over documents/votes/hearings */
+  searchResults?: SearchResultData[];
   isLoading?: boolean;
   activeTab?: ResultsTab;
   onTabChange?: (tab: ResultsTab) => void;
@@ -79,6 +83,135 @@ function EmptyState({
   );
 }
 
+/** Props for SearchDocumentCard - displays search results from PolSearch API */
+interface SearchDocumentCardProps {
+  /** Document title */
+  title: string;
+  /** Document date (YYYY-MM-DD format) */
+  date?: string;
+  /** Content type (hearing, floor_speech) */
+  contentType?: string;
+  /** Text snippet from the document */
+  text?: string;
+  /** Speaker name attribution */
+  speakerName?: string;
+  /** Congressional chamber (House/Senate) */
+  chamber?: string;
+  /** Committee name for hearings */
+  committee?: string;
+  /** External URL to source document */
+  sourceUrl?: string;
+}
+
+function SearchDocumentCard({
+  title,
+  date,
+  contentType,
+  text,
+  speakerName,
+  chamber,
+  committee,
+  sourceUrl,
+}: SearchDocumentCardProps) {
+  const displayType = contentType ? getContentTypeDisplayName(contentType) : undefined;
+  const formattedDate = date ? formatDate(date) : undefined;
+
+  const handleClick = () => {
+    if (sourceUrl) {
+      window.open(sourceUrl, "_blank", "noopener,noreferrer");
+    }
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 5 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -2 }}
+      onClick={handleClick}
+      className={cn(
+        "group p-4 rounded-xl border border-border/50 bg-card/50 hover:bg-card hover:border-border hover:shadow-md transition-all duration-200",
+        sourceUrl && "cursor-pointer"
+      )}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex-1 min-w-0">
+          {/* Title and type badge */}
+          <div className="flex items-start gap-2">
+            <h4 className="font-medium text-sm text-foreground group-hover:text-accent transition-colors line-clamp-2 flex-1">
+              {title}
+            </h4>
+            {displayType && (
+              <Badge
+                variant="secondary"
+                className="shrink-0 text-[10px] font-medium uppercase tracking-wide bg-muted/50"
+              >
+                {displayType}
+              </Badge>
+            )}
+          </div>
+
+          {/* Metadata row: date, chamber, committee, speaker */}
+          <div className="flex items-center flex-wrap gap-x-2 gap-y-1 mt-2 text-xs text-muted-foreground">
+            {formattedDate && (
+              <>
+                <Calendar className="size-3" />
+                <span>{formattedDate}</span>
+              </>
+            )}
+            {chamber && (
+              <>
+                {formattedDate && <span className="text-border">|</span>}
+                <span className="capitalize">{chamber}</span>
+              </>
+            )}
+            {committee && (
+              <>
+                {(formattedDate || chamber) && <span className="text-border">|</span>}
+                <Building2 className="size-3" />
+                <span className="truncate max-w-[200px]">{committee}</span>
+              </>
+            )}
+            {speakerName && (
+              <>
+                {(formattedDate || chamber || committee) && <span className="text-border">|</span>}
+                <Users className="size-3" />
+                <span className="truncate max-w-[150px]">{speakerName}</span>
+              </>
+            )}
+          </div>
+
+          {/* Text snippet */}
+          {text && (
+            <p className="text-sm text-muted-foreground mt-3 line-clamp-3 leading-relaxed">
+              {text}
+            </p>
+          )}
+        </div>
+
+        {/* External link indicator */}
+        {sourceUrl && (
+          <ExternalLink className="size-4 text-muted-foreground/0 group-hover:text-accent shrink-0 transition-colors mt-0.5" />
+        )}
+      </div>
+    </motion.div>
+  );
+}
+
+/** Format date string to readable format */
+function formatDate(dateStr: string): string {
+  try {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  } catch {
+    return dateStr;
+  }
+}
+
+/** Legacy DocumentCard for backward compatibility with old Document/Hearing types */
 function DocumentCard({
   title,
   date,
@@ -127,6 +260,95 @@ function DocumentCard({
   );
 }
 
+/** Props for SearchVoteCard - displays vote search results from PolSearch API */
+interface SearchVoteCardProps {
+  /** Vote title or description */
+  title: string;
+  /** Vote date (YYYY-MM-DD format) */
+  date?: string;
+  /** Text snippet about the vote */
+  text?: string;
+  /** Congressional chamber (House/Senate) */
+  chamber?: string;
+  /** External URL to source */
+  sourceUrl?: string;
+}
+
+function SearchVoteCard({
+  title,
+  date,
+  text,
+  chamber,
+  sourceUrl,
+}: SearchVoteCardProps) {
+  const formattedDate = date ? formatDate(date) : undefined;
+
+  const handleClick = () => {
+    if (sourceUrl) {
+      window.open(sourceUrl, "_blank", "noopener,noreferrer");
+    }
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 5 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -2 }}
+      onClick={handleClick}
+      className={cn(
+        "group p-4 rounded-xl border border-border/50 bg-card/50 hover:bg-card hover:border-border hover:shadow-md transition-all duration-200",
+        sourceUrl && "cursor-pointer"
+      )}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex-1 min-w-0">
+          {/* Title with vote badge */}
+          <div className="flex items-start gap-2">
+            <h4 className="font-medium text-sm text-foreground group-hover:text-accent transition-colors line-clamp-2 flex-1">
+              {title}
+            </h4>
+            <Badge
+              variant="secondary"
+              className="shrink-0 text-[10px] font-medium uppercase tracking-wide bg-violet-500/10 text-violet-500 border-violet-500/20"
+            >
+              Vote
+            </Badge>
+          </div>
+
+          {/* Metadata: date and chamber */}
+          <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
+            {formattedDate && (
+              <>
+                <Calendar className="size-3" />
+                <span>{formattedDate}</span>
+              </>
+            )}
+            {chamber && (
+              <>
+                {formattedDate && <span className="text-border">|</span>}
+                <span className="capitalize">{chamber}</span>
+              </>
+            )}
+          </div>
+
+          {/* Text snippet */}
+          {text && (
+            <p className="text-sm text-muted-foreground mt-3 line-clamp-3 leading-relaxed">
+              {text}
+            </p>
+          )}
+        </div>
+
+        {/* External link indicator */}
+        {sourceUrl && (
+          <ExternalLink className="size-4 text-muted-foreground/0 group-hover:text-accent shrink-0 transition-colors mt-0.5" />
+        )}
+      </div>
+    </motion.div>
+  );
+}
+
+/** Legacy VoteCard for backward compatibility with structured VoteRecord type */
 function VoteCard({ vote }: { vote: VoteRecord }) {
   const passed = vote.result === "passed";
   const total = vote.yeas + vote.nays;
@@ -203,6 +425,7 @@ export function ResultsPanel({
   documents = [],
   votes = [],
   hearings = [],
+  searchResults = [],
   isLoading = false,
   activeTab = "people",
   onTabChange,
@@ -249,19 +472,35 @@ export function ResultsPanel({
     [selectedLegislators]
   );
 
+  // Filter search results by content_type
+  const searchDocuments = React.useMemo(
+    () => searchResults.filter((r) => r.content_type === "hearing" || r.content_type === "floor_speech"),
+    [searchResults]
+  );
+
+  const searchVotes = React.useMemo(
+    () => searchResults.filter((r) => r.content_type === "vote"),
+    [searchResults]
+  );
+
+  // Use search results if available, otherwise fall back to legacy props
+  const hasSearchResults = searchResults.length > 0;
+  const effectiveDocumentCount = hasSearchResults ? searchDocuments.length : documents.length + hearings.length;
+  const effectiveVoteCount = hasSearchResults ? searchVotes.length : votes.length;
+
   const tabs: TabConfig[] = [
     { id: "people", label: "People", icon: Users, count: filteredLegislators.length },
     {
       id: "documents",
       label: "Documents",
       icon: FileText,
-      count: documents.length + hearings.length,
+      count: effectiveDocumentCount,
     },
-    { id: "votes", label: "Votes", icon: Vote, count: votes.length },
+    { id: "votes", label: "Votes", icon: Vote, count: effectiveVoteCount },
   ];
 
   const totalResults =
-    filteredLegislators.length + documents.length + votes.length + hearings.length;
+    filteredLegislators.length + effectiveDocumentCount + effectiveVoteCount;
 
   const handleTabChange = (value: string) => {
     const tab = value as ResultsTab;
@@ -461,13 +700,31 @@ export function ResultsPanel({
             <TabsContent value="documents" className="h-full overflow-auto m-0">
               {isLoading ? (
                 <LoadingSkeleton />
-              ) : documents.length === 0 && hearings.length === 0 ? (
+              ) : effectiveDocumentCount === 0 ? (
                 <EmptyState
                   icon={FileText}
                   title="No documents found"
                   description="Relevant documents, hearings, and transcripts will appear here."
                 />
+              ) : hasSearchResults ? (
+                // Render search results (PolSearch API format)
+                <div className="p-4 space-y-3">
+                  {searchDocuments.map((result) => (
+                    <SearchDocumentCard
+                      key={`${result.content_id}-${result.segment_index}`}
+                      title={result.title || "Untitled Document"}
+                      date={result.date}
+                      contentType={result.content_type}
+                      text={result.text}
+                      speakerName={result.speaker_name}
+                      chamber={result.chamber}
+                      committee={result.committee}
+                      sourceUrl={result.source_url}
+                    />
+                  ))}
+                </div>
               ) : (
+                // Render legacy document/hearing format
                 <div className="p-4 space-y-3">
                   {documents.map((doc) => (
                     <DocumentCard
@@ -494,13 +751,28 @@ export function ResultsPanel({
             <TabsContent value="votes" className="h-full overflow-auto m-0">
               {isLoading ? (
                 <LoadingSkeleton />
-              ) : votes.length === 0 ? (
+              ) : effectiveVoteCount === 0 ? (
                 <EmptyState
                   icon={Vote}
                   title="No votes found"
                   description="Voting records related to your query will appear here."
                 />
+              ) : hasSearchResults ? (
+                // Render search results (PolSearch API format)
+                <div className="p-4 space-y-3">
+                  {searchVotes.map((result) => (
+                    <SearchVoteCard
+                      key={`${result.content_id}-${result.segment_index}`}
+                      title={result.title || "Vote Record"}
+                      date={result.date}
+                      text={result.text}
+                      chamber={result.chamber}
+                      sourceUrl={result.source_url}
+                    />
+                  ))}
+                </div>
               ) : (
+                // Render legacy VoteRecord format
                 <div className="p-4 space-y-3">
                   {votes.map((vote) => (
                     <VoteCard key={vote.id} vote={vote} />

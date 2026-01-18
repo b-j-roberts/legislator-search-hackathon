@@ -8,13 +8,10 @@ import { ResultsPanel } from "@/components/results";
 import { OfflineBanner, AnimatedErrorBanner } from "@/components/errors";
 import { useChat } from "@/components/providers";
 import { useResults, useNetworkStatus } from "@/hooks";
-import { MOCK_LEGISLATORS, MOCK_DOCUMENTS, MOCK_HEARINGS, MOCK_VOTES } from "@/lib/mock-data";
-
-const USE_MOCK_DATA = process.env.NODE_ENV === "development";
 
 export default function Home() {
   const { messages, isLoading, error, sendMessage, retryMessage, clearError } = useChat();
-  const { legislators, documents, votes, hearings, activeTab, setActiveTab } = useResults(messages);
+  const { legislators, documents, votes, hearings, searchResults, activeTab, setActiveTab } = useResults(messages);
   const { isOnline, wasOffline, resetWasOffline } = useNetworkStatus();
   const [suggestionValue, setSuggestionValue] = React.useState("");
 
@@ -76,20 +73,15 @@ export default function Home() {
     [isOnline]
   );
 
-  const displayLegislators =
-    USE_MOCK_DATA && legislators.length === 0 ? MOCK_LEGISLATORS : legislators;
-  const displayDocuments = USE_MOCK_DATA && documents.length === 0 ? MOCK_DOCUMENTS : documents;
-  const displayHearings = USE_MOCK_DATA && hearings.length === 0 ? MOCK_HEARINGS : hearings;
-  const displayVotes = USE_MOCK_DATA && votes.length === 0 ? MOCK_VOTES : votes;
-
   return (
     <AppLayout
       resultsPanel={
         <ResultsPanel
-          legislators={displayLegislators}
-          documents={displayDocuments}
-          votes={displayVotes}
-          hearings={displayHearings}
+          legislators={legislators}
+          documents={documents}
+          votes={votes}
+          hearings={hearings}
+          searchResults={searchResults}
           isLoading={isLoading}
           activeTab={activeTab}
           onTabChange={setActiveTab}

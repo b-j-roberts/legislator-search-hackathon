@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import type { ChatMessage, Conversation, ConversationsStorage, MessageRole } from "@/lib/types";
-import { sendChatMessageStream, ApiClientError } from "@/lib/api";
+import type { ChatMessage, Conversation, ConversationsStorage, MessageRole, SearchResultData } from "@/lib/types";
+import { ApiClientError } from "@/lib/api";
 import {
   loadConversations,
   saveConversations,
@@ -14,6 +14,9 @@ import {
   generateMessageId,
   getActiveConversation,
 } from "@/lib/conversation-storage";
+import { parseAIResponse, toSearchParams, hasSearchIntent, buildCorrectionPrompt } from "@/lib/parse-ai-response";
+import { searchContent, type SearchResult } from "@/lib/search-service";
+import { buildSearchSystemPrompt, buildSearchResultsPrompt, type SearchResultForPrompt, type SearchResultsMetadata } from "@/lib/prompts/search-system";
 
 // =============================================================================
 // Constants
@@ -21,6 +24,79 @@ import {
 
 const MAX_RETRY_ATTEMPTS = 3;
 const RETRY_DELAY_MS = 1000;
+const MAX_SEARCH_RETRIES = 2;
+
+// =============================================================================
+// Orchestration Helpers
+// =============================================================================
+
+interface OrchestrationMessage {
+  role: MessageRole;
+  content: string;
+}
+
+/**
+ * Send a message to the orchestrated chat API (non-streaming)
+ */
+async function sendOrchestrationMessage(
+  message: string,
+  previousMessages: OrchestrationMessage[] = [],
+  systemPrompt?: string
+): Promise<string> {
+  const response = await fetch("/api/chat/orchestrated", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      message,
+      context: {
+        previousMessages,
+        systemPrompt,
+      },
+    }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.error?.message || `API error: ${response.status}`);
+  }
+
+  const data = await response.json();
+  return data.content || "";
+}
+
+/**
+ * Convert SearchResult to SearchResultForPrompt for building result prompts
+ */
+function toSearchResultForPrompt(result: SearchResult): SearchResultForPrompt {
+  return {
+    content_type: result.content_type,
+    title: result.title,
+    date: result.date,
+    speaker_name: result.speaker_name,
+    chamber: result.chamber,
+    committee: result.committee,
+    text: result.text,
+    source_url: result.source_url,
+  };
+}
+
+/**
+ * Convert SearchResult to SearchResultData for storing in messages
+ */
+function toSearchResultData(result: SearchResult): SearchResultData {
+  return {
+    content_id: result.content_id,
+    content_type: result.content_type,
+    segment_index: result.segment_index,
+    text: result.text,
+    title: result.title,
+    date: result.date,
+    speaker_name: result.speaker_name,
+    source_url: result.source_url,
+    chamber: result.chamber,
+    committee: result.committee,
+  };
+}
 
 // =============================================================================
 // Types
@@ -271,7 +347,14 @@ export function ChatProvider({ children }: ChatProviderProps) {
   const conversationId = state.storage.activeConversationId || undefined;
 
   /**
-   * Send a message to the chat API with streaming support
+   * Send a message using the search orchestration flow
+   *
+   * Flow:
+   * 1. Send user message to Maple AI with search system prompt
+   * 2. Parse response for JSON search blocks
+   * 3. If search found, call PolSearch API
+   * 4. Feed results back to Maple for synthesis
+   * 5. Return final response with search results attached
    */
   const sendMessage = React.useCallback(
     async (content: string) => {
@@ -293,7 +376,7 @@ export function ChatProvider({ children }: ChatProviderProps) {
         status: "sent",
       };
 
-      // Create placeholder assistant message for streaming
+      // Create placeholder assistant message
       const assistantMessageId = generateMessageId();
       const assistantMessage: ChatMessage = {
         id: assistantMessageId,
@@ -317,51 +400,132 @@ export function ChatProvider({ children }: ChatProviderProps) {
       try {
         // Build context from previous messages
         const currentConv = state.storage.conversations.find((c) => c.id === currentConversationId);
-        const previousMessages: Array<{ role: MessageRole; content: string }> = (
-          currentConv?.messages || []
-        ).map((msg) => ({
+        const previousMessages: OrchestrationMessage[] = (currentConv?.messages || []).map((msg) => ({
           role: msg.role,
           content: msg.content,
         }));
 
-        let streamedContent = "";
+        // Track orchestration state
+        const conversation: OrchestrationMessage[] = [...previousMessages];
+        let retryCount = 0;
+        let lastResponse = "";
+        let searchResults: SearchResult[] | null = null;
 
-        // Call the streaming API
-        await sendChatMessageStream(
-          {
-            message: content,
-            conversationId: currentConversationId,
-            context: { previousMessages },
+        // Step 1: Send initial message to Maple with search system prompt
+        const systemPrompt = buildSearchSystemPrompt();
+
+        // Update UI to show analyzing
+        dispatch({
+          type: "UPDATE_MESSAGE",
+          payload: {
+            conversationId: currentConversationId!,
+            messageId: assistantMessageId,
+            updates: { content: "Analyzing your question..." },
           },
-          (chunk, done) => {
-            if (done) {
-              // Mark message as complete
-              dispatch({
-                type: "UPDATE_MESSAGE",
-                payload: {
-                  conversationId: currentConversationId!,
-                  messageId: assistantMessageId,
-                  updates: {
-                    status: "sent",
-                    sources: [],
-                    confidence: 0,
-                  },
-                },
-              });
-            } else {
-              // Append chunk to content
-              streamedContent += chunk;
-              dispatch({
-                type: "UPDATE_MESSAGE",
-                payload: {
-                  conversationId: currentConversationId!,
-                  messageId: assistantMessageId,
-                  updates: { content: streamedContent },
-                },
-              });
-            }
+        });
+
+        lastResponse = await sendOrchestrationMessage(content, conversation, systemPrompt);
+
+        // Add user message to conversation history
+        conversation.push({ role: "user", content });
+
+        // Step 2: Parse response for search JSON
+        let parseResult = parseAIResponse(lastResponse);
+
+        // Retry loop for malformed JSON
+        while (!parseResult.hasSearchAction && parseResult.parseError && retryCount < MAX_SEARCH_RETRIES) {
+          if (!hasSearchIntent(lastResponse)) {
+            break;
           }
-        );
+
+          retryCount++;
+          console.log(`Retry ${retryCount}/${MAX_SEARCH_RETRIES}: Requesting corrected JSON format`);
+
+          conversation.push({ role: "assistant", content: lastResponse });
+          const correctionPrompt = buildCorrectionPrompt(lastResponse, parseResult.parseError);
+
+          lastResponse = await sendOrchestrationMessage(correctionPrompt, conversation, systemPrompt);
+          parseResult = parseAIResponse(lastResponse);
+        }
+
+        // Step 3: Execute search if JSON was found
+        if (parseResult.hasSearchAction && parseResult.searchAction) {
+          const searchQuery = parseResult.searchAction.params.q;
+
+          // Update UI to show searching
+          dispatch({
+            type: "UPDATE_MESSAGE",
+            payload: {
+              conversationId: currentConversationId!,
+              messageId: assistantMessageId,
+              updates: { content: `Searching congressional records for "${searchQuery}"...` },
+            },
+          });
+
+          try {
+            const searchParams = toSearchParams(parseResult.searchAction.params);
+            const searchResponse = await searchContent(searchParams);
+            searchResults = searchResponse.results;
+
+            // Step 4: Feed results back to Maple for synthesis
+            dispatch({
+              type: "UPDATE_MESSAGE",
+              payload: {
+                conversationId: currentConversationId!,
+                messageId: assistantMessageId,
+                updates: { content: `Found ${searchResults.length} results. Synthesizing information...` },
+              },
+            });
+
+            // Build the results prompt
+            const resultsMetadata: SearchResultsMetadata = {
+              query: searchResponse.query,
+              totalReturned: searchResponse.total_returned,
+              hasMore: searchResponse.has_more,
+            };
+
+            const resultsPrompt = buildSearchResultsPrompt(
+              searchResults.map(toSearchResultForPrompt),
+              resultsMetadata
+            );
+
+            // Add the AI's search decision to conversation
+            conversation.push({ role: "assistant", content: lastResponse });
+
+            // Send results for synthesis (without search prompt to get natural response)
+            lastResponse = await sendOrchestrationMessage(resultsPrompt, conversation);
+          } catch (searchError) {
+            // Search failed - inform Maple and get a graceful response
+            console.error("Search execution failed:", searchError);
+
+            const errorMessage = searchError instanceof Error
+              ? searchError.message
+              : "The search service is temporarily unavailable.";
+
+            conversation.push({ role: "assistant", content: lastResponse });
+
+            lastResponse = await sendOrchestrationMessage(
+              `[SEARCH_ERROR] The search could not be completed: ${errorMessage}. Please provide a helpful response based on your knowledge.`,
+              conversation
+            );
+          }
+        }
+
+        // Step 5: Update message with final response and search results
+        dispatch({
+          type: "UPDATE_MESSAGE",
+          payload: {
+            conversationId: currentConversationId!,
+            messageId: assistantMessageId,
+            updates: {
+              content: lastResponse,
+              status: "sent",
+              searchResults: searchResults ? searchResults.map(toSearchResultData) : undefined,
+              sources: [],
+              confidence: 0,
+            },
+          },
+        });
       } catch (error) {
         const errorMessage =
           error instanceof ApiClientError
@@ -391,25 +555,25 @@ export function ChatProvider({ children }: ChatProviderProps) {
   );
 
   /**
-   * Retry a failed message
+   * Retry a failed message using orchestration flow
    */
   const retryMessage = React.useCallback(
     async (messageId: string) => {
       const currentConversationId = state.storage.activeConversationId;
       if (!currentConversationId) return;
 
-      const conversation = state.storage.conversations.find((c) => c.id === currentConversationId);
-      if (!conversation) return;
+      const conv = state.storage.conversations.find((c) => c.id === currentConversationId);
+      if (!conv) return;
 
       // Find the failed message
-      const messageIndex = conversation.messages.findIndex((msg) => msg.id === messageId);
+      const messageIndex = conv.messages.findIndex((msg) => msg.id === messageId);
 
       if (messageIndex === -1) {
         console.warn(`Message ${messageId} not found`);
         return;
       }
 
-      const message = conversation.messages[messageIndex];
+      const message = conv.messages[messageIndex];
 
       if (message.status !== "error") {
         console.warn(`Message ${messageId} is not in error state`);
@@ -417,15 +581,15 @@ export function ChatProvider({ children }: ChatProviderProps) {
       }
 
       // Find the user message that triggered this response
-      let userMessage: ChatMessage | undefined;
+      let userMsg: ChatMessage | undefined;
       for (let i = messageIndex - 1; i >= 0; i--) {
-        if (conversation.messages[i].role === "user") {
-          userMessage = conversation.messages[i];
+        if (conv.messages[i].role === "user") {
+          userMsg = conv.messages[i];
           break;
         }
       }
 
-      if (!userMessage) {
+      if (!userMsg) {
         console.warn("Could not find user message to retry");
         return;
       }
@@ -437,7 +601,7 @@ export function ChatProvider({ children }: ChatProviderProps) {
         payload: {
           conversationId: currentConversationId,
           messageId,
-          updates: { status: "sending", error: undefined, content: "" },
+          updates: { status: "sending", error: undefined, content: "Retrying..." },
         },
       });
 
@@ -451,48 +615,108 @@ export function ChatProvider({ children }: ChatProviderProps) {
           }
 
           // Build context from messages up to the user message
-          const previousMessages: Array<{ role: MessageRole; content: string }> =
-            conversation.messages.slice(0, messageIndex - 1).map((msg) => ({
+          const previousMessages: OrchestrationMessage[] = conv.messages
+            .slice(0, messageIndex - 1)
+            .map((msg) => ({
               role: msg.role,
               content: msg.content,
             }));
 
-          let streamedContent = "";
+          // Run orchestration flow
+          const orchestrationConversation: OrchestrationMessage[] = [...previousMessages];
+          let retryCount = 0;
+          let lastResponse = "";
+          let searchResults: SearchResult[] | null = null;
 
-          await sendChatMessageStream(
-            {
-              message: userMessage.content,
+          const systemPrompt = buildSearchSystemPrompt();
+
+          dispatch({
+            type: "UPDATE_MESSAGE",
+            payload: {
               conversationId: currentConversationId,
-              context: { previousMessages },
+              messageId,
+              updates: { content: "Analyzing your question..." },
             },
-            (chunk, done) => {
-              if (done) {
-                dispatch({
-                  type: "UPDATE_MESSAGE",
-                  payload: {
-                    conversationId: currentConversationId,
-                    messageId,
-                    updates: {
-                      status: "sent",
-                      sources: [],
-                      confidence: 0,
-                      error: undefined,
-                    },
-                  },
-                });
-              } else {
-                streamedContent += chunk;
-                dispatch({
-                  type: "UPDATE_MESSAGE",
-                  payload: {
-                    conversationId: currentConversationId,
-                    messageId,
-                    updates: { content: streamedContent },
-                  },
-                });
-              }
+          });
+
+          lastResponse = await sendOrchestrationMessage(userMsg.content, orchestrationConversation, systemPrompt);
+          orchestrationConversation.push({ role: "user", content: userMsg.content });
+
+          let parseResult = parseAIResponse(lastResponse);
+
+          while (!parseResult.hasSearchAction && parseResult.parseError && retryCount < MAX_SEARCH_RETRIES) {
+            if (!hasSearchIntent(lastResponse)) break;
+            retryCount++;
+            orchestrationConversation.push({ role: "assistant", content: lastResponse });
+            const correctionPrompt = buildCorrectionPrompt(lastResponse, parseResult.parseError);
+            lastResponse = await sendOrchestrationMessage(correctionPrompt, orchestrationConversation, systemPrompt);
+            parseResult = parseAIResponse(lastResponse);
+          }
+
+          if (parseResult.hasSearchAction && parseResult.searchAction) {
+            const searchQuery = parseResult.searchAction.params.q;
+
+            dispatch({
+              type: "UPDATE_MESSAGE",
+              payload: {
+                conversationId: currentConversationId,
+                messageId,
+                updates: { content: `Searching for "${searchQuery}"...` },
+              },
+            });
+
+            try {
+              const searchParams = toSearchParams(parseResult.searchAction.params);
+              const searchResponse = await searchContent(searchParams);
+              searchResults = searchResponse.results;
+
+              dispatch({
+                type: "UPDATE_MESSAGE",
+                payload: {
+                  conversationId: currentConversationId,
+                  messageId,
+                  updates: { content: `Found ${searchResults.length} results. Synthesizing...` },
+                },
+              });
+
+              const resultsMetadata: SearchResultsMetadata = {
+                query: searchResponse.query,
+                totalReturned: searchResponse.total_returned,
+                hasMore: searchResponse.has_more,
+              };
+
+              const resultsPrompt = buildSearchResultsPrompt(
+                searchResults.map(toSearchResultForPrompt),
+                resultsMetadata
+              );
+
+              orchestrationConversation.push({ role: "assistant", content: lastResponse });
+              lastResponse = await sendOrchestrationMessage(resultsPrompt, orchestrationConversation);
+            } catch (searchError) {
+              console.error("Search failed during retry:", searchError);
+              orchestrationConversation.push({ role: "assistant", content: lastResponse });
+              lastResponse = await sendOrchestrationMessage(
+                `[SEARCH_ERROR] Search failed. Please provide a helpful response based on your knowledge.`,
+                orchestrationConversation
+              );
             }
-          );
+          }
+
+          dispatch({
+            type: "UPDATE_MESSAGE",
+            payload: {
+              conversationId: currentConversationId,
+              messageId,
+              updates: {
+                content: lastResponse,
+                status: "sent",
+                searchResults: searchResults ? searchResults.map(toSearchResultData) : undefined,
+                sources: [],
+                confidence: 0,
+                error: undefined,
+              },
+            },
+          });
 
           dispatch({ type: "SET_LOADING", payload: false });
           return;

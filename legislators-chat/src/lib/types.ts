@@ -253,6 +253,9 @@ export interface ChatMessage {
   hearings?: Hearing[];
   report?: Report;
 
+  /** Search results from PolSearch API */
+  searchResults?: SearchResultData[];
+
   /** Sources used to generate the response */
   sources?: string[];
 
@@ -261,6 +264,20 @@ export interface ChatMessage {
 
   /** Error message if status is 'error' */
   error?: string;
+}
+
+/** Search result data stored in chat messages (subset of full SearchResult) */
+export interface SearchResultData {
+  content_id: string;
+  content_type: string;
+  segment_index: number;
+  text: string;
+  title?: string;
+  date?: string;
+  speaker_name?: string;
+  source_url?: string;
+  chamber?: string;
+  committee?: string;
 }
 
 /** Response from the chat API */

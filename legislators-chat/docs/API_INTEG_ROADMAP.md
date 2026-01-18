@@ -18,29 +18,6 @@ After implementing the feature, please provide a concise step-by-step instructio
 
 Minimum viable integration to enable AI-powered congressional search.
 
-### 1.4 JSON Extraction & Orchestration
-
-**Description**: Parse Maple's structured JSON output and execute search flow.
-
-**Requirements**:
-- [ ] Create `src/lib/parse-ai-response.ts` to extract JSON blocks from Maple responses
-- [ ] Regex pattern to find ```json blocks in response text
-- [ ] Validate extracted JSON has required `action` and `params` fields
-- [ ] If parse fails, re-prompt Maple asking for corrected format
-- [ ] Create orchestration hook `useSearchOrchestration` that manages the flow:
-  1. Send user message to Maple
-  2. Extract search JSON from response
-  3. Call PolSearch API
-  4. Feed results back to Maple
-  5. Get final synthesized response
-
-**Implementation Notes**:
-- Max 2 retry attempts for malformed JSON
-- If all retries fail, show Maple's conversational response without search results
-- Track orchestration state for loading indicators
-
----
-
 ### 1.5 Results Panel - Search Results Display
 
 **Description**: Update Results Panel to display real search results in Documents/Votes tabs.
