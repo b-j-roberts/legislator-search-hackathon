@@ -143,6 +143,9 @@ export interface UseFiltersReturn {
   /** Clear all filters */
   clearFilters: () => void;
 
+  /** Clear filters and remove from storage */
+  clearFiltersAndStorage: () => void;
+
   /** Check if any filters are active */
   hasActiveFilters: boolean;
 
@@ -201,6 +204,26 @@ function saveToStorage(state: FilterState): void {
   } catch {
     // Ignore storage errors
   }
+}
+
+function clearStorage(): void {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+  } catch {
+    // Ignore storage errors
+  }
+}
+
+/**
+ * Clear filter storage without using the hook.
+ * Useful for session cleanup routines.
+ */
+export function clearFilterStorage(): void {
+  clearStorage();
 }
 
 function sortLegislators(legislators: Legislator[], sortBy: SortOption): Legislator[] {
@@ -303,6 +326,11 @@ export function useFilters(): UseFiltersReturn {
     setFilters(getDefaultState());
   }, []);
 
+  const clearFiltersAndStorage = React.useCallback(() => {
+    clearStorage();
+    setFilters(getDefaultState());
+  }, []);
+
   const hasActiveFilters =
     filters.parties.length > 0 ||
     filters.chambers.length > 0 ||
@@ -376,6 +404,7 @@ export function useFilters(): UseFiltersReturn {
     toggleStance,
     setSortBy,
     clearFilters,
+    clearFiltersAndStorage,
     hasActiveFilters,
     activeFilterCount,
     getFiltersArray,

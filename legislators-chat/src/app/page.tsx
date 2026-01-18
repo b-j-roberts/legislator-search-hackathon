@@ -6,14 +6,25 @@ import { AppLayout } from "@/components/layout";
 import { ChatInput, ChatMessages } from "@/components/chat";
 import { ResultsPanel } from "@/components/results";
 import { OfflineBanner, AnimatedErrorBanner } from "@/components/errors";
-import { useChat } from "@/components/providers";
-import { useResults, useNetworkStatus } from "@/hooks";
+import { useChat, useContact } from "@/components/providers";
+import { useResults, useNetworkStatus, useSessionSync } from "@/hooks";
 
 export default function Home() {
   const { messages, isLoading, error, sendMessage, retryMessage, clearError } = useChat();
   const { legislators, documents, votes, hearings, searchResults, activeTab, setActiveTab } = useResults(messages);
   const { isOnline, wasOffline, resetWasOffline } = useNetworkStatus();
+  const { currentStep, setCurrentStep } = useContact();
   const [suggestionValue, setSuggestionValue] = React.useState("");
+
+  // Sync chat conversation ID with contact state for session isolation
+  useSessionSync();
+
+  // Reset contact step to "research" when on home page
+  React.useEffect(() => {
+    if (currentStep !== "research") {
+      setCurrentStep("research");
+    }
+  }, [currentStep, setCurrentStep]);
 
   React.useEffect(() => {
     if (wasOffline && isOnline) {

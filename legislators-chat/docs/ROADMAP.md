@@ -17,23 +17,6 @@ After implementing the feature, please provide a concise step-by-step instructio
 
 Features that enhance the experience but aren't required for initial launch.
 
-### 2.1c UI Redesign ( Complete Page )
-
-**Description**: Redesign the complete page to enhance visual appeal and usability using the frontend-design SKILL for claude.
-
-**Requirements**:
-- [ ] Rethink overall layout and structure of the complete page
-- [ ] Apply modern color scheme and typography consistent with other pages
-- [ ] Design a better header/subheader section which takes up less space
-- [ ] Create a more engaging and modern completion components based on each completion method
-- [ ] Ensure consistent design considerations for all components and ensure nothing is too cluttered or overwhelming or crowded
-
-**Implementation Notes**:
-- Use consistent design language with other pages
-- Focus on usability and clarity
-- Consider responsive design for mobile
-- Try to reduce cognitive load for new users
-
 ### 2.2 Issues with data cleaning between different chats/sessions
 
 **Description**: Fix data persistence and cleaning issues when switching between different chat sessions.

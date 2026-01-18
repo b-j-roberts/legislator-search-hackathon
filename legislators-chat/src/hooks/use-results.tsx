@@ -3,6 +3,7 @@
 import * as React from "react";
 import type { ChatMessage, Legislator, Document, VoteRecord, Hearing, SearchResultData } from "@/lib/types";
 import type { ResultsTab } from "@/components/results";
+import { mockLegislators, isDevMode } from "@/lib/fixtures/mock-legislators";
 
 // =============================================================================
 // Types
@@ -108,8 +109,15 @@ export function useResults(messages: ChatMessage[]): UseResultsReturn {
       }
     }
 
+    const legislators = Array.from(legislatorMap.values());
+
+    // In dev mode, show mock legislators if no real results
+    const finalLegislators = isDevMode() && legislators.length === 0
+      ? mockLegislators
+      : legislators;
+
     return {
-      legislators: Array.from(legislatorMap.values()),
+      legislators: finalLegislators,
       documents: Array.from(documentMap.values()),
       votes: Array.from(voteMap.values()),
       hearings: Array.from(hearingMap.values()),

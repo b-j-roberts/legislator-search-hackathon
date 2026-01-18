@@ -29,7 +29,11 @@ import {
   getSavedDraft,
   clearDraft,
   updateAdvocacyContext as updateQueueAdvocacyContext,
+  isQueueForConversation,
+  saveQueueForConversation,
+  loadQueueForConversation,
 } from "@/lib/queue-storage";
+import { clearFilterStorage } from "./use-filters";
 
 // =============================================================================
 // Types
@@ -119,6 +123,16 @@ interface ContactContextValue {
   getLegislatorDraft: (legislatorId: string) => SavedDraft | undefined;
   /** Clear a saved draft for a legislator */
   clearLegislatorDraft: (legislatorId: string) => void;
+
+  // Session Management
+  /** Current conversation ID for session isolation */
+  currentConversationId: string | null;
+  /** Set the current conversation ID (triggers cleanup if conversation changed) */
+  setCurrentConversationId: (conversationId: string | null) => void;
+  /** Reset all contact state for a fresh session. Options: { clearFilters: boolean } */
+  resetForNewSession: (options?: { clearFilters?: boolean }) => void;
+  /** Check if current queue belongs to the active conversation */
+  isQueueForCurrentConversation: boolean;
 }
 
 type ContactAction =
@@ -132,7 +146,9 @@ type ContactAction =
   | { type: "SET_ADVOCACY_CONTEXT"; payload: { context: AdvocacyContext | null; populatedFields?: (keyof AdvocacyContext)[] } }
   | { type: "UPDATE_ADVOCACY_CONTEXT"; payload: Partial<AdvocacyContext> }
   | { type: "SET_QUEUE"; payload: QueueStorage | null }
-  | { type: "HYDRATE_QUEUE"; payload: QueueStorage };
+  | { type: "HYDRATE_QUEUE"; payload: QueueStorage }
+  | { type: "SET_CONVERSATION_ID"; payload: string | null }
+  | { type: "RESET_SESSION" };
 
 interface ContactState {
   selectedLegislators: Legislator[];
@@ -141,6 +157,8 @@ interface ContactState {
   advocacyContext: AdvocacyContext | null;
   autoPopulatedFields: (keyof AdvocacyContext)[];
   queue: QueueStorage | null;
+  /** Current conversation ID for session isolation */
+  currentConversationId: string | null;
 }
 
 // =============================================================================
@@ -256,6 +274,26 @@ function contactReducer(state: ContactState, action: ContactAction): ContactStat
       };
     }
 
+    case "SET_CONVERSATION_ID": {
+      return {
+        ...state,
+        currentConversationId: action.payload,
+      };
+    }
+
+    case "RESET_SESSION": {
+      // Reset all session-specific state to defaults
+      return {
+        selectedLegislators: [],
+        currentStep: "research",
+        researchContext: null,
+        advocacyContext: null,
+        autoPopulatedFields: [],
+        queue: null,
+        currentConversationId: state.currentConversationId,
+      };
+    }
+
     default:
       return state;
   }
@@ -283,9 +321,13 @@ export function ContactProvider({ children }: ContactProviderProps) {
     advocacyContext: null,
     autoPopulatedFields: [],
     queue: null,
+    currentConversationId: null,
   });
 
   // Hydrate queue from localStorage on mount
+  // Note: We don't validate conversationId here because the chat context
+  // hasn't loaded yet. Validation happens via useSessionSync when the
+  // conversation ID is set.
   React.useEffect(() => {
     const storedQueue = loadQueue();
     if (storedQueue) {
@@ -293,12 +335,61 @@ export function ContactProvider({ children }: ContactProviderProps) {
     }
   }, []);
 
+  // Handle conversation changes - save current queue and load new conversation's queue
+  const handleConversationChange = React.useCallback((newConversationId: string | null) => {
+    const prevConversationId = state.currentConversationId;
+
+    console.log("[ContactProvider] handleConversationChange:", {
+      prevConversationId,
+      newConversationId,
+      hasQueue: !!state.queue,
+      queueConversationId: state.queue?.conversationId,
+    });
+
+    // If conversation didn't actually change, do nothing
+    if (prevConversationId === newConversationId) {
+      return;
+    }
+
+    // Save current queue to the old conversation (if we have one)
+    if (prevConversationId && state.queue) {
+      console.log("[ContactProvider] Saving queue for conversation:", prevConversationId);
+      saveQueueForConversation(prevConversationId, state.queue);
+    }
+
+    // Update the conversation ID
+    dispatch({ type: "SET_CONVERSATION_ID", payload: newConversationId });
+
+    // Load queue for the new conversation (if one exists)
+    if (newConversationId) {
+      const savedQueue = loadQueueForConversation(newConversationId);
+      if (savedQueue) {
+        console.log("[ContactProvider] Loading saved queue for conversation:", newConversationId);
+        dispatch({ type: "HYDRATE_QUEUE", payload: savedQueue });
+      } else {
+        console.log("[ContactProvider] No saved queue for conversation, resetting state");
+        // No queue for this conversation - reset to fresh state
+        dispatch({ type: "RESET_SESSION" });
+        dispatch({ type: "SET_CONVERSATION_ID", payload: newConversationId });
+      }
+    } else {
+      // No conversation ID - reset to fresh state
+      console.log("[ContactProvider] No conversation ID, resetting state");
+      dispatch({ type: "RESET_SESSION" });
+    }
+  }, [state.currentConversationId, state.queue]);
+
   // Persist queue to localStorage when it changes
   React.useEffect(() => {
     if (state.queue) {
+      // Save to global storage (for backward compatibility and /contact page)
       saveQueue(state.queue);
+      // Also save to conversation-scoped storage if we have a conversation ID
+      if (state.currentConversationId) {
+        saveQueueForConversation(state.currentConversationId, state.queue);
+      }
     }
-  }, [state.queue]);
+  }, [state.queue, state.currentConversationId]);
 
   const selectLegislator = React.useCallback((legislator: Legislator) => {
     dispatch({ type: "SELECT", payload: legislator });
@@ -366,10 +457,11 @@ export function ContactProvider({ children }: ContactProviderProps) {
       state.researchContext,
       "email",
       state.advocacyContext,
-      state.autoPopulatedFields
+      state.autoPopulatedFields,
+      state.currentConversationId
     );
     dispatch({ type: "SET_QUEUE", payload: newQueue });
-  }, [state.selectedLegislators, state.researchContext, state.advocacyContext, state.autoPopulatedFields]);
+  }, [state.selectedLegislators, state.researchContext, state.advocacyContext, state.autoPopulatedFields, state.currentConversationId]);
 
   const reorderQueueItems = React.useCallback(
     (fromIndex: number, toIndex: number) => {
@@ -466,6 +558,22 @@ export function ContactProvider({ children }: ContactProviderProps) {
     [state.queue]
   );
 
+  // Session management functions
+  const setCurrentConversationId = React.useCallback((conversationId: string | null) => {
+    handleConversationChange(conversationId);
+  }, [handleConversationChange]);
+
+  const resetForNewSession = React.useCallback((options?: { clearFilters?: boolean }) => {
+    clearQueue();
+    dispatch({ type: "RESET_SESSION" });
+    if (options?.clearFilters) {
+      clearFilterStorage();
+    }
+  }, []);
+
+  // Check if current queue belongs to the active conversation
+  const isQueueForCurrentConversation = isQueueForConversation(state.queue, state.currentConversationId);
+
   // Derived queue values
   const contactedCount = state.queue ? getContactedCount(state.queue) : 0;
   const remainingCount = state.queue ? getRemainingCount(state.queue) : 0;
@@ -513,6 +621,11 @@ export function ContactProvider({ children }: ContactProviderProps) {
     saveLegislatorDraft,
     getLegislatorDraft,
     clearLegislatorDraft,
+    // Session management
+    currentConversationId: state.currentConversationId,
+    setCurrentConversationId,
+    resetForNewSession,
+    isQueueForCurrentConversation,
   };
 
   return <ContactContext.Provider value={value}>{children}</ContactContext.Provider>;

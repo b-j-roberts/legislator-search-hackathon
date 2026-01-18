@@ -15,3 +15,6 @@ export type {
   OrchestrationConfig,
   UseSearchOrchestrationReturn,
 } from "./use-search-orchestration";
+export { useSessionSync } from "./use-session-sync";
+export { useFilters, clearFilterStorage } from "./use-filters";
+export type { FilterState, UseFiltersReturn } from "./use-filters";

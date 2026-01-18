@@ -61,6 +61,8 @@ export interface QueueStorage {
   autoPopulatedFields?: (keyof AdvocacyContext)[];
   /** User's default contact method preference */
   defaultContactMethod: ContactMethod;
+  /** ID of the conversation this queue belongs to (for session isolation) */
+  conversationId?: string | null;
   version: number;
 }
 
@@ -69,6 +71,7 @@ export interface QueueStorage {
 // =============================================================================
 
 const STORAGE_KEY = "legislators-chat-contact-queue";
+const QUEUES_STORAGE_KEY = "legislators-chat-contact-queues";
 const CURRENT_VERSION = 1;
 
 // =============================================================================
@@ -133,6 +136,91 @@ export function clearQueue(): void {
   }
 }
 
+// =============================================================================
+// Conversation-Scoped Queue Storage
+// =============================================================================
+
+interface ConversationQueues {
+  [conversationId: string]: QueueStorage;
+}
+
+/**
+ * Load all conversation queues from localStorage
+ */
+function loadAllQueues(): ConversationQueues {
+  if (typeof window === "undefined") {
+    return {};
+  }
+
+  try {
+    const stored = localStorage.getItem(QUEUES_STORAGE_KEY);
+    if (!stored) {
+      return {};
+    }
+    return JSON.parse(stored) as ConversationQueues;
+  } catch (error) {
+    console.error("Failed to load conversation queues:", error);
+    return {};
+  }
+}
+
+/**
+ * Save all conversation queues to localStorage
+ */
+function saveAllQueues(queues: ConversationQueues): void {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  try {
+    localStorage.setItem(QUEUES_STORAGE_KEY, JSON.stringify(queues));
+  } catch (error) {
+    console.error("Failed to save conversation queues:", error);
+  }
+}
+
+/**
+ * Save a queue for a specific conversation
+ */
+export function saveQueueForConversation(conversationId: string, queue: QueueStorage): void {
+  const queues = loadAllQueues();
+  queues[conversationId] = { ...queue, conversationId };
+  saveAllQueues(queues);
+}
+
+/**
+ * Load a queue for a specific conversation
+ */
+export function loadQueueForConversation(conversationId: string): QueueStorage | null {
+  const queues = loadAllQueues();
+  const queue = queues[conversationId];
+  if (!queue) {
+    return null;
+  }
+  // Apply migration if needed
+  if (queue.version !== CURRENT_VERSION) {
+    return migrateQueue(queue);
+  }
+  return queue;
+}
+
+/**
+ * Clear a queue for a specific conversation
+ */
+export function clearQueueForConversation(conversationId: string): void {
+  const queues = loadAllQueues();
+  delete queues[conversationId];
+  saveAllQueues(queues);
+}
+
+/**
+ * Check if a conversation has a saved queue
+ */
+export function hasQueueForConversation(conversationId: string): boolean {
+  const queues = loadAllQueues();
+  return conversationId in queues;
+}
+
 /**
  * Create a new queue from selected legislators
  */
@@ -141,7 +229,8 @@ export function createQueue(
   researchContext: string | null = null,
   defaultContactMethod: ContactMethod = "email",
   advocacyContext?: AdvocacyContext | null,
-  autoPopulatedFields?: (keyof AdvocacyContext)[]
+  autoPopulatedFields?: (keyof AdvocacyContext)[],
+  conversationId?: string | null
 ): QueueStorage {
   return {
     items: legislators.map((legislator, index) => ({
@@ -155,7 +244,49 @@ export function createQueue(
     advocacyContext: advocacyContext ?? (researchContext ? { topic: researchContext } : null),
     autoPopulatedFields: autoPopulatedFields ?? [],
     defaultContactMethod,
+    conversationId: conversationId ?? null,
     version: CURRENT_VERSION,
+  };
+}
+
+/**
+ * Check if a queue belongs to a specific conversation
+ */
+export function isQueueForConversation(queue: QueueStorage | null, conversationId: string | null | undefined): boolean {
+  if (!queue) {
+    console.log("[isQueueForConversation] No queue, returning false");
+    return false;
+  }
+  // If neither has a conversation ID, consider them matching (both null/undefined)
+  if (!queue.conversationId && !conversationId) {
+    console.log("[isQueueForConversation] Both null/undefined, returning true");
+    return true;
+  }
+  // If only one has a conversation ID, they don't match
+  if (!queue.conversationId || !conversationId) {
+    console.log("[isQueueForConversation] One has ID, one doesn't, returning false", {
+      queueConversationId: queue.conversationId,
+      conversationId,
+    });
+    return false;
+  }
+  // Both have conversation IDs, compare them
+  const matches = queue.conversationId === conversationId;
+  console.log("[isQueueForConversation] Comparing IDs:", {
+    queueConversationId: queue.conversationId,
+    conversationId,
+    matches,
+  });
+  return matches;
+}
+
+/**
+ * Update the conversation ID for an existing queue
+ */
+export function setQueueConversationId(queue: QueueStorage, conversationId: string | null): QueueStorage {
+  return {
+    ...queue,
+    conversationId,
   };
 }
 
