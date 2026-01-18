@@ -75,6 +75,84 @@ impl Database {
         SegmentRepo::new(&self.0)
     }
 
+    /// Get the hearing repository
+    #[must_use]
+    pub const fn hearings(&self) -> HearingRepo<'_> {
+        HearingRepo::new(&self.0)
+    }
+
+    /// Get the hearing statement repository
+    #[must_use]
+    pub const fn hearing_statements(&self) -> HearingStatementRepo<'_> {
+        HearingStatementRepo::new(&self.0)
+    }
+
+    /// Get the hearing segment repository
+    #[must_use]
+    pub const fn hearing_segments(&self) -> HearingSegmentRepo<'_> {
+        HearingSegmentRepo::new(&self.0)
+    }
+
+    /// Get the committee repository
+    #[must_use]
+    pub const fn committees(&self) -> CommitteeRepo<'_> {
+        CommitteeRepo::new(&self.0)
+    }
+
+    /// Get the floor speech repository
+    #[must_use]
+    pub const fn floor_speeches(&self) -> FloorSpeechRepo<'_> {
+        FloorSpeechRepo::new(&self.0)
+    }
+
+    /// Get the floor speech statement repository
+    #[must_use]
+    pub const fn floor_speech_statements(&self) -> FloorSpeechStatementRepo<'_> {
+        FloorSpeechStatementRepo::new(&self.0)
+    }
+
+    /// Get the floor speech segment repository
+    #[must_use]
+    pub const fn floor_speech_segments(&self) -> FloorSpeechSegmentRepo<'_> {
+        FloorSpeechSegmentRepo::new(&self.0)
+    }
+
+    /// Get the legislator repository
+    #[must_use]
+    pub const fn legislators(&self) -> LegislatorRepo<'_> {
+        LegislatorRepo::new(&self.0)
+    }
+
+    /// Get the roll call vote repository
+    #[must_use]
+    pub const fn roll_call_votes(&self) -> RollCallVoteRepo<'_> {
+        RollCallVoteRepo::new(&self.0)
+    }
+
+    /// Get the individual vote repository
+    #[must_use]
+    pub const fn individual_votes(&self) -> IndividualVoteRepo<'_> {
+        IndividualVoteRepo::new(&self.0)
+    }
+
+    /// Get the bill repository
+    #[must_use]
+    pub const fn bills(&self) -> BillRepo<'_> {
+        BillRepo::new(&self.0)
+    }
+
+    /// Get the amendment repository
+    #[must_use]
+    pub const fn amendments(&self) -> AmendmentRepo<'_> {
+        AmendmentRepo::new(&self.0)
+    }
+
+    /// Get the nomination repository
+    #[must_use]
+    pub const fn nominations(&self) -> NominationRepo<'_> {
+        NominationRepo::new(&self.0)
+    }
+
     // Backward compatibility aliases
     #[must_use]
     pub const fn podcasts(&self) -> SourceRepo<'_> {

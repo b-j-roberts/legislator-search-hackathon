@@ -1,8 +1,13 @@
 pub mod backfill_batches;
 pub mod backfill_duration;
 pub mod backfill_speakers;
+pub mod committees;
 pub mod db;
 pub mod fetch_episodes;
+pub mod fetch_floor_speeches;
+pub mod ingest_floor_speeches;
+pub mod ingest_hearings;
+pub mod ingest_votes;
 pub mod list_podcasts;
 pub mod merge_speakers;
 pub mod search;

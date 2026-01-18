@@ -2,7 +2,7 @@
 
 use arrow_array::RecordBatch;
 use chrono::{DateTime, Utc};
-use color_eyre::eyre::{Result, bail, eyre};
+use color_eyre::eyre::{bail, eyre, Result};
 use colored::Colorize;
 use futures::TryStreamExt;
 use lancedb::index::scalar::FullTextSearchQuery;
@@ -13,7 +13,7 @@ use serde::Serialize;
 use uuid::Uuid;
 
 use super::get_database;
-use crate::{OutputFormat, SearchMode};
+use crate::{ContentTypeFilter, OutputFormat, SearchMode};
 
 /// Context segment for RAG output
 #[derive(Serialize, Clone)]
@@ -53,14 +53,34 @@ pub async fn run(
     offset: usize,
     group: bool,
     mode: SearchMode,
+    content_types: Vec<ContentTypeFilter>,
     podcast: Option<String>,
     from: Option<String>,
     to: Option<String>,
     speaker: Option<String>,
+    committee: Option<String>,
+    chamber: Option<String>,
+    congress: Option<i16>,
     lancedb_path: &str,
     format: OutputFormat,
     context_size: usize,
 ) -> Result<()> {
+    // Build content type filter for LanceDB
+    let type_filter = build_content_type_filter(&content_types);
+
+    // Log hearing-specific filters if used
+    if (committee.is_some() || chamber.is_some() || congress.is_some())
+        && !content_types.iter().any(|t| {
+            matches!(
+                t,
+                ContentTypeFilter::All
+                    | ContentTypeFilter::Hearing
+                    | ContentTypeFilter::FloorSpeech
+            )
+        })
+    {
+        println!("{}", "Warning: hearing/speech filters (--committee, --chamber, --congress) have no effect without --type hearing or --type floor_speech".yellow());
+    }
     let db = get_database().await?;
 
     // validate date range if provided
@@ -114,6 +134,7 @@ pub async fn run(
         fetch_count,
         mode,
         episode_filter.as_deref(),
+        type_filter.as_deref(),
     )
     .await?;
 
@@ -273,15 +294,23 @@ async fn execute_search(
     limit: usize,
     mode: SearchMode,
     episode_filter: Option<&[Uuid]>,
+    type_filter: Option<&str>,
 ) -> Result<Vec<RawSearchResult>> {
     let db = lancedb::connect(lancedb_path).execute().await?;
     let table = db.open_table("text_embeddings").execute().await?;
 
-    // build filter expression if episode IDs are provided
-    let filter_expr = episode_filter.map(|ids| {
+    // build filter expression combining episode filter and type filter
+    let episode_filter_expr = episode_filter.map(|ids| {
         let id_list: Vec<String> = ids.iter().map(|id| format!("'{id}'")).collect();
         format!("content_id IN ({})", id_list.join(", "))
     });
+
+    let filter_expr = match (episode_filter_expr, type_filter) {
+        (Some(ef), Some(tf)) => Some(format!("({ef}) AND ({tf})")),
+        (Some(ef), None) => Some(ef),
+        (None, Some(tf)) => Some(tf.to_string()),
+        (None, None) => None,
+    };
 
     let batches: Vec<RecordBatch> = match mode {
         SearchMode::Vector => {
@@ -844,5 +873,36 @@ fn print_results_grouped(
         println!("{}", format!("Showing results {start}-{end}").dimmed());
     } else {
         println!("{}", format!("Found {} results", results.len()).dimmed());
+    }
+}
+
+/// Build a content type filter for `LanceDB` queries
+fn build_content_type_filter(types: &[ContentTypeFilter]) -> Option<String> {
+    // If "all" is in the list or list is empty, no filter needed
+    if types.is_empty() || types.iter().any(|t| matches!(t, ContentTypeFilter::All)) {
+        return None;
+    }
+
+    let type_values: Vec<&str> = types
+        .iter()
+        .map(|t| match t {
+            ContentTypeFilter::All => "all",
+            ContentTypeFilter::Podcast => "podcast",
+            ContentTypeFilter::Hearing => "hearing",
+            ContentTypeFilter::FloorSpeech => "floor_speech",
+        })
+        .collect();
+
+    if type_values.is_empty() {
+        None
+    } else {
+        Some(format!(
+            "content_type IN ({})",
+            type_values
+                .iter()
+                .map(|t| format!("'{t}'"))
+                .collect::<Vec<_>>()
+                .join(", ")
+        ))
     }
 }

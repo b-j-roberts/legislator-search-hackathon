@@ -5,6 +5,19 @@ use tracing_subscriber::EnvFilter;
 mod cli;
 mod commands;
 
+/// Content type filter for search
+#[derive(Clone, Copy, Debug, ValueEnum, PartialEq, Eq)]
+pub enum ContentTypeFilter {
+    /// All content types
+    All,
+    /// Podcast episodes only
+    Podcast,
+    /// Congressional hearing transcripts only
+    Hearing,
+    /// Congressional Record floor speeches only
+    FloorSpeech,
+}
+
 #[derive(Parser)]
 #[command(name = "polsearch")]
 #[command(about = "Political content transcription and search CLI")]
@@ -130,6 +143,108 @@ enum Commands {
         lancedb_path: String,
     },
 
+    /// Ingest congressional hearing transcripts
+    IngestHearings {
+        /// Directory with transcript JSON files
+        #[arg(long, default_value = "data/transcripts")]
+        path: String,
+
+        /// Limit files to process (for testing)
+        #[arg(long)]
+        limit: Option<usize>,
+
+        /// Force re-process even if hearing exists
+        #[arg(long)]
+        force: bool,
+
+        /// Dry run - show what would be processed without making changes
+        #[arg(long)]
+        dry_run: bool,
+
+        /// Validate JSON files without ingesting
+        #[arg(long)]
+        validate: bool,
+
+        /// `LanceDB` storage path
+        #[arg(long, default_value = "~/.polsearch/lancedb")]
+        lancedb_path: String,
+    },
+
+    /// Fetch floor speech transcripts from `GovInfo`
+    FetchFloorSpeeches {
+        /// Year to fetch (e.g., 2024)
+        #[arg(long)]
+        year: i32,
+
+        /// Output directory for JSON files
+        #[arg(long, default_value = "data/floor_speech_transcripts")]
+        output: String,
+
+        /// Limit speeches to fetch (for testing)
+        #[arg(long)]
+        limit: Option<usize>,
+
+        /// Force re-fetch existing files
+        #[arg(long)]
+        force: bool,
+
+        /// Dry run - show what would be fetched without downloading
+        #[arg(long)]
+        dry_run: bool,
+    },
+
+    /// Ingest Congressional Record floor speech transcripts
+    IngestFloorSpeeches {
+        /// Directory with transcript JSON files
+        #[arg(long, default_value = "data/floor_speech_transcripts")]
+        path: String,
+
+        /// Limit files to process (for testing)
+        #[arg(long)]
+        limit: Option<usize>,
+
+        /// Force re-process even if speech exists
+        #[arg(long)]
+        force: bool,
+
+        /// Dry run - show what would be processed without making changes
+        #[arg(long)]
+        dry_run: bool,
+
+        /// Validate JSON files without ingesting
+        #[arg(long)]
+        validate: bool,
+
+        /// `LanceDB` storage path
+        #[arg(long, default_value = "~/.polsearch/lancedb")]
+        lancedb_path: String,
+    },
+
+    /// List and manage committees
+    Committees {
+        #[command(subcommand)]
+        command: CommitteesCommands,
+    },
+
+    /// Ingest congressional vote data
+    IngestVotes {
+        /// Directory with vote data files
+        #[arg(long, default_value = "data/votes")]
+        path: String,
+
+        /// Limit files to process (for testing)
+        #[arg(long)]
+        limit: Option<usize>,
+
+        /// Force re-process even if vote exists
+        #[arg(long)]
+        force: bool,
+
+        /// Dry run - show what would be processed without making changes
+        #[arg(long)]
+        dry_run: bool,
+    },
+
     /// Search transcribed podcast content
     Search {
         /// Search query
@@ -151,6 +266,10 @@ enum Commands {
         #[arg(long, value_enum, default_value = "hybrid")]
         mode: SearchMode,
 
+        /// Filter by content type (comma-separated: all, podcast, hearing)
+        #[arg(long, default_value = "all", value_delimiter = ',')]
+        r#type: Vec<ContentTypeFilter>,
+
         /// Filter by podcast slug (fuzzy match supported)
         #[arg(long)]
         podcast: Option<String>,
@@ -166,6 +285,18 @@ enum Commands {
         /// Filter by speaker slug
         #[arg(long)]
         speaker: Option<String>,
+
+        /// Filter by committee (hearings only, fuzzy match)
+        #[arg(long)]
+        committee: Option<String>,
+
+        /// Filter by chamber: house, senate (hearings only)
+        #[arg(long)]
+        chamber: Option<String>,
+
+        /// Filter by congress number (hearings only)
+        #[arg(long)]
+        congress: Option<i16>,
 
         /// `LanceDB` storage path
         #[arg(long, default_value = "~/.polsearch/lancedb")]
@@ -243,6 +374,26 @@ enum SpeakersCommands {
         /// Only show speakers with at least this many appearances
         #[arg(long)]
         min_appearances: Option<i32>,
+    },
+}
+
+#[derive(Subcommand)]
+enum CommitteesCommands {
+    /// List all committees
+    List {
+        /// Filter by chamber (house, senate)
+        #[arg(long)]
+        chamber: Option<String>,
+
+        /// Show hearing counts
+        #[arg(long, default_value = "true")]
+        counts: bool,
+    },
+
+    /// Search committees by name
+    Search {
+        /// Search query
+        query: String,
     },
 }
 
@@ -347,24 +498,77 @@ async fn main() -> Result<()> {
             let expanded = shellexpand::tilde(&lancedb_path).to_string();
             commands::verify::run(podcast, month, limit, &expanded).await?;
         }
+        Commands::IngestHearings {
+            path,
+            limit,
+            force,
+            dry_run,
+            validate,
+            lancedb_path,
+        } => {
+            let expanded = shellexpand::tilde(&lancedb_path).to_string();
+            commands::ingest_hearings::run(&path, limit, force, dry_run, validate, &expanded)
+                .await?;
+        }
+        Commands::FetchFloorSpeeches {
+            year,
+            output,
+            limit,
+            force,
+            dry_run,
+        } => {
+            commands::fetch_floor_speeches::run(year, &output, limit, force, dry_run).await?;
+        }
+        Commands::IngestFloorSpeeches {
+            path,
+            limit,
+            force,
+            dry_run,
+            validate,
+            lancedb_path,
+        } => {
+            let expanded = shellexpand::tilde(&lancedb_path).to_string();
+            commands::ingest_floor_speeches::run(&path, limit, force, dry_run, validate, &expanded)
+                .await?;
+        }
+        Commands::Committees { command } => match command {
+            CommitteesCommands::List { chamber, counts } => {
+                commands::committees::list(chamber, counts).await?;
+            }
+            CommitteesCommands::Search { query } => {
+                commands::committees::search(&query).await?;
+            }
+        },
+        Commands::IngestVotes {
+            path,
+            limit,
+            force,
+            dry_run,
+        } => {
+            commands::ingest_votes::run(&path, limit, force, dry_run).await?;
+        }
         Commands::Search {
             query,
             limit,
             offset,
             group,
             mode,
+            r#type,
             podcast,
             from,
             to,
             speaker,
+            committee,
+            chamber,
+            congress,
             lancedb_path,
             format,
             context,
         } => {
             let expanded = shellexpand::tilde(&lancedb_path).to_string();
             commands::search::run(
-                &query, limit, offset, group, mode, podcast, from, to, speaker, &expanded, format,
-                context,
+                &query, limit, offset, group, mode, r#type, podcast, from, to, speaker,
+                committee, chamber, congress, &expanded, format, context,
             )
             .await?;
         }

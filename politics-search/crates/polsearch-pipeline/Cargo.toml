@@ -53,5 +53,9 @@ md-5 = "0.10"
 rand = "0.8"
 tokio-stream = "0.1"
 
+# HTML parsing (for CREC documents)
+regex = "1"
+scraper = "0.21"
+
 # Audio metadata
 symphonia.workspace = true
