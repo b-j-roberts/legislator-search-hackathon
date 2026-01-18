@@ -77,6 +77,19 @@ enum Commands {
         lancedb_path: String,
     },
 
+    /// Utility commands for deployment and data transfer
+    Util {
+        #[command(subcommand)]
+        command: UtilCommands,
+    },
+
+    /// Create FTS indexes on all tables (text_fts, text_embeddings)
+    Index {
+        /// `LanceDB` storage path
+        #[arg(long, default_value = "~/.polsearch/lancedb")]
+        lancedb_path: String,
+    },
+
     /// Search congressional content
     Search {
         /// Search query
@@ -190,9 +203,6 @@ enum DbCommands {
         #[arg(long, default_value = "vector")]
         mode: String,
     },
-
-    /// Create FTS index on text column
-    Index,
 }
 
 #[derive(Subcommand)]
@@ -291,6 +301,10 @@ enum SpeechesCommands {
         /// Dry run - show what would be fetched without downloading
         #[arg(long)]
         dry_run: bool,
+
+        /// Number of concurrent requests (default: 10)
+        #[arg(long, default_value = "10")]
+        concurrency: usize,
     },
 
     /// Ingest Congressional Record floor speech transcripts
@@ -394,9 +408,50 @@ enum FtsCommands {
         #[arg(long)]
         dry_run: bool,
     },
+}
 
-    /// Create FTS index on `text_fts` table
-    Index,
+#[derive(Subcommand)]
+enum UtilCommands {
+    /// Create archive of data for transfer
+    Archive {
+        /// Paths to include in archive
+        #[arg(long, num_args = 1..)]
+        paths: Vec<String>,
+
+        /// Output archive path
+        #[arg(long, short)]
+        output: String,
+    },
+
+    /// Push archive to remote server via rsync
+    Push {
+        /// Local archive path
+        archive: String,
+
+        /// Remote destination (user@host:path)
+        #[arg(long, short)]
+        remote: String,
+    },
+
+    /// Pull archive from remote server via rsync
+    Pull {
+        /// Remote source (user@host:path)
+        remote: String,
+
+        /// Local output path
+        #[arg(long, short)]
+        output: String,
+    },
+
+    /// Extract archive to destination
+    Unarchive {
+        /// Archive file path
+        archive: String,
+
+        /// Destination directory
+        #[arg(long, short, default_value = ".")]
+        dest: String,
+    },
 }
 
 #[tokio::main]
@@ -432,7 +487,6 @@ async fn main() -> Result<()> {
                 DbCommands::Search { query, limit, mode } => {
                     commands::db::search(&expanded, &query, limit, &mode).await?;
                 }
-                DbCommands::Index => commands::db::create_fts_index(&expanded).await?,
             }
         }
         Commands::Hearings { command } => match command {
@@ -466,8 +520,9 @@ async fn main() -> Result<()> {
                 limit,
                 force,
                 dry_run,
+                concurrency,
             } => {
-                commands::fetch_floor_speeches::run(year, &output, limit, force, dry_run).await?;
+                commands::fetch_floor_speeches::run(year, &output, limit, force, dry_run, concurrency).await?;
             }
             SpeechesCommands::Ingest {
                 path,
@@ -537,10 +592,25 @@ async fn main() -> Result<()> {
                     )
                     .await?;
                 }
-                FtsCommands::Index => {
-                    commands::fts::index(&expanded).await?;
-                }
             }
+        }
+        Commands::Util { command } => match command {
+            UtilCommands::Archive { paths, output } => {
+                commands::util::archive(&paths, &output).await?;
+            }
+            UtilCommands::Push { archive, remote } => {
+                commands::util::push(&archive, &remote).await?;
+            }
+            UtilCommands::Pull { remote, output } => {
+                commands::util::pull(&remote, &output).await?;
+            }
+            UtilCommands::Unarchive { archive, dest } => {
+                commands::util::unarchive(&archive, &dest).await?;
+            }
+        },
+        Commands::Index { lancedb_path } => {
+            let expanded = shellexpand::tilde(&lancedb_path).to_string();
+            commands::index::run(&expanded).await?;
         }
         Commands::Search {
             query,

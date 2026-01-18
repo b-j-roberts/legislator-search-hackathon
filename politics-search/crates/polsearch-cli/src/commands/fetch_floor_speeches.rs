@@ -2,14 +2,17 @@
 
 use color_eyre::eyre::{eyre, Result};
 use colored::Colorize;
+use futures::{stream, StreamExt};
+use indicatif::{ProgressBar, ProgressStyle};
 use polsearch_pipeline::stages::{is_procedural_crec_title, parse_crec_html, CrecStatement};
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 use std::fs;
-use std::path::Path;
+use std::path::{Path, PathBuf};
+use std::sync::atomic::{AtomicUsize, Ordering};
+use std::sync::Arc;
 use std::time::Duration;
 use tokio::time::sleep;
-use tracing::{info, warn};
 
 /// YAML file structure for floor speeches
 #[derive(Debug, Deserialize)]
@@ -26,7 +29,7 @@ struct FloorSpeechesMetadata {
 }
 
 /// Entry in the YAML file
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 struct FloorSpeechEntry {
     event_id: String,
     date: String,
@@ -56,16 +59,6 @@ struct StatementJson {
     index: i32,
 }
 
-/// Statistics for the fetch operation
-#[derive(Debug, Default)]
-struct FetchStats {
-    total_entries: usize,
-    skipped_procedural: usize,
-    skipped_existing: usize,
-    fetched: usize,
-    failed: usize,
-}
-
 /// Run the fetch floor speeches command
 pub async fn run(
     year: i32,
@@ -73,6 +66,7 @@ pub async fn run(
     limit: Option<usize>,
     force: bool,
     dry_run: bool,
+    concurrency: usize,
 ) -> Result<()> {
     let yaml_path = format!("data/floor_speeches/floor_speeches_{year}.yaml");
 
@@ -103,108 +97,217 @@ pub async fn run(
             "Force mode enabled - will re-fetch existing files".yellow()
         );
     }
+    println!(
+        "{}",
+        format!("Concurrency: {} requests", concurrency).cyan()
+    );
 
     // load YAML
     let yaml_content = fs::read_to_string(&yaml_path)?;
     let yaml: FloorSpeechesYaml = serde_yaml::from_str(&yaml_content)?;
 
-    let mut stats = FetchStats {
-        total_entries: yaml.floor_speeches.len(),
-        ..Default::default()
-    };
+    let total_entries = yaml.floor_speeches.len();
+    let skipped_procedural = AtomicUsize::new(0);
+    let skipped_existing = AtomicUsize::new(0);
 
     let client = Client::builder()
         .timeout(Duration::from_secs(30))
         .build()?;
 
-    let entries: Vec<_> = yaml.floor_speeches.into_iter().collect();
-    let to_process = limit.unwrap_or(entries.len()).min(entries.len());
+    // pre-filter entries: remove procedural and (optionally) existing files
+    let entries_to_fetch: Vec<_> = yaml
+        .floor_speeches
+        .into_iter()
+        .take(limit.unwrap_or(usize::MAX))
+        .filter(|entry| {
+            if is_procedural_crec_title(&entry.title) {
+                skipped_procedural.fetch_add(1, Ordering::Relaxed);
+                return false;
+            }
 
-    info!(
-        "Processing {} of {} floor speeches for year {}",
-        to_process, stats.total_entries, year
+            let output_file =
+                output_path.join(format!("{}.json", sanitize_filename(&entry.event_id)));
+            if !force && output_file.exists() {
+                skipped_existing.fetch_add(1, Ordering::Relaxed);
+                return false;
+            }
+
+            true
+        })
+        .collect();
+
+    let to_fetch = entries_to_fetch.len();
+    let skipped_procedural_count = skipped_procedural.load(Ordering::Relaxed);
+    let skipped_existing_count = skipped_existing.load(Ordering::Relaxed);
+
+    println!(
+        "Found {} speeches to fetch ({} procedural, {} existing skipped)",
+        to_fetch.to_string().cyan(),
+        skipped_procedural_count.to_string().yellow(),
+        skipped_existing_count.to_string().yellow()
     );
 
-    for (i, entry) in entries.into_iter().take(to_process).enumerate() {
-        // skip procedural titles
-        if is_procedural_crec_title(&entry.title) {
-            stats.skipped_procedural += 1;
-            continue;
-        }
-
-        // construct output filename
-        let output_file = output_path.join(format!("{}.json", sanitize_filename(&entry.event_id)));
-
-        // skip if exists (unless force)
-        if !force && output_file.exists() {
-            stats.skipped_existing += 1;
-            continue;
-        }
-
-        if dry_run {
-            println!(
-                "[{}/{}] Would fetch: {}",
-                i + 1,
-                to_process,
-                entry.title.chars().take(60).collect::<String>()
-            );
-            stats.fetched += 1;
-            continue;
-        }
-
-        // fetch the transcript HTML
-        match fetch_and_parse(&client, &entry).await {
-            Ok(json) => {
-                if json.statements.is_empty() {
-                    info!(
-                        "[{}/{}] Skipped (no statements): {}",
-                        i + 1,
-                        to_process,
-                        entry.title
-                    );
-                    stats.skipped_procedural += 1;
-                    continue;
-                }
-
-                // write JSON output
-                let json_str = serde_json::to_string_pretty(&json)?;
-                fs::write(&output_file, json_str)?;
-
-                info!(
-                    "[{}/{}] Fetched {} ({} statements)",
-                    i + 1,
-                    to_process,
-                    entry.title.chars().take(40).collect::<String>(),
-                    json.statements.len()
-                );
-                stats.fetched += 1;
-            }
-            Err(e) => {
-                warn!("[{}/{}] Failed to fetch {}: {}", i + 1, to_process, entry.title, e);
-                stats.failed += 1;
-            }
-        }
-
-        // rate limiting
-        sleep(Duration::from_millis(200)).await;
+    if to_fetch == 0 {
+        println!("{}", "Nothing to fetch".green());
+        return Ok(());
     }
 
+    // create progress bar
+    let pb = ProgressBar::new(to_fetch as u64);
+    pb.set_style(
+        ProgressStyle::default_bar()
+            .template("[{elapsed_precise}<{eta_precise}] {bar:40.cyan/blue} {pos}/{len} {msg}")?
+            .progress_chars("━━░"),
+    );
+
+    // atomic counters for concurrent access
+    let fetched = Arc::new(AtomicUsize::new(0));
+    let failed = Arc::new(AtomicUsize::new(0));
+    let skipped_empty = Arc::new(AtomicUsize::new(0));
+
+    // process entries concurrently
+    let output_path_buf = output_path.to_path_buf();
+    let _results: Vec<_> = stream::iter(entries_to_fetch)
+        .map(|entry| {
+            let client = client.clone();
+            let output_path = output_path_buf.clone();
+            let pb = pb.clone();
+            let fetched = fetched.clone();
+            let failed = failed.clone();
+            let skipped_empty = skipped_empty.clone();
+
+            async move {
+                fetch_single(
+                    &client,
+                    entry,
+                    &output_path,
+                    dry_run,
+                    &pb,
+                    &fetched,
+                    &failed,
+                    &skipped_empty,
+                )
+                .await
+            }
+        })
+        .buffer_unordered(concurrency)
+        .collect()
+        .await;
+
+    pb.finish_with_message("Done");
+
     // print summary
+    let fetched_count = fetched.load(Ordering::Relaxed);
+    let failed_count = failed.load(Ordering::Relaxed);
+    let skipped_empty_count = skipped_empty.load(Ordering::Relaxed);
+
     println!();
     println!("{}", "Fetch complete:".green().bold());
-    println!("  Total entries:      {}", stats.total_entries.to_string().cyan());
+    println!("  Total entries:      {}", total_entries.to_string().cyan());
     println!(
         "  Skipped procedural: {}",
-        stats.skipped_procedural.to_string().yellow()
+        (skipped_procedural_count + skipped_empty_count)
+            .to_string()
+            .yellow()
     );
     println!(
         "  Skipped existing:   {}",
-        stats.skipped_existing.to_string().yellow()
+        skipped_existing_count.to_string().yellow()
     );
-    println!("  Fetched:            {}", stats.fetched.to_string().green());
-    println!("  Failed:             {}", stats.failed.to_string().red());
+    println!("  Fetched:            {}", fetched_count.to_string().green());
+    println!("  Failed:             {}", failed_count.to_string().red());
 
     Ok(())
+}
+
+/// Fetch a single floor speech with retry logic
+async fn fetch_single(
+    client: &Client,
+    entry: FloorSpeechEntry,
+    output_path: &PathBuf,
+    dry_run: bool,
+    pb: &ProgressBar,
+    fetched: &Arc<AtomicUsize>,
+    failed: &Arc<AtomicUsize>,
+    skipped_empty: &Arc<AtomicUsize>,
+) {
+    let title_short: String = entry.title.chars().take(50).collect();
+    let output_file = output_path.join(format!("{}.json", sanitize_filename(&entry.event_id)));
+
+    if dry_run {
+        pb.println(format!("Would fetch: {}", title_short));
+        fetched.fetch_add(1, Ordering::Relaxed);
+        pb.inc(1);
+        return;
+    }
+
+    // fetch with retry
+    match fetch_with_retry(client, &entry).await {
+        Ok(json) => {
+            if json.statements.is_empty() {
+                pb.println(format!("{} (no statements): {}", "Skipped".yellow(), title_short));
+                skipped_empty.fetch_add(1, Ordering::Relaxed);
+                pb.inc(1);
+                return;
+            }
+
+            // write JSON output
+            match serde_json::to_string_pretty(&json) {
+                Ok(json_str) => {
+                    if let Err(e) = fs::write(&output_file, json_str) {
+                        pb.println(format!("{} {}: {}", "Write failed".red(), title_short, e));
+                        failed.fetch_add(1, Ordering::Relaxed);
+                    } else {
+                        pb.println(format!(
+                            "{} {} ({} statements)",
+                            "Fetched".green(),
+                            title_short,
+                            json.statements.len()
+                        ));
+                        fetched.fetch_add(1, Ordering::Relaxed);
+                    }
+                }
+                Err(e) => {
+                    pb.println(format!("{} {}: {}", "Serialize failed".red(), title_short, e));
+                    failed.fetch_add(1, Ordering::Relaxed);
+                }
+            }
+        }
+        Err(e) => {
+            pb.println(format!("{} {}: {}", "Failed".red(), title_short, e));
+            failed.fetch_add(1, Ordering::Relaxed);
+        }
+    }
+
+    pb.inc(1);
+}
+
+/// Fetch with exponential backoff retry on rate limit or server errors
+async fn fetch_with_retry(client: &Client, entry: &FloorSpeechEntry) -> Result<FloorSpeechJson> {
+    let mut delay = Duration::from_secs(1);
+
+    for attempt in 0..3 {
+        match fetch_and_parse(client, entry).await {
+            Ok(json) => return Ok(json),
+            Err(e) => {
+                let error_str = e.to_string();
+                let is_retryable = error_str.contains("429")
+                    || error_str.contains("500")
+                    || error_str.contains("502")
+                    || error_str.contains("503")
+                    || error_str.contains("504");
+
+                if !is_retryable || attempt == 2 {
+                    return Err(e);
+                }
+
+                sleep(delay).await;
+                delay *= 2;
+            }
+        }
+    }
+
+    unreachable!()
 }
 
 /// Fetch and parse a single floor speech
