@@ -670,6 +670,14 @@ pub async fn search(
     let limit = params.limit.min(100);
     let offset = params.offset;
 
+    tracing::info!(
+        query = %query,
+        limit = %limit,
+        offset = %offset,
+        mode = ?params.mode,
+        "Search request"
+    );
+
     // build content type filter
     let content_types = params.parse_content_types();
     let type_filter = build_content_type_filter(&content_types);
@@ -805,6 +813,13 @@ pub async fn search(
     }
 
     let total_returned = results.len();
+
+    tracing::debug!(
+        total_returned = %total_returned,
+        has_more = %has_more,
+        mode_used = %mode_used.as_str(),
+        "Search response"
+    );
 
     Ok(Json(SearchResponse {
         query: query.to_string(),
