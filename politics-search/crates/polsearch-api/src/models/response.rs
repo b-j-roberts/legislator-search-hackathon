@@ -10,6 +10,10 @@ pub struct SearchResult {
     /// Content ID (hearing, floor speech, or vote ID)
     pub content_id: Uuid,
 
+    /// Original content ID string (for FTS results using package_id/event_id)
+    #[serde(skip_serializing_if = "String::is_empty")]
+    pub content_id_str: String,
+
     /// Segment index within the content
     pub segment_index: i32,
 

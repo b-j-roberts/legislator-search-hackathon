@@ -28,6 +28,7 @@ fn is_missing_fts_index_error(e: &LanceError) -> bool {
 /// Raw search result from LanceDB
 struct RawSearchResult {
     content_id: Uuid,
+    content_id_str: String,
     segment_index: i32,
     text: String,
     start_time_ms: i32,
@@ -391,10 +392,9 @@ fn parse_search_results(
 
         for i in 0..batch.num_rows() {
             let content_id_str = content_ids.value(i);
-            let content_id = match Uuid::parse_str(content_id_str) {
-                Ok(id) => id,
-                Err(_) => continue,
-            };
+            // FTS table uses package_id strings, embeddings table uses UUIDs
+            // Try to parse as UUID, fall back to nil UUID (enrichment will use content_id_str)
+            let content_id = Uuid::parse_str(content_id_str).unwrap_or(Uuid::nil());
 
             let score = relevance_scores
                 .map(|s| s.value(i))
@@ -422,6 +422,7 @@ fn parse_search_results(
 
             results.push(RawSearchResult {
                 content_id,
+                content_id_str: content_id_str.to_string(),
                 segment_index: segment_indices.value(i),
                 text: texts.value(i).to_string(),
                 start_time_ms: start_times.map_or(0, |t| t.value(i)),
@@ -443,27 +444,50 @@ async fn enrich_results(results: &mut [SearchResult], db: &Database) -> Result<(
         return Ok(());
     }
 
+    // separate results by whether they have a valid UUID or need string-based lookup
     let mut hearing_ids: Vec<Uuid> = Vec::new();
+    let mut hearing_package_ids: Vec<String> = Vec::new();
     let mut hearing_segment_keys: Vec<(Uuid, i32)> = Vec::new();
     let mut floor_speech_ids: Vec<Uuid> = Vec::new();
+    let mut floor_speech_event_ids: Vec<String> = Vec::new();
     let mut floor_speech_segment_keys: Vec<(Uuid, i32)> = Vec::new();
 
     for r in results.iter() {
+        let is_nil = r.content_id.is_nil();
         match r.content_type.as_str() {
             "hearing" => {
-                hearing_ids.push(r.content_id);
-                hearing_segment_keys.push((r.content_id, r.segment_index));
+                if is_nil {
+                    hearing_package_ids.push(r.content_id_str.clone());
+                } else {
+                    hearing_ids.push(r.content_id);
+                    hearing_segment_keys.push((r.content_id, r.segment_index));
+                }
             }
             "floor_speech" => {
-                floor_speech_ids.push(r.content_id);
-                floor_speech_segment_keys.push((r.content_id, r.segment_index));
+                if is_nil {
+                    floor_speech_event_ids.push(r.content_id_str.clone());
+                } else {
+                    floor_speech_ids.push(r.content_id);
+                    floor_speech_segment_keys.push((r.content_id, r.segment_index));
+                }
             }
             _ => {}
         }
     }
 
+    // fetch metadata by UUID
     let hearing_metadata = db.hearings().get_metadata_batch(&hearing_ids).await?;
     let floor_speech_metadata = db.floor_speeches().get_metadata_batch(&floor_speech_ids).await?;
+
+    // fetch metadata by package_id/event_id for FTS results
+    let hearing_pkg_metadata = db
+        .hearings()
+        .get_metadata_batch_by_package_id(&hearing_package_ids)
+        .await?;
+    let floor_speech_event_metadata = db
+        .floor_speeches()
+        .get_metadata_batch_by_event_id(&floor_speech_event_ids)
+        .await?;
 
     let hearing_speakers = db
         .hearing_segments()
@@ -475,28 +499,43 @@ async fn enrich_results(results: &mut [SearchResult], db: &Database) -> Result<(
         .await?;
 
     for r in results.iter_mut() {
+        let is_nil = r.content_id.is_nil();
         match r.content_type.as_str() {
             "hearing" => {
-                if let Some((title, _committee, date)) = hearing_metadata.get(&r.content_id) {
-                    r.title = Some(title.clone());
-                    r.date = date.map(|d| d.format("%Y-%m-%d").to_string());
-                }
-                if r.speaker_name.is_none() {
-                    if let Some(speaker) = hearing_speakers.get(&(r.content_id, r.segment_index)) {
-                        r.speaker_name = speaker.clone();
+                if is_nil {
+                    if let Some((title, _committee, date)) = hearing_pkg_metadata.get(&r.content_id_str) {
+                        r.title = Some(title.clone());
+                        r.date = date.map(|d| d.format("%Y-%m-%d").to_string());
+                    }
+                } else {
+                    if let Some((title, _committee, date)) = hearing_metadata.get(&r.content_id) {
+                        r.title = Some(title.clone());
+                        r.date = date.map(|d| d.format("%Y-%m-%d").to_string());
+                    }
+                    if r.speaker_name.is_none() {
+                        if let Some(speaker) = hearing_speakers.get(&(r.content_id, r.segment_index)) {
+                            r.speaker_name = speaker.clone();
+                        }
                     }
                 }
             }
             "floor_speech" => {
-                if let Some((title, _chamber, date)) = floor_speech_metadata.get(&r.content_id) {
-                    r.title = Some(title.clone());
-                    r.date = date.map(|d| d.format("%Y-%m-%d").to_string());
-                }
-                if r.speaker_name.is_none() {
-                    if let Some(speaker) =
-                        floor_speech_speakers.get(&(r.content_id, r.segment_index))
-                    {
-                        r.speaker_name = speaker.clone();
+                if is_nil {
+                    if let Some((title, _chamber, date)) = floor_speech_event_metadata.get(&r.content_id_str) {
+                        r.title = Some(title.clone());
+                        r.date = date.map(|d| d.format("%Y-%m-%d").to_string());
+                    }
+                } else {
+                    if let Some((title, _chamber, date)) = floor_speech_metadata.get(&r.content_id) {
+                        r.title = Some(title.clone());
+                        r.date = date.map(|d| d.format("%Y-%m-%d").to_string());
+                    }
+                    if r.speaker_name.is_none() {
+                        if let Some(speaker) =
+                            floor_speech_speakers.get(&(r.content_id, r.segment_index))
+                        {
+                            r.speaker_name = speaker.clone();
+                        }
                     }
                 }
             }
@@ -713,6 +752,7 @@ pub async fn search(
         .into_iter()
         .map(|r| SearchResult {
             content_id: r.content_id,
+            content_id_str: r.content_id_str,
             segment_index: r.segment_index,
             text: r.text,
             start_time_ms: r.start_time_ms,
