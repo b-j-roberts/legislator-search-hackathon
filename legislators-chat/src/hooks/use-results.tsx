@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import type { ChatMessage, Legislator, Document, VoteRecord, Hearing, SearchResultData, Speaker, Chamber } from "@/lib/types";
+import type { ChatMessage, Legislator, Document, VoteRecord, Hearing, SearchResultData, Speaker, SpeakerType, Chamber } from "@/lib/types";
 import type { ResultsTab } from "@/components/results";
 import { mockLegislators, useMockData } from "@/lib/fixtures/mock-legislators";
 import { enrichLegislatorsWithContactData, findBestMatchingLegislator } from "@/lib/legislator-lookup";
@@ -67,22 +67,70 @@ function extractChamber(name: string, resultChamber?: string): Chamber | undefin
   return undefined;
 }
 
+/** Speaker types that represent legislators (not witnesses, experts, etc.) */
+const LEGISLATOR_SPEAKER_TYPES: Set<string> = new Set([
+  "representative",
+  "senator",
+  "presiding_officer",
+]);
+
 /**
- * Extract unique speakers from search results and aggregate their metadata
+ * Check if a speaker type represents a legislator
  */
-function extractSpeakersFromResults(searchResults: SearchResultData[]): Speaker[] {
+function isLegislatorSpeakerType(speakerType?: string): boolean {
+  if (!speakerType) return false;
+  return LEGISLATOR_SPEAKER_TYPES.has(speakerType.toLowerCase());
+}
+
+/**
+ * Infer if a speaker is a legislator from their name prefix
+ * Used as fallback when speaker_type is not available
+ */
+function inferIsLegislatorFromName(name: string): boolean {
+  const lowerName = name.toLowerCase();
+  const legislatorPrefixes = [
+    "sen.", "senator",
+    "rep.", "representative",
+    "mr. speaker", "madam speaker",
+    "the speaker", "mr. president", "madam president",
+  ];
+  return legislatorPrefixes.some(prefix => lowerName.startsWith(prefix));
+}
+
+/**
+ * Extract unique speakers from search results and aggregate their metadata.
+ * Only includes speakers who match CURRENT legislators in our database.
+ * This filters out former legislators (like retired senators) and non-legislators (witnesses, experts).
+ *
+ * @param searchResults - Array of search result data
+ * @param currentLegislatorsOnly - Whether to require match to current legislators (default: true)
+ */
+function extractSpeakersFromResults(
+  searchResults: SearchResultData[],
+  currentLegislatorsOnly: boolean = true
+): Speaker[] {
   const speakerMap = new Map<string, {
     name: string;
+    speakerType?: SpeakerType;
     chamber?: Chamber;
     contentTypes: Set<string>;
     committees: Set<string>;
     dates: string[];
     sourceUrls: string[];
     count: number;
+    matchedLegislator: Legislator | undefined;
   }>();
 
   for (const result of searchResults) {
     if (!result.speaker_name) continue;
+
+    // Check if speaker type indicates a legislator (not a witness/expert)
+    const hasLegislatorType = result.speaker_type
+      ? isLegislatorSpeakerType(result.speaker_type)
+      : inferIsLegislatorFromName(result.speaker_name);
+
+    // Skip non-legislators (witnesses, experts, etc.)
+    if (!hasLegislatorType) continue;
 
     const id = normalizeSpeakerName(result.speaker_name);
     const existing = speakerMap.get(id);
@@ -105,21 +153,38 @@ function extractSpeakersFromResults(searchResults: SearchResultData[]): Speaker[
       if (!existing.chamber) {
         existing.chamber = extractChamber(result.speaker_name, result.chamber);
       }
+      // Update speaker type if not set
+      if (!existing.speakerType && result.speaker_type) {
+        existing.speakerType = result.speaker_type;
+      }
     } else {
+      // Try to match this speaker to a current legislator in our database
+      const matchedLegislator = findBestMatchingLegislator(result.speaker_name);
+
       speakerMap.set(id, {
         name: result.speaker_name,
+        speakerType: result.speaker_type,
         chamber: extractChamber(result.speaker_name, result.chamber),
         contentTypes: new Set(result.content_type ? [result.content_type] : []),
         committees: new Set(result.committee ? [result.committee] : []),
         dates: result.date ? [result.date] : [],
         sourceUrls: result.source_url ? [result.source_url] : [],
         count: 1,
+        matchedLegislator,
       });
     }
   }
 
-  // Convert map to Speaker array, sorted by result count (most active first)
-  return Array.from(speakerMap.entries())
+  // Convert map to Speaker array
+  // Filter to only include speakers matched to current legislators when flag is set
+  const speakersArray = Array.from(speakerMap.entries())
+    .filter(([, data]) => {
+      // When currentLegislatorsOnly is true, only include speakers who match a current legislator
+      if (currentLegislatorsOnly) {
+        return data.matchedLegislator !== undefined;
+      }
+      return true;
+    })
     .map(([id, data]) => {
       // Calculate date range
       const sortedDates = data.dates.sort();
@@ -130,22 +195,28 @@ function extractSpeakersFromResults(searchResults: SearchResultData[]): Speaker[
           }
         : undefined;
 
-      // Try to find matching legislator for profile image
-      const matchingLegislator = findBestMatchingLegislator(data.name);
+      // Use the pre-matched legislator for enrichment
+      const matchedLegislator = data.matchedLegislator;
 
       return {
         id,
         name: data.name,
-        chamber: data.chamber,
+        speakerType: data.speakerType,
+        // Prefer matched legislator's chamber data (more accurate)
+        chamber: matchedLegislator?.chamber || data.chamber,
         resultCount: data.count,
         contentTypes: Array.from(data.contentTypes),
         committees: Array.from(data.committees).slice(0, 3), // Limit to 3 committees
         dateRange,
         sampleSourceUrls: data.sourceUrls,
-        imageUrl: matchingLegislator?.imageUrl,
-      };
-    })
-    .sort((a, b) => b.resultCount - a.resultCount);
+        imageUrl: matchedLegislator?.imageUrl,
+        // Store matched legislator data for filtering
+        _matchedLegislator: matchedLegislator,
+      } as Speaker & { _matchedLegislator?: Legislator };
+    });
+
+  // Sort by result count (most active speakers first)
+  return speakersArray.sort((a, b) => b.resultCount - a.resultCount);
 }
 
 // =============================================================================

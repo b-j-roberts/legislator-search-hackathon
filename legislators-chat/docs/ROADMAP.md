@@ -32,6 +32,33 @@ Features that enhance the experience but aren't required for initial launch.
 - Search through all frontend files for "CivicsLens"
 - Update UI text and messages accordingly
 
+### 2.0a Markdown Support in Chat
+
+**Description**: Enable markdown rendering in chat messages.
+
+**Requirements**:
+- [ ] Integrate a markdown parser (e.g., marked.js or react-markdown)
+- [ ] Update ChatMessage component to render markdown content
+- [ ] Support common markdown features (bold, italics, links, lists, code blocks)
+- [ ] Ensure proper styling for rendered markdown
+
+**Implementation Notes**:
+- Test with various markdown inputs
+- Ensure security by sanitizing inputs to prevent XSS attacks
+
+### 2.0b People Card improvements
+
+**Description**: Enhance the PeopleCard component to display additional information.
+
+**Requirements**:
+- [ ] Show party affiliation with color coding (e.g., blue for Democrats, red for Republicans)
+- [ ] Display state flag and state abbreviation next to the legislator's name
+- [ ] Add hover tooltip with full state name
+
+**Implementation Notes**:
+- Use official party colors
+- Source state flags from a reliable API or static assets
+
 ---
 
 ### 2.1 Media Tab

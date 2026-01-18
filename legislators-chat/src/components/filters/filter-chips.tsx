@@ -24,7 +24,8 @@ export interface FilterChipsProps {
   onRemoveParty: (party: Party) => void;
   onRemoveChamber: (chamber: Chamber) => void;
   onRemoveState: (state: StateAbbreviation) => void;
-  onRemoveStance: (stance: Stance) => void;
+  /** Optional stance removal - if undefined, stance chips are not shown */
+  onRemoveStance?: (stance: Stance) => void;
   className?: string;
 }
 
@@ -89,11 +90,12 @@ export function FilterChips({
   onRemoveStance,
   className,
 }: FilterChipsProps) {
+  // Only count stance filters if the removal callback is provided
   const hasFilters =
     filters.parties.length > 0 ||
     filters.chambers.length > 0 ||
     filters.states.length > 0 ||
-    filters.stances.length > 0;
+    (onRemoveStance && filters.stances.length > 0);
 
   if (!hasFilters) {
     return null;
@@ -155,8 +157,8 @@ export function FilterChips({
           />
         ))}
 
-        {/* Stance chips */}
-        {filters.stances.map((stance) => (
+        {/* Stance chips - only shown when callback is provided */}
+        {onRemoveStance && filters.stances.map((stance) => (
           <FilterChip
             key={`stance-${stance}`}
             category="Stance"

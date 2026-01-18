@@ -447,11 +447,18 @@ export function ResultsPanel({
     hasActiveFilters,
     activeFilterCount,
     applyFilters,
+    applySpeakerFilters,
   } = useFilters();
 
   const filteredLegislators = React.useMemo(
     () => applyFilters(legislators),
     [legislators, applyFilters]
+  );
+
+  // Filter speakers from search results
+  const filteredSpeakers = React.useMemo(
+    () => applySpeakerFilters(speakers),
+    [speakers, applySpeakerFilters]
   );
 
   const selectedIds = React.useMemo(
@@ -473,8 +480,8 @@ export function ResultsPanel({
   const effectiveDocumentCount = hasSearchResults ? searchDocuments.length : documents.length + hearings.length;
   const effectiveVoteCount = hasSearchResults ? searchVotes.length : votes.length;
 
-  // For people count: use speakers from search results when available, otherwise use legislators
-  const effectivePeopleCount = hasSearchResults ? speakers.length : filteredLegislators.length;
+  // For people count: use filtered speakers from search results when available, otherwise use filtered legislators
+  const effectivePeopleCount = hasSearchResults ? filteredSpeakers.length : filteredLegislators.length;
 
   const tabs: TabConfig[] = [
     { id: "people", label: "People", icon: Users, count: effectivePeopleCount },
@@ -584,15 +591,15 @@ export function ResultsPanel({
             </TabsList>
           </div>
 
-          {/* Filter bar */}
-          {currentTab === "people" && legislators.length > 0 && (
+          {/* Filter bar - show for both legislators and speakers from search results */}
+          {currentTab === "people" && (legislators.length > 0 || speakers.length > 0) && (
             <div className="flex-shrink-0 border-b border-border px-3 py-3 space-y-2.5 bg-secondary/20">
               <FilterBar
                 filters={filters}
                 onToggleParty={toggleParty}
                 onToggleChamber={toggleChamber}
                 onToggleState={toggleState}
-                onToggleStance={toggleStance}
+                onToggleStance={hasSearchResults ? undefined : toggleStance} // Disable stance filter for search results
                 onSetSortBy={setSortBy}
                 onClearFilters={clearFilters}
                 hasActiveFilters={hasActiveFilters}
@@ -603,62 +610,64 @@ export function ResultsPanel({
                 onRemoveParty={toggleParty}
                 onRemoveChamber={toggleChamber}
                 onRemoveState={toggleState}
-                onRemoveStance={toggleStance}
+                onRemoveStance={hasSearchResults ? undefined : toggleStance} // Disable stance chip removal for search results
               />
-              {/* Selection mode controls */}
-              <div className="flex items-center justify-between pt-1">
-                <Button
-                  variant={isSelectionMode ? "default" : "outline"}
-                  size="sm"
-                  onClick={handleToggleSelectionMode}
-                  className={cn(
-                    "gap-2 rounded-lg h-8",
-                    isSelectionMode && "bg-accent text-accent-foreground hover:bg-accent/90"
-                  )}
-                >
-                  {isSelectionMode ? (
-                    <>
-                      <CheckSquare className="size-4" />
-                      <span className="hidden sm:inline">Done</span>
-                    </>
-                  ) : (
-                    <>
-                      <Square className="size-4" />
-                      <span className="hidden sm:inline">Select</span>
-                    </>
-                  )}
-                </Button>
-                <AnimatePresence>
-                  {isSelectionMode && (
-                    <motion.div
-                      initial={{ opacity: 0, x: 10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 10 }}
-                      className="flex items-center gap-2"
-                    >
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={handleSelectAll}
-                        disabled={selectedIds.length === filteredLegislators.length}
-                        className="text-xs h-8"
+              {/* Selection mode controls - only show for legislators (not search result speakers) */}
+              {!hasSearchResults && (
+                <div className="flex items-center justify-between pt-1">
+                  <Button
+                    variant={isSelectionMode ? "default" : "outline"}
+                    size="sm"
+                    onClick={handleToggleSelectionMode}
+                    className={cn(
+                      "gap-2 rounded-lg h-8",
+                      isSelectionMode && "bg-accent text-accent-foreground hover:bg-accent/90"
+                    )}
+                  >
+                    {isSelectionMode ? (
+                      <>
+                        <CheckSquare className="size-4" />
+                        <span className="hidden sm:inline">Done</span>
+                      </>
+                    ) : (
+                      <>
+                        <Square className="size-4" />
+                        <span className="hidden sm:inline">Select</span>
+                      </>
+                    )}
+                  </Button>
+                  <AnimatePresence>
+                    {isSelectionMode && (
+                      <motion.div
+                        initial={{ opacity: 0, x: 10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 10 }}
+                        className="flex items-center gap-2"
                       >
-                        Select all
-                      </Button>
-                      {hasSelections && (
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={clearSelections}
-                          className="text-xs text-muted-foreground h-8"
+                          onClick={handleSelectAll}
+                          disabled={selectedIds.length === filteredLegislators.length}
+                          className="text-xs h-8"
                         >
-                          Clear
+                          Select all
                         </Button>
-                      )}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
+                        {hasSelections && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={clearSelections}
+                            className="text-xs text-muted-foreground h-8"
+                          >
+                            Clear
+                          </Button>
+                        )}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              )}
             </div>
           )}
 
@@ -670,13 +679,17 @@ export function ResultsPanel({
               ) : effectivePeopleCount === 0 ? (
                 <EmptyState
                   icon={Users}
-                  title="No people found"
-                  description="Speakers, representatives, and legislators will appear here."
+                  title={hasActiveFilters ? "No legislators match filters" : "No people found"}
+                  description={
+                    hasActiveFilters
+                      ? "Try adjusting or clearing your filters to see more results."
+                      : "Legislators and congressional speakers will appear here."
+                  }
                 />
               ) : hasSearchResults ? (
-                // Show speakers from search results
+                // Show filtered speakers from search results (legislators only)
                 <div className="p-4 space-y-3">
-                  {speakers.map((speaker) => (
+                  {filteredSpeakers.map((speaker) => (
                     <SpeakerCard
                       key={speaker.id}
                       speaker={speaker}

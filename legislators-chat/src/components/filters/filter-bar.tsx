@@ -42,7 +42,8 @@ export interface FilterBarProps {
   onToggleParty: (party: Party) => void;
   onToggleChamber: (chamber: Chamber) => void;
   onToggleState: (state: StateAbbreviation) => void;
-  onToggleStance: (stance: Stance) => void;
+  /** Optional stance filter toggle - if undefined, stance filter is hidden */
+  onToggleStance?: (stance: Stance) => void;
   onSetSortBy: (sortBy: SortOption) => void;
   onClearFilters: () => void;
   hasActiveFilters: boolean;
@@ -219,13 +220,15 @@ export function FilterBar({
         {/* State filter */}
         <StateSelectFilter selectedStates={filters.states} onToggle={onToggleState} />
 
-        {/* Stance filter */}
-        <MultiSelectFilter
-          label="Stance"
-          options={STANCE_OPTIONS}
-          selectedValues={filters.stances}
-          onToggle={(value) => onToggleStance(value as Stance)}
-        />
+        {/* Stance filter - only shown when callback is provided */}
+        {onToggleStance && (
+          <MultiSelectFilter
+            label="Stance"
+            options={STANCE_OPTIONS}
+            selectedValues={filters.stances}
+            onToggle={(value) => onToggleStance(value as Stance)}
+          />
+        )}
 
         {/* Separator */}
         <div className="w-px h-5 bg-border/50 mx-1 hidden sm:block" />

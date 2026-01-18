@@ -39,6 +39,9 @@ export interface SearchParams {
   to?: string;
 }
 
+/** Speaker type from PolSearch API */
+export type ApiSpeakerType = "representative" | "senator" | "presiding_officer" | "witness";
+
 /** Individual search result */
 export interface SearchResult {
   content_id: string;
@@ -52,6 +55,7 @@ export interface SearchResult {
   title?: string;
   date?: string;
   speaker_name?: string;
+  speaker_type?: ApiSpeakerType;
   source_url?: string;
   chamber?: string;
   committee?: string;

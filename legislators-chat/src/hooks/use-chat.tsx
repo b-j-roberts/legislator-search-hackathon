@@ -93,6 +93,7 @@ function toSearchResultData(result: SearchResult): SearchResultData {
     title: result.title,
     date: result.date,
     speaker_name: result.speaker_name,
+    speaker_type: result.speaker_type,
     source_url: result.source_url,
     chamber: result.chamber,
     committee: result.committee,
