@@ -1,9 +1,10 @@
 "use client";
 
 import * as React from "react";
-import type { ChatMessage, Legislator, Document, VoteRecord, Hearing, SearchResultData } from "@/lib/types";
+import type { ChatMessage, Legislator, Document, VoteRecord, Hearing, SearchResultData, Speaker, Chamber } from "@/lib/types";
 import type { ResultsTab } from "@/components/results";
 import { mockLegislators, useMockData } from "@/lib/fixtures/mock-legislators";
+import { enrichLegislatorsWithContactData, findBestMatchingLegislator } from "@/lib/legislator-lookup";
 
 // =============================================================================
 // Types
@@ -16,6 +17,8 @@ export interface ResultsState {
   hearings: Hearing[];
   /** Search results from PolSearch API */
   searchResults: SearchResultData[];
+  /** Speakers extracted from search results */
+  speakers: Speaker[];
   activeTab: ResultsTab;
 }
 
@@ -26,6 +29,123 @@ export interface UseResultsReturn extends ResultsState {
   hasResults: boolean;
   /** Total number of results across all categories */
   totalResults: number;
+}
+
+// =============================================================================
+// Helper Functions
+// =============================================================================
+
+/**
+ * Normalize a speaker name for use as an ID
+ * Converts to lowercase and removes common prefixes like "Sen.", "Rep.", etc.
+ */
+function normalizeSpeakerName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/^(sen\.|senator|rep\.|representative|mr\.|mrs\.|ms\.|dr\.)\s*/i, "")
+    .trim()
+    .replace(/\s+/g, "-");
+}
+
+/**
+ * Extract chamber from speaker name prefix or search result
+ */
+function extractChamber(name: string, resultChamber?: string): Chamber | undefined {
+  const lowerName = name.toLowerCase();
+  if (lowerName.startsWith("sen.") || lowerName.startsWith("senator")) {
+    return "Senate";
+  }
+  if (lowerName.startsWith("rep.") || lowerName.startsWith("representative")) {
+    return "House";
+  }
+  // Fall back to result chamber if available
+  if (resultChamber) {
+    const lowerChamber = resultChamber.toLowerCase();
+    if (lowerChamber === "senate") return "Senate";
+    if (lowerChamber === "house") return "House";
+  }
+  return undefined;
+}
+
+/**
+ * Extract unique speakers from search results and aggregate their metadata
+ */
+function extractSpeakersFromResults(searchResults: SearchResultData[]): Speaker[] {
+  const speakerMap = new Map<string, {
+    name: string;
+    chamber?: Chamber;
+    contentTypes: Set<string>;
+    committees: Set<string>;
+    dates: string[];
+    sourceUrls: string[];
+    count: number;
+  }>();
+
+  for (const result of searchResults) {
+    if (!result.speaker_name) continue;
+
+    const id = normalizeSpeakerName(result.speaker_name);
+    const existing = speakerMap.get(id);
+
+    if (existing) {
+      existing.count++;
+      if (result.content_type) {
+        existing.contentTypes.add(result.content_type);
+      }
+      if (result.committee) {
+        existing.committees.add(result.committee);
+      }
+      if (result.date) {
+        existing.dates.push(result.date);
+      }
+      if (result.source_url && existing.sourceUrls.length < 3) {
+        existing.sourceUrls.push(result.source_url);
+      }
+      // Update chamber if not set
+      if (!existing.chamber) {
+        existing.chamber = extractChamber(result.speaker_name, result.chamber);
+      }
+    } else {
+      speakerMap.set(id, {
+        name: result.speaker_name,
+        chamber: extractChamber(result.speaker_name, result.chamber),
+        contentTypes: new Set(result.content_type ? [result.content_type] : []),
+        committees: new Set(result.committee ? [result.committee] : []),
+        dates: result.date ? [result.date] : [],
+        sourceUrls: result.source_url ? [result.source_url] : [],
+        count: 1,
+      });
+    }
+  }
+
+  // Convert map to Speaker array, sorted by result count (most active first)
+  return Array.from(speakerMap.entries())
+    .map(([id, data]) => {
+      // Calculate date range
+      const sortedDates = data.dates.sort();
+      const dateRange = sortedDates.length > 0
+        ? {
+            earliest: sortedDates[0],
+            latest: sortedDates[sortedDates.length - 1],
+          }
+        : undefined;
+
+      // Try to find matching legislator for profile image
+      const matchingLegislator = findBestMatchingLegislator(data.name);
+
+      return {
+        id,
+        name: data.name,
+        chamber: data.chamber,
+        resultCount: data.count,
+        contentTypes: Array.from(data.contentTypes),
+        committees: Array.from(data.committees).slice(0, 3), // Limit to 3 committees
+        dateRange,
+        sampleSourceUrls: data.sourceUrls,
+        imageUrl: matchingLegislator?.imageUrl,
+      };
+    })
+    .sort((a, b) => b.resultCount - a.resultCount);
 }
 
 // =============================================================================
@@ -110,18 +230,26 @@ export function useResults(messages: ChatMessage[]): UseResultsReturn {
     }
 
     const legislators = Array.from(legislatorMap.values());
+    const searchResults = Array.from(searchResultMap.values());
+
+    // Extract speakers from search results
+    const speakers = extractSpeakersFromResults(searchResults);
 
     // Show mock legislators if feature flag enabled and no real results
     const finalLegislators = useMockData() && legislators.length === 0
       ? mockLegislators
       : legislators;
 
+    // Enrich legislators with contact data and profile images from static data
+    const enrichedLegislators = enrichLegislatorsWithContactData(finalLegislators);
+
     return {
-      legislators: finalLegislators,
+      legislators: enrichedLegislators,
       documents: Array.from(documentMap.values()),
       votes: Array.from(voteMap.values()),
       hearings: Array.from(hearingMap.values()),
-      searchResults: Array.from(searchResultMap.values()),
+      searchResults,
+      speakers,
     };
   }, [messages]);
 
@@ -137,13 +265,18 @@ export function useResults(messages: ChatMessage[]): UseResultsReturn {
   const effectiveDocCount = hasSearchResults ? searchDocCount : aggregatedResults.documents.length + aggregatedResults.hearings.length;
   const effectiveVoteCount = hasSearchResults ? searchVoteCount : aggregatedResults.votes.length;
 
+  // For people count: use speakers from search results, or legislators from AI extraction
+  const effectivePeopleCount = hasSearchResults
+    ? aggregatedResults.speakers.length
+    : aggregatedResults.legislators.length;
+
   const hasResults =
-    aggregatedResults.legislators.length > 0 ||
+    effectivePeopleCount > 0 ||
     effectiveDocCount > 0 ||
     effectiveVoteCount > 0;
 
   const totalResults =
-    aggregatedResults.legislators.length +
+    effectivePeopleCount +
     effectiveDocCount +
     effectiveVoteCount;
 

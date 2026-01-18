@@ -47,6 +47,55 @@ Minimum viable integration to enable AI-powered congressional search.
 - Keep relevance score hidden from users
 - Results already sorted by score from API
 
+### 1.5a Score Handling
+
+**Description**: Add 2nd phase after finding speakers/people to estimate their sentiment score.
+
+**Requirements**:
+- [ ] After initial search, and obtaining list of speakers in peoples tab of results panel
+- [ ] For each speaker, ask AI to estimate sentiment score based on their statements from documents found
+- [ ] Low score = negative sentiment, High score = positive sentiment about user's topic
+- [ ] Update `PersonCard` to display sentiment score gauge
+- [ ] If not a "sentiment-related" query, skip this step/set score to null ( setup personcard to handle null score as not showing gauge)
+
+**Implementation Notes**:
+- Use existing AI orchestration flow to add this step
+- Define "sentiment-related" queries in system prompt (e.g. containing keywords like "
+support", "oppose", "positive", "negative")
+- Ensure this step does not block overall search response
+- Query the AI to do all speakers in one go to minimize calls and return a structured response mapping speaker to score ( json )
+- Show loading sentiment spinner where the score is shown in PersonCard until score is available ( dont show spinner if score will not be fetched )
+- If there are errors parsing the sentiment scores, do exponentional backoff retries up to 3 times before giving up and setting scores to null
+
+### 1.5b New Query Handling
+
+**Description**: Enhance AI orchestration to handle scenarios where user prompts the chat more, causing people/documents to become skeletons and not visible.
+
+**Requirements**:
+- [ ] When user sends a new prompt that is not related to narrowing down existing results ( e.g. "what about healthcare?" after "find speeches on climate change" or "what did senator X say about this?") do not clear existing results in results panel
+- [ ] Instead, trigger a new search with the new prompt and update results panel based on results
+- [ ] If the new prompt narrows down existing results ( e.g. "show me only speeches from senator X" after "find speeches on climate change" or "Im only interested in senators related to climate change efforts in China" after "find speakers looking into climate change") then properly add/remove data from results panel based on existing results and new search results
+- [ ] Ensure that the results panel always reflects the latest search results based on user prompts, while preserving existing results when appropriate
+
+**Implementation Notes**:
+- Update the orchestration hook to differentiate between new searches and narrowing prompts
+- Use prompt analysis to determine if the new prompt is a new search or a refinement
+- Maintain state of existing results and update accordingly
+
+### 1.5c Filtering Integration
+
+**Description**: Ensure existing legislator filters (party, state, chamber) are applied to search results shown in results panel.
+
+**Requirements**:
+- [ ] When search result from PoliSearch api is fetched, ensure that any active legislator filters ( party, state, chamber ) are applied to the results shown in results panel
+- [ ] Even when no filters are selected, ensure that the search results are still limited to legislators only ( exclude other speakers like witnesses, experts, etc. )
+- [ ] Update the search orchestration to include filter parameters when making search requests to PoliSearch
+- [ ] Ensure that when filters are changed by the user, the results panel updates accordingly with new search results reflecting the applied filters
+
+**Implementation Notes**:
+- Map existing filter state to PoliSearch API parameters
+- Ensure that the search orchestration hook listens to filter state changes and triggers new searches as needed
+
 ---
 
 ### 1.6 Source URL Integration

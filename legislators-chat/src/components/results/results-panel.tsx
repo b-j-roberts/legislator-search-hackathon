@@ -24,12 +24,14 @@ import type {
   VoteRecord,
   Hearing,
   SearchResultData,
+  Speaker,
 } from "@/lib/types";
 import { getContentTypeDisplayName } from "@/lib/search-service";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { LegislatorList } from "./legislator-list";
+import { SpeakerCard } from "@/components/legislators";
 import { FilterBar, FilterChips } from "@/components/filters";
 import { useFilters } from "@/hooks/use-filters";
 import { useContact } from "@/hooks/use-contact";
@@ -44,6 +46,8 @@ export interface ResultsPanelProps {
   votes?: VoteRecord[];
   hearings?: Hearing[];
   searchResults?: SearchResultData[];
+  /** Speakers extracted from search results */
+  speakers?: Speaker[];
   isLoading?: boolean;
   activeTab?: ResultsTab;
   onTabChange?: (tab: ResultsTab) => void;
@@ -401,6 +405,7 @@ export function ResultsPanel({
   votes = [],
   hearings = [],
   searchResults = [],
+  speakers = [],
   isLoading = false,
   activeTab = "people",
   onTabChange,
@@ -461,13 +466,16 @@ export function ResultsPanel({
   const effectiveDocumentCount = hasSearchResults ? searchDocuments.length : documents.length + hearings.length;
   const effectiveVoteCount = hasSearchResults ? searchVotes.length : votes.length;
 
+  // For people count: use speakers from search results when available, otherwise use legislators
+  const effectivePeopleCount = hasSearchResults ? speakers.length : filteredLegislators.length;
+
   const tabs: TabConfig[] = [
-    { id: "people", label: "People", icon: Users, count: filteredLegislators.length },
+    { id: "people", label: "People", icon: Users, count: effectivePeopleCount },
     { id: "documents", label: "Documents", icon: FileText, count: effectiveDocumentCount },
     { id: "votes", label: "Votes", icon: Vote, count: effectiveVoteCount },
   ];
 
-  const totalResults = filteredLegislators.length + effectiveDocumentCount + effectiveVoteCount;
+  const totalResults = effectivePeopleCount + effectiveDocumentCount + effectiveVoteCount;
 
   const handleTabChange = (value: string) => {
     const tab = value as ResultsTab;
@@ -650,18 +658,36 @@ export function ResultsPanel({
           {/* Tab content */}
           <div className="flex-1 min-h-0 overflow-hidden">
             <TabsContent value="people" className="h-full overflow-auto m-0 scrollbar-thin">
-              <LegislatorList
-                legislators={filteredLegislators}
-                isLoading={isLoading}
-                emptyMessage={
-                  hasActiveFilters && legislators.length > 0
-                    ? "No legislators match your filters. Try adjusting or clearing filters."
-                    : undefined
-                }
-                selectable={isSelectionMode}
-                selectedIds={selectedIds}
-                onToggleSelect={toggleLegislator}
-              />
+              {isLoading ? (
+                <LoadingSkeleton />
+              ) : effectivePeopleCount === 0 ? (
+                <EmptyState
+                  icon={Users}
+                  title="No people found"
+                  description="Speakers, representatives, and legislators will appear here."
+                />
+              ) : hasSearchResults ? (
+                // Show speakers from search results
+                <div className="p-4 space-y-3">
+                  {speakers.map((speaker) => (
+                    <SpeakerCard key={speaker.id} speaker={speaker} />
+                  ))}
+                </div>
+              ) : (
+                // Show legislators from AI extraction
+                <LegislatorList
+                  legislators={filteredLegislators}
+                  isLoading={isLoading}
+                  emptyMessage={
+                    hasActiveFilters && legislators.length > 0
+                      ? "No legislators match your filters. Try adjusting or clearing filters."
+                      : undefined
+                  }
+                  selectable={isSelectionMode}
+                  selectedIds={selectedIds}
+                  onToggleSelect={toggleLegislator}
+                />
+              )}
             </TabsContent>
 
             <TabsContent value="documents" className="h-full overflow-auto m-0 scrollbar-thin">

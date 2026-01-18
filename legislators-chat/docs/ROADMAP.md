@@ -17,6 +17,21 @@ After implementing the feature, please provide a concise step-by-step instructio
 
 Features that enhance the experience but aren't required for initial launch.
 
+### 2.1 Media Tab
+
+**Description**: Add a media tab to the results panel on the main page to show related news articles and videos.
+
+**Requirements**:
+- [ ] Create MediaCard component
+- [ ] Add media type tabs in ResultsPanel (e.g., News, Videos, Interviews)
+- [ ] Implement expandable media previews
+- [ ] Add links to source media
+
+**Implementation Notes**:
+- Use consistent card design across media types
+- See Documents tab & components for reference
+
+
 ### 2.3 Real Contact Data
 
 **Description**: Integrate real contact data for legislators.

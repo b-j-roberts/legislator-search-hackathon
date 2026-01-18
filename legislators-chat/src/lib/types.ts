@@ -633,3 +633,32 @@ export interface DiffSegment {
   type: "added" | "removed" | "unchanged";
   text: string;
 }
+
+// =============================================================================
+// Speaker Types (from PolSearch API)
+// =============================================================================
+
+/** A speaker extracted from search results */
+export interface Speaker {
+  /** Unique identifier (normalized name) */
+  id: string;
+  /** Display name as returned from API */
+  name: string;
+  /** Chamber if determinable from search results */
+  chamber?: Chamber;
+  /** Number of search results this speaker appears in */
+  resultCount: number;
+  /** Content types this speaker appears in */
+  contentTypes: string[];
+  /** Sample of committees they've spoken in (from hearings) */
+  committees: string[];
+  /** Date range of appearances */
+  dateRange?: {
+    earliest?: string;
+    latest?: string;
+  };
+  /** Sample source URLs for reference */
+  sampleSourceUrls: string[];
+  /** Profile image URL (from static legislator data if matched) */
+  imageUrl?: string;
+}

@@ -5,7 +5,7 @@ Technical reference for the PolSearch API - a semantic search service for congre
 > **API Owner:** Praveen Perera
 > **Version:** 0.1.0
 > **License:** MIT
-> **Base URL:** `http://10.246.40.72:3000` (internal network)
+> **Base URL:** `http://10.246.40.37:3000` (internal network)
 
 ---
 
@@ -464,6 +464,52 @@ export interface ContentDetailResponse {
   source_url?: string;
 }
 ```
+
+---
+
+## Speaker Extraction (People Tab)
+
+The frontend extracts unique speakers from search results to populate the "People" tab in the Results Panel.
+
+### How It Works
+
+1. Search results include an optional `speaker_name` field
+2. The `useResults` hook extracts unique speakers by normalizing names
+3. Speakers are aggregated with metadata from all their appearances:
+   - `resultCount`: Number of search results they appear in
+   - `chamber`: Inferred from name prefix (Sen./Rep.) or result chamber
+   - `contentTypes`: Types of content they appear in (hearing, floor_speech, vote)
+   - `committees`: Committees they've spoken in (from hearings)
+   - `dateRange`: Earliest and latest appearances
+   - `sampleSourceUrls`: Up to 3 source URLs for reference
+
+### Speaker Type
+
+```typescript
+interface Speaker {
+  id: string;           // Normalized name as ID
+  name: string;         // Display name from API
+  chamber?: Chamber;    // "House" | "Senate" (if determinable)
+  resultCount: number;  // Number of appearances
+  contentTypes: string[];
+  committees: string[];
+  dateRange?: {
+    earliest?: string;
+    latest?: string;
+  };
+  sampleSourceUrls: string[];
+}
+```
+
+### UI Display
+
+Speakers are displayed using the `SpeakerCard` component which shows:
+- Avatar with initials
+- Name and chamber badge
+- Content type badges (Hearing, Floor Speech, Vote)
+- Committee list (if any)
+- Date range of appearances
+- Clickable to open source URL
 
 ---
 

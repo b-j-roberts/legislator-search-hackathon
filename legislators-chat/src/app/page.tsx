@@ -11,7 +11,7 @@ import { useResults, useNetworkStatus, useSessionSync } from "@/hooks";
 
 export default function Home() {
   const { messages, isLoading, error, sendMessage, retryMessage, clearError } = useChat();
-  const { legislators, documents, votes, hearings, searchResults, activeTab, setActiveTab } = useResults(messages);
+  const { legislators, documents, votes, hearings, searchResults, speakers, activeTab, setActiveTab } = useResults(messages);
   const { isOnline, wasOffline, resetWasOffline } = useNetworkStatus();
   const { currentStep, setCurrentStep } = useContact();
   const [suggestionValue, setSuggestionValue] = React.useState("");
@@ -93,6 +93,7 @@ export default function Home() {
           votes={votes}
           hearings={hearings}
           searchResults={searchResults}
+          speakers={speakers}
           isLoading={isLoading}
           activeTab={activeTab}
           onTabChange={setActiveTab}

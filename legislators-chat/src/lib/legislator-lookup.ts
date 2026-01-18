@@ -58,6 +58,15 @@ export function getLegislatorsMetadata(): LegislatorsMetadata {
 }
 
 /**
+ * Generate the official Congress.gov profile image URL for a legislator
+ * @param bioguideId - The bioguide ID (e.g., "W000817")
+ * @returns URL to the official 200px member photo
+ */
+export function getCongressImageUrl(bioguideId: string): string {
+  return `https://www.congress.gov/img/member/${bioguideId.toLowerCase()}_200.jpg`;
+}
+
+/**
  * Normalize a name for comparison (lowercase, remove extra whitespace, common prefixes)
  */
 function normalizeName(name: string): string {
@@ -94,6 +103,8 @@ function toClientLegislator(raw: RawLegislator): Legislator {
     stance: "unknown",
     stanceSummary: "",
     contact,
+    // Generate official Congress.gov profile image from bioguide ID
+    imageUrl: getCongressImageUrl(raw.bioguideId),
   };
 }
 
@@ -279,6 +290,8 @@ export function enrichLegislatorWithContactData(legislator: Legislator): Legisla
   return {
     ...legislator,
     aliases: staticData.aliases,
+    // Use static data imageUrl if available, otherwise keep existing
+    imageUrl: staticData.imageUrl || legislator.imageUrl,
     contact: {
       ...legislator.contact,
       ...staticData.contact,
