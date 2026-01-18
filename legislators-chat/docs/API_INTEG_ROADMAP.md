@@ -18,25 +18,6 @@ After implementing the feature, please provide a concise step-by-step instructio
 
 Minimum viable integration to enable AI-powered congressional search.
 
-### 1.1 Next.js API Route Proxy
-
-**Description**: Create API routes to proxy requests to PolSearch, hiding internal IP from browser.
-
-**Requirements**:
-- [ ] Create `/api/search` route in `src/app/api/search/route.ts`
-- [ ] Create `/api/content/[id]` route in `src/app/api/content/[id]/route.ts`
-- [ ] Forward all query parameters to PolSearch unchanged (pure passthrough)
-- [ ] Handle network errors with retry logic (1s, 3s, 5s backoff)
-- [ ] Return PolSearch response as-is to client
-- [ ] Add environment variable `POLSEARCH_API_URL` for base URL
-
-**Implementation Notes**:
-- Use `fetch` with appropriate timeout (~10s)
-- Log errors server-side but don't expose internal URLs to client
-- Consider adding `/api/health` that checks PolSearch availability
-
----
-
 ### 1.2 Search Service Layer
 
 **Description**: Create frontend service layer for calling search API and parsing responses.
