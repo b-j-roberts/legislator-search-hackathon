@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { motion } from "framer-motion";
-import { User, Building2, FileText, Mic, ExternalLink, Calendar } from "lucide-react";
+import { User, Building2, FileText, Mic, ExternalLink, Calendar, Loader2 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import type { Speaker, Chamber } from "@/lib/types";
@@ -15,9 +15,14 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { LeaningGaugeCompact } from "./leaning-gauge";
 
 export interface SpeakerCardProps {
   speaker: Speaker;
+  /** Sentiment score (0-100). null = not applicable, undefined = not fetched */
+  sentimentScore?: number | null;
+  /** Whether sentiment is currently being loaded */
+  sentimentLoading?: boolean;
   className?: string;
 }
 
@@ -74,7 +79,7 @@ function formatDateRange(dateRange?: { earliest?: string; latest?: string }): st
   return `${formatDate(dateRange.earliest)} - ${formatDate(dateRange.latest!)}`;
 }
 
-export function SpeakerCard({ speaker, className }: SpeakerCardProps) {
+export function SpeakerCard({ speaker, sentimentScore, sentimentLoading, className }: SpeakerCardProps) {
   const {
     name,
     chamber,
@@ -85,6 +90,12 @@ export function SpeakerCard({ speaker, className }: SpeakerCardProps) {
     sampleSourceUrls,
     imageUrl,
   } = speaker;
+
+  // Convert sentiment score (0-100) to leaning score (-100 to +100)
+  // 0 sentiment = -100 leaning, 50 sentiment = 0 leaning, 100 sentiment = +100 leaning
+  const leaningScore = sentimentScore !== null && sentimentScore !== undefined
+    ? (sentimentScore - 50) * 2
+    : null;
 
   const dateRangeStr = formatDateRange(dateRange);
   const hasSourceUrl = sampleSourceUrls.length > 0;
@@ -147,34 +158,50 @@ export function SpeakerCard({ speaker, className }: SpeakerCardProps) {
         </CardHeader>
 
         <CardContent className="space-y-3">
-          {/* Content type badges */}
-          <div className="flex items-center gap-2 flex-wrap">
-            {chamber && (
-              <Badge
-                variant="outline"
-                className={cn(
-                  "text-[10px] font-medium",
-                  chamberConfig[chamber].className
-                )}
-              >
-                {chamberConfig[chamber].label}
-              </Badge>
-            )}
-            {contentTypes.map((type) => {
-              const config = contentTypeLabels[type];
-              if (!config) return null;
-              const Icon = config.icon;
-              return (
+          {/* Content type badges and sentiment gauge row */}
+          <div className="flex items-start justify-between gap-3">
+            {/* Left side: badges */}
+            <div className="flex items-center gap-2 flex-wrap flex-1">
+              {chamber && (
                 <Badge
-                  key={type}
-                  variant="secondary"
-                  className="text-[10px] font-medium gap-1"
+                  variant="outline"
+                  className={cn(
+                    "text-[10px] font-medium",
+                    chamberConfig[chamber].className
+                  )}
                 >
-                  <Icon className="size-3" />
-                  {config.label}
+                  {chamberConfig[chamber].label}
                 </Badge>
-              );
-            })}
+              )}
+              {contentTypes.map((type) => {
+                const config = contentTypeLabels[type];
+                if (!config) return null;
+                const Icon = config.icon;
+                return (
+                  <Badge
+                    key={type}
+                    variant="secondary"
+                    className="text-[10px] font-medium gap-1"
+                  >
+                    <Icon className="size-3" />
+                    {config.label}
+                  </Badge>
+                );
+              })}
+            </div>
+
+            {/* Right side: sentiment gauge */}
+            {sentimentLoading && (
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground shrink-0">
+                <Loader2 className="size-3 animate-spin" />
+                <span>Analyzing...</span>
+              </div>
+            )}
+            {!sentimentLoading && leaningScore !== null && (
+              <div className="shrink-0">
+                <LeaningGaugeCompact score={leaningScore} />
+              </div>
+            )}
           </div>
 
           {/* Committees */}

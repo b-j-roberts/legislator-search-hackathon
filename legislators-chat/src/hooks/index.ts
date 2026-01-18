@@ -18,3 +18,5 @@ export type {
 export { useSessionSync } from "./use-session-sync";
 export { useFilters, clearFilterStorage } from "./use-filters";
 export type { FilterState, UseFiltersReturn } from "./use-filters";
+export { useSentiment } from "./use-sentiment";
+export type { UseSentimentReturn } from "./use-sentiment";

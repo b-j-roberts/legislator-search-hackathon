@@ -109,6 +109,7 @@ interface SearchResult {
   title?: string;          // Content title
   date?: string;           // Content date (YYYY-MM-DD)
   speaker_name?: string;   // Speaker name
+  speaker_type?: string;   // Speaker role: "representative" | "senator" | "presiding_officer" | "witness"
   source_url?: string;     // Direct URL to GovInfo source document
   chamber?: string;        // "House", "Senate", or "House, Senate" (joint)
   committee?: string;      // Committee name (hearings only)
@@ -417,6 +418,9 @@ export interface SearchParams {
   to?: string;
 }
 
+/** Speaker type from PolSearch API */
+export type SpeakerType = "representative" | "senator" | "presiding_officer" | "witness";
+
 /** Individual search result */
 export interface SearchResult {
   content_id: string;
@@ -430,6 +434,7 @@ export interface SearchResult {
   title?: string;
   date?: string;
   speaker_name?: string;
+  speaker_type?: SpeakerType;
   source_url?: string;
   chamber?: string;
   committee?: string;

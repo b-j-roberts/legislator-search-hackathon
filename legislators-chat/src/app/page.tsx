@@ -7,7 +7,7 @@ import { ChatInput, ChatMessages } from "@/components/chat";
 import { ResultsPanel } from "@/components/results";
 import { OfflineBanner, AnimatedErrorBanner } from "@/components/errors";
 import { useChat, useContact } from "@/components/providers";
-import { useResults, useNetworkStatus, useSessionSync } from "@/hooks";
+import { useResults, useNetworkStatus, useSessionSync, useSentiment } from "@/hooks";
 
 export default function Home() {
   const { messages, isLoading, error, sendMessage, retryMessage, clearError } = useChat();
@@ -15,6 +15,31 @@ export default function Home() {
   const { isOnline, wasOffline, resetWasOffline } = useNetworkStatus();
   const { currentStep, setCurrentStep } = useContact();
   const [suggestionValue, setSuggestionValue] = React.useState("");
+  const { sentimentScores, isLoading: sentimentLoading, analyzeSentiment, reset: resetSentiment } = useSentiment();
+
+  // Get the last user message as the query for sentiment analysis
+  const lastUserQuery = React.useMemo(() => {
+    for (let i = messages.length - 1; i >= 0; i--) {
+      if (messages[i].role === "user") {
+        return messages[i].content;
+      }
+    }
+    return "";
+  }, [messages]);
+
+  // Trigger sentiment analysis when speakers/search results change
+  React.useEffect(() => {
+    if (speakers.length > 0 && searchResults.length > 0 && lastUserQuery && !isLoading) {
+      analyzeSentiment(lastUserQuery, speakers, searchResults);
+    }
+  }, [speakers, searchResults, lastUserQuery, isLoading, analyzeSentiment]);
+
+  // Reset sentiment when starting a new conversation
+  React.useEffect(() => {
+    if (messages.length === 0) {
+      resetSentiment();
+    }
+  }, [messages.length, resetSentiment]);
 
   // Sync chat conversation ID with contact state for session isolation
   useSessionSync();
@@ -94,6 +119,8 @@ export default function Home() {
           hearings={hearings}
           searchResults={searchResults}
           speakers={speakers}
+          sentimentScores={sentimentScores}
+          sentimentLoading={sentimentLoading}
           isLoading={isLoading}
           activeTab={activeTab}
           onTabChange={setActiveTab}

@@ -25,6 +25,7 @@ import type {
   Hearing,
   SearchResultData,
   Speaker,
+  SpeakerSentimentMap,
 } from "@/lib/types";
 import { getContentTypeDisplayName } from "@/lib/search-service";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -48,6 +49,10 @@ export interface ResultsPanelProps {
   searchResults?: SearchResultData[];
   /** Speakers extracted from search results */
   speakers?: Speaker[];
+  /** Sentiment scores for speakers (speaker ID -> score 0-100) */
+  sentimentScores?: SpeakerSentimentMap;
+  /** Whether sentiment analysis is loading */
+  sentimentLoading?: boolean;
   isLoading?: boolean;
   activeTab?: ResultsTab;
   onTabChange?: (tab: ResultsTab) => void;
@@ -406,6 +411,8 @@ export function ResultsPanel({
   hearings = [],
   searchResults = [],
   speakers = [],
+  sentimentScores = {},
+  sentimentLoading = false,
   isLoading = false,
   activeTab = "people",
   onTabChange,
@@ -670,7 +677,12 @@ export function ResultsPanel({
                 // Show speakers from search results
                 <div className="p-4 space-y-3">
                   {speakers.map((speaker) => (
-                    <SpeakerCard key={speaker.id} speaker={speaker} />
+                    <SpeakerCard
+                      key={speaker.id}
+                      speaker={speaker}
+                      sentimentScore={sentimentScores[speaker.id] ?? null}
+                      sentimentLoading={sentimentLoading}
+                    />
                   ))}
                 </div>
               ) : (

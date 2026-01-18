@@ -279,6 +279,9 @@ export interface ChatMessage {
   error?: string;
 }
 
+/** Speaker type from PolSearch API */
+export type SpeakerType = "representative" | "senator" | "presiding_officer" | "witness";
+
 /** Search result data stored in chat messages (subset of full SearchResult) */
 export interface SearchResultData {
   content_id: string;
@@ -288,6 +291,7 @@ export interface SearchResultData {
   title?: string;
   date?: string;
   speaker_name?: string;
+  speaker_type?: SpeakerType;
   source_url?: string;
   chamber?: string;
   committee?: string;
@@ -644,6 +648,8 @@ export interface Speaker {
   id: string;
   /** Display name as returned from API */
   name: string;
+  /** Speaker type from API (representative, senator, presiding_officer, witness) */
+  speakerType?: SpeakerType;
   /** Chamber if determinable from search results */
   chamber?: Chamber;
   /** Number of search results this speaker appears in */
@@ -661,4 +667,11 @@ export interface Speaker {
   sampleSourceUrls: string[];
   /** Profile image URL (from static legislator data if matched) */
   imageUrl?: string;
+  /** Sentiment score from 0 (negative) to 100 (positive) about the topic. null = not applicable or not fetched */
+  sentimentScore?: number | null;
+  /** Whether sentiment is currently being loaded */
+  sentimentLoading?: boolean;
 }
+
+/** Sentiment scores mapping speaker ID to score (0-100) */
+export type SpeakerSentimentMap = Record<string, number>;

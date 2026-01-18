@@ -47,26 +47,6 @@ Minimum viable integration to enable AI-powered congressional search.
 - Keep relevance score hidden from users
 - Results already sorted by score from API
 
-### 1.5a Score Handling
-
-**Description**: Add 2nd phase after finding speakers/people to estimate their sentiment score.
-
-**Requirements**:
-- [ ] After initial search, and obtaining list of speakers in peoples tab of results panel
-- [ ] For each speaker, ask AI to estimate sentiment score based on their statements from documents found
-- [ ] Low score = negative sentiment, High score = positive sentiment about user's topic
-- [ ] Update `PersonCard` to display sentiment score gauge
-- [ ] If not a "sentiment-related" query, skip this step/set score to null ( setup personcard to handle null score as not showing gauge)
-
-**Implementation Notes**:
-- Use existing AI orchestration flow to add this step
-- Define "sentiment-related" queries in system prompt (e.g. containing keywords like "
-support", "oppose", "positive", "negative")
-- Ensure this step does not block overall search response
-- Query the AI to do all speakers in one go to minimize calls and return a structured response mapping speaker to score ( json )
-- Show loading sentiment spinner where the score is shown in PersonCard until score is available ( dont show spinner if score will not be fetched )
-- If there are errors parsing the sentiment scores, do exponentional backoff retries up to 3 times before giving up and setting scores to null
-
 ### 1.5b New Query Handling
 
 **Description**: Enhance AI orchestration to handle scenarios where user prompts the chat more, causing people/documents to become skeletons and not visible.
