@@ -18,25 +18,6 @@ After implementing the feature, please provide a concise step-by-step instructio
 
 Minimum viable integration to enable AI-powered congressional search.
 
-### 1.2 Search Service Layer
-
-**Description**: Create frontend service layer for calling search API and parsing responses.
-
-**Requirements**:
-- [ ] Create `src/lib/search-service.ts` with typed search functions
-- [ ] Define TypeScript interfaces matching PolSearch response schema (see API_SPEC.md)
-- [ ] Implement `searchContent(params: SearchParams): Promise<SearchResponse>`
-- [ ] Implement `getContentDetails(id: string): Promise<ContentDetailResponse>`
-- [ ] Add debouncing utility (300ms default) for user-triggered searches
-- [ ] Handle and transform errors into user-friendly messages
-
-**Implementation Notes**:
-- Always set `enrich=true` for richer metadata including `source_url`
-- Always use `mode=hybrid` (no mode selection UI)
-- Map `content_type` to frontend display names
-
----
-
 ### 1.3 Maple AI Prompt Engineering
 
 **Description**: Configure Maple AI system prompt to understand and use the search API.
