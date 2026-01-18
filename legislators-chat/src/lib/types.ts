@@ -671,6 +671,8 @@ export interface Speaker {
   sentimentScore?: number | null;
   /** Whether sentiment is currently being loaded */
   sentimentLoading?: boolean;
+  /** Matched legislator with contact info (when speaker is a current legislator) */
+  matchedLegislator?: Legislator;
 }
 
 /** Sentiment scores mapping speaker ID to score (0-100) */

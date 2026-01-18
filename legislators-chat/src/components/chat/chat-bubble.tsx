@@ -3,9 +3,71 @@
 import * as React from "react";
 import { motion } from "framer-motion";
 import { AlertCircle, RefreshCw, Landmark, User } from "lucide-react";
+import ReactMarkdown, { Components } from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import type { MessageRole, MessageStatus } from "@/lib/types";
+
+const markdownComponents: Components = {
+  p: ({ children }) => (
+    <p className="mb-2 last:mb-0 leading-relaxed">{children}</p>
+  ),
+  strong: ({ children }) => (
+    <strong className="font-semibold">{children}</strong>
+  ),
+  em: ({ children }) => <em className="italic">{children}</em>,
+  a: ({ href, children }) => (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-accent underline underline-offset-2 hover:text-accent/80 transition-colors"
+    >
+      {children}
+    </a>
+  ),
+  ul: ({ children }) => (
+    <ul className="mb-2 last:mb-0 ml-4 list-disc space-y-1">{children}</ul>
+  ),
+  ol: ({ children }) => (
+    <ol className="mb-2 last:mb-0 ml-4 list-decimal space-y-1">{children}</ol>
+  ),
+  li: ({ children }) => <li className="leading-relaxed">{children}</li>,
+  code: ({ className, children }) => {
+    const isInline = !className;
+    if (isInline) {
+      return (
+        <code className="px-1.5 py-0.5 rounded bg-secondary/80 text-sm font-mono">
+          {children}
+        </code>
+      );
+    }
+    return (
+      <code className="block p-3 my-2 rounded-lg bg-secondary/80 text-sm font-mono overflow-x-auto">
+        {children}
+      </code>
+    );
+  },
+  pre: ({ children }) => (
+    <pre className="mb-2 last:mb-0 overflow-x-auto">{children}</pre>
+  ),
+  blockquote: ({ children }) => (
+    <blockquote className="mb-2 last:mb-0 pl-3 border-l-2 border-accent/50 text-muted-foreground italic">
+      {children}
+    </blockquote>
+  ),
+  h1: ({ children }) => (
+    <h1 className="text-lg font-semibold mb-2 mt-3 first:mt-0">{children}</h1>
+  ),
+  h2: ({ children }) => (
+    <h2 className="text-base font-semibold mb-2 mt-3 first:mt-0">{children}</h2>
+  ),
+  h3: ({ children }) => (
+    <h3 className="text-sm font-semibold mb-1 mt-2 first:mt-0">{children}</h3>
+  ),
+  hr: () => <hr className="my-3 border-border" />,
+};
 
 export interface ChatBubbleProps {
   role: MessageRole;
@@ -102,8 +164,19 @@ export function ChatBubble({
             hasError && "border-2 border-destructive/50 bg-destructive/5"
           )}
         >
-          {/* Message content with proper whitespace handling */}
-          <p className="whitespace-pre-wrap break-words">{content}</p>
+          {/* Message content - markdown for assistant, plain text for user */}
+          {isUser ? (
+            <p className="whitespace-pre-wrap break-words">{content}</p>
+          ) : (
+            <div className="prose-chat break-words">
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                components={markdownComponents}
+              >
+                {content}
+              </ReactMarkdown>
+            </div>
+          )}
         </div>
 
         {/* Metadata row: timestamp and status */}
