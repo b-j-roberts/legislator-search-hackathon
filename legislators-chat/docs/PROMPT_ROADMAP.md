@@ -19,25 +19,6 @@ Core prompt fixes that directly impact user experience and reliability.
 
 ---
 
-### 1.1 Compress Search System Prompt
-
-**Description**: Reduce the Search System prompt from 300+ lines to improve token efficiency and leave room for conversation context.
-
-**Requirements**:
-- [ ] Audit current prompt at `lib/prompts/search-system.ts:41-307` for redundancy
-- [ ] Convert verbose examples to tabular format
-- [ ] Consolidate similar sections (e.g., merge filter explanations)
-- [ ] Remove redundant phrasing while preserving clarity
-- [ ] Target 30% reduction (~210 lines max)
-- [ ] Validate JSON output still works correctly after compression
-
-**Implementation Notes**:
-- Use markdown tables instead of prose for parameter documentation
-- Keep critical examples, remove variations that demonstrate same concept
-- Test with 20+ sample queries to ensure no regression
-
----
-
 ### 1.2 Add Controversy Handling
 
 **Description**: Add guidance for handling politically sensitive topics (abortion, guns, immigration) to ensure nonpartisan responses.

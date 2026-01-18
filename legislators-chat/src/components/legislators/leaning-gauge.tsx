@@ -141,7 +141,7 @@ export function LeaningGauge({
             initial={{ x2: centerX, y2: centerY - config.needleLength }}
             animate={{ x2: needleX, y2: needleY }}
             transition={{ type: "spring", stiffness: 60, damping: 12 }}
-            stroke="#e2e8f0"
+            className="stroke-slate-600 dark:stroke-slate-200"
             strokeWidth={3}
             strokeLinecap="round"
           />
@@ -152,12 +152,12 @@ export function LeaningGauge({
             animate={{ cx: needleX, cy: needleY }}
             transition={{ type: "spring", stiffness: 60, damping: 12 }}
             r={2.5}
-            fill="#f1f5f9"
+            className="fill-slate-500 dark:fill-slate-100"
           />
 
           {/* Center pivot */}
-          <circle cx={centerX} cy={centerY} r={size === "sm" ? 5 : 7} fill="#475569" />
-          <circle cx={centerX} cy={centerY} r={size === "sm" ? 2.5 : 3.5} fill="#1e293b" />
+          <circle cx={centerX} cy={centerY} r={size === "sm" ? 5 : 7} className="fill-slate-400 dark:fill-slate-600" />
+          <circle cx={centerX} cy={centerY} r={size === "sm" ? 2.5 : 3.5} className="fill-slate-600 dark:fill-slate-800" />
         </svg>
 
         {/* Labels */}
@@ -243,7 +243,7 @@ export function LeaningGaugeCompact({
         <div
           className={cn(
             "inline-flex items-center gap-2 rounded-full border px-2 py-1 cursor-help",
-            "bg-slate-900/50 border-slate-700",
+            "bg-slate-100 border-slate-300 dark:bg-slate-900/50 dark:border-slate-700",
             className
           )}
         >
@@ -279,14 +279,14 @@ export function LeaningGaugeCompact({
               initial={{ x2: centerX, y2: centerY - needleLength }}
               animate={{ x2: needleX, y2: needleY }}
               transition={{ type: "spring", stiffness: 60, damping: 12 }}
-              stroke="#e2e8f0"
+              className="stroke-slate-600 dark:stroke-slate-200"
               strokeWidth={2}
               strokeLinecap="round"
             />
 
             {/* Center pivot */}
-            <circle cx={centerX} cy={centerY} r={3} fill="#475569" />
-            <circle cx={centerX} cy={centerY} r={1.5} fill="#1e293b" />
+            <circle cx={centerX} cy={centerY} r={3} className="fill-slate-400 dark:fill-slate-600" />
+            <circle cx={centerX} cy={centerY} r={1.5} className="fill-slate-600 dark:fill-slate-800" />
           </svg>
 
           <span className={cn("text-xs font-medium whitespace-nowrap", colorClass)}>{label}</span>

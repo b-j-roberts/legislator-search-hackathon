@@ -38,11 +38,11 @@ export interface SpeakerCardProps {
 const chamberConfig: Record<Chamber, { label: string; className: string }> = {
   House: {
     label: "House",
-    className: "bg-amber-900/50 text-amber-400 border-amber-700",
+    className: "bg-amber-100 text-amber-700 border-amber-300 dark:bg-amber-900/50 dark:text-amber-400 dark:border-amber-700",
   },
   Senate: {
     label: "Senate",
-    className: "bg-indigo-900/50 text-indigo-400 border-indigo-700",
+    className: "bg-indigo-100 text-indigo-700 border-indigo-300 dark:bg-indigo-900/50 dark:text-indigo-400 dark:border-indigo-700",
   },
 };
 

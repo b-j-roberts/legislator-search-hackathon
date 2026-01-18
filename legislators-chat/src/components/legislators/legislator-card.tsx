@@ -37,17 +37,17 @@ export interface LegislatorCardProps {
 const partyConfig: Record<Party, { label: string; className: string; color: string }> = {
   D: {
     label: "Democrat",
-    className: "bg-blue-900/50 text-blue-400 border-blue-700",
+    className: "bg-blue-100 text-blue-700 border-blue-300 dark:bg-blue-900/50 dark:text-blue-400 dark:border-blue-700",
     color: "bg-blue-500",
   },
   R: {
     label: "Republican",
-    className: "bg-red-900/50 text-red-400 border-red-700",
+    className: "bg-red-100 text-red-700 border-red-300 dark:bg-red-900/50 dark:text-red-400 dark:border-red-700",
     color: "bg-red-500",
   },
   I: {
     label: "Independent",
-    className: "bg-purple-900/50 text-purple-400 border-purple-700",
+    className: "bg-purple-100 text-purple-700 border-purple-300 dark:bg-purple-900/50 dark:text-purple-400 dark:border-purple-700",
     color: "bg-purple-500",
   },
 };

@@ -43,9 +43,9 @@ interface FilterChipProps {
 function FilterChip({ label, category, onRemove, variant = "default" }: FilterChipProps) {
   const variantClasses: Record<string, string> = {
     default: "bg-muted hover:bg-muted/80",
-    "party-d": "bg-blue-900/30 text-blue-400 hover:bg-blue-900/40",
-    "party-r": "bg-red-900/30 text-red-400 hover:bg-red-900/40",
-    "party-i": "bg-purple-900/30 text-purple-400 hover:bg-purple-900/40",
+    "party-d": "bg-blue-100 text-blue-700 hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/40",
+    "party-r": "bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/40",
+    "party-i": "bg-purple-100 text-purple-700 hover:bg-purple-200 dark:bg-purple-900/30 dark:text-purple-400 dark:hover:bg-purple-900/40",
     stance: "bg-accent hover:bg-accent/80",
   };
 
