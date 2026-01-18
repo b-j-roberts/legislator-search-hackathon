@@ -17,6 +17,7 @@ import {
 import { parseAIResponse, toSearchParams, hasSearchIntent, buildCorrectionPrompt } from "@/lib/parse-ai-response";
 import { searchContent, type SearchResult } from "@/lib/search-service";
 import { buildSearchSystemPrompt, buildSearchResultsPrompt, type SearchResultForPrompt, type SearchResultsMetadata } from "@/lib/prompts/search-system";
+import { analyzeQueryIntent, type QueryIntentResult, type QueryContext } from "@/lib/query-intent";
 
 // =============================================================================
 // Constants
@@ -170,6 +171,98 @@ interface ChatState {
 /** Sleep utility for retry delays */
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+/**
+ * Extract current search results from conversation messages
+ * Used to provide context for query intent analysis
+ */
+function getCurrentSearchResults(messages: ChatMessage[]): SearchResultData[] {
+  const results: SearchResultData[] = [];
+  const seenIds = new Set<string>();
+
+  // Process messages in reverse order to get most recent results
+  for (let i = messages.length - 1; i >= 0; i--) {
+    const msg = messages[i];
+    if (msg.role === "assistant" && msg.status === "sent" && msg.searchResults) {
+      for (const result of msg.searchResults) {
+        const key = `${result.content_id}-${result.segment_index}`;
+        if (!seenIds.has(key)) {
+          seenIds.add(key);
+          results.push(result);
+        }
+      }
+    }
+  }
+
+  return results;
+}
+
+/**
+ * Get the last successful search query from conversation
+ */
+function getLastSearchQuery(messages: ChatMessage[]): string | undefined {
+  for (let i = messages.length - 1; i >= 0; i--) {
+    const msg = messages[i];
+    if (msg.role === "assistant" && msg.status === "sent" && msg.searchResults && msg.searchResults.length > 0) {
+      // Find the user message that triggered this search
+      for (let j = i - 1; j >= 0; j--) {
+        if (messages[j].role === "user") {
+          return messages[j].content;
+        }
+      }
+    }
+  }
+  return undefined;
+}
+
+/**
+ * Build additional context for refinement queries
+ */
+function buildRefinementContext(
+  intent: QueryIntentResult,
+  currentResults: SearchResultData[]
+): string {
+  if (intent.intent !== "refinement" || currentResults.length === 0) {
+    return "";
+  }
+
+  // Summarize what we currently have
+  const speakers = new Set<string>();
+  const contentTypes = new Set<string>();
+  const committees = new Set<string>();
+
+  for (const result of currentResults) {
+    if (result.speaker_name) speakers.add(result.speaker_name);
+    if (result.content_type) contentTypes.add(result.content_type);
+    if (result.committee) committees.add(result.committee);
+  }
+
+  let context = `\n## CURRENT RESULTS CONTEXT (for refinement)\n\n`;
+  context += `The user is refining existing search results. Current results include:\n`;
+  context += `- ${currentResults.length} total results\n`;
+  context += `- Speakers: ${Array.from(speakers).slice(0, 10).join(", ")}${speakers.size > 10 ? ` and ${speakers.size - 10} more` : ""}\n`;
+  context += `- Content types: ${Array.from(contentTypes).join(", ")}\n`;
+  if (committees.size > 0) {
+    context += `- Committees: ${Array.from(committees).slice(0, 5).join(", ")}${committees.size > 5 ? ` and ${committees.size - 5} more` : ""}\n`;
+  }
+
+  // Add refinement guidance
+  context += `\nThe user wants to filter these results. `;
+
+  if (intent.extractedFilters?.speaker) {
+    context += `Filter by speaker: ${intent.extractedFilters.speaker}. `;
+  }
+  if (intent.extractedFilters?.contentType) {
+    context += `Filter by content type: ${intent.extractedFilters.contentType.join(", ")}. `;
+  }
+  if (intent.extractedFilters?.chamber) {
+    context += `Filter by chamber: ${intent.extractedFilters.chamber}. `;
+  }
+
+  context += `\n\nYou should perform a refined search that narrows down the original query with the additional filter criteria.`;
+
+  return context;
 }
 
 // =============================================================================
@@ -400,10 +493,31 @@ export function ChatProvider({ children }: ChatProviderProps) {
       try {
         // Build context from previous messages
         const currentConv = state.storage.conversations.find((c) => c.id === currentConversationId);
-        const previousMessages: OrchestrationMessage[] = (currentConv?.messages || []).map((msg) => ({
+        const allMessages = currentConv?.messages || [];
+        const previousMessages: OrchestrationMessage[] = allMessages.map((msg) => ({
           role: msg.role,
           content: msg.content,
         }));
+
+        // Analyze query intent to determine how to handle this message
+        const currentResults = getCurrentSearchResults(allMessages);
+        const lastSearchQuery = getLastSearchQuery(allMessages);
+
+        const queryContext: QueryContext = {
+          prompt: content,
+          previousMessages: allMessages,
+          currentResults,
+          lastSearchQuery,
+        };
+
+        const queryIntent = analyzeQueryIntent(queryContext);
+        console.log("[QueryIntent]", {
+          intent: queryIntent.intent,
+          confidence: queryIntent.confidence,
+          preserveResults: queryIntent.preserveResults,
+          mergeResults: queryIntent.mergeResults,
+          reasoning: queryIntent.reasoning,
+        });
 
         // Track orchestration state
         const conversation: OrchestrationMessage[] = [...previousMessages];
@@ -411,8 +525,11 @@ export function ChatProvider({ children }: ChatProviderProps) {
         let lastResponse = "";
         let searchResults: SearchResult[] | null = null;
 
-        // Step 1: Send initial message to Maple with search system prompt
-        const systemPrompt = buildSearchSystemPrompt();
+        // Build system prompt with additional context for refinements
+        const refinementContext = buildRefinementContext(queryIntent, currentResults);
+        const systemPrompt = buildSearchSystemPrompt({
+          additionalContext: refinementContext || undefined,
+        });
 
         // Update UI to show analyzing
         dispatch({
@@ -512,6 +629,45 @@ export function ChatProvider({ children }: ChatProviderProps) {
         }
 
         // Step 5: Update message with final response and search results
+        // For expansion queries, merge new results with existing ones
+        let finalSearchResults: SearchResultData[] | undefined;
+        if (searchResults) {
+          const newResults = searchResults.map(toSearchResultData);
+
+          if (queryIntent.mergeResults && currentResults.length > 0) {
+            // Merge: combine existing and new results, deduplicating by ID
+            const seenIds = new Set<string>();
+            finalSearchResults = [];
+
+            // Add new results first (they take precedence)
+            for (const result of newResults) {
+              const key = `${result.content_id}-${result.segment_index}`;
+              if (!seenIds.has(key)) {
+                seenIds.add(key);
+                finalSearchResults.push(result);
+              }
+            }
+
+            // Add existing results that aren't duplicates
+            for (const result of currentResults) {
+              const key = `${result.content_id}-${result.segment_index}`;
+              if (!seenIds.has(key)) {
+                seenIds.add(key);
+                finalSearchResults.push(result);
+              }
+            }
+
+            console.log("[QueryIntent] Merged results:", {
+              existing: currentResults.length,
+              new: newResults.length,
+              merged: finalSearchResults.length,
+            });
+          } else {
+            // Replace: just use new results
+            finalSearchResults = newResults;
+          }
+        }
+
         dispatch({
           type: "UPDATE_MESSAGE",
           payload: {
@@ -520,7 +676,7 @@ export function ChatProvider({ children }: ChatProviderProps) {
             updates: {
               content: lastResponse,
               status: "sent",
-              searchResults: searchResults ? searchResults.map(toSearchResultData) : undefined,
+              searchResults: finalSearchResults,
               sources: [],
               confidence: 0,
             },

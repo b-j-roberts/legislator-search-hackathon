@@ -665,7 +665,7 @@ export function ResultsPanel({
           {/* Tab content */}
           <div className="flex-1 min-h-0 overflow-hidden">
             <TabsContent value="people" className="h-full overflow-auto m-0 scrollbar-thin">
-              {isLoading ? (
+              {isLoading && effectivePeopleCount === 0 ? (
                 <LoadingSkeleton />
               ) : effectivePeopleCount === 0 ? (
                 <EmptyState
@@ -703,7 +703,7 @@ export function ResultsPanel({
             </TabsContent>
 
             <TabsContent value="documents" className="h-full overflow-auto m-0 scrollbar-thin">
-              {isLoading ? (
+              {isLoading && effectiveDocumentCount === 0 ? (
                 <LoadingSkeleton />
               ) : effectiveDocumentCount === 0 ? (
                 <EmptyState
@@ -752,7 +752,7 @@ export function ResultsPanel({
             </TabsContent>
 
             <TabsContent value="votes" className="h-full overflow-auto m-0 scrollbar-thin">
-              {isLoading ? (
+              {isLoading && effectiveVoteCount === 0 ? (
                 <LoadingSkeleton />
               ) : effectiveVoteCount === 0 ? (
                 <EmptyState

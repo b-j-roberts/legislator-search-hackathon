@@ -160,6 +160,11 @@ function extractSpeakersFromResults(searchResults: SearchResultData[]): Speaker[
  * results by ID and returns the aggregated state.
  *
  * When searchResults are present, they take precedence over legacy document/vote types.
+ *
+ * IMPORTANT: This hook preserves existing results while new searches are in progress.
+ * Messages with status "sending" are skipped to prevent results from disappearing
+ * during loading states. This ensures users always see either existing results or
+ * newly loaded results, never an empty/skeleton state when data exists.
  */
 export function useResults(messages: ChatMessage[]): UseResultsReturn {
   const [activeTab, setActiveTab] = React.useState<ResultsTab>("people");
@@ -176,8 +181,10 @@ export function useResults(messages: ChatMessage[]): UseResultsReturn {
     for (let i = messages.length - 1; i >= 0; i--) {
       const message = messages[i];
 
-      // Only process successful assistant messages
-      if (message.role !== "assistant" || message.status === "error") {
+      // Only process completed assistant messages
+      // Skip messages that are still loading (status: "sending") to preserve existing results
+      // This prevents the results panel from showing skeletons while a new search is in progress
+      if (message.role !== "assistant" || message.status === "error" || message.status === "sending") {
         continue;
       }
 

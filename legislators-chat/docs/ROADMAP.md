@@ -17,6 +17,23 @@ After implementing the feature, please provide a concise step-by-step instructio
 
 Features that enhance the experience but aren't required for initial launch.
 
+### 2.0 Rename app on FE ( no need to change dir/repo name )
+
+**Description**: Change the app name from "CivicsLens" to "Mindy" on the frontend.
+
+**Requirements**:
+- [ ] Update all instances of "CivicsLens" to "Mindy" in
+- [ ] Update intro/welcome message/component on chat/main page to be more personable and friendly ( like "Mindy" is there talking to the user explaining they are there to help with xyx )
+- [ ] Ensure consistency across all pages and components
+- [ ] Provide a sample prompt in additional to the prompt buttons on the main page to guide users on how to interact with Mindy ( primarily focused on a sentiment based, people/representative centric query )
+- [ ] Change app logo and favicon to reflect new logo at ~/Downloads/
+
+**Implementation Notes**:
+- Search through all frontend files for "CivicsLens"
+- Update UI text and messages accordingly
+
+---
+
 ### 2.1 Media Tab
 
 **Description**: Add a media tab to the results panel on the main page to show related news articles and videos.

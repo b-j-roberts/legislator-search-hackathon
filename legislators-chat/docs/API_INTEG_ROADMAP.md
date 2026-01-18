@@ -18,50 +18,6 @@ After implementing the feature, please provide a concise step-by-step instructio
 
 Minimum viable integration to enable AI-powered congressional search.
 
-### 1.5 Results Panel - Search Results Display
-
-**Description**: Update Results Panel to display real search results in Documents/Votes tabs.
-
-**Requirements**:
-- [ ] Show Documents tab only when `hearing` or `floor_speech` results exist
-- [ ] Show Votes tab only when `vote` results exist
-- [ ] Update `DocumentCard` component to display real search result data
-- [ ] Update `VoteRecordCard` component for real vote data
-- [ ] Remove mock data from Results Panel
-
-**Display Mapping**:
-| Search Field | Display |
-|--------------|---------|
-| `title` | Card title |
-| `text` | Content snippet |
-| `speaker_name` | Speaker attribution |
-| `date` | Date badge |
-| `content_type` | Type icon/badge |
-| `chamber` | Chamber badge |
-| `committee` | Committee name (hearings) |
-| `source_url` | External link (see 1.6) |
-| `score` | Hidden (sort order only) |
-
-**Implementation Notes**:
-- Use conditional tab rendering based on result types
-- Keep relevance score hidden from users
-- Results already sorted by score from API
-
-### 1.5b New Query Handling
-
-**Description**: Enhance AI orchestration to handle scenarios where user prompts the chat more, causing people/documents to become skeletons and not visible.
-
-**Requirements**:
-- [ ] When user sends a new prompt that is not related to narrowing down existing results ( e.g. "what about healthcare?" after "find speeches on climate change" or "what did senator X say about this?") do not clear existing results in results panel
-- [ ] Instead, trigger a new search with the new prompt and update results panel based on results
-- [ ] If the new prompt narrows down existing results ( e.g. "show me only speeches from senator X" after "find speeches on climate change" or "Im only interested in senators related to climate change efforts in China" after "find speakers looking into climate change") then properly add/remove data from results panel based on existing results and new search results
-- [ ] Ensure that the results panel always reflects the latest search results based on user prompts, while preserving existing results when appropriate
-
-**Implementation Notes**:
-- Update the orchestration hook to differentiate between new searches and narrowing prompts
-- Use prompt analysis to determine if the new prompt is a new search or a refinement
-- Maintain state of existing results and update accordingly
-
 ### 1.5c Filtering Integration
 
 **Description**: Ensure existing legislator filters (party, state, chamber) are applied to search results shown in results panel.
