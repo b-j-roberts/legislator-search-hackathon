@@ -13,12 +13,15 @@ list:
 # Build Rust CLI
 [group('build')]
 build:
-    cargo build -p polsearch-cli
+    cargo build -p polsearch-cli --manifest-path politics-search/Cargo.toml
 
-# Build release and optionally install locally
+# Build release and install to ~/.local/bin
 [group('build')]
-release target="local":
-    cargo xtask release {{target}}
+release:
+    cargo build --release -p polsearch-cli --manifest-path politics-search/Cargo.toml
+    mkdir -p ~/.local/bin
+    cp politics-search/target/release/polsearch ~/.local/bin/polsearch
+    @echo "✓ Installed polsearch to ~/.local/bin/polsearch"
 
 # ------------------------------------------------------------------------------
 # lint
@@ -27,12 +30,12 @@ release target="local":
 # Format code
 [group('lint')]
 fmt:
-    cargo fmt
+    cargo fmt --manifest-path politics-search/Cargo.toml
 
 # Run clippy
 [group('lint')]
 clippy:
-    cargo clippy --all-targets
+    cargo clippy --all-targets --manifest-path politics-search/Cargo.toml
 
 # ------------------------------------------------------------------------------
 # run
@@ -41,7 +44,7 @@ clippy:
 # Run the CLI in release mode
 [group('run')]
 run *args:
-    cargo run --release -p polsearch-cli -- "$@"
+    cargo run --release -p polsearch-cli --manifest-path politics-search/Cargo.toml -- "$@"
 
 # ------------------------------------------------------------------------------
 # database
@@ -50,12 +53,12 @@ run *args:
 # Run database migrations
 [group('db')]
 migrate:
-    sqlx migrate run --source crates/polsearch-db/migrations
+    sqlx migrate run --source politics-search/crates/polsearch-db/migrations
 
 # Create FTS index on text embeddings
 [group('db')]
 index:
-    cargo run -p polsearch-cli -- db index
+    cargo run -p polsearch-cli --manifest-path politics-search/Cargo.toml -- db index
 
 # Backup both Postgres and LanceDB
 [group('db')]
@@ -74,13 +77,27 @@ backup-lancedb:
     tar -czf ~/backups/lancedb_$(date +%Y%m%d_%H%M).tar.gz -C ~/.polsearch lancedb
 
 # ------------------------------------------------------------------------------
+# ingest
+# ------------------------------------------------------------------------------
+
+# Ingest hearing transcripts (skips already processed)
+[group('ingest')]
+ingest-hearings *args:
+    cargo run --release -p polsearch-cli --manifest-path politics-search/Cargo.toml -- ingest-hearings --path data/transcripts "$@"
+
+# Benchmark: ingest 50 files to estimate total time
+[group('ingest')]
+ingest-benchmark:
+    time cargo run --release -p polsearch-cli --manifest-path politics-search/Cargo.toml -- ingest-hearings --path data/transcripts --limit 50
+
+# ------------------------------------------------------------------------------
 # utils
 # ------------------------------------------------------------------------------
 
 # Run xtask commands
 [group('utils')]
 xtask *args:
-    cargo xtask "$@"
+    cargo xtask --manifest-path politics-search/Cargo.toml "$@"
 
 # Bump version (major, minor, or patch)
 [group('utils')]
@@ -90,4 +107,4 @@ bump type:
 # Clean all build artifacts
 [group('utils')]
 clean:
-    cargo clean
+    cargo clean --manifest-path politics-search/Cargo.toml
