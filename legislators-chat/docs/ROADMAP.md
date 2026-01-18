@@ -17,27 +17,17 @@ After implementing the feature, please provide a concise step-by-step instructio
 
 Features that enhance the experience but aren't required for initial launch.
 
-### 2.0 UI/UX Improvements
+### 2.1a UI Redesign ( Home/Main Page )
 
-**Description**: Polish UI/UX components and interactions.
+**Description**: Revamp the main landing page for better readability and user engagement using the frontend-design SKILL for claude.
 
-- [ ] When moving to the Session complete page, it should set tab to Complete instead of staying on Contact ( ie we should navigate to /complete )
+### 2.1b UI Redesign ( Contact Page )
 
-### 2.1 Leaning feature
+**Description**: Update the contact page layout and styling for improved user experience using the frontend-design SKILL for claude.
 
-**Description**: Show legislator's leaning on a gauge for particular issues/chats instead   of just Support/Oppose/...
+### 2.1c UI Redesign ( Complete Page )
 
-**Requirements**:
-- [ ] Design a gauge component
-- [ ] Integrate with legislator data model
-- [ ] Display gauge in LegislatorCard
-- [ ] Add tooltip explaining the leaning scale
-- [ ] Replace binary indicators with gauge where applicable
-
-**Implementation Notes**:
-- Use color gradients for visual appeal
-- Ensure accessibility with text alternatives
-- Consider animation for gauge filling
+**Description**: Redesign the complete page to enhance visual appeal and usability using the frontend-design SKILL for claude.
 
 ### 2.3 Document Viewer
 

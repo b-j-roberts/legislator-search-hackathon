@@ -12,6 +12,7 @@ export const MOCK_LEGISLATORS: Legislator[] = [
     state: "VT",
     stance: "for",
     stanceSummary: "Strong advocate for climate action and renewable energy legislation.",
+    leaningScore: 95,
     contact: {
       phone: "(202) 224-5141",
       email: "senator@sanders.senate.gov",
@@ -34,6 +35,7 @@ export const MOCK_LEGISLATORS: Legislator[] = [
     stance: "for",
     stanceSummary:
       "Supports comprehensive climate legislation and green infrastructure investment.",
+    leaningScore: 78,
     contact: {
       phone: "(202) 225-4965",
       email: "sf.nancy@mail.house.gov",
@@ -55,6 +57,7 @@ export const MOCK_LEGISLATORS: Legislator[] = [
     stance: "against",
     stanceSummary:
       "Opposes most climate regulations, favors energy independence through fossil fuels.",
+    leaningScore: -85,
     contact: {
       phone: "(202) 224-5922",
       email: "senator@cruz.senate.gov",
@@ -76,6 +79,7 @@ export const MOCK_LEGISLATORS: Legislator[] = [
     district: "14",
     stance: "for",
     stanceSummary: "Lead sponsor of Green New Deal, strong advocate for climate justice.",
+    leaningScore: 100,
     contact: {
       phone: "(202) 225-3965",
       email: "ny14.casework@mail.house.gov",
@@ -96,6 +100,7 @@ export const MOCK_LEGISLATORS: Legislator[] = [
     state: "KY",
     stance: "against",
     stanceSummary: "Generally opposes climate legislation that impacts coal industry.",
+    leaningScore: -72,
     contact: {
       phone: "(202) 224-2541",
       email: "senator@mcconnell.senate.gov",
@@ -116,6 +121,7 @@ export const MOCK_LEGISLATORS: Legislator[] = [
     state: "MA",
     stance: "for",
     stanceSummary: "Supports aggressive climate action and corporate accountability for emissions.",
+    leaningScore: 88,
     contact: {
       phone: "(202) 224-4543",
       email: "senator@warren.senate.gov",
@@ -137,6 +143,7 @@ export const MOCK_LEGISLATORS: Legislator[] = [
     stance: "mixed",
     stanceSummary:
       "Has shown some support for nuclear energy as climate solution, mixed on regulations.",
+    leaningScore: -15,
     contact: {
       phone: "(202) 224-5972",
       email: "senator@lgraham.senate.gov",
@@ -157,6 +164,7 @@ export const MOCK_LEGISLATORS: Legislator[] = [
     state: "NY",
     stance: "for",
     stanceSummary: "Majority Leader pushing climate provisions in major legislation.",
+    leaningScore: 72,
     contact: {
       phone: "(202) 224-6542",
       email: "senator@schumer.senate.gov",
@@ -178,6 +186,7 @@ export const MOCK_LEGISLATORS: Legislator[] = [
     district: "4",
     stance: "against",
     stanceSummary: "Skeptical of climate regulations, opposes Green New Deal.",
+    leaningScore: -92,
     contact: {
       phone: "(202) 225-2676",
       email: "oh04.casework@mail.house.gov",
@@ -198,6 +207,7 @@ export const MOCK_LEGISLATORS: Legislator[] = [
     state: "MN",
     stance: "for",
     stanceSummary: "Supports clean energy transition and climate infrastructure investment.",
+    leaningScore: 65,
     contact: {
       phone: "(202) 224-3244",
       email: "senator@klobuchar.senate.gov",
@@ -219,6 +229,7 @@ export const MOCK_LEGISLATORS: Legislator[] = [
     stance: "mixed",
     stanceSummary:
       "Supports some climate adaptation measures, balances with energy industry interests.",
+    leaningScore: 10,
     contact: {
       phone: "(202) 224-5824",
       email: "senator@cassidy.senate.gov",
@@ -239,6 +250,7 @@ export const MOCK_LEGISLATORS: Legislator[] = [
     state: "CA",
     stance: "for",
     stanceSummary: "Long-time supporter of environmental protection and climate action.",
+    leaningScore: 58,
     contact: {
       phone: "(202) 224-3841",
       email: "senator@feinstein.senate.gov",

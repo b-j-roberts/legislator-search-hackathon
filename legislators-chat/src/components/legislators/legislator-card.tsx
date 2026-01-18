@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Phone, Mail, Globe, ChevronDown, MapPin, Building2, Check } from "lucide-react";
+import { Phone, Mail, Globe, ChevronDown, MapPin, Building2 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import type { Legislator, Party, Chamber } from "@/lib/types";
@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Checkbox } from "@/components/ui/checkbox";
 import { StanceBadge } from "./stance-badge";
+import { LeaningGaugeCompact } from "./leaning-gauge";
 
 export interface LegislatorCardProps {
   legislator: Legislator;
@@ -108,6 +109,7 @@ export function LegislatorCard({
     district,
     stance,
     stanceSummary,
+    leaningScore,
     contact,
     imageUrl,
     termStart,
@@ -193,7 +195,11 @@ export function LegislatorCard({
           </div>
 
           <CardAction>
-            <StanceBadge stance={stance} />
+            {leaningScore !== undefined ? (
+              <LeaningGaugeCompact score={leaningScore} />
+            ) : (
+              <StanceBadge stance={stance} />
+            )}
           </CardAction>
         </CardHeader>
 

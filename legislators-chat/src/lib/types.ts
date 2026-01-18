@@ -135,6 +135,13 @@ export interface Legislator {
   stance: Stance;
   stanceSummary: string;
 
+  /**
+   * Numeric leaning score from -100 to +100.
+   * -100 = strongly opposes, 0 = mixed/neutral, +100 = strongly supports.
+   * Based on voting record, public statements, and sponsored legislation.
+   */
+  leaningScore?: number;
+
   /** Contact information */
   contact: ContactInfo;
 
