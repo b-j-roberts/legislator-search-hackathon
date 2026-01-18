@@ -17,38 +17,6 @@ After implementing the feature, please provide a concise step-by-step instructio
 
 Enable users to transition from research/chat phase to taking action by contacting their representatives with AI-generated, personalized call scripts and email drafts.
 
-## 1.3 AI Content Generation
-
-**Description**: Generate personalized call scripts and email drafts using AI.
-
-**Requirements**:
-- [ ] Create prompt builder that includes:
-  - User's advocacy topic/message from chat phase
-  - Relevant research findings (votes, hearings, positions)
-  - Legislator-specific context (committees, past statements)
-  - User's tone preference (formal, passionate, personal story)
-- [ ] Generate call script with:
-  - Introduction template
-  - Key talking points
-  - Responses to common questions
-  - Closing/call-to-action
-- [ ] Generate email draft with:
-  - Subject line options
-  - Proper salutation
-  - Body with clear ask
-  - Relevant citations/references
-  - Professional closing
-- [ ] Show loading state during generation
-- [ ] Allow regeneration with different parameters
-
-**Implementation Notes**:
-- Use Maple AI for generation (streaming response)
-- Include legislator's voting record on relevant issues
-- Reference specific bills/hearings when applicable
-- Keep scripts concise (under 2 minutes for calls)
-
----
-
 ## 1.4 Content Editor with AI Chat
 
 **Description**: Allow users to refine generated content through AI conversation.
@@ -142,6 +110,19 @@ Enable users to transition from research/chat phase to taking action by contacti
 # Phase 2: Nice-to-Have
 
 Features that enhance the experience but aren't required for initial launch.
+
+### 2.0 UI/UX Improvements
+
+**Description**: Polish UI components and interactions.
+
+- [ ] Contact Page > Contact Queue: Individual cards inner content overflowing on rhs
+- [ ] Allow expanding/collapsing legislator cards in Contact Queue
+- [ ] Allow changing contact queue width (resizable panel) by dragging edge ( similar to results panel on main page)
+- [ ] Store user preferences for panel sizes in local storage
+- [ ] Move completed people/items in queue to bottom with visual separator
+- [ ] Remove Research > Contact > Complete tabs/flow from within contact page and only keep the one in the header
+- [ ] Remove progress at top of contact queue (redundant with contact queue header progress indicator )
+- [ ] Compress default method into row instead of column to save vertical space in contact queue
 
 ### 2.1 Leaning feature
 

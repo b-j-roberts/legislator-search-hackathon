@@ -2,17 +2,28 @@
 
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, MessageSquareText, Edit3, ChevronDown, ChevronUp } from "lucide-react";
+import {
+  Sparkles,
+  MessageSquareText,
+  Edit3,
+  ChevronDown,
+  ChevronUp,
+  PenLine,
+  Eye,
+  ArrowLeft,
+} from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 import type { ContactMethod, TonePreference, AdvocacyContext } from "@/lib/types";
 import { useContactContent, useActiveContent } from "@/hooks/use-contact-content";
 import { CallScriptPanel } from "./call-script-panel";
 import { EmailDraftPanel } from "./email-draft-panel";
+import { ContentEditorWithChat } from "./content-editor-with-chat";
 import type { QueueItem } from "@/hooks/use-contact";
 
 interface ContentGenerationPanelProps {
@@ -151,6 +162,10 @@ export function ContentGenerationPanel({
     !state.advocacyContext?.topic
   );
 
+  // Edit mode state - when true, show the content editor with AI chat
+  const [isEditMode, setIsEditMode] = React.useState(false);
+  const [selectedSubjectIndex, setSelectedSubjectIndex] = React.useState(0);
+
   // Initialize advocacy context from research context if not set
   React.useEffect(() => {
     if (researchContext && !state.advocacyContext?.topic) {
@@ -158,6 +173,11 @@ export function ContentGenerationPanel({
       setIsContextExpanded(false);
     }
   }, [researchContext, state.advocacyContext?.topic, setAdvocacyContext]);
+
+  // Reset edit mode when switching legislators or contact method
+  React.useEffect(() => {
+    setIsEditMode(false);
+  }, [activeItem.legislator.id, contactMethod]);
 
   const handleGenerate = React.useCallback(
     async (forceRegenerate = false) => {
@@ -185,6 +205,47 @@ export function ContentGenerationPanel({
   const emailDraft = content?.emailDraft || null;
 
   const hasTopicSet = !!state.advocacyContext?.topic?.trim();
+  const hasGeneratedContent = contactMethod === "call" ? !!callScript : !!emailDraft;
+
+  // If in edit mode and we have content, show the editor
+  if (isEditMode && hasGeneratedContent) {
+    const originalContent = contactMethod === "call" ? callScript! : emailDraft!;
+
+    return (
+      <div className={cn("space-y-4", className)}>
+        {/* Header with back button */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsEditMode(false)}
+              className="gap-1.5"
+            >
+              <ArrowLeft className="size-4" />
+              Back
+            </Button>
+            <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
+              <PenLine className="size-5" />
+              Edit & Refine
+            </h2>
+          </div>
+          <Badge variant="outline">
+            {contactMethod === "call" ? "Call Script" : "Email Draft"}
+          </Badge>
+        </div>
+
+        {/* Content Editor with Chat */}
+        <ContentEditorWithChat
+          contentType={contactMethod}
+          originalContent={originalContent}
+          selectedSubjectIndex={selectedSubjectIndex}
+          legislator={activeItem.legislator}
+          advocacyContext={state.advocacyContext}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className={cn("space-y-4", className)}>
@@ -194,11 +255,24 @@ export function ContentGenerationPanel({
           <Sparkles className="size-5" />
           AI-Generated Content
         </h2>
-        {!hasTopicSet && (
-          <span className="text-sm text-muted-foreground">
-            Set a topic to generate content
-          </span>
-        )}
+        <div className="flex items-center gap-2">
+          {!hasTopicSet && (
+            <span className="text-sm text-muted-foreground">
+              Set a topic to generate content
+            </span>
+          )}
+          {hasGeneratedContent && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsEditMode(true)}
+              className="gap-1.5"
+            >
+              <PenLine className="size-3.5" />
+              Edit & Refine
+            </Button>
+          )}
+        </div>
       </div>
 
       {/* Advocacy Context Form */}
@@ -241,8 +315,40 @@ export function ContentGenerationPanel({
         />
       )}
 
-      {/* Tip */}
-      {content && (
+      {/* Edit prompt when content exists */}
+      {hasGeneratedContent && (
+        <Card className="border-primary/20 bg-primary/5">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="rounded-full bg-primary/10 p-2">
+                  <PenLine className="size-4 text-primary" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-foreground">
+                    Want to customize this content?
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Edit the text directly or use AI to refine specific parts
+                  </p>
+                </div>
+              </div>
+              <Button
+                variant="default"
+                size="sm"
+                onClick={() => setIsEditMode(true)}
+                className="gap-1.5"
+              >
+                <PenLine className="size-3.5" />
+                Edit & Refine
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Tip for non-generated state */}
+      {content && !hasGeneratedContent && (
         <p className="text-xs text-muted-foreground text-center">
           <MessageSquareText className="size-3 inline mr-1" />
           Tip: Customize the topic or add a personal story, then regenerate for better results

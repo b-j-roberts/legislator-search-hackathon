@@ -508,3 +508,91 @@ export interface ContentGenerationState {
   /** Currently selected tone */
   selectedTone: TonePreference;
 }
+
+// =============================================================================
+// Content Editor Types
+// =============================================================================
+
+/** Editable content for call scripts */
+export interface EditableCallScript {
+  /** Opening/introduction line */
+  introduction: string;
+  /** Key talking points to cover */
+  talkingPoints: string[];
+  /** Responses to anticipated questions/pushback */
+  anticipatedResponses: {
+    question: string;
+    response: string;
+  }[];
+  /** Closing statement with call-to-action */
+  closing: string;
+}
+
+/** Editable content for email drafts */
+export interface EditableEmailDraft {
+  /** Selected subject line */
+  subjectLine: string;
+  /** Proper salutation */
+  salutation: string;
+  /** Opening paragraph */
+  opening: string;
+  /** Main body paragraphs */
+  body: string[];
+  /** Professional closing */
+  closing: string;
+  /** Signature line */
+  signature: string;
+}
+
+/** Union type for editable content */
+export type EditableContent = EditableCallScript | EditableEmailDraft;
+
+/** Refinement chat message */
+export interface RefinementMessage {
+  id: string;
+  role: "user" | "assistant";
+  content: string;
+  timestamp: string;
+  /** Applied changes if this was a refinement */
+  appliedChanges?: string;
+}
+
+/** Refinement request parameters */
+export interface RefinementParams {
+  /** Current content to refine */
+  currentContent: EditableContent;
+  /** Type of content */
+  contentType: "call" | "email";
+  /** User's refinement request */
+  request: string;
+  /** Legislator context */
+  legislator: Legislator;
+  /** Original advocacy context */
+  advocacyContext: AdvocacyContext;
+  /** Previous refinement messages for context */
+  chatHistory?: RefinementMessage[];
+}
+
+/** Refinement response from API */
+export interface RefinementResponse {
+  /** Refined content */
+  content: EditableContent;
+  /** AI's explanation of changes */
+  explanation: string;
+  /** Summary of what changed */
+  changeSummary: string;
+}
+
+/** Quick action for content refinement */
+export interface QuickAction {
+  id: string;
+  label: string;
+  prompt: string;
+  icon?: string;
+}
+
+/** Diff segment for highlighting changes */
+export interface DiffSegment {
+  type: "added" | "removed" | "unchanged";
+  text: string;
+}
