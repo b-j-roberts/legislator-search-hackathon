@@ -21,3 +21,20 @@ export {
   type SearchResultsMetadata,
   type OriginalSearchParams,
 } from "./search-system";
+
+// Query clarification prompt for handling ambiguous queries
+export {
+  CLARIFICATION_SYSTEM_ADDITION,
+  TOPIC_CLARIFICATIONS,
+  detectAmbiguity,
+  generateClarificationQuestion,
+  analyzeQueryForClarification,
+  buildClarificationPrompt,
+  isClarificationResponse,
+  refineQueryFromClarification,
+  type AmbiguityType,
+  type AmbiguityDetection,
+  type ClarificationOption,
+  type ClarificationQuestion,
+  type ClarificationResult,
+} from "./clarification";

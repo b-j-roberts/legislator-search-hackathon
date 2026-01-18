@@ -7,11 +7,17 @@
 
 export type AIProvider = "maple" | "openai";
 
+/**
+ * Reasoning effort levels for OpenAI models that support reasoning
+ */
+export type ReasoningEffort = "low" | "medium" | "high";
+
 export interface AIConfig {
   provider: AIProvider;
   baseUrl: string;
   apiKey: string;
   model: string;
+  reasoningEffort: ReasoningEffort;
 }
 
 /**
@@ -19,8 +25,13 @@ export interface AIConfig {
  */
 const DEFAULT_MODELS: Record<AIProvider, string> = {
   maple: "llama-3.3-70b",
-  openai: "gpt-4o",
+  openai: "gpt-5.2",
 };
+
+/**
+ * Models that support the reasoning parameter
+ */
+const REASONING_CAPABLE_MODELS = ["o1", "o1-mini", "o1-pro", "o3", "o3-mini", "gpt-5", "gpt-5.2"];
 
 /**
  * Base URLs for each provider
@@ -48,6 +59,7 @@ const BASE_URLS: Record<AIProvider, string> = {
  */
 export function getAIConfig(): AIConfig {
   const provider = (process.env.AI_PROVIDER as AIProvider) || "maple";
+  const reasoningEffort = (process.env.OPENAI_REASONING_EFFORT as ReasoningEffort) || "medium";
 
   if (provider === "openai") {
     return {
@@ -55,6 +67,7 @@ export function getAIConfig(): AIConfig {
       baseUrl: process.env.OPENAI_BASE_URL || BASE_URLS.openai,
       apiKey: process.env.OPENAI_API_KEY || "",
       model: process.env.OPENAI_MODEL || DEFAULT_MODELS.openai,
+      reasoningEffort,
     };
   }
 
@@ -64,6 +77,7 @@ export function getAIConfig(): AIConfig {
     baseUrl: process.env.MAPLE_PROXY_URL || BASE_URLS.maple,
     apiKey: process.env.MAPLE_API_KEY || "",
     model: process.env.MAPLE_MODEL || DEFAULT_MODELS.maple,
+    reasoningEffort, // Not used for Maple but included for consistency
   };
 }
 
@@ -103,10 +117,22 @@ export function getProviderName(): string {
 }
 
 /**
+ * Check if a model supports the reasoning parameter
+ */
+export function supportsReasoning(model: string): boolean {
+  return REASONING_CAPABLE_MODELS.some(
+    (m) => model.toLowerCase().startsWith(m.toLowerCase())
+  );
+}
+
+/**
  * Build request body with provider-specific parameters.
  *
  * OpenAI's newer models (gpt-4o, o1, etc.) use `max_completion_tokens`
  * instead of `max_tokens`. This function handles that difference.
+ *
+ * For reasoning-capable models (o1, o3, gpt-5.2), we add the reasoning
+ * parameter while still using the standard messages format for chat/completions.
  */
 export function buildRequestBody(params: {
   model: string;
@@ -114,18 +140,29 @@ export function buildRequestBody(params: {
   stream?: boolean;
   temperature?: number;
   maxTokens?: number;
+  reasoningEffort?: ReasoningEffort;
 }): Record<string, unknown> {
   const config = getAIConfig();
+  const useReasoning = config.provider === "openai" && supportsReasoning(params.model);
+  const reasoningEffort = params.reasoningEffort || config.reasoningEffort;
+
+  // Standard Chat Completions API format - works for all models
   const body: Record<string, unknown> = {
     model: params.model,
     messages: params.messages,
   };
 
+  // Add reasoning parameter for capable models (optional parameter)
+  if (useReasoning) {
+    body.reasoning_effort = reasoningEffort;
+  }
+
   if (params.stream !== undefined) {
     body.stream = params.stream;
   }
 
-  if (params.temperature !== undefined) {
+  // Only set temperature for non-reasoning models (o1/o3 don't support it)
+  if (params.temperature !== undefined && !useReasoning) {
     body.temperature = params.temperature;
   }
 

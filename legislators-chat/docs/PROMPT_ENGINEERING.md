@@ -562,7 +562,7 @@ Format as clickable suggestions in the UI.
 1. [ ] Reduce Search System prompt size (30% compression target)
 2. [x] Add controversy handling section (completed in 1.2)
 3. [x] Implement 5-tier sentiment scale (completed in 1.4)
-4. [ ] Add Query Clarification prompt
+4. [x] Add Query Clarification prompt (completed in 1.5)
 5. [x] Improve No Results Retry with synonyms (completed in 1.3)
 
 ### Phase 2: Feature Enhancements

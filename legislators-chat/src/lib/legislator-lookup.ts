@@ -2,10 +2,13 @@
  * Legislator Lookup Utility
  *
  * Provides functions for looking up legislators by name, including alias matching.
- * Uses the static legislators.json data file as the source of truth for contact information.
+ * Uses the static legislators.json data files as the source of truth for contact information.
+ * Supports multiple congresses (117, 118, 119) for historical data.
  */
 
-import type { Legislator, ContactInfo, StateAbbreviation, Party, Chamber } from "@/lib/types";
+import type { Legislator, ContactInfo, StateAbbreviation, Party, Chamber, CongressNumber, LegislatorStatus } from "@/lib/types";
+import legislators117Data from "@/lib/data/legislators-117.json";
+import legislators118Data from "@/lib/data/legislators-118.json";
 import legislatorsData from "@/lib/data/legislators.json";
 
 /** Raw legislator data from JSON file */
@@ -18,6 +21,9 @@ interface RawLegislator {
   chamber: string;
   state: string;
   district?: string;
+  congress?: number;
+  status?: string;
+  termEnd?: string;
   contact: {
     phone?: string;
     fax?: string;
@@ -37,24 +43,65 @@ interface RawLegislator {
   };
 }
 
+/** Raw data file structure */
+interface RawLegislatorsFile {
+  congress: number;
+  version: string;
+  lastUpdated: string;
+  source: string;
+  dateRange?: {
+    start: string;
+    end: string;
+  };
+  legislators: RawLegislator[];
+}
+
+/** All congress data files */
+const congressDataFiles: Record<CongressNumber, RawLegislatorsFile> = {
+  117: legislators117Data as RawLegislatorsFile,
+  118: legislators118Data as RawLegislatorsFile,
+  119: legislatorsData as RawLegislatorsFile,
+};
+
+/** Available congress numbers */
+export const AVAILABLE_CONGRESSES: CongressNumber[] = [117, 118, 119];
+
+/** Current congress number */
+export const CURRENT_CONGRESS: CongressNumber = 119;
+
 /** Metadata about the legislators data */
 export interface LegislatorsMetadata {
   version: string;
   lastUpdated: string;
   source: string;
   count: number;
+  congress: CongressNumber;
+  dateRange?: {
+    start: string;
+    end: string;
+  };
 }
 
 /**
- * Get metadata about the legislators data
+ * Get metadata about the legislators data for a specific congress
  */
-export function getLegislatorsMetadata(): LegislatorsMetadata {
+export function getLegislatorsMetadata(congress: CongressNumber = CURRENT_CONGRESS): LegislatorsMetadata {
+  const data = congressDataFiles[congress];
   return {
-    version: legislatorsData.version,
-    lastUpdated: legislatorsData.lastUpdated,
-    source: legislatorsData.source,
-    count: legislatorsData.legislators.length,
+    version: data.version,
+    lastUpdated: data.lastUpdated,
+    source: data.source,
+    count: data.legislators.length,
+    congress: data.congress as CongressNumber,
+    dateRange: data.dateRange,
   };
+}
+
+/**
+ * Get metadata for all available congresses
+ */
+export function getAllCongressesMetadata(): LegislatorsMetadata[] {
+  return AVAILABLE_CONGRESSES.map(getLegislatorsMetadata);
 }
 
 /**
@@ -100,6 +147,9 @@ function toClientLegislator(raw: RawLegislator): Legislator {
     chamber: raw.chamber as Chamber,
     state: raw.state as StateAbbreviation,
     district: raw.district,
+    congress: raw.congress as CongressNumber | undefined,
+    status: raw.status as LegislatorStatus | undefined,
+    termEnd: raw.termEnd,
     stance: "unknown",
     stanceSummary: "",
     contact,
@@ -109,28 +159,63 @@ function toClientLegislator(raw: RawLegislator): Legislator {
 }
 
 /**
- * Get all legislators from the static data
+ * Get all legislators from a specific congress
+ */
+export function getLegislatorsByCongress(congress: CongressNumber): Legislator[] {
+  const data = congressDataFiles[congress];
+  return (data.legislators as RawLegislator[]).map(toClientLegislator);
+}
+
+/**
+ * Get all legislators from all congresses (combined)
+ * Note: This may include duplicates of the same person across different congresses
+ */
+export function getAllLegislatorsAllCongresses(): Legislator[] {
+  return AVAILABLE_CONGRESSES.flatMap(getLegislatorsByCongress);
+}
+
+/**
+ * Get all legislators from the current congress (default behavior)
+ * For backwards compatibility, this returns current congress legislators only.
+ * Use getAllLegislatorsAllCongresses() to get all or getLegislatorsByCongress() for specific.
  */
 export function getAllLegislators(): Legislator[] {
-  return (legislatorsData.legislators as RawLegislator[]).map(toClientLegislator);
+  return getLegislatorsByCongress(CURRENT_CONGRESS);
 }
 
 /**
- * Find a legislator by their ID
+ * Find a legislator by their ID (searches all congresses)
  */
 export function findLegislatorById(id: string): Legislator | undefined {
-  const raw = (legislatorsData.legislators as RawLegislator[]).find((l) => l.id === id);
-  return raw ? toClientLegislator(raw) : undefined;
+  for (const congress of AVAILABLE_CONGRESSES) {
+    const data = congressDataFiles[congress];
+    const raw = (data.legislators as RawLegislator[]).find((l) => l.id === id);
+    if (raw) return toClientLegislator(raw);
+  }
+  return undefined;
 }
 
 /**
- * Find a legislator by their bioguide ID
+ * Find a legislator by their bioguide ID (searches all congresses, returns most recent)
  */
 export function findLegislatorByBioguideId(bioguideId: string): Legislator | undefined {
-  const raw = (legislatorsData.legislators as RawLegislator[]).find(
-    (l) => l.bioguideId.toLowerCase() === bioguideId.toLowerCase()
-  );
-  return raw ? toClientLegislator(raw) : undefined;
+  // Search from most recent congress first
+  for (const congress of [...AVAILABLE_CONGRESSES].reverse()) {
+    const data = congressDataFiles[congress];
+    const raw = (data.legislators as RawLegislator[]).find(
+      (l) => l.bioguideId.toLowerCase() === bioguideId.toLowerCase()
+    );
+    if (raw) return toClientLegislator(raw);
+  }
+  return undefined;
+}
+
+/** Options for searching legislators by name */
+export interface FindLegislatorsOptions {
+  /** Which congresses to search (default: current congress only) */
+  congresses?: CongressNumber[];
+  /** Search all congresses (overrides congresses option) */
+  allCongresses?: boolean;
 }
 
 /**
@@ -142,72 +227,80 @@ export function findLegislatorByBioguideId(bioguideId: string): Legislator | und
  * - Last name only
  *
  * @param searchName - The name to search for
+ * @param options - Search options
  * @returns Array of matching legislators, ordered by match quality
  */
-export function findLegislatorsByName(searchName: string): Legislator[] {
+export function findLegislatorsByName(searchName: string, options?: FindLegislatorsOptions): Legislator[] {
   const normalizedSearch = normalizeName(searchName);
 
   if (!normalizedSearch) {
     return [];
   }
 
+  const congressesToSearch = options?.allCongresses
+    ? AVAILABLE_CONGRESSES
+    : options?.congresses ?? [CURRENT_CONGRESS];
+
   const scored: { legislator: Legislator; score: number }[] = [];
 
-  for (const raw of legislatorsData.legislators as RawLegislator[]) {
-    let bestScore = 0;
-    const normalizedFullName = normalizeName(raw.name);
+  for (const congress of congressesToSearch) {
+    const data = congressDataFiles[congress];
+    for (const raw of data.legislators as RawLegislator[]) {
+      let bestScore = 0;
+      const normalizedFullName = normalizeName(raw.name);
 
-    // Exact full name match
-    if (normalizedFullName === normalizedSearch) {
-      bestScore = 100;
-    }
-    // Full name contains search
-    else if (normalizedFullName.includes(normalizedSearch)) {
-      bestScore = Math.max(bestScore, 80);
-    }
-    // Search contains full name
-    else if (normalizedSearch.includes(normalizedFullName)) {
-      bestScore = Math.max(bestScore, 70);
-    }
-
-    // Check aliases
-    for (const alias of raw.aliases) {
-      const normalizedAlias = normalizeName(alias);
-
-      // Exact alias match
-      if (normalizedAlias === normalizedSearch) {
-        bestScore = Math.max(bestScore, 95);
+      // Exact full name match
+      if (normalizedFullName === normalizedSearch) {
+        bestScore = 100;
       }
-      // Alias contains search
-      else if (normalizedAlias.includes(normalizedSearch)) {
-        bestScore = Math.max(bestScore, 75);
+      // Full name contains search
+      else if (normalizedFullName.includes(normalizedSearch)) {
+        bestScore = Math.max(bestScore, 80);
       }
-      // Search contains alias
-      else if (normalizedSearch.includes(normalizedAlias)) {
-        bestScore = Math.max(bestScore, 65);
+      // Search contains full name
+      else if (normalizedSearch.includes(normalizedFullName)) {
+        bestScore = Math.max(bestScore, 70);
       }
-    }
 
-    // Last name match (extract from full name)
-    const nameParts = normalizedFullName.split(" ");
-    const lastName = nameParts[nameParts.length - 1];
-    if (lastName === normalizedSearch) {
-      bestScore = Math.max(bestScore, 85);
-    } else if (lastName.includes(normalizedSearch) || normalizedSearch.includes(lastName)) {
-      bestScore = Math.max(bestScore, 60);
-    }
+      // Check aliases
+      for (const alias of raw.aliases) {
+        const normalizedAlias = normalizeName(alias);
 
-    // First name match
-    const firstName = nameParts[0];
-    if (firstName === normalizedSearch) {
-      bestScore = Math.max(bestScore, 50);
-    }
+        // Exact alias match
+        if (normalizedAlias === normalizedSearch) {
+          bestScore = Math.max(bestScore, 95);
+        }
+        // Alias contains search
+        else if (normalizedAlias.includes(normalizedSearch)) {
+          bestScore = Math.max(bestScore, 75);
+        }
+        // Search contains alias
+        else if (normalizedSearch.includes(normalizedAlias)) {
+          bestScore = Math.max(bestScore, 65);
+        }
+      }
 
-    if (bestScore > 0) {
-      scored.push({
-        legislator: toClientLegislator(raw),
-        score: bestScore,
-      });
+      // Last name match (extract from full name)
+      const nameParts = normalizedFullName.split(" ");
+      const lastName = nameParts[nameParts.length - 1];
+      if (lastName === normalizedSearch) {
+        bestScore = Math.max(bestScore, 85);
+      } else if (lastName.includes(normalizedSearch) || normalizedSearch.includes(lastName)) {
+        bestScore = Math.max(bestScore, 60);
+      }
+
+      // First name match
+      const firstName = nameParts[0];
+      if (firstName === normalizedSearch) {
+        bestScore = Math.max(bestScore, 50);
+      }
+
+      if (bestScore > 0) {
+        scored.push({
+          legislator: toClientLegislator(raw),
+          score: bestScore,
+        });
+      }
     }
   }
 
@@ -219,48 +312,73 @@ export function findLegislatorsByName(searchName: string): Legislator[] {
 
 /**
  * Find the best matching legislator for a given name
+ * By default, searches all congresses to find the best match.
  *
  * @param searchName - The name to search for
+ * @param options - Search options
  * @returns The best matching legislator, or undefined if no match found
  */
-export function findBestMatchingLegislator(searchName: string): Legislator | undefined {
-  const matches = findLegislatorsByName(searchName);
+export function findBestMatchingLegislator(searchName: string, options?: FindLegislatorsOptions): Legislator | undefined {
+  // Default to searching all congresses for best matching
+  const searchOptions = options ?? { allCongresses: true };
+  const matches = findLegislatorsByName(searchName, searchOptions);
   return matches.length > 0 ? matches[0] : undefined;
+}
+
+/** Options for filtering legislators */
+export interface FilterOptions {
+  /** Which congresses to include */
+  congresses?: CongressNumber[];
+  /** Include all congresses */
+  allCongresses?: boolean;
+}
+
+/**
+ * Get legislators based on filter options
+ */
+function getLegislatorsForFilter(options?: FilterOptions): Legislator[] {
+  if (options?.allCongresses) {
+    return getAllLegislatorsAllCongresses();
+  }
+  if (options?.congresses) {
+    return options.congresses.flatMap(getLegislatorsByCongress);
+  }
+  return getAllLegislators();
 }
 
 /**
  * Filter legislators by state
  */
-export function filterLegislatorsByState(state: StateAbbreviation): Legislator[] {
-  return getAllLegislators().filter((l) => l.state === state);
+export function filterLegislatorsByState(state: StateAbbreviation, options?: FilterOptions): Legislator[] {
+  return getLegislatorsForFilter(options).filter((l) => l.state === state);
 }
 
 /**
  * Filter legislators by party
  */
-export function filterLegislatorsByParty(party: Party): Legislator[] {
-  return getAllLegislators().filter((l) => l.party === party);
+export function filterLegislatorsByParty(party: Party, options?: FilterOptions): Legislator[] {
+  return getLegislatorsForFilter(options).filter((l) => l.party === party);
 }
 
 /**
  * Filter legislators by chamber
  */
-export function filterLegislatorsByChamber(chamber: Chamber): Legislator[] {
-  return getAllLegislators().filter((l) => l.chamber === chamber);
+export function filterLegislatorsByChamber(chamber: Chamber, options?: FilterOptions): Legislator[] {
+  return getLegislatorsForFilter(options).filter((l) => l.chamber === chamber);
 }
 
 /**
  * Get all senators
  */
-export function getSenators(): Legislator[] {
-  return filterLegislatorsByChamber("Senate");
+export function getSenators(options?: FilterOptions): Legislator[] {
+  return filterLegislatorsByChamber("Senate", options);
 }
 
 /**
  * Get all representatives
  */
-export function getRepresentatives(): Legislator[] {
-  return filterLegislatorsByChamber("House");
+export function getRepresentatives(options?: FilterOptions): Legislator[] {
+  return filterLegislatorsByChamber("House", options);
 }
 
 /**

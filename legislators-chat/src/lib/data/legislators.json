@@ -1,7 +1,12 @@
 {
+  "congress": 119,
   "version": "119th-congress",
   "lastUpdated": "2025-01-18",
   "source": "unitedstates/congress-legislators",
+  "dateRange": {
+    "start": "2025-01-03",
+    "end": "2027-01-03"
+  },
   "legislators": [
     {
       "id": "sen-warren-ma",
@@ -34,7 +39,8 @@
           "instagram": "senwarren",
           "youtube": "senelizabethwarren"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-sanders-vt",
@@ -66,7 +72,8 @@
           "facebook": "senatorsanders",
           "youtube": "senatorsanders"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-schumer-ny",
@@ -100,7 +107,8 @@
           "instagram": "senschumer",
           "youtube": "SenatorSchumer"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-mcconnell-ky",
@@ -132,7 +140,8 @@
           "facebook": "mitchmcconnell",
           "instagram": "mcconnellpress"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-cruz-tx",
@@ -166,7 +175,8 @@
           "instagram": "sentedcruz",
           "youtube": "sentedcruz"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-cornyn-tx",
@@ -197,7 +207,8 @@
           "facebook": "sen.johncornyn",
           "youtube": "senjohncornyn"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-durbin-il",
@@ -229,7 +240,8 @@
           "facebook": "SenatorDurbin",
           "youtube": "SenatorDurbin"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-graham-sc",
@@ -260,7 +272,8 @@
           "facebook": "USSenatorLindseyGraham",
           "youtube": "USSenLindseyGraham"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-collins-me",
@@ -293,7 +306,8 @@
           "instagram": "sensusancollins",
           "youtube": "SenatorSusanCollins"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-murkowski-ak",
@@ -325,7 +339,8 @@
           "instagram": "senlisamurkowski",
           "youtube": "senatormurkowski"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-klobuchar-mn",
@@ -355,7 +370,8 @@
           "twitter": "@SenAmyKlobuchar",
           "youtube": "senatorklobuchar"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-cantwell-wa",
@@ -386,7 +402,8 @@
           "facebook": "senatorcantwell",
           "youtube": "SenatorCantwell"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-murray-wa",
@@ -417,7 +434,8 @@
           "instagram": "senpattymurray",
           "youtube": "SenatorPattyMurray"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-thune-sd",
@@ -450,7 +468,8 @@
           "instagram": "senjohnthune",
           "youtube": "johnthune"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-grassley-ia",
@@ -483,7 +502,8 @@
           "instagram": "senatorchuckgrassley",
           "youtube": "senchuckgrassley"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-wicker-ms",
@@ -516,7 +536,8 @@
           "instagram": "senatorwicker",
           "youtube": "SenatorWicker"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-barrasso-wy",
@@ -548,7 +569,8 @@
           "facebook": "johnbarrasso",
           "youtube": "barrassowyo"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-whitehouse-ri",
@@ -580,7 +602,8 @@
           "instagram": "SenWhitehouse",
           "youtube": "SenatorWhitehouse"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-fetterman-pa",
@@ -611,7 +634,8 @@
           "facebook": "SenatorFetterman",
           "instagram": "senfettermanpa"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-blumenthal-ct",
@@ -643,7 +667,8 @@
           "facebook": "SenatorBlumenthal",
           "instagram": "senblumenthal"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-booker-nj",
@@ -674,7 +699,8 @@
           "facebook": "corybooker",
           "instagram": "corybooker"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-menendez-nj",
@@ -705,7 +731,8 @@
           "twitter": "@SenatorMenendez",
           "facebook": "senabormenendez"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-hirono-hi",
@@ -736,7 +763,8 @@
           "facebook": "senatorhirono",
           "instagram": "senmaziehirono"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-markey-ma",
@@ -768,7 +796,8 @@
           "facebook": "EdJMarkey",
           "instagram": "senmarkey"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-murphy-ct",
@@ -800,7 +829,8 @@
           "facebook": "ChrisMurphyCT",
           "instagram": "chrismurphyct"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-lee-ut",
@@ -831,7 +861,8 @@
           "facebook": "senatormikelee",
           "instagram": "senmikelee"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-scott-fl",
@@ -862,7 +893,8 @@
           "facebook": "SenRickScott",
           "instagram": "senrickscott"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-rubio-fl",
@@ -893,7 +925,8 @@
           "facebook": "SenatorMarcoRubio",
           "instagram": "senmarcourbio"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-hawley-mo",
@@ -924,7 +957,8 @@
           "facebook": "SenatorHawley",
           "instagram": "senatorhawley"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-cotton-ar",
@@ -955,7 +989,8 @@
           "facebook": "SenatorTomCotton",
           "instagram": "sentomcotton"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-ossoff-ga",
@@ -986,7 +1021,8 @@
           "facebook": "SenOssoff",
           "instagram": "senossoff"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-warnock-ga",
@@ -1018,7 +1054,8 @@
           "facebook": "SenatorWarnock",
           "instagram": "senatorwarnock"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-kennedy-la",
@@ -1049,7 +1086,8 @@
           "facebook": "SenatorJohnKennedy",
           "instagram": "senjohnkennedy"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-gillibrand-ny",
@@ -1080,7 +1118,8 @@
           "facebook": "KirstenGillibrand",
           "instagram": "SenGillibrand"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-padilla-ca",
@@ -1111,7 +1150,8 @@
           "facebook": "SenAlexPadilla",
           "instagram": "senalexpadilla"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-butler-ca",
@@ -1140,7 +1180,8 @@
         "socialMedia": {
           "twitter": "@SenLaphonworker"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-manchin-wv",
@@ -1170,7 +1211,8 @@
           "twitter": "@Sen_JoeManchin",
           "facebook": "JoeManchinIII"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "sen-sinema-az",
@@ -1201,7 +1243,8 @@
           "facebook": "SenatorSinema",
           "instagram": "senatorsinema"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "rep-jeffries-ny-8",
@@ -1236,7 +1279,8 @@
           "facebook": "RepHakeemJeffries",
           "instagram": "repjeffries"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "rep-johnson-la-4",
@@ -1270,7 +1314,8 @@
           "facebook": "RepMikeJohnson",
           "instagram": "RepMikeJohnson"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "rep-scalise-la-1",
@@ -1305,7 +1350,8 @@
           "instagram": "stevescalise",
           "youtube": "RepSteveScalise"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "rep-ocasio-cortez-ny-14",
@@ -1338,7 +1384,8 @@
           "twitter": "@RepAOC",
           "facebook": "repaoc"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "rep-jordan-oh-4",
@@ -1373,7 +1420,8 @@
           "facebook": "repjimjordan",
           "youtube": "RepJimJordan"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "rep-pelosi-ca-11",
@@ -1408,7 +1456,8 @@
           "facebook": "NancyPelosi",
           "youtube": "nancypelosi"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "rep-clyburn-sc-6",
@@ -1443,7 +1492,8 @@
           "instagram": "repjamesclyburn",
           "youtube": "repjamesclyburn"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "rep-waters-ca-43",
@@ -1477,7 +1527,8 @@
           "instagram": "repmaxinewaters",
           "youtube": "MaxineWaters"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "rep-nadler-ny-12",
@@ -1511,7 +1562,8 @@
           "facebook": "CongressmanNadler",
           "youtube": "congressmannadler"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "rep-mccarthy-ca-20",
@@ -1545,7 +1597,8 @@
           "facebook": "RepKevinMcCarthy",
           "instagram": "kevinomccarthy"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "rep-comer-ky-1",
@@ -1580,7 +1633,8 @@
           "facebook": "congressmancomer",
           "instagram": "congressmancomer"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "rep-gaetz-fl-1",
@@ -1614,7 +1668,8 @@
           "facebook": "CongressmanMattGaetz",
           "instagram": "repmattgaetz"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "rep-omar-mn-5",
@@ -1645,7 +1700,8 @@
         "socialMedia": {
           "twitter": "@Ilhan"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "rep-tlaib-mi-12",
@@ -1679,7 +1735,8 @@
           "instagram": "reprashida",
           "youtube": "UCl5GK07sD5TZIhKcsDNSExA"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "rep-pressley-ma-7",
@@ -1713,7 +1770,8 @@
           "instagram": "RepAyannaPressley",
           "youtube": "UCkhjut8oXdxN7HGg5eRT9Fw"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "rep-greene-ga-14",
@@ -1746,7 +1804,8 @@
           "twitter": "@RepMTG",
           "facebook": "RepMarjorieTaylorGreene"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "rep-lieu-ca-36",
@@ -1779,7 +1838,8 @@
           "facebook": "RepTedLieu",
           "instagram": "RepTedLieu"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "rep-khanna-ca-17",
@@ -1813,7 +1873,8 @@
           "facebook": "RepRoKhanna",
           "instagram": "reprokhanna"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "rep-jayapal-wa-7",
@@ -1846,7 +1907,8 @@
           "facebook": "RepJayapal",
           "instagram": "repjayapal"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "rep-swalwell-ca-14",
@@ -1880,7 +1942,8 @@
           "instagram": "repswalwell",
           "youtube": "ericswalwell"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "rep-biggs-az-5",
@@ -1913,7 +1976,8 @@
           "facebook": "RepAndyBiggs",
           "instagram": "repandybiggs"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "rep-gosar-az-9",
@@ -1948,7 +2012,8 @@
           "instagram": "REPGOSAR",
           "youtube": "repgosar"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "rep-raskin-md-8",
@@ -1982,7 +2047,8 @@
           "facebook": "repraskin",
           "instagram": "repraskin"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "rep-crenshaw-tx-2",
@@ -2017,7 +2083,8 @@
           "instagram": "dancrenshawtx",
           "youtube": "UC2XDiCjAHtJqnSEzrHAY5IQ"
         }
-      }
+      },
+      "congress": 119
     },
     {
       "id": "rep-schiff-ca-30",
@@ -2050,7 +2117,8 @@
           "facebook": "RepAdamSchiff",
           "instagram": "repadamschiff"
         }
-      }
+      },
+      "congress": 119
     }
   ]
 }

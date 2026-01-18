@@ -133,6 +133,12 @@ export interface Statement {
   context?: string;
 }
 
+/** Congress number (e.g., 117, 118, 119) */
+export type CongressNumber = 117 | 118 | 119;
+
+/** Legislator status for former members */
+export type LegislatorStatus = "active" | "retired" | "resigned" | "deceased" | "lost_primary" | "did_not_seek_reelection" | "expelled";
+
 /** Full legislator information */
 export interface Legislator {
   id: string;
@@ -143,6 +149,12 @@ export interface Legislator {
   chamber: Chamber;
   state: StateAbbreviation;
   district?: string;
+  /** Congress number this legislator served in */
+  congress?: CongressNumber;
+  /** Status of the legislator (for former members) */
+  status?: LegislatorStatus;
+  /** End date of term for former members */
+  termEnd?: string;
 
   /** Stance on the queried topic */
   stance: Stance;

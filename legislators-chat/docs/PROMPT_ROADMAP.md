@@ -17,70 +17,55 @@ After implementing the prompt changes, please test with sample queries and docum
 
 Core prompt fixes that directly impact user experience and reliability.
 
-### 1.1 Fix PoliSearch tool Usage Conciseness
-
-**Description**: Modify search system prompt to ensure concise use of PoliSearch tool.
-
-**Requirements**:
-- [ ] Update usage of PoliSearch tool to only search targeted info/topics not full prompt expectations
-- [ ] Revise prompt instructions at `lib/prompts/search-system.ts`
-- [ ] Increase limit on number of search results returned from 10 to 20
-
-**Implementation Notes**:
-- Example: Instead of search request being "Transnational repression outreach to representatives", it should be "transnational repression" on a query like "Hey, I am interested in reaching out to representatives about transnational repression"
-- Example: Instead of search request being "What do senators think about climate change?", it should be "climate change"
-- See `PROMPT_ENGINEERING.md` → Search System Prompt → PoliSearch Tool Usage
-- See `API_SPEC.md` → PoliSearch Tool → Search Result Limits
-
----
-
-### 1.4 Simplify Sentiment Scale
-
-**Description**: Replace 0-100 sentiment scale with 5-tier system for more accurate and interpretable results.
-
-**Requirements**:
-- [ ] Update sentiment prompt at `lib/sentiment.ts:264-306`
-- [ ] Define 5-tier scale: Strong Oppose / Lean Oppose / Neutral / Lean Support / Strong Support
-- [ ] Add confidence indicator (High/Medium/Low based on statement count)
-- [ ] Update response JSON schema to include tier and confidence
-- [ ] Update sentiment UI components to display new format
-- [ ] Validate with 20+ speaker samples
-
-**Implementation Notes**:
-- Tiers map to score ranges: 0-20, 21-40, 41-60, 61-80, 81-100
-- Confidence: High (5+ statements), Medium (2-4), Low (1)
-- See `PROMPT_ENGINEERING.md` → Sentiment Analysis → Revised Output Format
-
-**New Output Schema**:
-```json
-{
-  "speaker-id": {
-    "score": 75,
-    "tier": "lean_support",
-    "confidence": "high",
-    "basis": { "statements": 4, "votes": 2 }
-  }
-}
-```
-
----
-
-### 1.5 Add Query Clarification Prompt
+### 1.5 Add Query Clarification Prompt ✅
 
 **Description**: Create new prompt to handle ambiguous queries before attempting search.
 
-**Requirements**:
-- [ ] Create new file `lib/prompts/clarification.ts`
-- [ ] Define ambiguity detection patterns (vague topic, missing referent, scope unclear)
-- [ ] Create `buildClarificationPrompt()` function
-- [ ] Integrate with search orchestration to detect when clarification needed
-- [ ] Add UI for displaying clarification questions
-- [ ] Test with 15+ ambiguous query examples
+**Status**: COMPLETED
 
-**Implementation Notes**:
-- Ambiguity types: vague ("taxes"), missing referent ("the bill"), scope ("what do they think")
-- Keep clarifying questions brief, offer 2-3 specific options
-- See `PROMPT_ENGINEERING.md` → New Prompts Needed → Query Clarification Prompt
+**Requirements**:
+- [x] Create new file `lib/prompts/clarification.ts`
+- [x] Define ambiguity detection patterns (vague topic, missing referent, scope unclear)
+- [x] Create `buildClarificationPrompt()` function
+- [x] Integrate with search orchestration to detect when clarification needed
+- [x] Add UI for displaying clarification questions
+- [x] Test with 15+ ambiguous query examples (test file created)
+
+**Implementation Summary**:
+
+Files created/modified:
+- `src/lib/prompts/clarification.ts` - Core clarification logic with 5 ambiguity types
+- `src/lib/prompts/index.ts` - Added exports for clarification module
+- `src/hooks/use-search-orchestration.tsx` - Added clarification check before search
+- `src/components/chat/clarification-options.tsx` - UI component for displaying options
+- `src/components/chat/index.ts` - Added clarification component export
+- `src/lib/prompts/__tests__/clarification.test.ts` - Comprehensive test suite
+
+**Ambiguity Types Implemented**:
+1. `vague_topic` - Single-word topics like "taxes", "healthcare"
+2. `missing_referent` - References like "the bill", "that senator"
+3. `scope_unclear` - Who is being asked about: "what do they think"
+4. `time_ambiguous` - Vague time references: "recently", "lately"
+5. `multiple_interpretations` - Queries that could mean different things
+
+**Key Functions**:
+- `detectAmbiguity(query, conversationLength)` - Detects ambiguity types with confidence scoring
+- `generateClarificationQuestion(query, detection)` - Creates question with 2-4 options
+- `analyzeQueryForClarification(query, conversationLength)` - Full analysis with suggested question
+- `buildClarificationPrompt(query, clarification)` - Prompt for AI to ask clarification
+- `isClarificationResponse(query, previousClarification)` - Detects if user is responding to options
+- `refineQueryFromClarification(originalQuery, userResponse, clarification)` - Refines query based on response
+
+**Orchestration Flow**:
+1. User submits query
+2. Hook checks `analyzeQueryForClarification()` if first message
+3. If confidence >= 0.5 and clarification needed, returns early with options
+4. UI displays `ClarificationOptions` component with clickable chips
+5. User selects option or types custom response
+6. Next query skips clarification (`skipClarification: true`)
+
+**Topic Clarifications** (predefined sub-topics for 10 common vague queries):
+- taxes, healthcare, immigration, climate, education, guns, abortion, economy, spending, security
 
 **Sample Prompt**:
 ```
@@ -90,6 +75,13 @@ VAGUE TOPIC: "taxes" → "Are you interested in income taxes, corporate taxes, o
 MISSING REFERENT: "the bill" → "Which bill? Any details like topic, number, or sponsor help."
 SCOPE: "what do they think" → "Would you like statements from Democrats, Republicans, or both?"
 ```
+
+**Edge Cases Documented in Tests**:
+- Empty queries (no clarification needed)
+- Very long specific queries (no clarification needed)
+- Mixed case handling
+- Bill numbers make queries specific
+- Follow-up messages don't trigger missing_referent detection
 
 ---
 

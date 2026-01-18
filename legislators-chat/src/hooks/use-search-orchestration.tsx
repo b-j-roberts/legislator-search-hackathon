@@ -15,6 +15,7 @@ import * as React from "react";
 import { parseAIResponse, toSearchParams, buildCorrectionPrompt, hasSearchIntent } from "@/lib/parse-ai-response";
 import { searchContent, type SearchResponse, type SearchResult, SearchServiceError } from "@/lib/search-service";
 import { buildSearchResultsPrompt, buildSearchSystemPrompt, type SearchResultForPrompt, type SearchResultsMetadata } from "@/lib/prompts/search-system";
+import { analyzeQueryForClarification, type ClarificationQuestion, type ClarificationResult } from "@/lib/prompts/clarification";
 import type { MessageRole } from "@/lib/types";
 
 // =============================================================================
@@ -24,6 +25,8 @@ import type { MessageRole } from "@/lib/types";
 /** State of the orchestration flow */
 export type OrchestrationStatus =
   | "idle"
+  | "checking_clarity"
+  | "awaiting_clarification"
   | "sending_initial"
   | "parsing_response"
   | "executing_search"
@@ -58,6 +61,10 @@ export interface OrchestrationResult {
   searchPerformed: boolean;
   /** Any error that occurred */
   error: OrchestrationError | null;
+  /** Clarification question if the query was ambiguous */
+  clarification: ClarificationQuestion | null;
+  /** Whether we're waiting for user clarification */
+  needsClarification: boolean;
 }
 
 /** Message in the orchestration conversation */
@@ -78,6 +85,10 @@ export interface OrchestrationConfig {
     state?: string;
     chamber?: "house" | "senate";
   };
+  /** Skip clarification check (e.g., when responding to a clarification) */
+  skipClarification?: boolean;
+  /** Minimum confidence to trigger clarification (default: 0.5) */
+  clarificationThreshold?: number;
 }
 
 /** Hook return value */
@@ -106,6 +117,8 @@ const DEFAULT_MAX_RETRIES = 2;
 
 const STATUS_MESSAGES: Record<OrchestrationStatus, string> = {
   idle: "",
+  checking_clarity: "Understanding your question...",
+  awaiting_clarification: "Need a bit more information...",
   sending_initial: "Analyzing your question...",
   parsing_response: "Processing response...",
   executing_search: "Searching congressional records...",
@@ -113,6 +126,9 @@ const STATUS_MESSAGES: Record<OrchestrationStatus, string> = {
   complete: "",
   error: "An error occurred",
 };
+
+/** Default clarification confidence threshold */
+const DEFAULT_CLARIFICATION_THRESHOLD = 0.5;
 
 // =============================================================================
 // API Functions
@@ -195,6 +211,8 @@ export function useSearchOrchestration(): UseSearchOrchestrationReturn {
     ): Promise<OrchestrationResult> => {
       const maxRetries = config.maxRetries ?? DEFAULT_MAX_RETRIES;
       const useSearchPrompt = config.useSearchPrompt ?? true;
+      const skipClarification = config.skipClarification ?? false;
+      const clarificationThreshold = config.clarificationThreshold ?? DEFAULT_CLARIFICATION_THRESHOLD;
 
       // Track conversation for multi-turn
       const conversation: OrchestrationMessage[] = [...previousMessages];
@@ -204,6 +222,35 @@ export function useSearchOrchestration(): UseSearchOrchestrationReturn {
       let searchQuery: string | null = null;
 
       try {
+        // Step 0: Check if clarification is needed (for first message or when not skipped)
+        if (!skipClarification && previousMessages.length === 0) {
+          setStatus("checking_clarity");
+          const clarificationResult = analyzeQueryForClarification(userMessage, previousMessages.length);
+
+          if (
+            clarificationResult.needsClarification &&
+            clarificationResult.detection.confidence >= clarificationThreshold &&
+            clarificationResult.suggestedQuestion
+          ) {
+            setStatus("awaiting_clarification");
+
+            // Build a conversational clarification response
+            const question = clarificationResult.suggestedQuestion;
+            const optionsText = question.options.map((opt) => `• ${opt.label}`).join("\n");
+            const clarificationContent = `${question.question}\n\n${optionsText}`;
+
+            return {
+              content: clarificationContent,
+              searchResults: null,
+              searchQuery: null,
+              searchPerformed: false,
+              error: null,
+              clarification: clarificationResult.suggestedQuestion,
+              needsClarification: true,
+            };
+          }
+        }
+
         // Step 1: Send initial message to Maple
         setStatus("sending_initial");
         lastResponse = await sendChatMessage(
@@ -309,6 +356,8 @@ export function useSearchOrchestration(): UseSearchOrchestrationReturn {
           searchQuery,
           searchPerformed: searchResults !== null,
           error: null,
+          clarification: null,
+          needsClarification: false,
         };
       } catch (error) {
         setStatus("error");
@@ -326,6 +375,8 @@ export function useSearchOrchestration(): UseSearchOrchestrationReturn {
               code: "API_ERROR",
               message: errorMessage,
             },
+            clarification: null,
+            needsClarification: false,
           };
         }
 
@@ -338,6 +389,8 @@ export function useSearchOrchestration(): UseSearchOrchestrationReturn {
             code: "API_ERROR",
             message: errorMessage,
           },
+          clarification: null,
+          needsClarification: false,
         };
       }
     },

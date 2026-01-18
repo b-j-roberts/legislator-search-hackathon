@@ -1,0 +1,370 @@
+{
+  "congress": 117,
+  "version": "117th-congress",
+  "lastUpdated": "2025-01-18",
+  "source": "unitedstates/congress-legislators",
+  "dateRange": {
+    "start": "2021-01-03",
+    "end": "2023-01-03"
+  },
+  "legislators": [
+    {
+      "id": "sen-warren-ma-117",
+      "bioguideId": "W000817",
+      "name": "Elizabeth Warren",
+      "aliases": ["Senator Warren", "Sen. Warren", "Sen Warren", "Senator Elizabeth Warren"],
+      "party": "D",
+      "chamber": "Senate",
+      "state": "MA",
+      "congress": 117,
+      "contact": {
+        "phone": "202-224-4543",
+        "office": "309 Hart Senate Office Building, Washington, DC 20510",
+        "website": "https://www.warren.senate.gov",
+        "contactPage": { "url": "https://www.warren.senate.gov/contact", "note": "Massachusetts residents only." },
+        "socialMedia": { "twitter": "@SenWarren", "facebook": "senatorelizabethwarren" }
+      }
+    },
+    {
+      "id": "sen-sanders-vt-117",
+      "bioguideId": "S000033",
+      "name": "Bernard Sanders",
+      "aliases": ["Bernie Sanders", "Senator Sanders", "Sen. Sanders", "Senator Bernie Sanders"],
+      "party": "I",
+      "chamber": "Senate",
+      "state": "VT",
+      "congress": 117,
+      "contact": {
+        "phone": "202-224-5141",
+        "office": "332 Dirksen Senate Office Building, Washington, DC 20510",
+        "website": "https://www.sanders.senate.gov",
+        "contactPage": { "url": "https://www.sanders.senate.gov/contact/", "note": "Vermont residents prioritized." },
+        "socialMedia": { "twitter": "@SenSanders", "facebook": "senatorsanders" }
+      }
+    },
+    {
+      "id": "sen-schumer-ny-117",
+      "bioguideId": "S000148",
+      "name": "Charles Schumer",
+      "aliases": ["Chuck Schumer", "Senator Schumer", "Sen. Schumer", "Majority Leader Schumer"],
+      "party": "D",
+      "chamber": "Senate",
+      "state": "NY",
+      "congress": 117,
+      "contact": {
+        "phone": "202-224-6542",
+        "office": "322 Hart Senate Office Building, Washington, DC 20510",
+        "website": "https://www.schumer.senate.gov",
+        "contactPage": { "url": "https://www.schumer.senate.gov/contact/email-chuck", "note": "New York residents only." },
+        "socialMedia": { "twitter": "@SenSchumer", "facebook": "senschumer" }
+      }
+    },
+    {
+      "id": "sen-mcconnell-ky-117",
+      "bioguideId": "M000355",
+      "name": "Mitch McConnell",
+      "aliases": ["Senator McConnell", "Sen. McConnell", "Minority Leader McConnell"],
+      "party": "R",
+      "chamber": "Senate",
+      "state": "KY",
+      "congress": 117,
+      "contact": {
+        "phone": "202-224-2541",
+        "office": "317 Russell Senate Office Building, Washington, DC 20510",
+        "website": "https://www.mcconnell.senate.gov",
+        "contactPage": { "url": "https://www.mcconnell.senate.gov/public/index.cfm?p=contact", "note": "Kentucky residents only." },
+        "socialMedia": { "twitter": "@McConnellPress", "facebook": "mitchmcconnell" }
+      }
+    },
+    {
+      "id": "sen-portman-oh-117",
+      "bioguideId": "P000449",
+      "name": "Rob Portman",
+      "aliases": ["Senator Portman", "Sen. Portman", "Robert Portman", "Senator Rob Portman"],
+      "party": "R",
+      "chamber": "Senate",
+      "state": "OH",
+      "congress": 117,
+      "status": "retired",
+      "termEnd": "2023-01-03",
+      "contact": {
+        "phone": "202-224-3353",
+        "office": "448 Russell Senate Office Building, Washington, DC 20510",
+        "website": "https://www.portman.senate.gov",
+        "socialMedia": { "twitter": "@senaborportman" }
+      }
+    },
+    {
+      "id": "sen-toomey-pa-117",
+      "bioguideId": "T000461",
+      "name": "Pat Toomey",
+      "aliases": ["Senator Toomey", "Sen. Toomey", "Patrick Toomey", "Senator Pat Toomey"],
+      "party": "R",
+      "chamber": "Senate",
+      "state": "PA",
+      "congress": 117,
+      "status": "retired",
+      "termEnd": "2023-01-03",
+      "contact": {
+        "phone": "202-224-4254",
+        "office": "248 Russell Senate Office Building, Washington, DC 20510",
+        "website": "https://www.toomey.senate.gov",
+        "socialMedia": { "twitter": "@SenToomey" }
+      }
+    },
+    {
+      "id": "sen-shelby-al-117",
+      "bioguideId": "S000320",
+      "name": "Richard Shelby",
+      "aliases": ["Senator Shelby", "Sen. Shelby", "Richard C. Shelby", "Senator Richard Shelby"],
+      "party": "R",
+      "chamber": "Senate",
+      "state": "AL",
+      "congress": 117,
+      "status": "retired",
+      "termEnd": "2023-01-03",
+      "contact": {
+        "phone": "202-224-5744",
+        "office": "304 Russell Senate Office Building, Washington, DC 20510",
+        "website": "https://www.shelby.senate.gov",
+        "socialMedia": { "twitter": "@SenShelby" }
+      }
+    },
+    {
+      "id": "sen-blunt-mo-117",
+      "bioguideId": "B000575",
+      "name": "Roy Blunt",
+      "aliases": ["Senator Blunt", "Sen. Blunt", "Senator Roy Blunt"],
+      "party": "R",
+      "chamber": "Senate",
+      "state": "MO",
+      "congress": 117,
+      "status": "retired",
+      "termEnd": "2023-01-03",
+      "contact": {
+        "phone": "202-224-5721",
+        "office": "260 Russell Senate Office Building, Washington, DC 20510",
+        "website": "https://www.blunt.senate.gov",
+        "socialMedia": { "twitter": "@RoyBlunt" }
+      }
+    },
+    {
+      "id": "sen-leahy-vt-117",
+      "bioguideId": "L000174",
+      "name": "Patrick Leahy",
+      "aliases": ["Senator Leahy", "Sen. Leahy", "Pat Leahy", "Senator Patrick Leahy"],
+      "party": "D",
+      "chamber": "Senate",
+      "state": "VT",
+      "congress": 117,
+      "status": "retired",
+      "termEnd": "2023-01-03",
+      "contact": {
+        "phone": "202-224-4242",
+        "office": "437 Russell Senate Office Building, Washington, DC 20510",
+        "website": "https://www.leahy.senate.gov",
+        "socialMedia": { "twitter": "@SenatorLeahy" }
+      }
+    },
+    {
+      "id": "sen-inhofe-ok-117",
+      "bioguideId": "I000024",
+      "name": "Jim Inhofe",
+      "aliases": ["Senator Inhofe", "Sen. Inhofe", "James Inhofe", "Senator Jim Inhofe"],
+      "party": "R",
+      "chamber": "Senate",
+      "state": "OK",
+      "congress": 117,
+      "status": "retired",
+      "termEnd": "2023-01-03",
+      "contact": {
+        "phone": "202-224-4721",
+        "office": "205 Russell Senate Office Building, Washington, DC 20510",
+        "website": "https://www.inhofe.senate.gov",
+        "socialMedia": { "twitter": "@JimInhofe" }
+      }
+    },
+    {
+      "id": "rep-pelosi-ca-12-117",
+      "bioguideId": "P000197",
+      "name": "Nancy Pelosi",
+      "aliases": ["Representative Pelosi", "Rep. Pelosi", "Speaker Pelosi", "Congresswoman Pelosi"],
+      "party": "D",
+      "chamber": "House",
+      "state": "CA",
+      "district": "12",
+      "congress": 117,
+      "contact": {
+        "phone": "202-225-4965",
+        "office": "2263 Rayburn House Office Building, Washington, DC 20515",
+        "website": "https://pelosi.house.gov",
+        "contactPage": { "url": "https://pelosi.house.gov/contact-me/email-me", "note": "CA-12 constituents only." },
+        "socialMedia": { "twitter": "@SpeakerPelosi", "facebook": "NancyPelosi" }
+      }
+    },
+    {
+      "id": "rep-cheney-wy-117",
+      "bioguideId": "C001109",
+      "name": "Liz Cheney",
+      "aliases": ["Representative Cheney", "Rep. Cheney", "Congresswoman Cheney", "Rep. Liz Cheney"],
+      "party": "R",
+      "chamber": "House",
+      "state": "WY",
+      "district": "At-Large",
+      "congress": 117,
+      "status": "lost_primary",
+      "termEnd": "2023-01-03",
+      "contact": {
+        "phone": "202-225-2311",
+        "office": "416 Cannon House Office Building, Washington, DC 20515",
+        "website": "https://cheney.house.gov",
+        "socialMedia": { "twitter": "@RepLizCheney" }
+      }
+    },
+    {
+      "id": "rep-kinzinger-il-16-117",
+      "bioguideId": "K000378",
+      "name": "Adam Kinzinger",
+      "aliases": ["Representative Kinzinger", "Rep. Kinzinger", "Congressman Kinzinger", "Rep. Adam Kinzinger"],
+      "party": "R",
+      "chamber": "House",
+      "state": "IL",
+      "district": "16",
+      "congress": 117,
+      "status": "did_not_seek_reelection",
+      "termEnd": "2023-01-03",
+      "contact": {
+        "phone": "202-225-3635",
+        "office": "2245 Rayburn House Office Building, Washington, DC 20515",
+        "website": "https://kinzinger.house.gov",
+        "socialMedia": { "twitter": "@RepKinzinger" }
+      }
+    },
+    {
+      "id": "rep-ocasio-cortez-ny-14-117",
+      "bioguideId": "O000172",
+      "name": "Alexandria Ocasio-Cortez",
+      "aliases": ["Representative Ocasio-Cortez", "Rep. Ocasio-Cortez", "AOC", "Congresswoman Ocasio-Cortez"],
+      "party": "D",
+      "chamber": "House",
+      "state": "NY",
+      "district": "14",
+      "congress": 117,
+      "contact": {
+        "phone": "202-225-3965",
+        "office": "229 Cannon House Office Building, Washington, DC 20515",
+        "website": "https://ocasio-cortez.house.gov",
+        "contactPage": { "url": "https://ocasio-cortez.house.gov/contact", "note": "NY-14 constituents only." },
+        "socialMedia": { "twitter": "@RepAOC", "facebook": "repaoc" }
+      }
+    },
+    {
+      "id": "rep-jordan-oh-4-117",
+      "bioguideId": "J000289",
+      "name": "Jim Jordan",
+      "aliases": ["Representative Jordan", "Rep. Jordan", "Congressman Jordan", "Rep. Jim Jordan"],
+      "party": "R",
+      "chamber": "House",
+      "state": "OH",
+      "district": "4",
+      "congress": 117,
+      "contact": {
+        "phone": "202-225-2676",
+        "office": "2056 Rayburn House Office Building, Washington, DC 20515",
+        "website": "https://jordan.house.gov",
+        "contactPage": { "url": "https://jordan.house.gov/contact", "note": "OH-4 constituents prioritized." },
+        "socialMedia": { "twitter": "@Jim_Jordan", "facebook": "repjimjordan" }
+      }
+    },
+    {
+      "id": "rep-mccarthy-ca-23-117",
+      "bioguideId": "M001165",
+      "name": "Kevin McCarthy",
+      "aliases": ["Representative McCarthy", "Rep. McCarthy", "Minority Leader McCarthy", "Congressman McCarthy"],
+      "party": "R",
+      "chamber": "House",
+      "state": "CA",
+      "district": "23",
+      "congress": 117,
+      "contact": {
+        "phone": "202-225-2915",
+        "office": "2468 Rayburn House Office Building, Washington, DC 20515",
+        "website": "https://kevinmccarthy.house.gov",
+        "contactPage": { "url": "https://kevinmccarthy.house.gov/contact", "note": "CA-23 constituents prioritized." },
+        "socialMedia": { "twitter": "@GOPLeader", "facebook": "RepKevinMcCarthy" }
+      }
+    },
+    {
+      "id": "rep-schiff-ca-28-117",
+      "bioguideId": "S001150",
+      "name": "Adam Schiff",
+      "aliases": ["Representative Schiff", "Rep. Schiff", "Congressman Schiff", "Rep. Adam Schiff"],
+      "party": "D",
+      "chamber": "House",
+      "state": "CA",
+      "district": "28",
+      "congress": 117,
+      "contact": {
+        "phone": "202-225-4176",
+        "office": "2309 Rayburn House Office Building, Washington, DC 20515",
+        "website": "https://schiff.house.gov",
+        "contactPage": { "url": "https://schiff.house.gov/contact", "note": "CA-28 constituents only." },
+        "socialMedia": { "twitter": "@RepAdamSchiff", "facebook": "RepAdamSchiff" }
+      }
+    },
+    {
+      "id": "rep-stefanik-ny-21-117",
+      "bioguideId": "S001196",
+      "name": "Elise Stefanik",
+      "aliases": ["Representative Stefanik", "Rep. Stefanik", "Congresswoman Stefanik", "Rep. Elise Stefanik"],
+      "party": "R",
+      "chamber": "House",
+      "state": "NY",
+      "district": "21",
+      "congress": 117,
+      "contact": {
+        "phone": "202-225-4611",
+        "office": "2211 Rayburn House Office Building, Washington, DC 20515",
+        "website": "https://stefanik.house.gov",
+        "contactPage": { "url": "https://stefanik.house.gov/contact", "note": "NY-21 constituents prioritized." },
+        "socialMedia": { "twitter": "@RepStefanik", "facebook": "RepEliseStefanik" }
+      }
+    },
+    {
+      "id": "rep-swalwell-ca-15-117",
+      "bioguideId": "S001193",
+      "name": "Eric Swalwell",
+      "aliases": ["Representative Swalwell", "Rep. Swalwell", "Congressman Swalwell", "Rep. Eric Swalwell"],
+      "party": "D",
+      "chamber": "House",
+      "state": "CA",
+      "district": "15",
+      "congress": 117,
+      "contact": {
+        "phone": "202-225-5065",
+        "office": "407 Cannon House Office Building, Washington, DC 20515",
+        "website": "https://swalwell.house.gov",
+        "contactPage": { "url": "https://swalwell.house.gov/contact", "note": "CA-15 constituents only." },
+        "socialMedia": { "twitter": "@RepSwalwell", "facebook": "CongressmanEricSwalwell" }
+      }
+    },
+    {
+      "id": "rep-raskin-md-8-117",
+      "bioguideId": "R000606",
+      "name": "Jamie Raskin",
+      "aliases": ["Representative Raskin", "Rep. Raskin", "Congressman Raskin", "Rep. Jamie Raskin"],
+      "party": "D",
+      "chamber": "House",
+      "state": "MD",
+      "district": "8",
+      "congress": 117,
+      "contact": {
+        "phone": "202-225-5341",
+        "office": "2242 Rayburn House Office Building, Washington, DC 20515",
+        "website": "https://raskin.house.gov",
+        "contactPage": { "url": "https://raskin.house.gov/contact", "note": "MD-8 constituents only." },
+        "socialMedia": { "twitter": "@RepRaskin", "facebook": "repraskin" }
+      }
+    }
+  ]
+}

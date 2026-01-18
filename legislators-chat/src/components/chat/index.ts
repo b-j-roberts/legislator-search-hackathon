@@ -2,3 +2,9 @@ export { ChatInput, type ChatInputProps } from "./chat-input";
 export { ChatBubble, type ChatBubbleProps } from "./chat-bubble";
 export { ChatMessages, type ChatMessagesProps } from "./chat-messages";
 export { TypingIndicator, type TypingIndicatorProps } from "./typing-indicator";
+export {
+  ClarificationOptions,
+  InlineClarificationOptions,
+  type ClarificationOptionsProps,
+  type InlineClarificationProps,
+} from "./clarification-options";

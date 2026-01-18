@@ -311,9 +311,9 @@ Please provide a corrected response with a valid JSON search block in this exact
 {
   "action": "search",
   "params": {
-    "q": "your search query",
+    "q": "topic keywords",
     "type": "hearing,floor_speech",
-    "limit": 10,
+    "limit": 20,
     "enrich": true
   }
 }

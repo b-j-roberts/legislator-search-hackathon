@@ -168,22 +168,15 @@ export function Header() {
 
             {/* New Conversation Button */}
             {!isSidebarOpen && conversations.length > 0 && !isContactFlow && (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={newConversation}
-                    className="hidden sm:flex h-9 w-9 rounded-lg hover:bg-secondary"
-                    aria-label="New conversation"
-                  >
-                    <MessageSquarePlus className="h-[18px] w-[18px] text-muted-foreground" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>New conversation</p>
-                </TooltipContent>
-              </Tooltip>
+              <Button
+                variant="outline"
+                onClick={newConversation}
+                className="hidden sm:flex h-9 rounded-lg gap-2 px-3"
+                aria-label="New conversation"
+              >
+                <MessageSquarePlus className="h-4 w-4" />
+                <span className="text-sm font-medium">New Chat</span>
+              </Button>
             )}
 
             {/* Divider */}
