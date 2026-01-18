@@ -8,6 +8,7 @@ use std::fmt;
 #[derive(Debug)]
 pub enum ApiError {
     Validation { message: String, field: Option<String> },
+    NotFound { message: String },
     Internal(String),
 }
 
@@ -15,6 +16,7 @@ impl fmt::Display for ApiError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::Validation { message, .. } => write!(f, "Validation error: {message}"),
+            Self::NotFound { message } => write!(f, "Not found: {message}"),
             Self::Internal(msg) => write!(f, "Internal error: {msg}"),
         }
     }
@@ -34,9 +36,12 @@ impl IntoResponse for ApiError {
             Self::Validation { message, field } => {
                 (StatusCode::BAD_REQUEST, "validation_error", message, field)
             }
+            Self::NotFound { message } => {
+                (StatusCode::NOT_FOUND, "not_found", message, None)
+            }
             Self::Internal(msg) => {
                 tracing::error!("Internal error: {}", msg);
-                (StatusCode::INTERNAL_SERVER_ERROR, "internal_error", "Search operation failed".to_string(), None)
+                (StatusCode::INTERNAL_SERVER_ERROR, "internal_error", "Operation failed".to_string(), None)
             }
         };
 

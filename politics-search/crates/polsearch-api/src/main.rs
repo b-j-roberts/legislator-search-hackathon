@@ -26,7 +26,7 @@ pub struct AppState {
 
 #[derive(OpenApi)]
 #[openapi(
-    paths(routes::health, routes::search),
+    paths(routes::health, routes::search, routes::get_content),
     components(schemas(
         models::HealthResponse,
         models::SearchResponse,
@@ -34,7 +34,8 @@ pub struct AppState {
         models::SearchMode,
         models::ContentType,
         models::ContextScope,
-        models::Chamber
+        models::Chamber,
+        models::ContentDetailResponse
     )),
     info(
         title = "PolSearch API",
@@ -91,6 +92,7 @@ async fn main() -> Result<()> {
     let app = Router::new()
         .route("/health", get(routes::health))
         .route("/search", get(routes::search))
+        .route("/content/{id}", get(routes::get_content))
         .merge(SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", ApiDoc::openapi()))
         .layer(CorsLayer::very_permissive())
         .layer(TraceLayer::new_for_http())

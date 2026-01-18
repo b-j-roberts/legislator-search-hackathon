@@ -1,10 +1,22 @@
 //! Hearing repository
 
 use crate::DbError;
+use chrono::NaiveDate;
 use polsearch_core::Hearing;
 use sqlx::PgPool;
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 use uuid::Uuid;
+
+/// Metadata for a hearing, used for search result enrichment
+#[derive(Debug, Clone)]
+pub struct HearingMetadata {
+    pub title: String,
+    pub committee: Option<String>,
+    pub date: Option<NaiveDate>,
+    pub source_url: Option<String>,
+    pub chambers: Option<String>,
+    pub congress: Option<i16>,
+}
 
 pub struct HearingRepo<'a> {
     pool: &'a PgPool,
@@ -246,22 +258,26 @@ impl<'a> HearingRepo<'a> {
         Ok(ids.into_iter().map(|(id,)| id).collect())
     }
 
-    /// Batch fetch hearing metadata (title, committee, date, source_url) for search result enrichment
+    /// Batch fetch hearing metadata for search result enrichment
     ///
     /// # Errors
     /// Returns `DbError` if the query fails
-    pub async fn get_metadata_batch(
-        &self,
-        ids: &[Uuid],
-    ) -> Result<std::collections::HashMap<Uuid, (String, Option<String>, Option<chrono::NaiveDate>, Option<String>)>, DbError> {
-        use std::collections::HashMap;
-
+    pub async fn get_metadata_batch(&self, ids: &[Uuid]) -> Result<HashMap<Uuid, HearingMetadata>, DbError> {
         if ids.is_empty() {
             return Ok(HashMap::new());
         }
 
-        let rows: Vec<(Uuid, String, Option<String>, Option<chrono::NaiveDate>, Option<String>)> = sqlx::query_as(
-            "SELECT id, title, committee_raw, hearing_date, source_url FROM hearings WHERE id = ANY($1)",
+        let rows: Vec<(
+            Uuid,
+            String,
+            Option<String>,
+            Option<NaiveDate>,
+            Option<String>,
+            Option<Vec<String>>,
+            Option<i16>,
+        )> = sqlx::query_as(
+            "SELECT id, title, committee_raw, hearing_date, source_url, chambers, congress
+             FROM hearings WHERE id = ANY($1)",
         )
         .bind(ids)
         .fetch_all(self.pool)
@@ -269,7 +285,20 @@ impl<'a> HearingRepo<'a> {
 
         Ok(rows
             .into_iter()
-            .map(|(id, title, committee, date, source_url)| (id, (title, committee, date, source_url)))
+            .map(|(id, title, committee, date, source_url, chambers, congress)| {
+                let chambers_str = chambers.map(|c| c.join(", "));
+                (
+                    id,
+                    HearingMetadata {
+                        title,
+                        committee,
+                        date,
+                        source_url,
+                        chambers: chambers_str,
+                        congress,
+                    },
+                )
+            })
             .collect())
     }
 
@@ -280,15 +309,22 @@ impl<'a> HearingRepo<'a> {
     pub async fn get_metadata_batch_by_package_id(
         &self,
         package_ids: &[String],
-    ) -> Result<std::collections::HashMap<String, (String, Option<String>, Option<chrono::NaiveDate>, Option<String>)>, DbError> {
-        use std::collections::HashMap;
-
+    ) -> Result<HashMap<String, HearingMetadata>, DbError> {
         if package_ids.is_empty() {
             return Ok(HashMap::new());
         }
 
-        let rows: Vec<(String, String, Option<String>, Option<chrono::NaiveDate>, Option<String>)> = sqlx::query_as(
-            "SELECT package_id, title, committee_raw, hearing_date, source_url FROM hearings WHERE package_id = ANY($1)",
+        let rows: Vec<(
+            String,
+            String,
+            Option<String>,
+            Option<NaiveDate>,
+            Option<String>,
+            Option<Vec<String>>,
+            Option<i16>,
+        )> = sqlx::query_as(
+            "SELECT package_id, title, committee_raw, hearing_date, source_url, chambers, congress
+             FROM hearings WHERE package_id = ANY($1)",
         )
         .bind(package_ids)
         .fetch_all(self.pool)
@@ -296,7 +332,20 @@ impl<'a> HearingRepo<'a> {
 
         Ok(rows
             .into_iter()
-            .map(|(pkg_id, title, committee, date, source_url)| (pkg_id, (title, committee, date, source_url)))
+            .map(|(pkg_id, title, committee, date, source_url, chambers, congress)| {
+                let chambers_str = chambers.map(|c| c.join(", "));
+                (
+                    pkg_id,
+                    HearingMetadata {
+                        title,
+                        committee,
+                        date,
+                        source_url,
+                        chambers: chambers_str,
+                        congress,
+                    },
+                )
+            })
             .collect())
     }
 }

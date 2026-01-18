@@ -48,6 +48,18 @@ pub struct SearchResult {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub source_url: Option<String>,
 
+    /// Committee name (hearings only, enriched)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub committee: Option<String>,
+
+    /// Chamber: "House", "Senate", or "House, Senate" for joint (enriched)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub chamber: Option<String>,
+
+    /// Congress number (hearings only, enriched)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub congress: Option<i16>,
+
     /// Context segments before this result
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub context_before: Vec<String>,
@@ -87,4 +99,47 @@ pub struct SearchResponse {
 #[derive(Debug, Serialize, ToSchema)]
 pub struct HealthResponse {
     pub status: &'static str,
+}
+
+/// Content detail response for a single hearing or floor speech
+#[derive(Debug, Serialize, ToSchema)]
+pub struct ContentDetailResponse {
+    /// Content ID
+    pub id: Uuid,
+
+    /// Content type ("hearing" or "floor_speech")
+    pub content_type: String,
+
+    /// Content title
+    pub title: String,
+
+    /// Content date (YYYY-MM-DD format)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub date: Option<String>,
+
+    /// Source URL to the original document on GovInfo
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub source_url: Option<String>,
+
+    /// Committee name (hearings only)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub committee: Option<String>,
+
+    /// Chamber(s): "House", "Senate", or "House, Senate" for joint hearings
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub chambers: Option<String>,
+
+    /// Congress number (hearings only)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub congress: Option<i16>,
+
+    /// Page type (floor speeches only)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub page_type: Option<String>,
+
+    /// Total number of statements in this content
+    pub total_statements: i32,
+
+    /// Total number of searchable segments in this content
+    pub total_segments: i32,
 }

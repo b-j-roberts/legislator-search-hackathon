@@ -1,10 +1,20 @@
 //! Floor speech repository
 
 use crate::DbError;
+use chrono::NaiveDate;
 use polsearch_core::FloorSpeech;
 use sqlx::PgPool;
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 use uuid::Uuid;
+
+/// Metadata for a floor speech, used for search result enrichment
+#[derive(Debug, Clone)]
+pub struct FloorSpeechMetadata {
+    pub title: String,
+    pub chamber: Option<String>,
+    pub date: Option<NaiveDate>,
+    pub source_url: Option<String>,
+}
 
 pub struct FloorSpeechRepo<'a> {
     pool: &'a PgPool,
@@ -219,21 +229,16 @@ impl<'a> FloorSpeechRepo<'a> {
         Ok(ids.into_iter().map(|(id,)| id).collect())
     }
 
-    /// Batch fetch floor speech metadata (title, chamber, date, source_url) for search result enrichment
+    /// Batch fetch floor speech metadata for search result enrichment
     ///
     /// # Errors
     /// Returns `DbError` if the query fails
-    pub async fn get_metadata_batch(
-        &self,
-        ids: &[Uuid],
-    ) -> Result<std::collections::HashMap<Uuid, (String, Option<String>, Option<chrono::NaiveDate>, Option<String>)>, DbError> {
-        use std::collections::HashMap;
-
+    pub async fn get_metadata_batch(&self, ids: &[Uuid]) -> Result<HashMap<Uuid, FloorSpeechMetadata>, DbError> {
         if ids.is_empty() {
             return Ok(HashMap::new());
         }
 
-        let rows: Vec<(Uuid, String, Option<String>, Option<chrono::NaiveDate>, Option<String>)> = sqlx::query_as(
+        let rows: Vec<(Uuid, String, Option<String>, Option<NaiveDate>, Option<String>)> = sqlx::query_as(
             "SELECT id, title, chamber, speech_date, source_url FROM floor_speeches WHERE id = ANY($1)",
         )
         .bind(ids)
@@ -242,7 +247,17 @@ impl<'a> FloorSpeechRepo<'a> {
 
         Ok(rows
             .into_iter()
-            .map(|(id, title, chamber, date, source_url)| (id, (title, chamber, date, source_url)))
+            .map(|(id, title, chamber, date, source_url)| {
+                (
+                    id,
+                    FloorSpeechMetadata {
+                        title,
+                        chamber,
+                        date,
+                        source_url,
+                    },
+                )
+            })
             .collect())
     }
 
@@ -253,14 +268,12 @@ impl<'a> FloorSpeechRepo<'a> {
     pub async fn get_metadata_batch_by_event_id(
         &self,
         event_ids: &[String],
-    ) -> Result<std::collections::HashMap<String, (String, Option<String>, Option<chrono::NaiveDate>, Option<String>)>, DbError> {
-        use std::collections::HashMap;
-
+    ) -> Result<HashMap<String, FloorSpeechMetadata>, DbError> {
         if event_ids.is_empty() {
             return Ok(HashMap::new());
         }
 
-        let rows: Vec<(String, String, Option<String>, Option<chrono::NaiveDate>, Option<String>)> = sqlx::query_as(
+        let rows: Vec<(String, String, Option<String>, Option<NaiveDate>, Option<String>)> = sqlx::query_as(
             "SELECT event_id, title, chamber, speech_date, source_url FROM floor_speeches WHERE event_id = ANY($1)",
         )
         .bind(event_ids)
@@ -269,7 +282,17 @@ impl<'a> FloorSpeechRepo<'a> {
 
         Ok(rows
             .into_iter()
-            .map(|(event_id, title, chamber, date, source_url)| (event_id, (title, chamber, date, source_url)))
+            .map(|(event_id, title, chamber, date, source_url)| {
+                (
+                    event_id,
+                    FloorSpeechMetadata {
+                        title,
+                        chamber,
+                        date,
+                        source_url,
+                    },
+                )
+            })
             .collect())
     }
 }

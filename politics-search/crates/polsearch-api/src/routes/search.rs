@@ -503,16 +503,22 @@ async fn enrich_results(results: &mut [SearchResult], db: &Database) -> Result<(
         match r.content_type.as_str() {
             "hearing" => {
                 if is_nil {
-                    if let Some((title, _committee, date, source_url)) = hearing_pkg_metadata.get(&r.content_id_str) {
-                        r.title = Some(title.clone());
-                        r.date = date.map(|d| d.format("%Y-%m-%d").to_string());
-                        r.source_url = source_url.clone();
+                    if let Some(meta) = hearing_pkg_metadata.get(&r.content_id_str) {
+                        r.title = Some(meta.title.clone());
+                        r.date = meta.date.map(|d| d.format("%Y-%m-%d").to_string());
+                        r.source_url = meta.source_url.clone();
+                        r.committee = meta.committee.clone();
+                        r.chamber = meta.chambers.clone();
+                        r.congress = meta.congress;
                     }
                 } else {
-                    if let Some((title, _committee, date, source_url)) = hearing_metadata.get(&r.content_id) {
-                        r.title = Some(title.clone());
-                        r.date = date.map(|d| d.format("%Y-%m-%d").to_string());
-                        r.source_url = source_url.clone();
+                    if let Some(meta) = hearing_metadata.get(&r.content_id) {
+                        r.title = Some(meta.title.clone());
+                        r.date = meta.date.map(|d| d.format("%Y-%m-%d").to_string());
+                        r.source_url = meta.source_url.clone();
+                        r.committee = meta.committee.clone();
+                        r.chamber = meta.chambers.clone();
+                        r.congress = meta.congress;
                     }
                     if r.speaker_name.is_none() {
                         if let Some(speaker) = hearing_speakers.get(&(r.content_id, r.segment_index)) {
@@ -523,16 +529,18 @@ async fn enrich_results(results: &mut [SearchResult], db: &Database) -> Result<(
             }
             "floor_speech" => {
                 if is_nil {
-                    if let Some((title, _chamber, date, source_url)) = floor_speech_event_metadata.get(&r.content_id_str) {
-                        r.title = Some(title.clone());
-                        r.date = date.map(|d| d.format("%Y-%m-%d").to_string());
-                        r.source_url = source_url.clone();
+                    if let Some(meta) = floor_speech_event_metadata.get(&r.content_id_str) {
+                        r.title = Some(meta.title.clone());
+                        r.date = meta.date.map(|d| d.format("%Y-%m-%d").to_string());
+                        r.source_url = meta.source_url.clone();
+                        r.chamber = meta.chamber.clone();
                     }
                 } else {
-                    if let Some((title, _chamber, date, source_url)) = floor_speech_metadata.get(&r.content_id) {
-                        r.title = Some(title.clone());
-                        r.date = date.map(|d| d.format("%Y-%m-%d").to_string());
-                        r.source_url = source_url.clone();
+                    if let Some(meta) = floor_speech_metadata.get(&r.content_id) {
+                        r.title = Some(meta.title.clone());
+                        r.date = meta.date.map(|d| d.format("%Y-%m-%d").to_string());
+                        r.source_url = meta.source_url.clone();
+                        r.chamber = meta.chamber.clone();
                     }
                     if r.speaker_name.is_none() {
                         if let Some(speaker) =
@@ -768,6 +776,9 @@ pub async fn search(
             title: r.title,
             date: None,
             source_url: None,
+            committee: None,
+            chamber: None,
+            congress: None,
             context_before: vec![],
             context_after: vec![],
         })
