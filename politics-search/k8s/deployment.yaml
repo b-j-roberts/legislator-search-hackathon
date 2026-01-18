@@ -24,18 +24,16 @@ spec:
             - sh
             - -c
             - |
-              set -ex
               apk add --no-cache aws-cli
               echo "Downloading from: $FASTEMBED_MODEL_URL"
               echo "AWS endpoint: $AWS_ENDPOINT_URL"
+
               aws s3 cp "$FASTEMBED_MODEL_URL" /tmp/model.tar.gz
               echo "Download complete, size:"
+
               ls -la /tmp/model.tar.gz
               echo "Extracting to /model-cache..."
               tar -xzvf /tmp/model.tar.gz -C /model-cache --strip-components=1
-              chown -R 1000:1000 /model-cache
-              echo "Contents of /model-cache:"
-              find /model-cache -type f
           env:
             - name: FASTEMBED_MODEL_URL
               valueFrom:
@@ -58,11 +56,12 @@ spec:
           volumeMounts:
             - name: model-cache
               mountPath: /model-cache
+          securityContext:
+            runAsUser: 0
       containers:
         - name: polsearch-api
           image: ghcr.io/praveenperera/polsearch-api:b513a831c3756c71b9901f866bbbb981d6befa8c
           imagePullPolicy: Always
-          command: ["sh", "-c", "echo 'Cache contents:' && find /home/polsearch/.fastembed_cache -type f && echo 'FASTEMBED_CACHE_DIR='$FASTEMBED_CACHE_DIR && sleep infinity"]
           ports:
             - containerPort: 3000
               protocol: TCP
@@ -101,13 +100,9 @@ spec:
             timeoutSeconds: 3
             failureThreshold: 3
           securityContext:
-            runAsNonRoot: true
-            runAsUser: 1000
+            runAsUser: 0
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: false
-            capabilities:
-              drop:
-                - ALL
           volumeMounts:
             - name: model-cache
               mountPath: /home/polsearch/.fastembed_cache
@@ -115,4 +110,4 @@ spec:
         - name: model-cache
           emptyDir: {}
       securityContext:
-        fsGroup: 1000
+        fsGroup: 0
