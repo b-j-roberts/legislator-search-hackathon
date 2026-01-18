@@ -101,3 +101,42 @@ export function getProviderName(): string {
   const config = getAIConfig();
   return config.provider === "openai" ? "OpenAI" : "Maple AI";
 }
+
+/**
+ * Build request body with provider-specific parameters.
+ *
+ * OpenAI's newer models (gpt-4o, o1, etc.) use `max_completion_tokens`
+ * instead of `max_tokens`. This function handles that difference.
+ */
+export function buildRequestBody(params: {
+  model: string;
+  messages: Array<{ role: string; content: string }>;
+  stream?: boolean;
+  temperature?: number;
+  maxTokens?: number;
+}): Record<string, unknown> {
+  const config = getAIConfig();
+  const body: Record<string, unknown> = {
+    model: params.model,
+    messages: params.messages,
+  };
+
+  if (params.stream !== undefined) {
+    body.stream = params.stream;
+  }
+
+  if (params.temperature !== undefined) {
+    body.temperature = params.temperature;
+  }
+
+  if (params.maxTokens !== undefined) {
+    // OpenAI's newer models use max_completion_tokens instead of max_tokens
+    if (config.provider === "openai") {
+      body.max_completion_tokens = params.maxTokens;
+    } else {
+      body.max_tokens = params.maxTokens;
+    }
+  }
+
+  return body;
+}

@@ -11,6 +11,7 @@ import {
   getAuthHeaders,
   isAIConfigured,
   getProviderName,
+  buildRequestBody,
 } from "@/lib/ai-client";
 
 /**
@@ -53,23 +54,27 @@ function sleep(ms: number): Promise<void> {
 async function callAIForSentiment(prompt: string): Promise<string> {
   const aiConfig = getAIConfig();
 
+  const messages = [
+    {
+      role: "system",
+      content:
+        "You are a sentiment analysis assistant. You analyze congressional statements and return sentiment scores as JSON. Always respond with valid JSON only.",
+    },
+    { role: "user", content: prompt },
+  ];
+
   const response = await fetch(getChatCompletionsUrl(), {
     method: "POST",
     headers: getAuthHeaders(),
-    body: JSON.stringify({
-      model: aiConfig.model,
-      messages: [
-        {
-          role: "system",
-          content:
-            "You are a sentiment analysis assistant. You analyze congressional statements and return sentiment scores as JSON. Always respond with valid JSON only.",
-        },
-        { role: "user", content: prompt },
-      ],
-      stream: false,
-      temperature: 0.3, // Lower temperature for more consistent JSON output
-      max_tokens: 1000,
-    }),
+    body: JSON.stringify(
+      buildRequestBody({
+        model: aiConfig.model,
+        messages,
+        stream: false,
+        temperature: 0.3, // Lower temperature for more consistent JSON output
+        maxTokens: 1000,
+      })
+    ),
   });
 
   if (!response.ok) {

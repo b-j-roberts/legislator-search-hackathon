@@ -40,8 +40,10 @@ export function ContactMethodSelector({
   const isSmall = size === "sm";
 
   // Determine what's actually selectable
+  // Call requires a phone number, but email can be selected even without an address
+  // (user can still draft and copy to use on contact forms)
   const canSelectCall = hasPhone && !disabled;
-  const canSelectEmail = hasEmail && !disabled;
+  const canSelectEmail = !disabled;
 
   const handleSelect = (method: ContactMethod) => {
     if (method === "call" && !canSelectCall) return;
@@ -111,10 +113,9 @@ export function ContactMethodSelector({
               className={cn(
                 "relative transition-all",
                 isSmall ? "size-7" : "size-8",
-                value === "email" && hasEmail
+                value === "email"
                   ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                  : "hover:bg-muted",
-                !hasEmail && "cursor-not-allowed opacity-40"
+                  : "hover:bg-muted"
               )}
               onClick={() => handleSelect("email")}
               disabled={!canSelectEmail}
@@ -129,7 +130,7 @@ export function ContactMethodSelector({
             </Button>
           </TooltipTrigger>
           <TooltipContent side="bottom" className="text-xs">
-            {hasEmail ? "Email" : "Email not available"}
+            {hasEmail ? "Email" : "Email (no address on file)"}
           </TooltipContent>
         </Tooltip>
       </div>

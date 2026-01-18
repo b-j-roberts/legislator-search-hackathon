@@ -5,6 +5,7 @@ import {
   getAuthHeaders,
   isAIConfigured,
   getProviderName,
+  buildRequestBody,
 } from "@/lib/ai-client";
 
 /**
@@ -85,13 +86,15 @@ export async function POST(
     const aiResponse = await fetch(getChatCompletionsUrl(), {
       method: "POST",
       headers: getAuthHeaders(),
-      body: JSON.stringify({
-        model: aiConfig.model,
-        messages,
-        stream: false,
-        temperature: 0.7,
-        max_tokens: 2000,
-      }),
+      body: JSON.stringify(
+        buildRequestBody({
+          model: aiConfig.model,
+          messages,
+          stream: false,
+          temperature: 0.7,
+          maxTokens: 2000,
+        })
+      ),
     });
 
     if (!aiResponse.ok) {
