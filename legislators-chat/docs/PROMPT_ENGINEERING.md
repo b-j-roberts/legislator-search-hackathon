@@ -330,7 +330,7 @@ Try:
 | Trend detection | Medium | "Position has shifted from X to Y since..." |
 | Party comparison | Low | Show vs. party average for context |
 
-**Revised Output Format:**
+**Revised Output Format (IMPLEMENTED):**
 ```json
 {
   "john-doe": {
@@ -338,10 +338,8 @@ Try:
     "tier": "lean_support",
     "confidence": "high",
     "basis": {
-      "statements": 4,
-      "votes": 2
-    },
-    "summary": "Generally supportive based on floor speeches, voted YES on HR1234"
+      "statements": 4
+    }
   }
 }
 ```
@@ -545,12 +543,16 @@ Format as clickable suggestions in the UI.
 4. Each tone option → Matches description
 5. Empty fields → Graceful handling
 
-**Sentiment:**
-1. Clear supporter → Score 80-100
-2. Clear opponent → Score 0-20
-3. Mixed signals → Score 40-60
-4. Limited data → Low confidence flag
-5. Partisan topic → Both sides analyzed fairly
+**Sentiment (5-tier system implemented):**
+1. Clear supporter → Score 81-100, tier: strong_support
+2. Clear opponent → Score 0-20, tier: strong_oppose
+3. Mild support → Score 61-80, tier: lean_support
+4. Mild opposition → Score 21-40, tier: lean_oppose
+5. Mixed signals → Score 41-60, tier: neutral
+6. 5+ statements → confidence: high
+7. 2-4 statements → confidence: medium
+8. 1 statement → confidence: low
+9. Partisan topic → Both sides analyzed fairly
 
 ---
 
@@ -558,10 +560,10 @@ Format as clickable suggestions in the UI.
 
 ### Phase 1: Critical Improvements
 1. [ ] Reduce Search System prompt size (30% compression target)
-2. [ ] Add controversy handling section
-3. [ ] Implement 5-tier sentiment scale
+2. [x] Add controversy handling section (completed in 1.2)
+3. [x] Implement 5-tier sentiment scale (completed in 1.4)
 4. [ ] Add Query Clarification prompt
-5. [ ] Improve No Results Retry with synonyms
+5. [x] Improve No Results Retry with synonyms (completed in 1.3)
 
 ### Phase 2: Feature Enhancements
 1. [ ] Web Search Integration prompt

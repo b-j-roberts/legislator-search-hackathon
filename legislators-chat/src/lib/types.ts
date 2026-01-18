@@ -675,5 +675,34 @@ export interface Speaker {
   matchedLegislator?: Legislator;
 }
 
-/** Sentiment scores mapping speaker ID to score (0-100) */
-export type SpeakerSentimentMap = Record<string, number>;
+/** 5-tier sentiment classification */
+export type SentimentTier =
+  | "strong_oppose"
+  | "lean_oppose"
+  | "neutral"
+  | "lean_support"
+  | "strong_support";
+
+/** Confidence level based on evidence count */
+export type SentimentConfidence = "high" | "medium" | "low";
+
+/** Enhanced sentiment data for a speaker */
+export interface SpeakerSentiment {
+  /** Numeric score 0-100 for gauge display */
+  score: number;
+  /** 5-tier classification */
+  tier: SentimentTier;
+  /** Confidence based on evidence count */
+  confidence: SentimentConfidence;
+  /** Basis for the sentiment score */
+  basis: {
+    statements: number;
+    votes?: number;
+  };
+}
+
+/** Sentiment scores mapping speaker ID to enhanced sentiment data */
+export type SpeakerSentimentMap = Record<string, SpeakerSentiment>;
+
+/** Legacy sentiment map for backwards compatibility during transition */
+export type LegacySpeakerSentimentMap = Record<string, number>;

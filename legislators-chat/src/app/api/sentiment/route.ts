@@ -71,7 +71,7 @@ async function callAIForSentiment(prompt: string): Promise<string> {
         model: aiConfig.model,
         messages,
         stream: false,
-        temperature: 0.3, // Lower temperature for more consistent JSON output
+        temperature: 0.1, // Very low temperature for highly consistent scoring
         maxTokens: 1000,
       })
     ),
@@ -132,6 +132,12 @@ export async function POST(
     // Build the sentiment analysis prompt
     const prompt = buildSentimentAnalysisPrompt(body.topic, speakerStatements);
 
+    // Build statement count map for confidence calculation
+    const statementCounts = new Map<string, number>();
+    for (const speaker of speakerStatements) {
+      statementCounts.set(speaker.speakerId, speaker.statements.length);
+    }
+
     // Attempt to get and parse sentiment with exponential backoff retries
     let lastError: Error | null = null;
     let backoffMs = INITIAL_BACKOFF_MS;
@@ -139,7 +145,7 @@ export async function POST(
     for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
       try {
         const response = await callAIForSentiment(prompt);
-        const sentiments = parseSentimentResponse(response);
+        const sentiments = parseSentimentResponse(response, statementCounts);
 
         if (sentiments) {
           return NextResponse.json({ sentiments });

@@ -140,7 +140,7 @@ function HeroEmptyState({
           transition={{ delay: 0.3, duration: 0.6 }}
           className="text-muted-foreground/80 text-sm max-w-md mx-auto mb-8 text-balance leading-relaxed italic"
         >
-          Try asking something like: "Which of my representatives support renewable energy, and how can I encourage them to do more?"
+          Try asking something like: "Hey, which representatives can I reach out to about promoting human rights in China?"
         </motion.p>
 
         {/* Suggestion cards - Editorial style */}

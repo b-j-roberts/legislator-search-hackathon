@@ -6,7 +6,7 @@ import { User, Building2, FileText, Mic, ExternalLink, Calendar, Loader2 } from 
 
 import { cn } from "@/lib/utils";
 import { getStateName, getStateFlag } from "@/lib/states";
-import type { Speaker, Chamber, Legislator, StateAbbreviation } from "@/lib/types";
+import type { Speaker, Chamber, Legislator, StateAbbreviation, SpeakerSentiment } from "@/lib/types";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import {
   Card,
@@ -22,8 +22,8 @@ import { LeaningGaugeCompact } from "./leaning-gauge";
 
 export interface SpeakerCardProps {
   speaker: Speaker;
-  /** Sentiment score (0-100). null = not applicable, undefined = not fetched */
-  sentimentScore?: number | null;
+  /** Sentiment data with score, tier, and confidence. null = not applicable, undefined = not fetched */
+  sentiment?: SpeakerSentiment | null;
   /** Whether sentiment is currently being loaded */
   sentimentLoading?: boolean;
   /** Whether the card is in selection mode */
@@ -112,9 +112,25 @@ function StateFlag({
   );
 }
 
+/** Confidence badge colors */
+const confidenceConfig: Record<string, { label: string; className: string }> = {
+  high: {
+    label: "High",
+    className: "bg-emerald-100 text-emerald-700 border-emerald-300 dark:bg-emerald-900/50 dark:text-emerald-400 dark:border-emerald-700",
+  },
+  medium: {
+    label: "Med",
+    className: "bg-amber-100 text-amber-700 border-amber-300 dark:bg-amber-900/50 dark:text-amber-400 dark:border-amber-700",
+  },
+  low: {
+    label: "Low",
+    className: "bg-slate-100 text-slate-600 border-slate-300 dark:bg-slate-800/50 dark:text-slate-400 dark:border-slate-600",
+  },
+};
+
 export function SpeakerCard({
   speaker,
-  sentimentScore,
+  sentiment,
   sentimentLoading,
   selectable = false,
   isSelected = false,
@@ -135,8 +151,8 @@ export function SpeakerCard({
 
   // Convert sentiment score (0-100) to leaning score (-100 to +100)
   // 0 sentiment = -100 leaning, 50 sentiment = 0 leaning, 100 sentiment = +100 leaning
-  const leaningScore = sentimentScore !== null && sentimentScore !== undefined
-    ? (sentimentScore - 50) * 2
+  const leaningScore = sentiment !== null && sentiment !== undefined
+    ? (sentiment.score - 50) * 2
     : null;
 
   const dateRangeStr = formatDateRange(dateRange);
@@ -271,16 +287,38 @@ export function SpeakerCard({
               })}
             </div>
 
-            {/* Right side: sentiment gauge */}
+            {/* Right side: sentiment gauge with confidence */}
             {sentimentLoading && (
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground shrink-0">
                 <Loader2 className="size-3 animate-spin" />
                 <span>Analyzing...</span>
               </div>
             )}
-            {!sentimentLoading && leaningScore !== null && (
-              <div className="shrink-0">
+            {!sentimentLoading && sentiment !== null && sentiment !== undefined && leaningScore !== null && (
+              <div className="flex items-center gap-2 shrink-0">
                 <LeaningGaugeCompact score={leaningScore} />
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Badge
+                      variant="outline"
+                      className={cn(
+                        "text-[9px] font-medium cursor-help",
+                        confidenceConfig[sentiment.confidence]?.className
+                      )}
+                    >
+                      {confidenceConfig[sentiment.confidence]?.label}
+                    </Badge>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom" className="max-w-xs">
+                    <div className="space-y-1 text-xs">
+                      <p className="font-medium">Confidence: {sentiment.confidence}</p>
+                      <p>Based on {sentiment.basis.statements} statement{sentiment.basis.statements !== 1 ? "s" : ""}</p>
+                      {sentiment.confidence === "low" && (
+                        <p className="text-muted-foreground">Limited evidence - sentiment may be less reliable</p>
+                      )}
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
               </div>
             )}
           </div>

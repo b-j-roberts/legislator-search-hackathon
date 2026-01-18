@@ -17,6 +17,23 @@ After implementing the prompt changes, please test with sample queries and docum
 
 Core prompt fixes that directly impact user experience and reliability.
 
+### 1.1 Fix PoliSearch tool Usage Conciseness
+
+**Description**: Modify search system prompt to ensure concise use of PoliSearch tool.
+
+**Requirements**:
+- [ ] Update usage of PoliSearch tool to only search targeted info/topics not full prompt expectations
+- [ ] Revise prompt instructions at `lib/prompts/search-system.ts`
+- [ ] Increase limit on number of search results returned from 10 to 20
+
+**Implementation Notes**:
+- Example: Instead of search request being "Transnational repression outreach to representatives", it should be "transnational repression" on a query like "Hey, I am interested in reaching out to representatives about transnational repression"
+- Example: Instead of search request being "What do senators think about climate change?", it should be "climate change"
+- See `PROMPT_ENGINEERING.md` → Search System Prompt → PoliSearch Tool Usage
+- See `API_SPEC.md` → PoliSearch Tool → Search Result Limits
+
+---
+
 ### 1.4 Simplify Sentiment Scale
 
 **Description**: Replace 0-100 sentiment scale with 5-tier system for more accurate and interpretable results.

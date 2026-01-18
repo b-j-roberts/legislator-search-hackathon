@@ -486,10 +486,10 @@ export function ResultsPanel({
       .filter((s) => s.matchedLegislator !== undefined)
       .map((s) => {
         const legislator = s.matchedLegislator!;
-        const sentimentScore = sentimentScores[s.id];
+        const sentiment = sentimentScores[s.id];
         // Convert sentiment score (0-100) to leaning score (-100 to +100)
-        const leaningScore = sentimentScore !== undefined
-          ? (sentimentScore - 50) * 2
+        const leaningScore = sentiment !== undefined
+          ? (sentiment.score - 50) * 2
           : legislator.leaningScore;
         return {
           ...legislator,
@@ -722,7 +722,7 @@ export function ResultsPanel({
                     <SpeakerCard
                       key={speaker.id}
                       speaker={speaker}
-                      sentimentScore={sentimentScores[speaker.id] ?? null}
+                      sentiment={sentimentScores[speaker.id] ?? null}
                       sentimentLoading={sentimentLoading}
                       selectable={isSelectionMode}
                       isSelected={speaker.matchedLegislator ? selectedIds.includes(speaker.matchedLegislator.id) : false}

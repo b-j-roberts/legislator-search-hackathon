@@ -5,7 +5,13 @@
  * for analyzing speaker sentiment from congressional records.
  */
 
-import type { SearchResultData, SpeakerSentimentMap } from "./types";
+import type {
+  SearchResultData,
+  SpeakerSentimentMap,
+  SpeakerSentiment,
+  SentimentTier,
+  SentimentConfidence,
+} from "./types";
 
 // =============================================================================
 // Sentiment Query Detection
@@ -254,6 +260,40 @@ export function aggregateSpeakerStatements(
   return Array.from(speakerMap.values());
 }
 
+// Re-export types from types.ts for convenience
+export type { SentimentTier, SentimentConfidence, SpeakerSentiment } from "./types";
+
+/**
+ * Get tier from score
+ */
+export function getTierFromScore(score: number): SentimentTier {
+  if (score <= 20) return "strong_oppose";
+  if (score <= 40) return "lean_oppose";
+  if (score <= 60) return "neutral";
+  if (score <= 80) return "lean_support";
+  return "strong_support";
+}
+
+/**
+ * Get confidence from statement count
+ */
+export function getConfidenceFromCount(statementCount: number): SentimentConfidence {
+  if (statementCount >= 5) return "high";
+  if (statementCount >= 2) return "medium";
+  return "low";
+}
+
+/**
+ * Display labels for tiers
+ */
+export const TIER_LABELS: Record<SentimentTier, string> = {
+  strong_oppose: "Strong Oppose",
+  lean_oppose: "Lean Oppose",
+  neutral: "Neutral",
+  lean_support: "Lean Support",
+  strong_support: "Strong Support",
+};
+
 /**
  * Build the prompt for sentiment analysis of speakers
  *
@@ -270,7 +310,7 @@ export function buildSentimentAnalysisPrompt(
       const statements = s.statements
         .map((stmt, i) => `  ${i + 1}. "${stmt.slice(0, 500)}${stmt.length > 500 ? "..." : ""}"`)
         .join("\n");
-      return `### ${s.speakerName} (ID: ${s.speakerId})\n${statements}`;
+      return `### ${s.speakerName} (ID: ${s.speakerId}, Statements: ${s.statements.length})\n${statements}`;
     })
     .join("\n\n");
 
@@ -280,25 +320,32 @@ export function buildSentimentAnalysisPrompt(
 ${topic}
 
 ## TASK
-Analyze each speaker's statements below and estimate their sentiment score from 0 to 100:
-- 0-20: Strongly negative / Strongly opposes the topic
-- 21-40: Negative / Generally opposes
-- 41-60: Neutral / Mixed feelings
-- 61-80: Positive / Generally supports
-- 81-100: Strongly positive / Strongly supports the topic
+Analyze each speaker's statements and classify their sentiment using a 5-tier scale:
+- strong_oppose (0-20): Clear opposition, votes against, negative language
+- lean_oppose (21-40): Skeptical, concerns raised, mild opposition
+- neutral (41-60): Mixed views, procedural discussion, no clear stance
+- lean_support (61-80): Positive mentions, general support with caveats
+- strong_support (81-100): Clear advocacy, votes for, enthusiastic support
+
+## SCORING GUIDELINES
+- Base your score primarily on explicit positions and voting patterns
+- When statements are mixed, lean toward "neutral" (41-60)
+- Strong tiers (0-20 or 81-100) require clear, unambiguous evidence
+- Consider recency: more recent statements may indicate current position
 
 ## SPEAKERS AND THEIR STATEMENTS
 ${speakerData}
 
 ## RESPONSE FORMAT
-Respond ONLY with a valid JSON object mapping speaker IDs to their sentiment scores.
-Do not include any explanation or additional text.
+Respond ONLY with a valid JSON object. For each speaker, provide:
+- score: number 0-100
+- tier: one of "strong_oppose", "lean_oppose", "neutral", "lean_support", "strong_support"
 
-Example response format:
+Example:
 \`\`\`json
 {
-  "john-doe": 75,
-  "jane-smith": 32
+  "john-doe": { "score": 75, "tier": "lean_support" },
+  "jane-smith": { "score": 15, "tier": "strong_oppose" }
 }
 \`\`\`
 
@@ -310,12 +357,35 @@ Now analyze the speakers above and provide the JSON response:`;
 // =============================================================================
 
 /**
+ * Raw response format from AI (score + tier only)
+ */
+interface RawSentimentEntry {
+  score: number;
+  tier: SentimentTier;
+}
+
+/**
+ * Valid tier values for validation
+ */
+const VALID_TIERS: SentimentTier[] = [
+  "strong_oppose",
+  "lean_oppose",
+  "neutral",
+  "lean_support",
+  "strong_support",
+];
+
+/**
  * Parse the sentiment analysis response from AI
  *
  * @param response - Raw AI response text
+ * @param speakerStatementCounts - Map of speaker ID to statement count (for confidence)
  * @returns Parsed sentiment map or null if parsing failed
  */
-export function parseSentimentResponse(response: string): SpeakerSentimentMap | null {
+export function parseSentimentResponse(
+  response: string,
+  speakerStatementCounts: Map<string, number> = new Map()
+): SpeakerSentimentMap | null {
   try {
     // Extract JSON from response (may be wrapped in markdown code block)
     let jsonStr = response;
@@ -339,15 +409,52 @@ export function parseSentimentResponse(response: string): SpeakerSentimentMap | 
       return null;
     }
 
-    // Validate each entry is a number between 0 and 100
     const result: SpeakerSentimentMap = {};
+
     for (const [key, value] of Object.entries(parsed)) {
-      if (typeof value === "number" && value >= 0 && value <= 100) {
-        result[key] = Math.round(value);
-      } else if (typeof value === "string") {
+      // Handle new format: { score: number, tier: string }
+      if (typeof value === "object" && value !== null && !Array.isArray(value)) {
+        const entry = value as Record<string, unknown>;
+        const score = typeof entry.score === "number" ? entry.score : parseInt(String(entry.score), 10);
+        const tier = entry.tier as SentimentTier;
+
+        if (!isNaN(score) && score >= 0 && score <= 100 && VALID_TIERS.includes(tier)) {
+          const statementCount = speakerStatementCounts.get(key) ?? 1;
+          result[key] = {
+            score: Math.round(score),
+            tier,
+            confidence: getConfidenceFromCount(statementCount),
+            basis: {
+              statements: statementCount,
+            },
+          };
+        }
+      }
+      // Handle legacy format: just a number (for backwards compatibility)
+      else if (typeof value === "number" && value >= 0 && value <= 100) {
+        const statementCount = speakerStatementCounts.get(key) ?? 1;
+        result[key] = {
+          score: Math.round(value),
+          tier: getTierFromScore(value),
+          confidence: getConfidenceFromCount(statementCount),
+          basis: {
+            statements: statementCount,
+          },
+        };
+      }
+      // Handle legacy string format
+      else if (typeof value === "string") {
         const num = parseInt(value, 10);
         if (!isNaN(num) && num >= 0 && num <= 100) {
-          result[key] = num;
+          const statementCount = speakerStatementCounts.get(key) ?? 1;
+          result[key] = {
+            score: num,
+            tier: getTierFromScore(num),
+            confidence: getConfidenceFromCount(statementCount),
+            basis: {
+              statements: statementCount,
+            },
+          };
         }
       }
     }
