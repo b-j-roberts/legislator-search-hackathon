@@ -7,6 +7,7 @@ use futures::TryStreamExt;
 use lancedb::index::scalar::FullTextSearchQuery;
 use lancedb::query::{ExecutableQuery, QueryBase};
 use lancedb::Error as LanceError;
+use polsearch_db::Database;
 use polsearch_pipeline::stages::{TextEmbedder, FTS_TABLE_NAME};
 use polsearch_util::truncate;
 use serde::Serialize;
@@ -39,6 +40,8 @@ use crate::{ContentTypeFilter, OutputFormat, SearchMode};
 #[derive(Serialize)]
 struct SearchResult {
     content_id: Uuid,
+    #[serde(skip_serializing)]
+    content_id_str: String,
     segment_index: i32,
     text: String,
     start_time_ms: i32,
@@ -46,6 +49,8 @@ struct SearchResult {
     score: f32,
     content_type: String,
     speaker_name: Option<String>,
+    title: Option<String>,
+    date: Option<String>,
 }
 
 /// Run the search command
@@ -135,10 +140,11 @@ pub async fn run(
     }
 
     // convert to SearchResult
-    let results: Vec<SearchResult> = raw_results
+    let mut results: Vec<SearchResult> = raw_results
         .into_iter()
         .map(|r| SearchResult {
             content_id: r.content_id,
+            content_id_str: r.content_id_str,
             segment_index: r.segment_index,
             text: r.text,
             start_time_ms: r.start_time_ms,
@@ -146,8 +152,15 @@ pub async fn run(
             score: r.score,
             content_type: r.content_type,
             speaker_name: r.speaker_name,
+            title: r.title,
+            date: None,
         })
         .collect();
+
+    // enrich results with metadata from PostgreSQL
+    if let Err(e) = enrich_results(&mut results).await {
+        eprintln!("{}", format!("Warning: failed to enrich results: {e}").yellow());
+    }
 
     // output results
     match format {
@@ -184,6 +197,7 @@ struct JsonOutput<'a> {
 /// Raw search result from `LanceDB`
 struct RawSearchResult {
     content_id: Uuid,
+    content_id_str: String,
     segment_index: i32,
     text: String,
     start_time_ms: i32,
@@ -191,6 +205,7 @@ struct RawSearchResult {
     score: f32,
     content_type: String,
     speaker_name: Option<String>,
+    title: Option<String>,
 }
 
 /// Execute search against `LanceDB`
@@ -201,6 +216,8 @@ async fn execute_search(
     mode: SearchMode,
     type_filter: Option<&str>,
 ) -> Result<Vec<RawSearchResult>> {
+    tracing::debug!("[DEBUG] execute_search called with mode: {:?}, query: {}", mode, query);
+    tracing::debug!("[DEBUG] lancedb_path: {}", lancedb_path);
     let db = lancedb::connect(lancedb_path).execute().await?;
 
     let filter_expr = type_filter.map(ToString::to_string);
@@ -219,7 +236,9 @@ async fn execute_search(
         }
         SearchMode::Fts => {
             // try text_fts table first
+            tracing::debug!("[DEBUG] Opening FTS table: {}", FTS_TABLE_NAME);
             let fts_table = db.open_table(FTS_TABLE_NAME).execute().await.ok();
+            tracing::debug!("[DEBUG] FTS table found: {}", fts_table.is_some());
             let embeddings_table = db.open_table("text_embeddings").execute().await?;
 
             // helper to attempt FTS on a table
@@ -248,7 +267,14 @@ async fn execute_search(
             };
 
             match result {
-                Ok(stream) => stream.try_collect().await?,
+                Ok(stream) => {
+                    let batches: Vec<RecordBatch> = stream.try_collect().await?;
+                    tracing::debug!("[DEBUG] FTS returned {} batches", batches.len());
+                    for (i, b) in batches.iter().enumerate() {
+                        tracing::debug!("[DEBUG] Batch {} has {} rows", i, b.num_rows());
+                    }
+                    batches
+                }
                 Err(e) if is_missing_fts_index_error(&e) => {
                     print_fts_fallback_warning();
                     // fallback to vector search on text_embeddings
@@ -337,8 +363,10 @@ fn parse_search_results(batches: &[RecordBatch], mode: SearchMode) -> Result<Vec
 
     // FTS and Phrase modes may use text_fts table which has a simpler schema
     let is_fts_table = matches!(mode, SearchMode::Fts | SearchMode::Phrase);
+    tracing::debug!("[DEBUG] parse_search_results: {} batches, is_fts_table={}", batches.len(), is_fts_table);
 
     for batch in batches {
+        tracing::debug!("[DEBUG] Batch columns: {:?}", batch.schema().fields().iter().map(|f| f.name()).collect::<Vec<_>>());
         let relevance_scores = batch
             .column_by_name("_relevance_score")
             .and_then(|c| c.as_any().downcast_ref::<Float32Array>());
@@ -390,11 +418,9 @@ fn parse_search_results(batches: &[RecordBatch], mode: SearchMode) -> Result<Vec
 
         for i in 0..batch.num_rows() {
             let content_id_str = content_ids.value(i);
-            // skip rows with invalid UUID content_ids (legacy vote embeddings)
-            let content_id = match Uuid::parse_str(content_id_str) {
-                Ok(id) => id,
-                Err(_) => continue,
-            };
+            // FTS table uses package_id strings, embeddings table uses UUIDs
+            // Try to parse as UUID, fall back to nil UUID (enrichment will use content_id_str)
+            let content_id = Uuid::parse_str(content_id_str).unwrap_or(Uuid::nil());
 
             let score = relevance_scores
                 .map(|s| s.value(i))
@@ -422,6 +448,7 @@ fn parse_search_results(batches: &[RecordBatch], mode: SearchMode) -> Result<Vec
 
             results.push(RawSearchResult {
                 content_id,
+                content_id_str: content_id_str.to_string(),
                 segment_index: segment_indices.value(i),
                 text: texts.value(i).to_string(),
                 start_time_ms: start_times.map_or(0, |t| t.value(i)),
@@ -429,11 +456,141 @@ fn parse_search_results(batches: &[RecordBatch], mode: SearchMode) -> Result<Vec
                 score,
                 content_type,
                 speaker_name,
+                title: None,
             });
         }
     }
 
     Ok(results)
+}
+
+/// Enrich search results with metadata from PostgreSQL
+async fn enrich_results(results: &mut [SearchResult]) -> Result<()> {
+    if results.is_empty() {
+        return Ok(());
+    }
+
+    let url = std::env::var("DATABASE_URL")?;
+    let db = Database::connect(&url).await?;
+
+    let nil_uuid = Uuid::nil();
+
+    // collect IDs for UUID-based lookups (embeddings) and string-based lookups (FTS)
+    let mut hearing_ids: Vec<Uuid> = Vec::new();
+    let mut hearing_package_ids: Vec<String> = Vec::new();
+    let mut hearing_segment_keys: Vec<(Uuid, i32)> = Vec::new();
+    let mut floor_speech_ids: Vec<Uuid> = Vec::new();
+    let mut floor_speech_event_ids: Vec<String> = Vec::new();
+    let mut floor_speech_segment_keys: Vec<(Uuid, i32)> = Vec::new();
+
+    for r in results.iter() {
+        match r.content_type.as_str() {
+            "hearing" => {
+                if r.content_id == nil_uuid {
+                    // FTS result - use package_id
+                    hearing_package_ids.push(r.content_id_str.clone());
+                } else {
+                    // embeddings result - use UUID
+                    hearing_ids.push(r.content_id);
+                    hearing_segment_keys.push((r.content_id, r.segment_index));
+                }
+            }
+            "floor_speech" => {
+                if r.content_id == nil_uuid {
+                    // FTS result - use event_id
+                    floor_speech_event_ids.push(r.content_id_str.clone());
+                } else {
+                    // embeddings result - use UUID
+                    floor_speech_ids.push(r.content_id);
+                    floor_speech_segment_keys.push((r.content_id, r.segment_index));
+                }
+            }
+            _ => {}
+        }
+    }
+
+    // batch fetch metadata (UUID-based)
+    let hearing_metadata = db.hearings().get_metadata_batch(&hearing_ids).await?;
+    let floor_speech_metadata = db.floor_speeches().get_metadata_batch(&floor_speech_ids).await?;
+
+    // batch fetch metadata (string-based for FTS)
+    let hearing_metadata_by_pkg = db
+        .hearings()
+        .get_metadata_batch_by_package_id(&hearing_package_ids)
+        .await?;
+    let floor_speech_metadata_by_event = db
+        .floor_speeches()
+        .get_metadata_batch_by_event_id(&floor_speech_event_ids)
+        .await?;
+
+    // batch fetch speakers (only for UUID-based results)
+    let hearing_speakers = db
+        .hearing_segments()
+        .get_speakers_for_segments(&hearing_segment_keys)
+        .await?;
+    let floor_speech_speakers = db
+        .floor_speech_segments()
+        .get_speakers_for_segments(&floor_speech_segment_keys)
+        .await?;
+
+    // apply metadata to results
+    for r in results.iter_mut() {
+        match r.content_type.as_str() {
+            "hearing" => {
+                if r.content_id == nil_uuid {
+                    // FTS result - lookup by package_id
+                    if let Some((title, _committee, date)) =
+                        hearing_metadata_by_pkg.get(&r.content_id_str)
+                    {
+                        r.title = Some(title.clone());
+                        r.date = date.map(|d| d.format("%Y-%m-%d").to_string());
+                    }
+                } else {
+                    // embeddings result - lookup by UUID
+                    if let Some((title, _committee, date)) = hearing_metadata.get(&r.content_id) {
+                        r.title = Some(title.clone());
+                        r.date = date.map(|d| d.format("%Y-%m-%d").to_string());
+                    }
+                    if r.speaker_name.is_none() {
+                        if let Some(speaker) =
+                            hearing_speakers.get(&(r.content_id, r.segment_index))
+                        {
+                            r.speaker_name = speaker.clone();
+                        }
+                    }
+                }
+            }
+            "floor_speech" => {
+                if r.content_id == nil_uuid {
+                    // FTS result - lookup by event_id
+                    if let Some((title, _chamber, date)) =
+                        floor_speech_metadata_by_event.get(&r.content_id_str)
+                    {
+                        r.title = Some(title.clone());
+                        r.date = date.map(|d| d.format("%Y-%m-%d").to_string());
+                    }
+                } else {
+                    // embeddings result - lookup by UUID
+                    if let Some((title, _chamber, date)) =
+                        floor_speech_metadata.get(&r.content_id)
+                    {
+                        r.title = Some(title.clone());
+                        r.date = date.map(|d| d.format("%Y-%m-%d").to_string());
+                    }
+                    if r.speaker_name.is_none() {
+                        if let Some(speaker) =
+                            floor_speech_speakers.get(&(r.content_id, r.segment_index))
+                        {
+                            r.speaker_name = speaker.clone();
+                        }
+                    }
+                }
+            }
+            _ => {}
+        }
+    }
+
+    Ok(())
 }
 
 /// Format a score for display based on search mode
@@ -477,6 +634,11 @@ fn print_results_flat(
     for (i, result) in results.iter().enumerate() {
         let result_num = offset + i + 1;
 
+        let date_str = result
+            .date
+            .as_ref()
+            .map_or_else(String::new, |d| format!(" | {}", d.dimmed()));
+
         let speaker_str = result
             .speaker_name
             .as_ref()
@@ -490,12 +652,16 @@ fn print_results_flat(
         };
 
         println!(
-            "[{}] {} | {}{}",
+            "[{}] {} | {}{}{}",
             format!("{result_num}").yellow(),
             format_score(result.score, mode, max_score).dimmed(),
             type_label,
+            date_str,
             speaker_str
         );
+        if let Some(ref title) = result.title {
+            println!("    {}", truncate(title, 80).dimmed());
+        }
         println!("    \"{}\"", truncate(&result.text, 100));
         println!();
     }
@@ -572,17 +738,26 @@ fn print_results_grouped(
         });
 
         for (result_num, result) in items {
+            let date_str = result
+                .date
+                .as_ref()
+                .map_or_else(String::new, |d| format!(" | {}", d.dimmed()));
+
             let speaker_str = result
                 .speaker_name
                 .as_ref()
                 .map_or_else(String::new, |s| format!(" | {}", s.cyan()));
 
             println!(
-                "  [{}] {}{}",
+                "  [{}] {}{}{}",
                 format!("{result_num}").yellow(),
                 format_score(result.score, mode, max_score).dimmed(),
+                date_str,
                 speaker_str
             );
+            if let Some(ref title) = result.title {
+                println!("       {}", truncate(title, 70).dimmed());
+            }
             println!("       \"{}\"", truncate(&result.text, 80));
         }
         println!();
