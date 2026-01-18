@@ -8,7 +8,7 @@ use lancedb::index::scalar::FullTextSearchQuery;
 use lancedb::query::{ExecutableQuery, QueryBase};
 use lancedb::Error as LanceError;
 use polsearch_db::Database;
-use polsearch_pipeline::stages::{TextEmbedder, FTS_TABLE_NAME};
+use polsearch_pipeline::stages::FTS_TABLE_NAME;
 use std::collections::{HashMap, HashSet};
 use std::sync::Arc;
 use uuid::Uuid;
@@ -18,6 +18,14 @@ use crate::models::{
     Chamber, ContentType, SearchMode as RequestMode, SearchParams, SearchResponse, SearchResult,
 };
 use crate::AppState;
+
+/// RRF constant (standard value)
+const RRF_K: usize = 60;
+
+/// Compute Reciprocal Rank Fusion score
+fn rrf_score(rank: usize) -> f32 {
+    1.0 / (RRF_K + rank + 1) as f32
+}
 
 /// Check if a `LanceDB` error is due to a missing FTS inverted index
 fn is_missing_fts_index_error(e: &LanceError) -> bool {
@@ -103,6 +111,7 @@ struct FilterParams<'a> {
     congress: Option<i16>,
     from_date: Option<&'a str>,
     to_date: Option<&'a str>,
+    speaker: Option<&'a str>,
 }
 
 impl<'a> FilterParams<'a> {
@@ -112,13 +121,8 @@ impl<'a> FilterParams<'a> {
             || self.congress.is_some()
             || self.from_date.is_some()
             || self.to_date.is_some()
+            || self.speaker.is_some()
     }
-}
-
-/// Build speaker name filter for `LanceDB` (case-insensitive LIKE)
-fn build_speaker_filter(speaker: &str) -> String {
-    let escaped = speaker.replace('\'', "''").replace('%', "\\%");
-    format!("LOWER(speaker_name) LIKE '%{}%'", escaped.to_lowercase())
 }
 
 /// Get filtered content IDs from `PostgreSQL` based on filter params
@@ -136,36 +140,68 @@ async fn get_filtered_content_ids(
         Chamber::Senate => "Senate",
     });
 
-    let mut all_ids = HashSet::new();
-
     let includes_hearings = content_types.iter().any(|t| matches!(t, ContentType::All | ContentType::Hearing));
     let includes_floor_speeches = content_types.iter().any(|t| matches!(t, ContentType::All | ContentType::FloorSpeech));
 
-    // get hearing IDs if hearings are included
-    if includes_hearings {
-        let hearing_ids = db
-            .hearings()
-            .get_filtered_ids(
-                chamber_str,
-                filters.committee,
-                filters.congress,
-                filters.from_date,
-                filters.to_date,
-            )
-            .await?;
-        all_ids.extend(hearing_ids);
-    }
+    let has_non_speaker_filters = filters.chamber.is_some()
+        || filters.committee.is_some()
+        || filters.congress.is_some()
+        || filters.from_date.is_some()
+        || filters.to_date.is_some();
 
-    // get floor speech IDs if floor speeches are included
-    if includes_floor_speeches {
-        let floor_speech_ids = db
-            .floor_speeches()
-            .get_filtered_ids(chamber_str, filters.from_date, filters.to_date)
-            .await?;
-        all_ids.extend(floor_speech_ids);
-    }
+    // get IDs filtered by non-speaker filters (if any)
+    let base_ids: Option<HashSet<Uuid>> = if has_non_speaker_filters {
+        let mut ids = HashSet::new();
+        if includes_hearings {
+            let hearing_ids = db
+                .hearings()
+                .get_filtered_ids(
+                    chamber_str,
+                    filters.committee,
+                    filters.congress,
+                    filters.from_date,
+                    filters.to_date,
+                )
+                .await?;
+            ids.extend(hearing_ids);
+        }
+        if includes_floor_speeches {
+            let floor_speech_ids = db
+                .floor_speeches()
+                .get_filtered_ids(chamber_str, filters.from_date, filters.to_date)
+                .await?;
+            ids.extend(floor_speech_ids);
+        }
+        Some(ids)
+    } else {
+        None
+    };
 
-    Ok(Some(all_ids))
+    // get IDs filtered by speaker (if any)
+    let speaker_ids: Option<HashSet<Uuid>> = if let Some(speaker) = filters.speaker {
+        let mut ids = HashSet::new();
+        if includes_hearings {
+            let hearing_ids = db.hearings().get_ids_by_speaker(speaker).await?;
+            ids.extend(hearing_ids);
+        }
+        if includes_floor_speeches {
+            let floor_speech_ids = db.floor_speeches().get_ids_by_speaker(speaker).await?;
+            ids.extend(floor_speech_ids);
+        }
+        Some(ids)
+    } else {
+        None
+    };
+
+    // combine results: intersect if both filters present, otherwise use whichever is set
+    let result = match (base_ids, speaker_ids) {
+        (Some(base), Some(speaker)) => base.intersection(&speaker).copied().collect(),
+        (Some(base), None) => base,
+        (None, Some(speaker)) => speaker,
+        (None, None) => HashSet::new(),
+    };
+
+    Ok(Some(result))
 }
 
 /// Build `content_id` IN filter for `LanceDB`
@@ -211,10 +247,10 @@ fn normalize_score(score: f32, mode: InternalMode, max_score: f32) -> f32 {
 async fn execute_search(
     lancedb_path: &str,
     query: &str,
+    query_embedding: Option<Vec<f32>>,
     limit: usize,
     mode: InternalMode,
     type_filter: Option<&str>,
-    embedder: &mut TextEmbedder,
 ) -> Result<(Vec<RawSearchResult>, InternalMode), ApiError> {
     let db = lancedb::connect(lancedb_path).execute().await?;
     let filter_expr = type_filter.map(ToString::to_string);
@@ -223,9 +259,11 @@ async fn execute_search(
     let batches: Vec<RecordBatch> = match mode {
         InternalMode::Vector => {
             let table = db.open_table("text_embeddings").execute().await?;
-            let query_embedding = embedder.embed(query)?;
+            let query_embedding = query_embedding
+                .as_ref()
+                .ok_or_else(|| ApiError::Internal("Missing query embedding for vector search".into()))?;
 
-            let mut search = table.vector_search(query_embedding)?;
+            let mut search = table.vector_search(query_embedding.clone())?;
             if let Some(ref filter) = filter_expr {
                 search = search.only_if(filter.clone());
             }
@@ -262,8 +300,10 @@ async fn execute_search(
                 Err(e) if is_missing_fts_index_error(&e) => {
                     tracing::error!("FTS index not found, falling back to vector search");
                     mode_used = InternalMode::Vector;
-                    let query_embedding = embedder.embed(query)?;
-                    let mut vector_search = embeddings_table.vector_search(query_embedding)?;
+                    let query_embedding = query_embedding
+                        .as_ref()
+                        .ok_or_else(|| ApiError::Internal("Missing query embedding for vector fallback".into()))?;
+                    let mut vector_search = embeddings_table.vector_search(query_embedding.clone())?;
                     if let Some(ref filter) = filter_expr {
                         vector_search = vector_search.only_if(filter.clone());
                     }
@@ -274,8 +314,11 @@ async fn execute_search(
         }
         InternalMode::Hybrid => {
             let table = db.open_table("text_embeddings").execute().await?;
-            let query_embedding = embedder.embed(query)?;
+            let query_embedding = query_embedding
+                .as_ref()
+                .ok_or_else(|| ApiError::Internal("Missing query embedding for hybrid search".into()))?;
 
+            // run hybrid search on text_embeddings (embedded content)
             let mut search = table
                 .vector_search(query_embedding.clone())?
                 .full_text_search(FullTextSearchQuery::new(query.to_string()));
@@ -283,19 +326,33 @@ async fn execute_search(
                 search = search.only_if(filter.clone());
             }
 
-            match search.limit(limit).execute().await {
+            let embedded_batches: Vec<RecordBatch> = match search.limit(limit).execute().await {
                 Ok(stream) => stream.try_collect().await?,
                 Err(e) if is_missing_fts_index_error(&e) => {
-                    tracing::error!("FTS index not found, falling back to vector search");
-                    mode_used = InternalMode::Vector;
-                    let mut vector_search = table.vector_search(query_embedding)?;
+                    tracing::warn!("FTS index not found on text_embeddings, falling back to vector-only for embedded content");
+                    let mut vector_search = table.vector_search(query_embedding.clone())?;
                     if let Some(ref filter) = filter_expr {
                         vector_search = vector_search.only_if(filter.clone());
                     }
                     vector_search.limit(limit).execute().await?.try_collect().await?
                 }
                 Err(e) => return Err(e.into()),
-            }
+            };
+            let embedded_results = parse_search_results(&embedded_batches, InternalMode::Hybrid)?;
+
+            // run FTS-only search on text_fts (FTS-only content, 2020-2024)
+            let fts_results =
+                execute_fts_only_search(lancedb_path, query, limit, type_filter).await?;
+
+            tracing::debug!(
+                embedded_count = embedded_results.len(),
+                fts_count = fts_results.len(),
+                "RRF merge: combining embedded and FTS-only results"
+            );
+
+            // merge with RRF
+            let merged = merge_with_rrf(vec![embedded_results, fts_results]);
+            return Ok((merged, InternalMode::Hybrid));
         }
         InternalMode::Phrase => {
             let table = match db.open_table(FTS_TABLE_NAME).execute().await {
@@ -324,6 +381,77 @@ async fn execute_search(
 
     let results = parse_search_results(&batches, mode_used)?;
     Ok((results, mode_used))
+}
+
+/// Execute FTS-only search on the `text_fts` table (for content without embeddings)
+async fn execute_fts_only_search(
+    lancedb_path: &str,
+    query: &str,
+    limit: usize,
+    type_filter: Option<&str>,
+) -> Result<Vec<RawSearchResult>, ApiError> {
+    let db = lancedb::connect(lancedb_path).execute().await?;
+    let filter_expr = type_filter.map(ToString::to_string);
+
+    let fts_table = match db.open_table(FTS_TABLE_NAME).execute().await {
+        Ok(t) => t,
+        Err(_) => return Ok(vec![]),
+    };
+
+    let mut search = fts_table
+        .query()
+        .full_text_search(FullTextSearchQuery::new(query.to_string()));
+    if let Some(ref f) = filter_expr {
+        search = search.only_if(f.clone());
+    }
+
+    let batches: Vec<RecordBatch> = match search.limit(limit).execute().await {
+        Ok(stream) => stream.try_collect().await?,
+        Err(e) if is_missing_fts_index_error(&e) => return Ok(vec![]),
+        Err(e) => return Err(e.into()),
+    };
+
+    parse_search_results(&batches, InternalMode::Fts)
+}
+
+/// Unique key for deduplication in RRF merge
+#[derive(Hash, Eq, PartialEq, Clone)]
+struct SegmentKey {
+    content_type: String,
+    content_id_str: String,
+    segment_index: i32,
+}
+
+/// Merge results from multiple sources using Reciprocal Rank Fusion
+fn merge_with_rrf(result_sets: Vec<Vec<RawSearchResult>>) -> Vec<RawSearchResult> {
+    let mut scores: HashMap<SegmentKey, f32> = HashMap::new();
+    let mut results_by_key: HashMap<SegmentKey, RawSearchResult> = HashMap::new();
+
+    for results in result_sets {
+        for (rank, result) in results.into_iter().enumerate() {
+            let key = SegmentKey {
+                content_type: result.content_type.clone(),
+                content_id_str: result.content_id_str.clone(),
+                segment_index: result.segment_index,
+            };
+
+            *scores.entry(key.clone()).or_insert(0.0) += rrf_score(rank);
+            results_by_key.entry(key).or_insert(result);
+        }
+    }
+
+    let mut merged: Vec<(f32, RawSearchResult)> = results_by_key
+        .into_iter()
+        .map(|(key, mut result)| {
+            let rrf = scores.get(&key).copied().unwrap_or(0.0);
+            result.score = rrf;
+            (rrf, result)
+        })
+        .collect();
+
+    // sort by RRF score descending
+    merged.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap_or(std::cmp::Ordering::Equal));
+    merged.into_iter().map(|(_, r)| r).collect()
 }
 
 /// Parse `LanceDB` results into `RawSearchResult` structs
@@ -669,6 +797,16 @@ pub async fn search(
 
     let limit = params.limit.min(100);
     let offset = params.offset;
+    let mode: InternalMode = params.mode.into();
+
+    let needs_query_embedding =
+        matches!(mode, InternalMode::Hybrid | InternalMode::Vector | InternalMode::Fts);
+    let query_embedding = if needs_query_embedding {
+        let mut embedder = state.embedder.lock().await;
+        Some(embedder.embed(query)?)
+    } else {
+        None
+    };
 
     tracing::info!(
         query = %query,
@@ -689,6 +827,7 @@ pub async fn search(
         congress: params.congress,
         from_date: params.from.as_deref(),
         to_date: params.to.as_deref(),
+        speaker: params.speaker.as_deref(),
     };
 
     // get filtered content IDs from PostgreSQL
@@ -707,8 +846,8 @@ pub async fn search(
     if empty_filter_result {
         return Ok(Json(SearchResponse {
             query: query.to_string(),
-            mode: InternalMode::from(params.mode).as_str().to_string(),
-            mode_used: InternalMode::from(params.mode).as_str().to_string(),
+            mode: mode.as_str().to_string(),
+            mode_used: mode.as_str().to_string(),
             results: vec![],
             total_returned: 0,
             has_more: false,
@@ -716,32 +855,20 @@ pub async fn search(
         }));
     }
 
-    // build speaker filter for LanceDB (only applies to hearings and floor_speeches)
-    let includes_hearings_or_speeches = content_types
-        .iter()
-        .any(|t| matches!(t, ContentType::All | ContentType::Hearing | ContentType::FloorSpeech));
-    let speaker_filter = if includes_hearings_or_speeches {
-        params.speaker.as_deref().map(build_speaker_filter)
-    } else {
-        None
-    };
-
-    // combine all filters
-    let combined_filter = combine_filters(vec![type_filter, content_id_filter, speaker_filter]);
+    // combine all filters (speaker filter is now handled via PostgreSQL pre-filtering)
+    let combined_filter = combine_filters(vec![type_filter, content_id_filter]);
 
     // execute search
-    let mode: InternalMode = params.mode.into();
     let fetch_count = offset + limit + 1;
 
     let (mut raw_results, mode_used) = {
-        let mut embedder = state.embedder.lock().await;
         let search_future = execute_search(
             &state.lancedb_path,
             query,
+            query_embedding,
             fetch_count,
             mode,
             combined_filter.as_deref(),
-            &mut embedder,
         );
         tokio::time::timeout(state.search_timeout, search_future)
             .await
