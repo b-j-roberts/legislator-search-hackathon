@@ -1,6 +1,6 @@
 # PolSearch API Reference
 
-Base URL: `http://10.246.40.72:3000`
+Base URL: `${BASE_URL}`
 
 ## Endpoints
 
@@ -131,7 +131,7 @@ Get full content details by UUID.
 |-----------|------|-------------|
 | `id` | UUID | Content identifier |
 
-**Response:**
+**Response (Hearing):**
 
 ```json
 {
@@ -148,21 +148,61 @@ Get full content details by UUID.
 }
 ```
 
+**Response (Vote):**
+
+```json
+{
+  "id": "019bce64-977b-7993-a2b7-30ddfcfbb7be",
+  "content_type": "vote",
+  "title": "On Passage: H R 21 Born-Alive Abortion Survivors Protection Act",
+  "date": "2025-01-23",
+  "source_url": "https://clerk.house.gov/evs/2025/roll027.xml",
+  "chambers": "House",
+  "congress": 119,
+  "total_statements": 0,
+  "total_segments": 1,
+  "vote_result": "Passed",
+  "vote_result_text": "Passed",
+  "vote_type": "On Passage of the Bill",
+  "category": "passage",
+  "vote_counts": {
+    "yea": 217,
+    "nay": 212,
+    "present": 1,
+    "not_voting": 3
+  }
+}
+```
+
 **Response Fields:**
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `id` | UUID | Content identifier |
-| `content_type` | string | Type: `hearing` or `floor_speech` |
-| `title` | string | Content title |
+| `content_type` | string | Type: `hearing`, `floor_speech`, or `vote` |
+| `title` | string | Content title (vote question for votes) |
 | `date` | string | Date in YYYY-MM-DD format |
-| `source_url` | string | Link to original document on GovInfo |
+| `source_url` | string | Link to original document |
 | `committee` | string | Committee name (hearings only) |
 | `chambers` | string | Chamber(s): House, Senate, or "House, Senate" for joint |
-| `congress` | integer | Congress number (hearings only) |
+| `congress` | integer | Congress number (hearings and votes) |
 | `page_type` | string | Page type (floor speeches only) |
 | `total_statements` | integer | Number of statements in content |
 | `total_segments` | integer | Number of searchable segments |
+| `vote_result` | string | Vote outcome: "Passed", "Failed", etc. (votes only) |
+| `vote_result_text` | string | Full result text like "Passed (215-206)" (votes only) |
+| `vote_type` | string | Vote type: "On Passage", "On the Nomination", etc. (votes only) |
+| `category` | string | Vote category: "passage", "amendment", "procedural", etc. (votes only) |
+| `vote_counts` | object | Vote tally breakdown (votes only) |
+
+**Vote Counts Object:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `yea` | integer | Number of yea votes |
+| `nay` | integer | Number of nay votes |
+| `present` | integer | Number of present votes |
+| `not_voting` | integer | Number not voting |
 
 **Error Responses:**
 
@@ -176,33 +216,33 @@ Get full content details by UUID.
 ### Search for healthcare legislation mentions
 
 ```bash
-curl "http://10.246.40.72:3000/search?q=affordable%20care%20act&type=floor_speech&chamber=senate"
+curl "${BASE_URL}/search?q=affordable%20care%20act&type=floor_speech&chamber=senate"
 ```
 
 ### Find testimony about AI regulation
 
 ```bash
-curl "http://10.246.40.72:3000/search?q=artificial%20intelligence%20regulation&type=hearing&committee=Commerce"
+curl "${BASE_URL}/search?q=artificial%20intelligence%20regulation&type=hearing&committee=Commerce"
 ```
 
 ### Search with exact phrase matching
 
 ```bash
-curl "http://10.246.40.72:3000/search?q=threat%20to%20democracy&mode=phrase"
+curl "${BASE_URL}/search?q=threat%20to%20democracy&mode=phrase"
 ```
 
 ### Get context around a match
 
 ```bash
-curl "http://10.246.40.72:3000/search?q=border%20security&context=5"
+curl "${BASE_URL}/search?q=border%20security&context=5"
 ```
 
 ### Paginate through results
 
 ```bash
 # First page
-curl "http://10.246.40.72:3000/search?q=economic%20policy&limit=20"
+curl "${BASE_URL}/search?q=economic%20policy&limit=20"
 
 # Next page
-curl "http://10.246.40.72:3000/search?q=economic%20policy&limit=20&offset=20"
+curl "${BASE_URL}/search?q=economic%20policy&limit=20&offset=20"
 ```

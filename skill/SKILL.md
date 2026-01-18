@@ -15,8 +15,10 @@ Use this skill when the user wants to:
 ## API Base URL
 
 ```
-http://10.246.40.72:3000
+${BASE_URL}
 ```
+
+Set `BASE_URL` to the API server address (e.g., `http://localhost:3000` or your deployed server).
 
 ## Quick Start
 
@@ -25,7 +27,7 @@ http://10.246.40.72:3000
 Search for mentions of "climate change" in congressional records:
 
 ```bash
-curl "http://10.246.40.72:3000/search?q=climate%20change"
+curl "${BASE_URL}/search?q=climate%20change"
 ```
 
 ### Search Floor Speeches
@@ -33,7 +35,7 @@ curl "http://10.246.40.72:3000/search?q=climate%20change"
 Find floor speeches about immigration:
 
 ```bash
-curl "http://10.246.40.72:3000/search?q=immigration&type=floor_speech"
+curl "${BASE_URL}/search?q=immigration&type=floor_speech"
 ```
 
 ### Search by Speaker
@@ -41,7 +43,7 @@ curl "http://10.246.40.72:3000/search?q=immigration&type=floor_speech"
 Find statements by a specific speaker:
 
 ```bash
-curl "http://10.246.40.72:3000/search?q=healthcare&speaker=Pelosi"
+curl "${BASE_URL}/search?q=healthcare&speaker=Pelosi"
 ```
 
 ### Search Hearings by Committee
@@ -49,7 +51,7 @@ curl "http://10.246.40.72:3000/search?q=healthcare&speaker=Pelosi"
 Search for hearings from a specific committee:
 
 ```bash
-curl "http://10.246.40.72:3000/search?q=cybersecurity&type=hearing&committee=Homeland%20Security"
+curl "${BASE_URL}/search?q=cybersecurity&type=hearing&committee=Homeland%20Security"
 ```
 
 ### Search with Date Range
@@ -57,7 +59,7 @@ curl "http://10.246.40.72:3000/search?q=cybersecurity&type=hearing&committee=Hom
 Find content from a specific time period:
 
 ```bash
-curl "http://10.246.40.72:3000/search?q=infrastructure&from=2023-01-01&to=2023-12-31"
+curl "${BASE_URL}/search?q=infrastructure&from=2023-01-01&to=2023-12-31"
 ```
 
 ### Search by Chamber
@@ -65,15 +67,33 @@ curl "http://10.246.40.72:3000/search?q=infrastructure&from=2023-01-01&to=2023-1
 Search only House or Senate content:
 
 ```bash
-curl "http://10.246.40.72:3000/search?q=budget&chamber=senate"
+curl "${BASE_URL}/search?q=budget&chamber=senate"
 ```
+
+### Search Votes
+
+Find roll call votes on a topic:
+
+```bash
+curl "${BASE_URL}/search?q=immigration&type=vote"
+```
+
+### Get Vote Details
+
+Get full vote information including vote counts:
+
+```bash
+curl "${BASE_URL}/content/{vote-uuid}"
+```
+
+Returns vote result, vote type, category, and full breakdown (yea/nay/present/not_voting).
 
 ### Get More Context
 
 Include surrounding segments for better context (up to 10 segments before/after):
 
 ```bash
-curl "http://10.246.40.72:3000/search?q=tariffs&context=3"
+curl "${BASE_URL}/search?q=tariffs&context=3"
 ```
 
 ### Get Full Content Details
@@ -81,7 +101,7 @@ curl "http://10.246.40.72:3000/search?q=tariffs&context=3"
 After finding a result, get full metadata by content ID:
 
 ```bash
-curl "http://10.246.40.72:3000/content/{uuid}"
+curl "${BASE_URL}/content/{uuid}"
 ```
 
 ## Search Modes
@@ -96,7 +116,7 @@ curl "http://10.246.40.72:3000/content/{uuid}"
 Example with mode:
 
 ```bash
-curl "http://10.246.40.72:3000/search?q=tax%20reform&mode=phrase"
+curl "${BASE_URL}/search?q=tax%20reform&mode=phrase"
 ```
 
 ## Content Types
@@ -111,7 +131,7 @@ curl "http://10.246.40.72:3000/search?q=tax%20reform&mode=phrase"
 Multiple types can be comma-separated:
 
 ```bash
-curl "http://10.246.40.72:3000/search?q=defense&type=hearing,floor_speech"
+curl "${BASE_URL}/search?q=defense&type=hearing,floor_speech"
 ```
 
 ## Response Format
@@ -136,10 +156,10 @@ Use `limit` and `offset` for pagination:
 
 ```bash
 # First page (10 results)
-curl "http://10.246.40.72:3000/search?q=education&limit=10"
+curl "${BASE_URL}/search?q=education&limit=10"
 
 # Second page
-curl "http://10.246.40.72:3000/search?q=education&limit=10&offset=10"
+curl "${BASE_URL}/search?q=education&limit=10&offset=10"
 ```
 
 The response includes `has_more` and `next_offset` to facilitate pagination.
