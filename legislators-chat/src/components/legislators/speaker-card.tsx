@@ -5,7 +5,9 @@ import { motion } from "framer-motion";
 import { User, Building2, FileText, Mic, ExternalLink, Calendar, Loader2 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import type { Speaker, Chamber } from "@/lib/types";
+import { getStateName, getStateFlag } from "@/lib/states";
+import type { Speaker, Chamber, Legislator, StateAbbreviation } from "@/lib/types";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import {
   Card,
   CardHeader,
@@ -15,6 +17,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Checkbox } from "@/components/ui/checkbox";
 import { LeaningGaugeCompact } from "./leaning-gauge";
 
 export interface SpeakerCardProps {
@@ -23,6 +26,12 @@ export interface SpeakerCardProps {
   sentimentScore?: number | null;
   /** Whether sentiment is currently being loaded */
   sentimentLoading?: boolean;
+  /** Whether the card is in selection mode */
+  selectable?: boolean;
+  /** Whether the speaker is selected */
+  isSelected?: boolean;
+  /** Callback when selection is toggled (passes the matched legislator) */
+  onToggleSelect?: (legislator: Legislator) => void;
   className?: string;
 }
 
@@ -79,7 +88,39 @@ function formatDateRange(dateRange?: { earliest?: string; latest?: string }): st
   return `${formatDate(dateRange.earliest)} - ${formatDate(dateRange.latest!)}`;
 }
 
-export function SpeakerCard({ speaker, sentimentScore, sentimentLoading, className }: SpeakerCardProps) {
+function StateFlag({
+  state,
+  className,
+}: {
+  state: StateAbbreviation;
+  className?: string;
+}) {
+  const [hasError, setHasError] = React.useState(false);
+  const flagUrl = getStateFlag(state);
+
+  if (hasError || !flagUrl) {
+    return null;
+  }
+
+  return (
+    <img
+      src={flagUrl}
+      alt={`${getStateName(state)} flag`}
+      className={cn("h-3 w-auto rounded-sm object-cover", className)}
+      onError={() => setHasError(true)}
+    />
+  );
+}
+
+export function SpeakerCard({
+  speaker,
+  sentimentScore,
+  sentimentLoading,
+  selectable = false,
+  isSelected = false,
+  onToggleSelect,
+  className,
+}: SpeakerCardProps) {
   const {
     name,
     chamber,
@@ -89,6 +130,7 @@ export function SpeakerCard({ speaker, sentimentScore, sentimentLoading, classNa
     dateRange,
     sampleSourceUrls,
     imageUrl,
+    matchedLegislator,
   } = speaker;
 
   // Convert sentiment score (0-100) to leaning score (-100 to +100)
@@ -99,10 +141,19 @@ export function SpeakerCard({ speaker, sentimentScore, sentimentLoading, classNa
 
   const dateRangeStr = formatDateRange(dateRange);
   const hasSourceUrl = sampleSourceUrls.length > 0;
+  const canSelect = selectable && matchedLegislator !== undefined;
 
   const handleClick = () => {
-    if (hasSourceUrl) {
+    if (canSelect && matchedLegislator) {
+      onToggleSelect?.(matchedLegislator);
+    } else if (hasSourceUrl) {
       window.open(sampleSourceUrls[0], "_blank", "noopener,noreferrer");
+    }
+  };
+
+  const handleToggleSelect = () => {
+    if (matchedLegislator) {
+      onToggleSelect?.(matchedLegislator);
     }
   };
 
@@ -115,13 +166,26 @@ export function SpeakerCard({ speaker, sentimentScore, sentimentLoading, classNa
       <Card
         className={cn(
           "overflow-hidden transition-all hover:border-accent/30 hover:shadow-md",
-          hasSourceUrl && "cursor-pointer",
+          (hasSourceUrl || canSelect) && "cursor-pointer",
+          isSelected && "ring-2 ring-primary bg-primary/5",
           className
         )}
-        onClick={hasSourceUrl ? handleClick : undefined}
+        onClick={handleClick}
       >
         <CardHeader>
           <div className="flex items-start gap-3">
+            {/* Selection checkbox */}
+            {canSelect && (
+              <div className="flex-shrink-0 pt-1" onClick={(e) => e.stopPropagation()}>
+                <Checkbox
+                  checked={isSelected}
+                  onCheckedChange={handleToggleSelect}
+                  aria-label={`Select ${name}`}
+                  className="data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                />
+              </div>
+            )}
+
             {/* Avatar */}
             <div className="rounded-full p-0.5 bg-muted">
               <Avatar className="size-10">
@@ -135,7 +199,7 @@ export function SpeakerCard({ speaker, sentimentScore, sentimentLoading, classNa
             <div className="flex-1 min-w-0">
               <div className="flex items-start justify-between gap-2">
                 <CardTitle className="text-base truncate">{name}</CardTitle>
-                {hasSourceUrl && (
+                {hasSourceUrl && !canSelect && (
                   <ExternalLink className="size-4 text-muted-foreground/50 group-hover:text-accent shrink-0 transition-colors" />
                 )}
               </div>
@@ -146,9 +210,26 @@ export function SpeakerCard({ speaker, sentimentScore, sentimentLoading, classNa
                     <span>{chamber}</span>
                   </>
                 )}
-                {resultCount > 1 && (
+                {matchedLegislator?.state && (
                   <>
                     {chamber && <span className="text-muted-foreground/50">·</span>}
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span className="flex items-center gap-1 cursor-help">
+                          <StateFlag state={matchedLegislator.state} />
+                          <span>{matchedLegislator.district ? `${matchedLegislator.state}-${matchedLegislator.district}` : matchedLegislator.state}</span>
+                        </span>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        {getStateName(matchedLegislator.state)}
+                        {matchedLegislator.district && `, District ${matchedLegislator.district}`}
+                      </TooltipContent>
+                    </Tooltip>
+                  </>
+                )}
+                {resultCount > 1 && (
+                  <>
+                    {(chamber || matchedLegislator?.state) && <span className="text-muted-foreground/50">·</span>}
                     <span>{resultCount} results</span>
                   </>
                 )}

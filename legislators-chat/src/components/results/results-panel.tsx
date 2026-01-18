@@ -477,6 +477,35 @@ export function ResultsPanel({
   );
 
   const hasSearchResults = searchResults.length > 0;
+
+  // Extract matched legislators from speakers (for selection/contact flow)
+  // These are speakers who have been matched to current legislators with contact info
+  // Also enrich with sentiment scores converted to leaning scores
+  const matchedLegislatorsFromSpeakers = React.useMemo(
+    () => filteredSpeakers
+      .filter((s) => s.matchedLegislator !== undefined)
+      .map((s) => {
+        const legislator = s.matchedLegislator!;
+        const sentimentScore = sentimentScores[s.id];
+        // Convert sentiment score (0-100) to leaning score (-100 to +100)
+        const leaningScore = sentimentScore !== undefined
+          ? (sentimentScore - 50) * 2
+          : legislator.leaningScore;
+        return {
+          ...legislator,
+          leaningScore,
+        };
+      }),
+    [filteredSpeakers, sentimentScores]
+  );
+
+  // Determine which legislators list to use for selection based on mode
+  const selectableLegislators = hasSearchResults
+    ? matchedLegislatorsFromSpeakers
+    : filteredLegislators;
+
+  // Check if we have any contactable legislators (either from search or direct)
+  const hasContactableLegislators = selectableLegislators.length > 0;
   const effectiveDocumentCount = hasSearchResults ? searchDocuments.length : documents.length + hearings.length;
   const effectiveVoteCount = hasSearchResults ? searchVotes.length : votes.length;
 
@@ -509,7 +538,7 @@ export function ResultsPanel({
   };
 
   const handleSelectAll = () => {
-    setSelectedLegislators(filteredLegislators);
+    setSelectedLegislators(selectableLegislators);
   };
 
   const handleContactRepresentatives = () => {
@@ -612,8 +641,8 @@ export function ResultsPanel({
                 onRemoveState={toggleState}
                 onRemoveStance={hasSearchResults ? undefined : toggleStance} // Disable stance chip removal for search results
               />
-              {/* Selection mode controls - only show for legislators (not search result speakers) */}
-              {!hasSearchResults && (
+              {/* Selection mode controls - show when there are contactable legislators */}
+              {hasContactableLegislators && (
                 <div className="flex items-center justify-between pt-1">
                   <Button
                     variant={isSelectionMode ? "default" : "outline"}
@@ -648,7 +677,7 @@ export function ResultsPanel({
                           variant="ghost"
                           size="sm"
                           onClick={handleSelectAll}
-                          disabled={selectedIds.length === filteredLegislators.length}
+                          disabled={selectedIds.length === selectableLegislators.length}
                           className="text-xs h-8"
                         >
                           Select all
@@ -687,7 +716,7 @@ export function ResultsPanel({
                   }
                 />
               ) : hasSearchResults ? (
-                // Show filtered speakers from search results (legislators only)
+                // Show speakers from search results with selection support
                 <div className="p-4 space-y-3">
                   {filteredSpeakers.map((speaker) => (
                     <SpeakerCard
@@ -695,6 +724,9 @@ export function ResultsPanel({
                       speaker={speaker}
                       sentimentScore={sentimentScores[speaker.id] ?? null}
                       sentimentLoading={sentimentLoading}
+                      selectable={isSelectionMode}
+                      isSelected={speaker.matchedLegislator ? selectedIds.includes(speaker.matchedLegislator.id) : false}
+                      onToggleSelect={toggleLegislator}
                     />
                   ))}
                 </div>

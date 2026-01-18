@@ -210,9 +210,9 @@ function extractSpeakersFromResults(
         dateRange,
         sampleSourceUrls: data.sourceUrls,
         imageUrl: matchedLegislator?.imageUrl,
-        // Store matched legislator data for filtering
-        _matchedLegislator: matchedLegislator,
-      } as Speaker & { _matchedLegislator?: Legislator };
+        // Store matched legislator data for selection/contact flow
+        matchedLegislator,
+      } as Speaker;
     });
 
   // Sort by result count (most active speakers first)

@@ -5,7 +5,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Phone, Mail, Globe, ChevronDown, MapPin, Building2, FileText, ExternalLink } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { getStateName, getStateFlag } from "@/lib/states";
 import type { Legislator, Party, Chamber } from "@/lib/types";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import {
   Card,
   CardHeader,
@@ -89,6 +91,30 @@ function getInitials(name: string): string {
     .slice(0, 2)
     .join("")
     .toUpperCase();
+}
+
+function StateFlag({
+  state,
+  className,
+}: {
+  state: Legislator["state"];
+  className?: string;
+}) {
+  const [hasError, setHasError] = React.useState(false);
+  const flagUrl = getStateFlag(state);
+
+  if (hasError || !flagUrl) {
+    return null;
+  }
+
+  return (
+    <img
+      src={flagUrl}
+      alt={`${getStateName(state)} flag`}
+      className={cn("h-3 w-auto rounded-sm object-cover", className)}
+      onError={() => setHasError(true)}
+    />
+  );
 }
 
 export function LegislatorCard({
@@ -186,10 +212,19 @@ export function LegislatorCard({
               <CardDescription className="flex items-center gap-1.5 mt-0.5">
                 <span>{title}</span>
                 <span className="text-muted-foreground/50">·</span>
-                <span className="flex items-center gap-1">
-                  <MapPin className="size-3" />
-                  {location}
-                </span>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="flex items-center gap-1 cursor-help">
+                      <StateFlag state={state} />
+                      <MapPin className="size-3" />
+                      {location}
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    {getStateName(state)}
+                    {district && `, District ${district}`}
+                  </TooltipContent>
+                </Tooltip>
               </CardDescription>
             </div>
           </div>
