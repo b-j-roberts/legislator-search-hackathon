@@ -247,6 +247,26 @@ impl<'a> HearingRepo<'a> {
         Ok(())
     }
 
+    /// Get hearing IDs that have statements from a speaker (case-insensitive match)
+    ///
+    /// # Errors
+    /// Returns `DbError` if the query fails
+    pub async fn get_ids_by_speaker(&self, speaker: &str) -> Result<Vec<Uuid>, DbError> {
+        let pattern = format!("%{}%", speaker.to_lowercase());
+        let ids: Vec<(Uuid,)> = sqlx::query_as(
+            r"
+            SELECT DISTINCT h.id
+            FROM hearings h
+            JOIN hearing_statements hs ON h.id = hs.hearing_id
+            WHERE LOWER(hs.speaker_label) LIKE $1 AND h.is_processed = true
+            ",
+        )
+        .bind(&pattern)
+        .fetch_all(self.pool)
+        .await?;
+        Ok(ids.into_iter().map(|(id,)| id).collect())
+    }
+
     /// Get all package IDs as a set for fast lookup
     ///
     /// # Errors

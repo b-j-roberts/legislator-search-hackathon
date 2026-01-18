@@ -15,10 +15,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - api.polsearch.example.com
+        - polsearch.praveenperera.com
       secretName: polsearch-api-tls
   rules:
-    - host: api.polsearch.example.com
+    - host: polsearch.praveenperera.com
       http:
         paths:
           - path: /

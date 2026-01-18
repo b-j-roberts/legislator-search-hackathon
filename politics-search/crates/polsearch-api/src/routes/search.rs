@@ -7,6 +7,7 @@ use futures::TryStreamExt;
 use lancedb::index::scalar::FullTextSearchQuery;
 use lancedb::query::{ExecutableQuery, QueryBase};
 use lancedb::Error as LanceError;
+use polsearch_core::SpeakerType;
 use polsearch_db::Database;
 use polsearch_pipeline::stages::FTS_TABLE_NAME;
 use std::collections::{HashMap, HashSet};
@@ -680,6 +681,16 @@ async fn enrich_results(results: &mut [SearchResult], db: &Database) -> Result<(
             }
             _ => {}
         }
+
+        // detect speaker type from speaker label, content type, and chamber
+        if let Some(ref speaker_label) = r.speaker_name {
+            let detected = SpeakerType::detect(
+                speaker_label,
+                &r.content_type,
+                r.chamber.as_deref(),
+            );
+            r.speaker_type = Some(detected.to_string());
+        }
     }
 
     Ok(())
@@ -913,6 +924,7 @@ pub async fn search(
             score: normalize_score(r.score, mode_used, max_score),
             content_type: r.content_type,
             speaker_name: r.speaker_name,
+            speaker_type: None,
             title: r.title,
             date: None,
             source_url: None,
@@ -941,14 +953,7 @@ pub async fn search(
 
     let total_returned = results.len();
 
-    tracing::debug!(
-        total_returned = %total_returned,
-        has_more = %has_more,
-        mode_used = %mode_used.as_str(),
-        "Search response"
-    );
-
-    Ok(Json(SearchResponse {
+    let response = SearchResponse {
         query: query.to_string(),
         mode: mode.as_str().to_string(),
         mode_used: mode_used.as_str().to_string(),
@@ -956,5 +961,12 @@ pub async fn search(
         total_returned,
         has_more,
         next_offset: if has_more { Some(offset + limit) } else { None },
-    }))
+    };
+
+    tracing::debug!(
+        response = %serde_json::to_string(&response).unwrap_or_default(),
+        "Search response"
+    );
+
+    Ok(Json(response))
 }

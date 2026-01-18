@@ -21,6 +21,7 @@ mod segment;
 mod source;
 mod speaker;
 mod speaker_alias;
+mod speaker_type;
 mod transcription;
 
 pub use amendment::Amendment;
@@ -44,6 +45,7 @@ pub use segment::Segment;
 pub use source::{Source, SourceType};
 pub use speaker::Speaker;
 pub use speaker_alias::SpeakerAlias;
+pub use speaker_type::SpeakerType;
 pub use transcription::{BatchStatus, TaskStatus, TranscriptionBatch, TranscriptionTask};
 
 // Re-export old names as aliases for gradual migration

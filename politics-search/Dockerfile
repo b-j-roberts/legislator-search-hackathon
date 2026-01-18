@@ -36,7 +36,7 @@ RUN apt-get update && apt-get install -y \
     ca-certificates libssl3 \
     && rm -rf /var/lib/apt/lists/*
 
-RUN useradd -m -u 1000 polsearch
+RUN useradd -m polsearch
 USER polsearch
 WORKDIR /home/polsearch
 

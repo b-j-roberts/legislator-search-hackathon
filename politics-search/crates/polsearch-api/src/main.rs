@@ -14,6 +14,7 @@ use std::time::Duration;
 use tokio::sync::Mutex;
 use tower_http::cors::CorsLayer;
 use tower_http::trace::TraceLayer;
+use tracing_subscriber::EnvFilter;
 use utoipa::OpenApi;
 use utoipa_swagger_ui::SwaggerUi;
 
@@ -54,9 +55,10 @@ async fn main() -> Result<()> {
     dotenvy::dotenv().ok();
 
     // initialize tracing
-    let log_level = std::env::var("LOG_LEVEL").unwrap_or_else(|_| "info".to_string());
     tracing_subscriber::fmt()
-        .with_env_filter(log_level)
+        .with_env_filter(
+            EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new("info")),
+        )
         .init();
 
     // load configuration

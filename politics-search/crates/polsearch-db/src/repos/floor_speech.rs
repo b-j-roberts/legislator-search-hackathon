@@ -218,6 +218,26 @@ impl<'a> FloorSpeechRepo<'a> {
         Ok(())
     }
 
+    /// Get floor speech IDs that have statements from a speaker (case-insensitive match)
+    ///
+    /// # Errors
+    /// Returns `DbError` if the query fails
+    pub async fn get_ids_by_speaker(&self, speaker: &str) -> Result<Vec<Uuid>, DbError> {
+        let pattern = format!("%{}%", speaker.to_lowercase());
+        let ids: Vec<(Uuid,)> = sqlx::query_as(
+            r"
+            SELECT DISTINCT fs.id
+            FROM floor_speeches fs
+            JOIN floor_speech_statements fss ON fs.id = fss.floor_speech_id
+            WHERE LOWER(fss.speaker_label) LIKE $1 AND fs.is_processed = true
+            ",
+        )
+        .bind(&pattern)
+        .fetch_all(self.pool)
+        .await?;
+        Ok(ids.into_iter().map(|(id,)| id).collect())
+    }
+
     /// Get all event IDs as a set for fast lookup
     ///
     /// # Errors

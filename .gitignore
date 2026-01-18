@@ -3,3 +3,4 @@
 target
 .fastembed_cache
 .fastembed_cache/model*
+politics-search/k8s/secret.yaml

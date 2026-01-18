@@ -36,6 +36,10 @@ pub struct SearchResult {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub speaker_name: Option<String>,
 
+    /// Speaker type (senator, representative, witness, etc.)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub speaker_type: Option<String>,
+
     /// Content title if available (enriched)
     #[serde(skip_serializing_if = "Option::is_none")]
     pub title: Option<String>,
