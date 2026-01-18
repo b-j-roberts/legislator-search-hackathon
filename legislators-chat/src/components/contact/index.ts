@@ -8,3 +8,4 @@ export { ContentGenerationPanel } from "./content-generation-panel";
 export { ContentActions } from "./content-actions";
 export { MarkCompleteDialog } from "./mark-complete-dialog";
 export type { ContactOutcome } from "./mark-complete-dialog";
+export { DraftSavedIndicator } from "./draft-saved-indicator";

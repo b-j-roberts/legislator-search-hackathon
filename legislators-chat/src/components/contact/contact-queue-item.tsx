@@ -72,7 +72,6 @@ export function ContactQueueItem({
   onContactMethodChange,
   onSkip,
   onRemove,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onSetActive,
 }: ContactQueueItemProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
@@ -100,14 +99,34 @@ export function ContactQueueItem({
     onContactMethodChange(contactMethod === "call" ? "email" : "call");
   };
 
+  // Handle card click to set active
+  const handleCardClick = (e: React.MouseEvent) => {
+    // Don't trigger if clicking a button or link
+    const target = e.target as HTMLElement;
+    if (
+      target.closest("button") ||
+      target.closest("a") ||
+      target.closest('[role="button"]')
+    ) {
+      return;
+    }
+    // Don't switch if already active or contacted
+    if (!isActive && !isContacted && onSetActive) {
+      onSetActive();
+    }
+  };
+
   return (
     <div ref={setNodeRef} style={style} className={cn("touch-none", isDragging && "z-50")}>
       <Card
+        onClick={handleCardClick}
         className={cn(
           "overflow-hidden transition-all",
           isActive && "ring-2 ring-primary bg-primary/5",
           isContacted && "opacity-60",
-          isDragging && "shadow-lg rotate-1"
+          isDragging && "shadow-lg rotate-1",
+          // Make clickable when not active and not contacted
+          !isActive && !isContacted && onSetActive && "cursor-pointer hover:bg-muted/50"
         )}
       >
         <CardHeader className="p-3 sm:p-4">
@@ -150,38 +169,38 @@ export function ContactQueueItem({
               </Avatar>
             </div>
 
-            {/* Info */}
-            <div className="flex-1 min-w-0">
+            {/* Info - takes remaining space but truncates */}
+            <div className="flex-1 min-w-0 overflow-hidden">
               <div className="flex items-center gap-2">
-                <CardTitle className="text-sm sm:text-base truncate">{name}</CardTitle>
+                <CardTitle className="text-sm sm:text-base truncate max-w-[120px] sm:max-w-none">{name}</CardTitle>
                 <Badge
                   variant="outline"
                   className={cn(
-                    "text-[10px] px-1.5 py-0 h-4 hidden sm:inline-flex",
+                    "text-[10px] px-1.5 py-0 h-4 hidden sm:inline-flex flex-shrink-0",
                     partyConfig[party].bgColor
                   )}
                 >
                   {partyConfig[party].label}
                 </Badge>
               </div>
-              <CardDescription className="text-xs sm:text-sm flex items-center gap-1">
+              <CardDescription className="text-xs sm:text-sm flex items-center gap-1 truncate">
                 <span className="hidden sm:inline">{chamber === "House" ? "Rep." : "Sen."}</span>
-                <MapPin className="size-3 sm:hidden" />
-                <span>{location}</span>
+                <MapPin className="size-3 sm:hidden flex-shrink-0" />
+                <span className="truncate">{location}</span>
               </CardDescription>
             </div>
 
             {/* Status badge - shown on larger screens */}
             <Badge
               variant="outline"
-              className={cn("hidden md:inline-flex text-xs", statusConfig[status].className)}
+              className={cn("hidden lg:inline-flex text-xs flex-shrink-0", statusConfig[status].className)}
             >
               {statusConfig[status].label}
             </Badge>
 
             {/* Contact method badge - mobile compact view */}
             {!isContacted && (
-              <div className="sm:hidden">
+              <div className="sm:hidden flex-shrink-0">
                 <ContactMethodBadge
                   method={contactMethod}
                   hasPhone={hasPhone}
@@ -191,11 +210,11 @@ export function ContactQueueItem({
               </div>
             )}
 
-            {/* Actions */}
-            <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
-              {/* Contact method selector - desktop */}
+            {/* Actions - always visible */}
+            <div className="flex items-center gap-1 flex-shrink-0">
+              {/* Contact method selector - desktop only */}
               {!isContacted && hasBoth && onContactMethodChange && (
-                <div className="hidden sm:block">
+                <div className="hidden lg:block">
                   <ContactMethodSelector
                     value={contactMethod}
                     onChange={onContactMethodChange}
@@ -206,13 +225,13 @@ export function ContactQueueItem({
                 </div>
               )}
 
-              {/* Primary contact button based on selected method */}
+              {/* Primary contact button based on selected method - desktop only */}
               {!isContacted && (
                 <Button
                   variant={isActive ? "default" : "outline"}
                   size="icon-sm"
                   asChild
-                  className="hidden sm:inline-flex"
+                  className="hidden lg:inline-flex"
                 >
                   {contactMethod === "call" && hasPhone ? (
                     <a href={`tel:${contact.phone}`} aria-label={`Call ${name}`}>
@@ -234,20 +253,20 @@ export function ContactQueueItem({
                 </Button>
               )}
 
-              {/* Skip button */}
+              {/* Skip button - hidden on very small screens */}
               {!isContacted && onSkip && (
                 <Button
                   variant="ghost"
                   size="icon-sm"
                   onClick={onSkip}
                   aria-label={`Skip ${name}`}
-                  className="text-muted-foreground hover:text-foreground"
+                  className="text-muted-foreground hover:text-foreground hidden sm:inline-flex"
                 >
                   <SkipForward className="size-4" />
                 </Button>
               )}
 
-              {/* Remove button */}
+              {/* Remove button - always visible */}
               {onRemove && (
                 <Button
                   variant="ghost"

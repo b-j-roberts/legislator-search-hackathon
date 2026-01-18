@@ -127,6 +127,10 @@ interface RefinementChatProps {
   isCollapsed?: boolean;
   /** Toggle collapse state */
   onToggleCollapse?: () => void;
+  /** Initial messages to restore from saved state */
+  initialMessages?: RefinementMessage[];
+  /** Called when messages change (for persistence) */
+  onMessagesChange?: (messages: RefinementMessage[]) => void;
 }
 
 // =============================================================================
@@ -242,12 +246,27 @@ export function RefinementChat({
   className,
   isCollapsed = false,
   onToggleCollapse,
+  initialMessages,
+  onMessagesChange,
 }: RefinementChatProps) {
-  const [messages, setMessages] = React.useState<RefinementMessage[]>([]);
+  const [messages, setMessages] = React.useState<RefinementMessage[]>(
+    initialMessages ?? []
+  );
   const [input, setInput] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLTextAreaElement>(null);
+  const onMessagesChangeRef = React.useRef(onMessagesChange);
+
+  // Keep callback ref updated
+  React.useEffect(() => {
+    onMessagesChangeRef.current = onMessagesChange;
+  }, [onMessagesChange]);
+
+  // Notify parent when messages change
+  React.useEffect(() => {
+    onMessagesChangeRef.current?.(messages);
+  }, [messages]);
 
   // Scroll to bottom when new messages arrive
   React.useEffect(() => {

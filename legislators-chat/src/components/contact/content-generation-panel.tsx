@@ -11,6 +11,7 @@ import {
   PenLine,
   Eye,
   ArrowLeft,
+  Cloud,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -20,7 +21,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import type { ContactMethod, TonePreference, AdvocacyContext } from "@/lib/types";
+import type { SavedDraft } from "@/lib/queue-storage";
 import { useContactContent, useActiveContent } from "@/hooks/use-contact-content";
+import { useContact } from "@/hooks/use-contact";
 import { CallScriptPanel } from "./call-script-panel";
 import { EmailDraftPanel } from "./email-draft-panel";
 import { ContentEditorWithChat } from "./content-editor-with-chat";
@@ -156,6 +159,7 @@ export function ContentGenerationPanel({
     updateAdvocacyContext,
   } = useContactContent();
 
+  const { getLegislatorDraft, saveLegislatorDraft } = useContact();
   const { content, isGenerating, error } = useActiveContent(activeItem);
 
   const [isContextExpanded, setIsContextExpanded] = React.useState(
@@ -165,6 +169,36 @@ export function ContentGenerationPanel({
   // Edit mode state - when true, show the content editor with AI chat
   const [isEditMode, setIsEditMode] = React.useState(false);
   const [selectedSubjectIndex, setSelectedSubjectIndex] = React.useState(0);
+
+  // Get saved draft for current legislator
+  const savedDraft = getLegislatorDraft(activeItem.legislator.id);
+
+  // Handle auto-save from the editor
+  const handleDraftSave = React.useCallback(
+    (draft: Omit<SavedDraft, "savedAt">) => {
+      saveLegislatorDraft(activeItem.legislator.id, draft);
+    },
+    [saveLegislatorDraft, activeItem.legislator.id]
+  );
+
+  // Check if we should auto-enter edit mode (if there's a saved draft with edits)
+  React.useEffect(() => {
+    if (
+      savedDraft &&
+      (savedDraft.editedCallScript ||
+        savedDraft.editedEmailDraft ||
+        (savedDraft.refinementChatHistory && savedDraft.refinementChatHistory.length > 0))
+    ) {
+      // Auto-enter edit mode if there's a saved draft with edits
+      const hasEdits =
+        (contactMethod === "call" && savedDraft.editedCallScript) ||
+        (contactMethod === "email" && savedDraft.editedEmailDraft) ||
+        (savedDraft.refinementChatHistory && savedDraft.refinementChatHistory.length > 0);
+      if (hasEdits && content) {
+        setIsEditMode(true);
+      }
+    }
+  }, [savedDraft, contactMethod, content]);
 
   // Initialize advocacy context from research context if not set
   React.useEffect(() => {
@@ -239,9 +273,11 @@ export function ContentGenerationPanel({
         <ContentEditorWithChat
           contentType={contactMethod}
           originalContent={originalContent}
-          selectedSubjectIndex={selectedSubjectIndex}
+          selectedSubjectIndex={savedDraft?.selectedSubjectIndex ?? selectedSubjectIndex}
           legislator={activeItem.legislator}
           advocacyContext={state.advocacyContext}
+          savedDraft={savedDraft}
+          onDraftSave={handleDraftSave}
         />
       </div>
     );
@@ -325,12 +361,36 @@ export function ContentGenerationPanel({
                   <PenLine className="size-4 text-primary" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-foreground">
-                    Want to customize this content?
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    Edit the text directly or use AI to refine specific parts
-                  </p>
+                  {savedDraft &&
+                  (savedDraft.editedCallScript ||
+                    savedDraft.editedEmailDraft ||
+                    (savedDraft.refinementChatHistory &&
+                      savedDraft.refinementChatHistory.length > 0)) ? (
+                    <>
+                      <p className="text-sm font-medium text-foreground flex items-center gap-1.5">
+                        <Cloud className="size-3.5 text-green-500" />
+                        Draft saved
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Continue editing from where you left off
+                        {savedDraft.refinementChatHistory &&
+                          savedDraft.refinementChatHistory.length > 0 && (
+                            <span className="ml-1">
+                              ({savedDraft.refinementChatHistory.length} chat messages)
+                            </span>
+                          )}
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-sm font-medium text-foreground">
+                        Want to customize this content?
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Edit the text directly or use AI to refine specific parts
+                      </p>
+                    </>
+                  )}
                 </div>
               </div>
               <Button
@@ -340,7 +400,13 @@ export function ContentGenerationPanel({
                 className="gap-1.5"
               >
                 <PenLine className="size-3.5" />
-                Edit & Refine
+                {savedDraft &&
+                (savedDraft.editedCallScript ||
+                  savedDraft.editedEmailDraft ||
+                  (savedDraft.refinementChatHistory &&
+                    savedDraft.refinementChatHistory.length > 0))
+                  ? "Continue Editing"
+                  : "Edit & Refine"}
               </Button>
             </div>
           </CardContent>

@@ -9,7 +9,6 @@ import {
   CheckCircle2,
   Mail,
   Phone,
-  Download,
   History,
 } from "lucide-react";
 
@@ -29,7 +28,9 @@ import type {
   EditableEmailDraft,
   Legislator,
   AdvocacyContext,
+  RefinementMessage,
 } from "@/lib/types";
+import type { SavedDraft } from "@/lib/queue-storage";
 import {
   ContentEditor,
   ContentEditorHandle,
@@ -40,10 +41,20 @@ import {
 } from "./content-editor";
 import { RefinementChat } from "./refinement-chat";
 import { DiffViewer } from "./diff-viewer";
+import { DraftSavedIndicator } from "./draft-saved-indicator";
+import { useAutoSave } from "@/hooks/use-auto-save";
+import { useBeforeUnload } from "@/hooks/use-before-unload";
 
 // =============================================================================
 // Types
 // =============================================================================
+
+/** Data structure for auto-save */
+interface DraftData {
+  editedContent: EditableCallScript | EditableEmailDraft;
+  chatHistory: RefinementMessage[];
+  selectedSubjectIndex: number;
+}
 
 interface ContentEditorWithChatProps {
   /** Type of content being edited */
@@ -58,7 +69,11 @@ interface ContentEditorWithChatProps {
   advocacyContext: AdvocacyContext | null;
   /** Class name for the container */
   className?: string;
-  /** Called when content is saved/finalized */
+  /** Previously saved draft to restore */
+  savedDraft?: SavedDraft;
+  /** Called when content is saved (debounced auto-save) */
+  onDraftSave?: (draft: Omit<SavedDraft, "savedAt">) => void;
+  /** Called when content is finalized (manual save) */
   onSave?: (content: EditableCallScript | EditableEmailDraft) => void;
 }
 
@@ -127,22 +142,55 @@ export function ContentEditorWithChat({
   legislator,
   advocacyContext,
   className,
+  savedDraft,
+  onDraftSave,
   onSave,
 }: ContentEditorWithChatProps) {
   const editorRef = React.useRef<ContentEditorHandle | null>(null);
   const [isChatCollapsed, setIsChatCollapsed] = React.useState(false);
   const [isDiffVisible, setIsDiffVisible] = React.useState(false);
-  const [showHistory, setShowHistory] = React.useState(false);
+
+  // Initialize from saved draft or original content
+  const initialEditableContent = React.useMemo(() => {
+    // Check if we have edited content in the saved draft
+    if (savedDraft) {
+      if (contentType === "call" && savedDraft.editedCallScript) {
+        return savedDraft.editedCallScript;
+      }
+      if (contentType === "email" && savedDraft.editedEmailDraft) {
+        return savedDraft.editedEmailDraft;
+      }
+    }
+    // Fall back to converting original content
+    if (contentType === "call") {
+      return callScriptToEditable(originalContent as CallScript);
+    }
+    return emailDraftToEditable(
+      originalContent as EmailDraft,
+      savedDraft?.selectedSubjectIndex ?? selectedSubjectIndex
+    );
+  }, [contentType, originalContent, savedDraft, selectedSubjectIndex]);
+
+  // Initialize chat history from saved draft
+  const initialChatHistory = React.useMemo(
+    () => savedDraft?.refinementChatHistory ?? [],
+    [savedDraft]
+  );
 
   // Track current editable content for diff and chat
   const [currentEditableContent, setCurrentEditableContent] = React.useState<
     EditableCallScript | EditableEmailDraft
-  >(() => {
-    if (contentType === "call") {
-      return callScriptToEditable(originalContent as CallScript);
-    }
-    return emailDraftToEditable(originalContent as EmailDraft, selectedSubjectIndex);
-  });
+  >(initialEditableContent);
+
+  // Track chat history for persistence
+  const [chatHistory, setChatHistory] = React.useState<RefinementMessage[]>(
+    initialChatHistory
+  );
+
+  // Track subject index for emails
+  const [currentSubjectIndex, setCurrentSubjectIndex] = React.useState(
+    savedDraft?.selectedSubjectIndex ?? selectedSubjectIndex
+  );
 
   // Original content for comparison
   const originalEditable = React.useMemo(() => {
@@ -152,16 +200,68 @@ export function ContentEditorWithChat({
     return emailDraftToEditable(originalContent as EmailDraft, selectedSubjectIndex);
   }, [originalContent, contentType, selectedSubjectIndex]);
 
+  // Combined data for auto-save
+  const draftData: DraftData = React.useMemo(
+    () => ({
+      editedContent: currentEditableContent,
+      chatHistory,
+      selectedSubjectIndex: currentSubjectIndex,
+    }),
+    [currentEditableContent, chatHistory, currentSubjectIndex]
+  );
+
+  // Handle auto-save
+  const handleDraftSave = React.useCallback(
+    (data: DraftData) => {
+      if (!onDraftSave) return;
+
+      const draft: Omit<SavedDraft, "savedAt"> = {
+        contentType,
+        callScript: contentType === "call" ? (originalContent as CallScript) : undefined,
+        emailDraft: contentType === "email" ? (originalContent as EmailDraft) : undefined,
+        editedCallScript:
+          contentType === "call" ? (data.editedContent as EditableCallScript) : undefined,
+        editedEmailDraft:
+          contentType === "email" ? (data.editedContent as EditableEmailDraft) : undefined,
+        selectedSubjectIndex: data.selectedSubjectIndex,
+        refinementChatHistory: data.chatHistory,
+        advocacyContext: advocacyContext ?? undefined,
+      };
+
+      onDraftSave(draft);
+    },
+    [onDraftSave, contentType, originalContent, advocacyContext]
+  );
+
+  // Auto-save hook with 2.5 second debounce
+  const { isDirty, isSaving, lastSavedAt, saveNow } = useAutoSave({
+    data: draftData,
+    onSave: handleDraftSave,
+    delay: 2500,
+    enabled: !!onDraftSave,
+  });
+
+  // Warn before leaving with unsaved changes
+  useBeforeUnload(isDirty, "You have unsaved changes to your draft. Are you sure you want to leave?");
+
   // Handle content changes from editor
   const handleContentChange = React.useCallback(
-    (content: EditableCallScript | EditableEmailDraft, isDirty: boolean) => {
+    (content: EditableCallScript | EditableEmailDraft, editorIsDirty: boolean) => {
       setCurrentEditableContent(content);
       // Show diff when content has been modified
-      if (isDirty && !isDiffVisible) {
+      if (editorIsDirty && !isDiffVisible) {
         setIsDiffVisible(true);
       }
     },
     [isDiffVisible]
+  );
+
+  // Handle chat history changes
+  const handleChatHistoryChange = React.useCallback(
+    (messages: RefinementMessage[]) => {
+      setChatHistory(messages);
+    },
+    []
   );
 
   // Handle refinement from AI chat
@@ -213,6 +313,9 @@ export function ContentEditorWithChat({
     return editableEmailDraftToText(originalEditable as EditableEmailDraft);
   }, [originalEditable, contentType]);
 
+  // Check if content has changed from original
+  const hasChanges = fullText !== originalText || chatHistory.length > 0;
+
   return (
     <div className={cn("space-y-4", className)}>
       {/* Header Actions */}
@@ -229,10 +332,13 @@ export function ContentEditorWithChat({
               Email Draft
             </Badge>
           )}
-          {editorRef.current?.isDirty && (
-            <Badge variant="secondary" className="text-xs">
-              Unsaved changes
-            </Badge>
+          {/* Draft saved indicator */}
+          {onDraftSave && (
+            <DraftSavedIndicator
+              isDirty={isDirty}
+              isSaving={isSaving}
+              lastSavedAt={lastSavedAt}
+            />
           )}
         </div>
 
@@ -255,6 +361,7 @@ export function ContentEditorWithChat({
                   variant={isDiffVisible ? "secondary" : "ghost"}
                   size="icon-sm"
                   onClick={() => setIsDiffVisible(!isDiffVisible)}
+                  disabled={!hasChanges}
                 >
                   <History className="size-3.5" />
                 </Button>
@@ -314,10 +421,17 @@ export function ContentEditorWithChat({
           <ContentEditor
             contentType={contentType}
             initialContent={originalContent}
-            selectedSubjectIndex={selectedSubjectIndex}
+            selectedSubjectIndex={currentSubjectIndex}
             onContentChange={handleContentChange}
             onSave={onSave}
             editorRef={editorRef}
+            initialEditedContent={
+              savedDraft
+                ? contentType === "call"
+                  ? savedDraft.editedCallScript
+                  : savedDraft.editedEmailDraft
+                : undefined
+            }
           />
         </div>
 
@@ -330,6 +444,8 @@ export function ContentEditorWithChat({
             advocacyContext={advocacyContext}
             onRefinementComplete={handleRefinementComplete}
             isCollapsed={false}
+            initialMessages={initialChatHistory}
+            onMessagesChange={handleChatHistoryChange}
           />
         </div>
       </div>
@@ -350,6 +466,11 @@ export function ContentEditorWithChat({
             >
               <PanelLeftOpen className="size-4" />
               Show AI Refinement Chat
+              {chatHistory.length > 0 && (
+                <Badge variant="secondary" className="ml-1">
+                  {chatHistory.length}
+                </Badge>
+              )}
             </Button>
           </motion.div>
         )}

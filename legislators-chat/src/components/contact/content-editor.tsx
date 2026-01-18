@@ -145,6 +145,8 @@ interface ContentEditorProps {
   className?: string;
   /** External ref to access editor methods */
   editorRef?: React.RefObject<ContentEditorHandle | null>;
+  /** Previously saved edited content to restore (takes priority over initialContent) */
+  initialEditedContent?: EditableCallScript | EditableEmailDraft;
 }
 
 export interface ContentEditorHandle {
@@ -582,16 +584,22 @@ export function ContentEditor({
   onSave,
   className,
   editorRef,
+  initialEditedContent,
 }: ContentEditorProps) {
   const [isPreviewMode, setIsPreviewMode] = React.useState(false);
 
-  // Convert initial content to editable format
+  // Convert initial content to editable format, preferring saved edited content
   const initialEditable = React.useMemo(() => {
+    // If we have previously saved edited content, use that
+    if (initialEditedContent) {
+      return initialEditedContent;
+    }
+    // Otherwise convert from the original generated content
     if (contentType === "call") {
       return callScriptToEditable(initialContent as CallScript);
     }
     return emailDraftToEditable(initialContent as EmailDraft, selectedSubjectIndex);
-  }, [contentType, initialContent, selectedSubjectIndex]);
+  }, [contentType, initialContent, selectedSubjectIndex, initialEditedContent]);
 
   // Use edit history hook
   const editHistory = useEditHistory<EditableCallScript | EditableEmailDraft>(

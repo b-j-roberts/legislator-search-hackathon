@@ -17,27 +17,6 @@ After implementing the feature, please provide a concise step-by-step instructio
 
 Enable users to transition from research/chat phase to taking action by contacting their representatives with AI-generated, personalized call scripts and email drafts.
 
-## 1.5 Actions & Completion
-
-**Description**: Enable users to finalize and send/save their outreach.
-
-**Requirements**:
-- [ ] "Copy to Clipboard" button for scripts/emails
-- [ ] "Download as PDF" for call scripts (printable format)
-- [ ] "Download as .txt" for emails
-- [ ] "Open in Email Client" (mailto: link with prefilled content)
-- [ ] "Mark as Complete" to log the contact and move to next
-- [ ] "Save Draft" to preserve work-in-progress
-- [ ] Show confirmation modal before marking complete
-- [ ] Track completion status per legislator
-
-**Implementation Notes**:
-- mailto: links have character limits (~2000 chars)
-- Offer both copy and direct email options
-- Consider integration with email APIs in future
-
----
-
 ## 1.6 Context Switching & Persistence
 
 **Description**: Allow async work across multiple legislators.

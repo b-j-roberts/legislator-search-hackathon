@@ -6,7 +6,7 @@
  * currently active legislator.
  */
 
-import type { Legislator, ContactMethod, CallScript, EmailDraft } from "./types";
+import type { Legislator, ContactMethod, CallScript, EmailDraft, RefinementMessage, EditableCallScript, EditableEmailDraft, AdvocacyContext } from "./types";
 
 // =============================================================================
 // Types
@@ -21,9 +21,17 @@ export type ContactOutcome = "successful" | "voicemail" | "no_answer" | "busy" |
 /** Saved draft for a legislator */
 export interface SavedDraft {
   contentType: "call" | "email";
+  /** Original generated content (for diff comparison) */
   callScript?: CallScript;
   emailDraft?: EmailDraft;
+  /** Edited content (user modifications) */
+  editedCallScript?: EditableCallScript;
+  editedEmailDraft?: EditableEmailDraft;
   selectedSubjectIndex?: number;
+  /** AI refinement chat history */
+  refinementChatHistory?: RefinementMessage[];
+  /** Advocacy context used for generation */
+  advocacyContext?: AdvocacyContext;
   savedAt: string;
 }
 
