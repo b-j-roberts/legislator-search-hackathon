@@ -8,10 +8,13 @@ import {
   parseCallScriptResponse,
   parseEmailDraftResponse,
 } from "@/lib/prompt-builder";
-
-const MAPLE_PROXY_URL = process.env.MAPLE_PROXY_URL || "http://localhost:8080/v1";
-const MAPLE_API_KEY = process.env.MAPLE_API_KEY || "";
-const MAPLE_MODEL = process.env.MAPLE_MODEL || "llama-3.3-70b";
+import {
+  getAIConfig,
+  getChatCompletionsUrl,
+  getAuthHeaders,
+  isAIConfigured,
+  getProviderName,
+} from "@/lib/ai-client";
 
 interface GenerateContentRequest {
   params: ContentGenerationParams;
@@ -57,15 +60,17 @@ export async function POST(request: NextRequest): Promise<NextResponse<GenerateC
       );
     }
 
-    if (!MAPLE_API_KEY) {
+    if (!isAIConfigured()) {
       return NextResponse.json(
         {
           success: false,
-          error: { code: "CONFIG_ERROR", message: "Maple API key not configured" },
+          error: { code: "CONFIG_ERROR", message: `${getProviderName()} API key not configured` },
         },
         { status: 500 }
       );
     }
+
+    const aiConfig = getAIConfig();
 
     // Build prompts based on content type
     let systemPrompt: string;
@@ -94,15 +99,12 @@ export async function POST(request: NextRequest): Promise<NextResponse<GenerateC
       { role: "user", content: userPrompt },
     ];
 
-    // Call Maple Proxy (non-streaming for JSON response)
-    const mapleResponse = await fetch(`${MAPLE_PROXY_URL}/chat/completions`, {
+    // Call AI provider (non-streaming for JSON response)
+    const aiResponse = await fetch(getChatCompletionsUrl(), {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${MAPLE_API_KEY}`,
-      },
+      headers: getAuthHeaders(),
       body: JSON.stringify({
-        model: MAPLE_MODEL,
+        model: aiConfig.model,
         messages,
         stream: false,
         temperature: 0.7, // Some creativity but not too random
@@ -110,22 +112,22 @@ export async function POST(request: NextRequest): Promise<NextResponse<GenerateC
       }),
     });
 
-    if (!mapleResponse.ok) {
-      const errorText = await mapleResponse.text();
-      console.error("Maple API error:", mapleResponse.status, errorText);
+    if (!aiResponse.ok) {
+      const errorText = await aiResponse.text();
+      console.error(`${getProviderName()} API error:`, aiResponse.status, errorText);
       return NextResponse.json(
         {
           success: false,
           error: {
-            code: "MAPLE_ERROR",
-            message: `AI generation failed: ${mapleResponse.status}`,
+            code: "AI_ERROR",
+            message: `AI generation failed: ${aiResponse.status}`,
           },
         },
-        { status: mapleResponse.status }
+        { status: aiResponse.status }
       );
     }
 
-    const data = await mapleResponse.json();
+    const data = await aiResponse.json();
     const responseContent = data.choices?.[0]?.message?.content;
 
     if (!responseContent) {

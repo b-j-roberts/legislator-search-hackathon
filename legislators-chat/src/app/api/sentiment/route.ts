@@ -5,17 +5,20 @@ import {
   aggregateSpeakerStatements,
 } from "@/lib/sentiment";
 import type { SearchResultData, SpeakerSentimentMap } from "@/lib/types";
+import {
+  getAIConfig,
+  getChatCompletionsUrl,
+  getAuthHeaders,
+  isAIConfigured,
+  getProviderName,
+} from "@/lib/ai-client";
 
 /**
  * Sentiment Analysis API Route
  *
- * Analyzes speaker sentiment from search results using Maple AI.
+ * Analyzes speaker sentiment from search results using AI.
  * Implements exponential backoff retries for parsing failures.
  */
-
-const MAPLE_PROXY_URL = process.env.MAPLE_PROXY_URL || "http://localhost:8080/v1";
-const MAPLE_API_KEY = process.env.MAPLE_API_KEY || "";
-const MAPLE_MODEL = process.env.MAPLE_MODEL || "llama-3.3-70b";
 
 const MAX_RETRIES = 3;
 const INITIAL_BACKOFF_MS = 500;
@@ -45,17 +48,16 @@ function sleep(ms: number): Promise<void> {
 }
 
 /**
- * Call Maple AI with the sentiment analysis prompt
+ * Call AI provider with the sentiment analysis prompt
  */
-async function callMapleForSentiment(prompt: string): Promise<string> {
-  const response = await fetch(`${MAPLE_PROXY_URL}/chat/completions`, {
+async function callAIForSentiment(prompt: string): Promise<string> {
+  const aiConfig = getAIConfig();
+
+  const response = await fetch(getChatCompletionsUrl(), {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${MAPLE_API_KEY}`,
-    },
+    headers: getAuthHeaders(),
     body: JSON.stringify({
-      model: MAPLE_MODEL,
+      model: aiConfig.model,
       messages: [
         {
           role: "system",
@@ -72,7 +74,7 @@ async function callMapleForSentiment(prompt: string): Promise<string> {
 
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(`Maple API error: ${response.status} - ${errorText}`);
+    throw new Error(`${getProviderName()} API error: ${response.status} - ${errorText}`);
   }
 
   const data = await response.json();
@@ -107,9 +109,9 @@ export async function POST(
       );
     }
 
-    if (!MAPLE_API_KEY) {
+    if (!isAIConfigured()) {
       return NextResponse.json(
-        { error: { code: "CONFIG_ERROR", message: "Maple API key not configured" } },
+        { error: { code: "CONFIG_ERROR", message: `${getProviderName()} API key not configured` } },
         { status: 500 }
       );
     }
@@ -131,7 +133,7 @@ export async function POST(
 
     for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
       try {
-        const response = await callMapleForSentiment(prompt);
+        const response = await callAIForSentiment(prompt);
         const sentiments = parseSentimentResponse(response);
 
         if (sentiments) {

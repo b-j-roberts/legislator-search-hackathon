@@ -1,4 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
+import {
+  getAIConfig,
+  getChatCompletionsUrl,
+  getAuthHeaders,
+  isAIConfigured,
+  getProviderName,
+} from "@/lib/ai-client";
 
 /**
  * Orchestrated Chat API Route
@@ -6,10 +13,6 @@ import { NextRequest, NextResponse } from "next/server";
  * Non-streaming endpoint for the search orchestration flow.
  * Used by useSearchOrchestration hook for multi-step conversations.
  */
-
-const MAPLE_PROXY_URL = process.env.MAPLE_PROXY_URL || "http://localhost:8080/v1";
-const MAPLE_API_KEY = process.env.MAPLE_API_KEY || "";
-const MAPLE_MODEL = process.env.MAPLE_MODEL || "llama-3.3-70b";
 
 /** Default system prompt (used when search prompt is not provided) */
 const DEFAULT_SYSTEM_PROMPT = `You are a helpful assistant for researching US legislators, congressional hearings, voting records, and legislative documents. Your goal is to help citizens identify and contact legislators on issues they care about.
@@ -55,12 +58,14 @@ export async function POST(
       );
     }
 
-    if (!MAPLE_API_KEY) {
+    if (!isAIConfigured()) {
       return NextResponse.json(
-        { error: { code: "CONFIG_ERROR", message: "Maple API key not configured" } },
+        { error: { code: "CONFIG_ERROR", message: `${getProviderName()} API key not configured` } },
         { status: 500 }
       );
     }
+
+    const aiConfig = getAIConfig();
 
     // Build messages array with conversation history if provided
     const systemPrompt = body.context?.systemPrompt || DEFAULT_SYSTEM_PROMPT;
@@ -76,15 +81,12 @@ export async function POST(
 
     messages.push({ role: "user", content: body.message });
 
-    // Call Maple Proxy (non-streaming for orchestration)
-    const mapleResponse = await fetch(`${MAPLE_PROXY_URL}/chat/completions`, {
+    // Call AI provider (non-streaming for orchestration)
+    const aiResponse = await fetch(getChatCompletionsUrl(), {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${MAPLE_API_KEY}`,
-      },
+      headers: getAuthHeaders(),
       body: JSON.stringify({
-        model: MAPLE_MODEL,
+        model: aiConfig.model,
         messages,
         stream: false,
         temperature: 0.7,
@@ -92,21 +94,21 @@ export async function POST(
       }),
     });
 
-    if (!mapleResponse.ok) {
-      const errorText = await mapleResponse.text();
-      console.error("Maple API error:", mapleResponse.status, errorText);
+    if (!aiResponse.ok) {
+      const errorText = await aiResponse.text();
+      console.error(`${getProviderName()} API error:`, aiResponse.status, errorText);
       return NextResponse.json(
         {
           error: {
-            code: "MAPLE_ERROR",
-            message: `Maple API error: ${mapleResponse.status}`,
+            code: "AI_ERROR",
+            message: `${getProviderName()} API error: ${aiResponse.status}`,
           },
         },
-        { status: mapleResponse.status }
+        { status: aiResponse.status }
       );
     }
 
-    const data = await mapleResponse.json();
+    const data = await aiResponse.json();
     const content = data.choices?.[0]?.message?.content;
 
     if (!content) {

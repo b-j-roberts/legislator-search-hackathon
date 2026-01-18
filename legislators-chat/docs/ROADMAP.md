@@ -26,11 +26,13 @@ Features that enhance the experience but aren't required for initial launch.
 - [ ] Update intro/welcome message/component on chat/main page to be more personable and friendly ( like "Mindy" is there talking to the user explaining they are there to help with xyx )
 - [ ] Ensure consistency across all pages and components
 - [ ] Provide a sample prompt in additional to the prompt buttons on the main page to guide users on how to interact with Mindy ( primarily focused on a sentiment based, people/representative centric query )
-- [ ] Change app logo and favicon to reflect new logo at ~/Downloads/
+- [ ] Change app logo and favicon to reflect new logo at ~/Downloads/mindy_media_kit.zip
+- [ ] Integrate full media kit from ~/Downloads/mindy_media_kit.zip into the app
 
 **Implementation Notes**:
 - Search through all frontend files for "CivicsLens"
 - Update UI text and messages accordingly
+- Use Logo color where you see fit in the UI ( #cc3366 )
 
 ### 2.1 Media Tab
 

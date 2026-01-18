@@ -18,22 +18,6 @@ After implementing the feature, please provide a concise step-by-step instructio
 
 Minimum viable integration to enable AI-powered congressional search.
 
-### 1.5c Filtering Integration
-
-**Description**: Ensure existing legislator filters (party, state, chamber) are applied to search results shown in results panel.
-
-**Requirements**:
-- [ ] When search result from PoliSearch api is fetched, ensure that any active legislator filters ( party, state, chamber ) are applied to the results shown in results panel
-- [ ] Even when no filters are selected, ensure that the search results are still limited to legislators only ( exclude other speakers like witnesses, experts, etc. )
-- [ ] Update the search orchestration to include filter parameters when making search requests to PoliSearch
-- [ ] Ensure that when filters are changed by the user, the results panel updates accordingly with new search results reflecting the applied filters
-
-**Implementation Notes**:
-- Map existing filter state to PoliSearch API parameters
-- Ensure that the search orchestration hook listens to filter state changes and triggers new searches as needed
-
----
-
 ### 1.6 Source URL Integration
 
 **Description**: Make search results clickable to open official GovInfo source documents.
