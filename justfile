@@ -35,6 +35,11 @@ release-api:
 [group('build')]
 release: release-cli release-api
 
+# Build and push Docker image
+[group('build')]
+docker:
+    cd politics-search && nsc build . -t ghcr.io/praveenperera/polsearch-api:latest --push
+
 # ------------------------------------------------------------------------------
 # lint
 # ------------------------------------------------------------------------------
