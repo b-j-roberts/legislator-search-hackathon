@@ -1,0 +1,122 @@
+{
+  "bioguide_id": "S001214",
+  "name": "W. Gregory Steube",
+  "total_found": 19,
+  "filtered_count": 10,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "yN9lYzBQLig",
+      "title": "House Rep. Greg Steube on why he voted against ending the shutdown",
+      "url": "https://www.youtube.com/watch?v=yN9lYzBQLig",
+      "channel": "ABC News",
+      "channel_id": "UCBi2mrWuNuyYy4gbM6fU18Q",
+      "upload_date": null,
+      "duration": 514.0,
+      "view_count": 103759,
+      "description": ""
+    },
+    {
+      "video_id": "u7khJxBbvn8",
+      "title": "Video: Greg Steube Interview 6am August 29, 2018",
+      "url": "https://www.youtube.com/watch?v=u7khJxBbvn8",
+      "channel": "ABC7 Sarasota",
+      "channel_id": "UC0HDtkhrvpjwF_FMD6GIC9g",
+      "upload_date": null,
+      "duration": 175.0,
+      "view_count": 157,
+      "description": ""
+    },
+    {
+      "video_id": "xj-1-6XEhFQ",
+      "title": "Interview with Florida Sen. Greg Steube",
+      "url": "https://www.youtube.com/watch?v=xj-1-6XEhFQ",
+      "channel": "WFLA News Channel 8",
+      "channel_id": "UCDvJcb8Adv-_bOrtnRLmiDw",
+      "upload_date": null,
+      "duration": 874.0,
+      "view_count": 1599,
+      "description": ""
+    },
+    {
+      "video_id": "M9haBsFUxss",
+      "title": "Congressman Greg Steube Discusses Mueller Report with ABC 7's Bill Logan",
+      "url": "https://www.youtube.com/watch?v=M9haBsFUxss",
+      "channel": "Congressman Greg Steube",
+      "channel_id": "UCuhN60FDf0YWlSqJitl2pvg",
+      "upload_date": null,
+      "duration": 261.0,
+      "view_count": 35,
+      "description": ""
+    },
+    {
+      "video_id": "WTMRKS7KxXg",
+      "title": "Steube Joins Fox & Friends to Discuss CASE-IT Act and Big Tech",
+      "url": "https://www.youtube.com/watch?v=WTMRKS7KxXg",
+      "channel": "Congressman Greg Steube",
+      "channel_id": "UCuhN60FDf0YWlSqJitl2pvg",
+      "upload_date": null,
+      "duration": 227.0,
+      "view_count": 242,
+      "description": ""
+    },
+    {
+      "video_id": "mg2D1FNN_1c",
+      "title": "Congressman Greg Steube Questions Michael Cohen",
+      "url": "https://www.youtube.com/watch?v=mg2D1FNN_1c",
+      "channel": "Congressman Greg Steube",
+      "channel_id": "UCuhN60FDf0YWlSqJitl2pvg",
+      "upload_date": null,
+      "duration": 346.0,
+      "view_count": 559,
+      "description": ""
+    },
+    {
+      "video_id": "U6mNExYDk6g",
+      "title": "Congressman Greg Steube Discusses Trump's Florida Visit with Stuart Varney",
+      "url": "https://www.youtube.com/watch?v=U6mNExYDk6g",
+      "channel": "Congressman Greg Steube",
+      "channel_id": "UCuhN60FDf0YWlSqJitl2pvg",
+      "upload_date": null,
+      "duration": 109.0,
+      "view_count": 45,
+      "description": ""
+    },
+    {
+      "video_id": "gzFhNZym0qg",
+      "title": "WWSB-TV WEEKEND ANCHOR JAMES HILL - DARRELL WOODIE HELPS CONGRESSMAN GREG STEUBE PART TWO. 2-23-2023",
+      "url": "https://www.youtube.com/watch?v=gzFhNZym0qg",
+      "channel": "James Hill",
+      "channel_id": "UCa_b3qTY2goLOy_d2SRyNmg",
+      "upload_date": null,
+      "duration": 71.0,
+      "view_count": 16,
+      "description": ""
+    },
+    {
+      "video_id": "epY_boVVN8E",
+      "title": "Congressman Steube Visits ABC7 In First Interview Since Swearing-In",
+      "url": "https://www.youtube.com/watch?v=epY_boVVN8E",
+      "channel": "Congressman Greg Steube",
+      "channel_id": "UCuhN60FDf0YWlSqJitl2pvg",
+      "upload_date": null,
+      "duration": 451.0,
+      "view_count": 59,
+      "description": ""
+    },
+    {
+      "video_id": "tb7YqgHrM-k",
+      "title": "126 House Republicans Trying to Undermine Democracy displayed in14 seconds - open captioned",
+      "url": "https://www.youtube.com/watch?v=tb7YqgHrM-k",
+      "channel": "Captioning for Everyone",
+      "channel_id": "UCuynh1xfy81AQz19ax3lWQA",
+      "upload_date": null,
+      "duration": 55.0,
+      "view_count": 59,
+      "description": ""
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "bioguide_id": "O000176",
+  "name": "Johnny Olszewski, Jr.",
+  "total_found": 33,
+  "filtered_count": 1,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "pYGYtd9i4_k",
+      "title": "Johnny Olszewski endorses fellow county executive Angela Alsobrooks in Senate run",
+      "url": "https://www.youtube.com/watch?v=pYGYtd9i4_k",
+      "channel": "WJZ",
+      "channel_id": "UClYiny8IhDsIk5SivucNl7g",
+      "upload_date": null,
+      "duration": 31.0,
+      "view_count": 268,
+      "description": ""
+    }
+  ]
+}

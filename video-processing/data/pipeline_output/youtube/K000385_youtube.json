@@ -1,0 +1,56 @@
+{
+  "bioguide_id": "K000385",
+  "name": "Robin L. Kelly",
+  "total_found": 24,
+  "filtered_count": 4,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "2GGVQu9y98c",
+      "title": "Maternal Health Event in conjunction with the Congressional Caucus on Black Women and Girls.",
+      "url": "https://www.youtube.com/watch?v=2GGVQu9y98c",
+      "channel": "National Minority Quality Forum",
+      "channel_id": "UCu60zEmNaDS7eJiKJIWTQ9A",
+      "upload_date": null,
+      "duration": 3163.0,
+      "view_count": 52,
+      "description": ""
+    },
+    {
+      "video_id": "Wa3kud0sCMg",
+      "title": "2018 NMQF Summit and Spring Health Braintrust: Congressional Awards Luncheon & Town Hall",
+      "url": "https://www.youtube.com/watch?v=Wa3kud0sCMg",
+      "channel": "NMQFVideo",
+      "channel_id": "UCmHE7RW9-IA69lM55sAD3Ig",
+      "upload_date": null,
+      "duration": 4303.0,
+      "view_count": 43,
+      "description": ""
+    },
+    {
+      "video_id": "khqhxDjS3qM",
+      "title": "Congressional Hearing - Panel I Cuba",
+      "url": "https://www.youtube.com/watch?v=khqhxDjS3qM",
+      "channel": "TVSats",
+      "channel_id": "UCiQXso_kdIxK6GAq4mVcBVg",
+      "upload_date": null,
+      "duration": 6134.0,
+      "view_count": 280,
+      "description": ""
+    },
+    {
+      "video_id": "YEz_S5uOYS8",
+      "title": "Congressional Hearing - Panel II Venezuela",
+      "url": "https://www.youtube.com/watch?v=YEz_S5uOYS8",
+      "channel": "TVSats",
+      "channel_id": "UCiQXso_kdIxK6GAq4mVcBVg",
+      "upload_date": null,
+      "duration": 3441.0,
+      "view_count": 240,
+      "description": ""
+    }
+  ]
+}

@@ -6,12 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import type {
-  Party,
-  Chamber,
-  Stance,
-  StateAbbreviation,
-} from "@/lib/types";
+import type { Party, Chamber, Stance, StateAbbreviation } from "@/lib/types";
 import {
   PARTY_OPTIONS,
   CHAMBER_OPTIONS,
@@ -29,7 +24,8 @@ export interface FilterChipsProps {
   onRemoveParty: (party: Party) => void;
   onRemoveChamber: (chamber: Chamber) => void;
   onRemoveState: (state: StateAbbreviation) => void;
-  onRemoveStance: (stance: Stance) => void;
+  /** Optional stance removal - if undefined, stance chips are not shown */
+  onRemoveStance?: (stance: Stance) => void;
   className?: string;
 }
 
@@ -47,9 +43,9 @@ interface FilterChipProps {
 function FilterChip({ label, category, onRemove, variant = "default" }: FilterChipProps) {
   const variantClasses: Record<string, string> = {
     default: "bg-muted hover:bg-muted/80",
-    "party-d": "bg-blue-900/30 text-blue-400 hover:bg-blue-900/40",
-    "party-r": "bg-red-900/30 text-red-400 hover:bg-red-900/40",
-    "party-i": "bg-purple-900/30 text-purple-400 hover:bg-purple-900/40",
+    "party-d": "bg-blue-100 text-blue-700 hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/40",
+    "party-r": "bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/40",
+    "party-i": "bg-purple-100 text-purple-700 hover:bg-purple-200 dark:bg-purple-900/30 dark:text-purple-400 dark:hover:bg-purple-900/40",
     stance: "bg-accent hover:bg-accent/80",
   };
 
@@ -68,9 +64,7 @@ function FilterChip({ label, category, onRemove, variant = "default" }: FilterCh
           variantClasses[variant]
         )}
       >
-        <span className="text-muted-foreground text-[10px] uppercase">
-          {category}:
-        </span>
+        <span className="text-muted-foreground text-[10px] uppercase">{category}:</span>
         {label}
         <button
           onClick={onRemove}
@@ -96,11 +90,12 @@ export function FilterChips({
   onRemoveStance,
   className,
 }: FilterChipsProps) {
+  // Only count stance filters if the removal callback is provided
   const hasFilters =
     filters.parties.length > 0 ||
     filters.chambers.length > 0 ||
     filters.states.length > 0 ||
-    filters.stances.length > 0;
+    (onRemoveStance && filters.stances.length > 0);
 
   if (!hasFilters) {
     return null;
@@ -162,8 +157,8 @@ export function FilterChips({
           />
         ))}
 
-        {/* Stance chips */}
-        {filters.stances.map((stance) => (
+        {/* Stance chips - only shown when callback is provided */}
+        {onRemoveStance && filters.stances.map((stance) => (
           <FilterChip
             key={`stance-${stance}`}
             category="Stance"

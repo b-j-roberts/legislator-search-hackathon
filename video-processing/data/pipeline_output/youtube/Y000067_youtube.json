@@ -1,0 +1,45 @@
+{
+  "bioguide_id": "Y000067",
+  "name": "Rudy Yakym III",
+  "total_found": 9,
+  "filtered_count": 3,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "N4bZLREAutk",
+      "title": "WATCH NOW: Republican caucus for Indiana's 2nd Congressional District",
+      "url": "https://www.youtube.com/watch?v=N4bZLREAutk",
+      "channel": "nwitimestv",
+      "channel_id": "UCz7vEV6--eVhbISSds5Ze0Q",
+      "upload_date": null,
+      "duration": 10710.0,
+      "view_count": 310,
+      "description": ""
+    },
+    {
+      "video_id": "Tj15hxN5Dt8",
+      "title": "Indiana GOP picks candidate to replace Congresswoman Walorski on ballot",
+      "url": "https://www.youtube.com/watch?v=Tj15hxN5Dt8",
+      "channel": "CBS Chicago",
+      "channel_id": "UCkBS_xU1WQ7FVsDoQ_OPeDg",
+      "upload_date": null,
+      "duration": 44.0,
+      "view_count": 1047,
+      "description": ""
+    },
+    {
+      "video_id": "aS4m0kVCcpM",
+      "title": "2025 WITA/WITF Annual Dinner - Mike Dankler, Lighthouse Award",
+      "url": "https://www.youtube.com/watch?v=aS4m0kVCcpM",
+      "channel": "WITA_DC",
+      "channel_id": "UCoO08d_AoF57ZmwJEOZmVyg",
+      "upload_date": null,
+      "duration": 684.0,
+      "view_count": 85,
+      "description": ""
+    }
+  ]
+}

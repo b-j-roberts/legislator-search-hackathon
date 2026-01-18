@@ -1,0 +1,45 @@
+{
+  "bioguide_id": "H001072",
+  "name": "J. French Hill",
+  "total_found": 4,
+  "filtered_count": 3,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "dxxyK-__67s",
+      "title": "Congressman Jeff Fortenberry re HR7071 Expanded Access",
+      "url": "https://www.youtube.com/watch?v=dxxyK-__67s",
+      "channel": "Everything ALS",
+      "channel_id": "UCpABF6CdW2-0WWmrQEMyq_w",
+      "upload_date": null,
+      "duration": 339.0,
+      "view_count": 1333,
+      "description": ""
+    },
+    {
+      "video_id": "CS62Gb_sdqk",
+      "title": "9.26.2018 Full Committee Markup 10:15 AM",
+      "url": "https://www.youtube.com/watch?v=CS62Gb_sdqk",
+      "channel": "House Committee on Natural Resources GOP",
+      "channel_id": "UCY08wEbJ8fztRofQ9eZs0-g",
+      "upload_date": null,
+      "duration": 11983.0,
+      "view_count": 463,
+      "description": ""
+    },
+    {
+      "video_id": "ybau1h58UN8",
+      "title": "9.26.2018 Full Committee Markup 10:15 AM H.R. 4644",
+      "url": "https://www.youtube.com/watch?v=ybau1h58UN8",
+      "channel": "House Committee on Natural Resources GOP",
+      "channel_id": "UCY08wEbJ8fztRofQ9eZs0-g",
+      "upload_date": null,
+      "duration": 1164.0,
+      "view_count": 82,
+      "description": ""
+    }
+  ]
+}

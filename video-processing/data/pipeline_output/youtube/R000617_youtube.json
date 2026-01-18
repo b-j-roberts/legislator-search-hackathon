@@ -1,0 +1,45 @@
+{
+  "bioguide_id": "R000617",
+  "name": "Delia C. Ramirez",
+  "total_found": 11,
+  "filtered_count": 3,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "X_ZRDFGn0KY",
+      "title": "Streaming with Brad: Congresswoman Ramirez",
+      "url": "https://www.youtube.com/watch?v=X_ZRDFGn0KY",
+      "channel": "CBS Chicago",
+      "channel_id": "UCkBS_xU1WQ7FVsDoQ_OPeDg",
+      "upload_date": null,
+      "duration": 701.0,
+      "view_count": 115,
+      "description": ""
+    },
+    {
+      "video_id": "j3A9WBM4GxI",
+      "title": "Congresswoman Delia C. Ramirez I will NOT fund authoritarianism.",
+      "url": "https://www.youtube.com/shorts/j3A9WBM4GxI",
+      "channel": "Spot On 101",
+      "channel_id": "UC3Hz6JZ09kRemYC_vkg89Hw",
+      "upload_date": null,
+      "duration": 47.0,
+      "view_count": 712,
+      "description": ""
+    },
+    {
+      "video_id": "zo-FHcVO120",
+      "title": "Reps Ramirez and Garcia talk protecting immigrant rights | CBS News Chicago",
+      "url": "https://www.youtube.com/watch?v=zo-FHcVO120",
+      "channel": "CBS Chicago",
+      "channel_id": "UCkBS_xU1WQ7FVsDoQ_OPeDg",
+      "upload_date": null,
+      "duration": 2857.0,
+      "view_count": 1609,
+      "description": ""
+    }
+  ]
+}

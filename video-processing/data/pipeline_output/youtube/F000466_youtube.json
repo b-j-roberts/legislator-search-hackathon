@@ -1,0 +1,45 @@
+{
+  "bioguide_id": "F000466",
+  "name": "Brian K. Fitzpatrick",
+  "total_found": 9,
+  "filtered_count": 3,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "o90a9nYzzDo",
+      "title": "135 GOP Reps Supported Red Flags. Was YOUR Congress Critter One Of Them?",
+      "url": "https://www.youtube.com/watch?v=o90a9nYzzDo",
+      "channel": "ARFCOM News",
+      "channel_id": "UCbiiqvaU4DuhAn33LqCz0qA",
+      "upload_date": null,
+      "duration": 661.0,
+      "view_count": 10090,
+      "description": ""
+    },
+    {
+      "video_id": "6BAaDL__tRY",
+      "title": "BREAKING THROUGH NEWS: Military Housing Privatization Funding in NDAA",
+      "url": "https://www.youtube.com/watch?v=6BAaDL__tRY",
+      "channel": "Breaking Through News",
+      "channel_id": "UCsfbmPMGF5XrCcu0uJXo-rg",
+      "upload_date": null,
+      "duration": 69.0,
+      "view_count": 21,
+      "description": ""
+    },
+    {
+      "video_id": "d3CnoSLdskQ",
+      "title": "Bi-Partisan Assault on Your Gun Rights Passes The House",
+      "url": "https://www.youtube.com/watch?v=d3CnoSLdskQ",
+      "channel": "Firearms Policy Coalition",
+      "channel_id": "UCQwal7KaCKPDWarooZ3p4Kw",
+      "upload_date": null,
+      "duration": 645.0,
+      "view_count": 12673,
+      "description": ""
+    }
+  ]
+}

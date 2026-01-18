@@ -2,13 +2,7 @@
 
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  MessageSquarePlus,
-  MessageSquare,
-  Trash2,
-  X,
-  ChevronLeft,
-} from "lucide-react";
+import { MessageSquarePlus, MessageSquare, Trash2, X, ChevronLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -26,12 +20,7 @@ interface ConversationItemProps {
   onDelete: () => void;
 }
 
-function ConversationItem({
-  conversation,
-  isActive,
-  onSelect,
-  onDelete,
-}: ConversationItemProps) {
+function ConversationItem({ conversation, isActive, onSelect, onDelete }: ConversationItemProps) {
   const [showDelete, setShowDelete] = React.useState(false);
 
   // Format relative time
@@ -261,9 +250,7 @@ export function ConversationSidebar() {
                 {groupedConversations.length === 0 ? (
                   <div className="flex flex-col items-center justify-center py-8 px-4 text-center">
                     <MessageSquare className="h-10 w-10 text-muted-foreground/40 mb-3" />
-                    <p className="text-sm text-muted-foreground">
-                      No conversations yet
-                    </p>
+                    <p className="text-sm text-muted-foreground">No conversations yet</p>
                     <p className="text-xs text-muted-foreground/60 mt-1">
                       Start a new conversation to begin
                     </p>

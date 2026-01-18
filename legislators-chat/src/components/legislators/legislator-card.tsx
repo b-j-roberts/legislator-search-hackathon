@@ -2,10 +2,12 @@
 
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Phone, Mail, Globe, ChevronDown, MapPin, Building2 } from "lucide-react";
+import { Phone, Mail, Globe, ChevronDown, MapPin, Building2, FileText, ExternalLink } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { getStateName, getStateFlag } from "@/lib/states";
 import type { Legislator, Party, Chamber } from "@/lib/types";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import {
   Card,
   CardHeader,
@@ -16,28 +18,36 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Checkbox } from "@/components/ui/checkbox";
 import { StanceBadge } from "./stance-badge";
+import { LeaningGaugeCompact } from "./leaning-gauge";
 
 export interface LegislatorCardProps {
   legislator: Legislator;
   className?: string;
   defaultExpanded?: boolean;
+  /** Whether the card is in selection mode */
+  selectable?: boolean;
+  /** Whether the legislator is selected */
+  isSelected?: boolean;
+  /** Callback when selection is toggled */
+  onToggleSelect?: (legislator: Legislator) => void;
 }
 
 const partyConfig: Record<Party, { label: string; className: string; color: string }> = {
   D: {
     label: "Democrat",
-    className: "bg-blue-900/50 text-blue-400 border-blue-700",
+    className: "bg-blue-100 text-blue-700 border-blue-300 dark:bg-blue-900/50 dark:text-blue-400 dark:border-blue-700",
     color: "bg-blue-500",
   },
   R: {
     label: "Republican",
-    className: "bg-red-900/50 text-red-400 border-red-700",
+    className: "bg-red-100 text-red-700 border-red-300 dark:bg-red-900/50 dark:text-red-400 dark:border-red-700",
     color: "bg-red-500",
   },
   I: {
     label: "Independent",
-    className: "bg-purple-900/50 text-purple-400 border-purple-700",
+    className: "bg-purple-100 text-purple-700 border-purple-300 dark:bg-purple-900/50 dark:text-purple-400 dark:border-purple-700",
     color: "bg-purple-500",
   },
 };
@@ -83,10 +93,37 @@ function getInitials(name: string): string {
     .toUpperCase();
 }
 
+function StateFlag({
+  state,
+  className,
+}: {
+  state: Legislator["state"];
+  className?: string;
+}) {
+  const [hasError, setHasError] = React.useState(false);
+  const flagUrl = getStateFlag(state);
+
+  if (hasError || !flagUrl) {
+    return null;
+  }
+
+  return (
+    <img
+      src={flagUrl}
+      alt={`${getStateName(state)} flag`}
+      className={cn("h-3 w-auto rounded-sm object-cover", className)}
+      onError={() => setHasError(true)}
+    />
+  );
+}
+
 export function LegislatorCard({
   legislator,
   className,
   defaultExpanded = false,
+  selectable = false,
+  isSelected = false,
+  onToggleSelect,
 }: LegislatorCardProps) {
   const [isExpanded, setIsExpanded] = React.useState(defaultExpanded);
 
@@ -98,6 +135,7 @@ export function LegislatorCard({
     district,
     stance,
     stanceSummary,
+    leaningScore,
     contact,
     imageUrl,
     termStart,
@@ -126,6 +164,10 @@ export function LegislatorCard({
     }
   };
 
+  const handleToggleSelect = () => {
+    onToggleSelect?.(legislator);
+  };
+
   return (
     <motion.div
       variants={cardVariants}
@@ -134,16 +176,34 @@ export function LegislatorCard({
       exit="exit"
       transition={{ duration: 0.2 }}
     >
-      <Card className={cn("overflow-hidden", className)}>
+      <Card
+        className={cn(
+          "overflow-hidden transition-colors",
+          isSelected && "ring-2 ring-primary bg-primary/5",
+          selectable && "cursor-pointer",
+          className
+        )}
+        onClick={selectable ? handleToggleSelect : undefined}
+      >
         <CardHeader>
           <div className="flex items-start gap-3">
+            {/* Selection checkbox */}
+            {selectable && (
+              <div className="flex-shrink-0 pt-1" onClick={(e) => e.stopPropagation()}>
+                <Checkbox
+                  checked={isSelected}
+                  onCheckedChange={handleToggleSelect}
+                  aria-label={`Select ${name}`}
+                  className="data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                />
+              </div>
+            )}
+
             {/* Avatar with party color ring */}
             <div className={cn("rounded-full p-0.5", partyColor)}>
               <Avatar className="size-12">
                 {imageUrl && <AvatarImage src={imageUrl} alt={name} />}
-                <AvatarFallback className="text-sm font-medium">
-                  {getInitials(name)}
-                </AvatarFallback>
+                <AvatarFallback className="text-sm font-medium">{getInitials(name)}</AvatarFallback>
               </Avatar>
             </div>
 
@@ -152,16 +212,29 @@ export function LegislatorCard({
               <CardDescription className="flex items-center gap-1.5 mt-0.5">
                 <span>{title}</span>
                 <span className="text-muted-foreground/50">·</span>
-                <span className="flex items-center gap-1">
-                  <MapPin className="size-3" />
-                  {location}
-                </span>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="flex items-center gap-1 cursor-help">
+                      <StateFlag state={state} />
+                      <MapPin className="size-3" />
+                      {location}
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    {getStateName(state)}
+                    {district && `, District ${district}`}
+                  </TooltipContent>
+                </Tooltip>
               </CardDescription>
             </div>
           </div>
 
           <CardAction>
-            <StanceBadge stance={stance} />
+            {leaningScore !== undefined ? (
+              <LeaningGaugeCompact score={leaningScore} />
+            ) : (
+              <StanceBadge stance={stance} />
+            )}
           </CardAction>
         </CardHeader>
 
@@ -177,31 +250,19 @@ export function LegislatorCard({
 
           {/* Stance summary */}
           {stanceSummary && (
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              {stanceSummary}
-            </p>
+            <p className="text-sm text-muted-foreground leading-relaxed">{stanceSummary}</p>
           )}
 
           {/* Contact buttons */}
           <div className="flex items-center gap-2">
             {contact.phone && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleCall}
-                className="gap-1.5"
-              >
+              <Button variant="outline" size="sm" onClick={handleCall} className="gap-1.5">
                 <Phone className="size-3.5" />
                 Call
               </Button>
             )}
             {contact.email && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleEmail}
-                className="gap-1.5"
-              >
+              <Button variant="outline" size="sm" onClick={handleEmail} className="gap-1.5">
                 <Mail className="size-3.5" />
                 Email
               </Button>
@@ -226,10 +287,7 @@ export function LegislatorCard({
             className="w-full justify-center text-muted-foreground hover:text-foreground"
           >
             <span>{isExpanded ? "Show less" : "Show more"}</span>
-            <motion.div
-              animate={{ rotate: isExpanded ? 180 : 0 }}
-              transition={{ duration: 0.2 }}
-            >
+            <motion.div animate={{ rotate: isExpanded ? 180 : 0 }} transition={{ duration: 0.2 }}>
               <ChevronDown className="size-4" />
             </motion.div>
           </Button>
@@ -277,6 +335,40 @@ export function LegislatorCard({
                       >
                         {contact.email}
                       </a>
+                    </div>
+                  )}
+
+                  {/* Fax (if available) */}
+                  {contact.fax && (
+                    <div className="text-sm">
+                      <span className="font-medium text-foreground">Fax:</span>
+                      <span className="text-muted-foreground ml-2">{contact.fax}</span>
+                    </div>
+                  )}
+
+                  {/* Official contact page */}
+                  {contact.contactPage?.url && (
+                    <div className="text-sm">
+                      <span className="font-medium text-foreground flex items-center gap-1.5">
+                        <FileText className="size-3.5" />
+                        Official Contact Form:
+                      </span>
+                      <div className="mt-1.5 space-y-1">
+                        <a
+                          href={contact.contactPage.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 text-primary hover:underline"
+                        >
+                          Submit message online
+                          <ExternalLink className="size-3" />
+                        </a>
+                        {contact.contactPage.note && (
+                          <p className="text-xs text-muted-foreground italic">
+                            {contact.contactPage.note}
+                          </p>
+                        )}
+                      </div>
                     </div>
                   )}
 

@@ -1,0 +1,23 @@
+{
+  "bioguide_id": "R000619",
+  "name": "Michael A. Rulli",
+  "total_found": 13,
+  "filtered_count": 1,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "mJ04EkRfYi0",
+      "title": "Full phone interview: Michael Rulli and Sean O'Brien",
+      "url": "https://www.youtube.com/watch?v=mJ04EkRfYi0",
+      "channel": "WKBN27",
+      "channel_id": "UCTbhS5-KTEKzBh-eqeU5vAw",
+      "upload_date": null,
+      "duration": 614.0,
+      "view_count": 1095,
+      "description": ""
+    }
+  ]
+}

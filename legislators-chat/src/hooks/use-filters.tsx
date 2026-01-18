@@ -9,7 +9,9 @@ import type {
   StateAbbreviation,
   SortOption,
   Filter,
+  Speaker,
 } from "@/lib/types";
+import { findBestMatchingLegislator } from "@/lib/legislator-lookup";
 
 // =============================================================================
 // Constants
@@ -143,6 +145,9 @@ export interface UseFiltersReturn {
   /** Clear all filters */
   clearFilters: () => void;
 
+  /** Clear filters and remove from storage */
+  clearFiltersAndStorage: () => void;
+
   /** Check if any filters are active */
   hasActiveFilters: boolean;
 
@@ -154,6 +159,9 @@ export interface UseFiltersReturn {
 
   /** Apply filters and sorting to a legislators array */
   applyFilters: (legislators: Legislator[]) => Legislator[];
+
+  /** Apply filters to a speakers array (from PolSearch results) */
+  applySpeakerFilters: (speakers: Speaker[]) => Speaker[];
 }
 
 // =============================================================================
@@ -203,10 +211,27 @@ function saveToStorage(state: FilterState): void {
   }
 }
 
-function sortLegislators(
-  legislators: Legislator[],
-  sortBy: SortOption
-): Legislator[] {
+function clearStorage(): void {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+  } catch {
+    // Ignore storage errors
+  }
+}
+
+/**
+ * Clear filter storage without using the hook.
+ * Useful for session cleanup routines.
+ */
+export function clearFilterStorage(): void {
+  clearStorage();
+}
+
+function sortLegislators(legislators: Legislator[], sortBy: SortOption): Legislator[] {
   const sorted = [...legislators];
 
   switch (sortBy) {
@@ -306,6 +331,11 @@ export function useFilters(): UseFiltersReturn {
     setFilters(getDefaultState());
   }, []);
 
+  const clearFiltersAndStorage = React.useCallback(() => {
+    clearStorage();
+    setFilters(getDefaultState());
+  }, []);
+
   const hasActiveFilters =
     filters.parties.length > 0 ||
     filters.chambers.length > 0 ||
@@ -367,6 +397,68 @@ export function useFilters(): UseFiltersReturn {
     [filters]
   );
 
+  /**
+   * Apply filters to speakers extracted from PolSearch results.
+   * Uses legislator lookup to match speakers to their legislator data for filtering.
+   */
+  const applySpeakerFilters = React.useCallback(
+    (speakers: Speaker[]): Speaker[] => {
+      // If no filters are active, return speakers sorted by result count
+      if (!hasActiveFilters) {
+        return speakers;
+      }
+
+      // Filter speakers based on their matched legislator data
+      const filtered = speakers.filter((speaker) => {
+        // Look up the matched legislator for this speaker
+        // The Speaker type may have _matchedLegislator from extraction, or we look it up
+        const matchedLegislator = (speaker as Speaker & { _matchedLegislator?: Legislator })._matchedLegislator
+          ?? findBestMatchingLegislator(speaker.name);
+
+        // If we can't match to a legislator, keep the speaker if no party/state filters
+        // but apply chamber filter from speaker data if available
+        if (!matchedLegislator) {
+          // Can still filter by chamber if speaker has chamber data
+          if (filters.chambers.length > 0 && speaker.chamber) {
+            return filters.chambers.includes(speaker.chamber);
+          }
+          // No legislator match and no applicable filters - keep if no strict filters
+          return filters.parties.length === 0 && filters.states.length === 0;
+        }
+
+        // Apply party filter
+        if (filters.parties.length > 0) {
+          if (!filters.parties.includes(matchedLegislator.party)) {
+            return false;
+          }
+        }
+
+        // Apply chamber filter
+        if (filters.chambers.length > 0) {
+          if (!filters.chambers.includes(matchedLegislator.chamber)) {
+            return false;
+          }
+        }
+
+        // Apply state filter
+        if (filters.states.length > 0) {
+          if (!filters.states.includes(matchedLegislator.state)) {
+            return false;
+          }
+        }
+
+        // Stance filter is not applicable to speakers (based on topic context)
+        // We don't filter by stance here as it's calculated differently for speakers
+
+        return true;
+      });
+
+      // Sort by result count (default for speakers)
+      return filtered.sort((a, b) => b.resultCount - a.resultCount);
+    },
+    [filters, hasActiveFilters]
+  );
+
   return {
     filters,
     setParties,
@@ -379,9 +471,11 @@ export function useFilters(): UseFiltersReturn {
     toggleStance,
     setSortBy,
     clearFilters,
+    clearFiltersAndStorage,
     hasActiveFilters,
     activeFilterCount,
     getFiltersArray,
     applyFilters,
+    applySpeakerFilters,
   };
 }

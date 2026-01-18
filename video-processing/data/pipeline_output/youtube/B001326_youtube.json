@@ -1,0 +1,56 @@
+{
+  "bioguide_id": "B001326",
+  "name": "Janelle S. Bynum",
+  "total_found": 16,
+  "filtered_count": 4,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "jgvY0Yxchxc",
+      "title": "Janelle Bynum Interview for State Representative",
+      "url": "https://www.youtube.com/watch?v=jgvY0Yxchxc",
+      "channel": "Jacob Finzer",
+      "channel_id": "UCacs4uoWDcSgvuGShJ0GgWQ",
+      "upload_date": null,
+      "duration": 187.0,
+      "view_count": 27,
+      "description": ""
+    },
+    {
+      "video_id": "pbNV5ZJnBj8",
+      "title": "Rep. Janelle Bynum Delivers a Floor Speech in Support of Pay Equity",
+      "url": "https://www.youtube.com/watch?v=pbNV5ZJnBj8",
+      "channel": "Oregon House Democrats",
+      "channel_id": "UC1Or3QFEPOnZFobjr-bR80w",
+      "upload_date": null,
+      "duration": 204.0,
+      "view_count": 216,
+      "description": ""
+    },
+    {
+      "video_id": "pu-RKrpZqFI",
+      "title": "Black Oregon Congresswoman Janelle Bynum Reported to Police by Someone Who Thought She Was Casing...",
+      "url": "https://www.youtube.com/watch?v=pu-RKrpZqFI",
+      "channel": "Harold Peters",
+      "channel_id": "UCufRUVZe85fl9PCknPi4YWQ",
+      "upload_date": null,
+      "duration": 132.0,
+      "view_count": 14,
+      "description": ""
+    },
+    {
+      "video_id": "Ap3xMaU8mnU",
+      "title": "CSUN Matador News - February 3, 2015",
+      "url": "https://www.youtube.com/watch?v=Ap3xMaU8mnU",
+      "channel": "CSUN Matador News",
+      "channel_id": "UCY_RrfLs9NX9hOKBXXmfeeA",
+      "upload_date": null,
+      "duration": 691.0,
+      "view_count": 276,
+      "description": ""
+    }
+  ]
+}

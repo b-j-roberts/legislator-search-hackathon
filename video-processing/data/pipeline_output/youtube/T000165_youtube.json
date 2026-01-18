@@ -1,0 +1,45 @@
+{
+  "bioguide_id": "T000165",
+  "name": "Thomas P. Tiffany",
+  "total_found": 7,
+  "filtered_count": 3,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "Ogu1yvAjI_w",
+      "title": "House Rules Committee--Prof. Elizabeth Price Foley",
+      "url": "https://www.youtube.com/watch?v=Ogu1yvAjI_w",
+      "channel": "Elizabeth Price Foley",
+      "channel_id": "UCZjnSWMfCrgdeplWW6FyuKg",
+      "upload_date": null,
+      "duration": 418.0,
+      "view_count": 1184,
+      "description": ""
+    },
+    {
+      "video_id": "LAGfpVEBrhM",
+      "title": "ERA Hearing: Elizabeth Foley",
+      "url": "https://www.youtube.com/watch?v=LAGfpVEBrhM",
+      "channel": "ERA Minnesota",
+      "channel_id": "UC1eLG0cp8bQuCrJcBAz6RZA",
+      "upload_date": null,
+      "duration": 383.0,
+      "view_count": 267,
+      "description": ""
+    },
+    {
+      "video_id": "93jmfoz0uaw",
+      "title": "Congress Hearing on Oversight of the Federal Bureau of Investigation. #trump #fbi #secretservice",
+      "url": "https://www.youtube.com/watch?v=93jmfoz0uaw",
+      "channel": "Political Spin",
+      "channel_id": "UC6310UoangSlrKHWmRXhQbg",
+      "upload_date": null,
+      "duration": 15152.0,
+      "view_count": 61,
+      "description": ""
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "bioguide_id": "R000579",
+  "name": "Patrick Ryan",
+  "total_found": 47,
+  "filtered_count": 5,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "GvXURwhv5J0",
+      "title": "#186 Interview with Cult Mediation Specialist Patrick Ryan",
+      "url": "https://www.youtube.com/watch?v=GvXURwhv5J0",
+      "channel": "Cult Vault",
+      "channel_id": "UCM-6n1rFPHQVDnEQWay3odQ",
+      "upload_date": null,
+      "duration": 7850.0,
+      "view_count": 24,
+      "description": ""
+    },
+    {
+      "video_id": "QpT13waRbzI",
+      "title": "Patrick Ryan for Congress - TV Ad Congressional 19 th NY - 2018 Primary",
+      "url": "https://www.youtube.com/watch?v=QpT13waRbzI",
+      "channel": "advertiseoncable",
+      "channel_id": "UC3lUXq7fTlfsRLme6PDlZag",
+      "upload_date": null,
+      "duration": 31.0,
+      "view_count": 253,
+      "description": ""
+    },
+    {
+      "video_id": "AfJVQEHrx4M",
+      "title": "Hearing God's Call Through the Eucharist: A Former Secular Man's Journey to the Priesthood (The I...",
+      "url": "https://www.youtube.com/watch?v=AfJVQEHrx4M",
+      "channel": "RelevantRadio",
+      "channel_id": "UC57YZqlPU8c3wQWLvncjzqQ",
+      "upload_date": null,
+      "duration": 458.0,
+      "view_count": 141,
+      "description": ""
+    },
+    {
+      "video_id": "E3auanHIc8k",
+      "title": "Patrick Ryan speech - Automotive Hall of Fame",
+      "url": "https://www.youtube.com/watch?v=E3auanHIc8k",
+      "channel": "Automotive Hall of Fame",
+      "channel_id": "UCEcGJRHzenIa0xFlZU0s8gg",
+      "upload_date": null,
+      "duration": 378.0,
+      "view_count": 122,
+      "description": ""
+    },
+    {
+      "video_id": "Zz853FO-tts",
+      "title": "Ulster County Executive Patrick Ryan 2019 oath and inaugural speech",
+      "url": "https://www.youtube.com/watch?v=Zz853FO-tts",
+      "channel": "Green Cheese",
+      "channel_id": "UCqPStfRV14kYdvFSs19U-Xg",
+      "upload_date": null,
+      "duration": 1205.0,
+      "view_count": 38,
+      "description": ""
+    }
+  ]
+}

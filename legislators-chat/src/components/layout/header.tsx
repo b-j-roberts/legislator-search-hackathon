@@ -1,22 +1,22 @@
 "use client";
 
 import * as React from "react";
-import { Moon, Sun, Landmark, PanelLeftOpen, MessageSquarePlus } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Moon, Sun, PanelLeftOpen, MessageSquarePlus, Users } from "lucide-react";
 import { useTheme } from "next-themes";
+import { motion } from "framer-motion";
 import { useChat } from "@/hooks/use-chat";
+import { useContact } from "@/hooks/use-contact";
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { ProgressStepper } from "./progress-stepper";
 
 function ThemeToggle() {
   const [mounted, setMounted] = React.useState(false);
   const { resolvedTheme, setTheme } = useTheme();
 
-  // Avoid hydration mismatch by only rendering after mount
   React.useEffect(() => {
     setMounted(true);
   }, []);
@@ -25,10 +25,9 @@ function ThemeToggle() {
     setTheme(resolvedTheme === "dark" ? "light" : "dark");
   };
 
-  // Render placeholder with same dimensions to avoid layout shift
   if (!mounted) {
     return (
-      <div className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-input bg-background" />
+      <div className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border/50 bg-background/50" />
     );
   }
 
@@ -36,15 +35,16 @@ function ThemeToggle() {
     <Tooltip>
       <TooltipTrigger asChild>
         <Button
-          variant="outline"
+          variant="ghost"
           size="icon"
           onClick={toggleTheme}
+          className="h-9 w-9 rounded-lg hover:bg-secondary transition-colors"
           aria-label={`Switch to ${resolvedTheme === "dark" ? "light" : "dark"} mode`}
         >
           {resolvedTheme === "dark" ? (
-            <Sun className="h-4 w-4" />
+            <Sun className="h-[18px] w-[18px] text-accent" />
           ) : (
-            <Moon className="h-4 w-4" />
+            <Moon className="h-[18px] w-[18px] text-muted-foreground" />
           )}
         </Button>
       </TooltipTrigger>
@@ -56,25 +56,33 @@ function ThemeToggle() {
 }
 
 export function Header() {
+  const pathname = usePathname();
   const { toggleSidebar, isSidebarOpen, newConversation, conversations } = useChat();
+  const { hasSelections, selectionCount, currentStep } = useContact();
+
+  const isContactFlow = pathname?.startsWith("/contact") || currentStep === "contact";
 
   return (
     <TooltipProvider delayDuration={300}>
-      <header className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex-shrink-0">
+      <header className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur-md supports-[backdrop-filter]:bg-background/80 flex-shrink-0">
+        {/* Decorative top line */}
+        <div className="h-[2px] bg-gradient-to-r from-transparent via-mindy/50 to-transparent" />
+
         <div className="flex h-14 md:h-16 items-center justify-between px-4 md:px-6">
           {/* Left section - Menu and Branding */}
-          <div className="flex items-center gap-2">
-            {/* Sidebar Toggle - only show when sidebar is closed */}
-            {!isSidebarOpen && (
+          <div className="flex items-center gap-3">
+            {/* Sidebar Toggle */}
+            {!isSidebarOpen && !isContactFlow && (
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
                     variant="ghost"
                     size="icon"
                     onClick={toggleSidebar}
+                    className="h-9 w-9 rounded-lg hover:bg-secondary"
                     aria-label="Open chat history"
                   >
-                    <PanelLeftOpen className="h-5 w-5" />
+                    <PanelLeftOpen className="h-5 w-5 text-muted-foreground" />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent side="bottom">
@@ -84,28 +92,92 @@ export function Header() {
             )}
 
             {/* Logo and Branding */}
-            <div className="flex items-center gap-2">
-              <Landmark className="h-6 w-6 text-primary" />
-              <span className="text-lg font-semibold tracking-tight">
-                Legislators Chat
-              </span>
-            </div>
+            <Link
+              href="/"
+              className="flex items-center gap-3 group transition-all duration-300"
+            >
+              <motion.div
+                className="relative flex items-center justify-center w-9 h-9"
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.2 }}
+              >
+                <img
+                  src="/mindy_media_kit/logos/mindy_icon_color.png"
+                  alt="mindy"
+                  width={36}
+                  height={36}
+                  className="object-contain"
+                />
+              </motion.div>
+              <div className="flex flex-col">
+                <span className="font-display text-lg font-semibold tracking-tight leading-none text-foreground">
+                  mindy
+                </span>
+                <span className="text-[10px] text-muted-foreground font-medium tracking-wider uppercase mt-0.5">
+                  Engage in Democracy
+                </span>
+              </div>
+            </Link>
           </div>
+
+          {/* Center section - Progress Stepper */}
+          {isContactFlow && (
+            <div className="hidden md:flex absolute left-1/2 -translate-x-1/2">
+              <ProgressStepper currentStep={currentStep} />
+            </div>
+          )}
 
           {/* Right section - Actions */}
           <div className="flex items-center gap-2">
-            {/* New Conversation Button - only show on larger screens when sidebar is closed */}
-            {!isSidebarOpen && conversations.length > 0 && (
+            {/* Selection indicator */}
+            {hasSelections && !isContactFlow && (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Button
+                      variant="default"
+                      size="sm"
+                      asChild
+                      className="gap-2 rounded-lg bg-mindy text-mindy-foreground hover:bg-mindy/90 shadow-sm px-3 h-9"
+                    >
+                      <Link href="/contact">
+                        <Users className="h-4 w-4" />
+                        <span className="hidden sm:inline text-sm font-medium">Contact</span>
+                        <Badge
+                          variant="secondary"
+                          className="ml-0.5 bg-mindy-foreground/20 text-mindy-foreground border-0 h-5 min-w-5 px-1.5 rounded-md text-xs font-semibold"
+                        >
+                          {selectionCount}
+                        </Badge>
+                      </Link>
+                    </Button>
+                  </motion.div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>
+                    Contact {selectionCount} selected representative
+                    {selectionCount !== 1 ? "s" : ""}
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            )}
+
+            {/* New Conversation Button */}
+            {!isSidebarOpen && conversations.length > 0 && !isContactFlow && (
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
-                    variant="outline"
+                    variant="ghost"
                     size="icon"
                     onClick={newConversation}
-                    className="hidden sm:flex"
+                    className="hidden sm:flex h-9 w-9 rounded-lg hover:bg-secondary"
                     aria-label="New conversation"
                   >
-                    <MessageSquarePlus className="h-4 w-4" />
+                    <MessageSquarePlus className="h-[18px] w-[18px] text-muted-foreground" />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
@@ -113,6 +185,9 @@ export function Header() {
                 </TooltipContent>
               </Tooltip>
             )}
+
+            {/* Divider */}
+            <div className="hidden sm:block w-px h-6 bg-border mx-1" />
 
             {/* Theme Toggle */}
             <ThemeToggle />

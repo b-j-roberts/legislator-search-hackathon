@@ -17,17 +17,68 @@ After implementing the feature, please provide a concise step-by-step instructio
 
 Features that enhance the experience but aren't required for initial launch.
 
-### 2.0 User Interface Enhancements
+### 2.0 Rename app on FE ( no need to change dir/repo name )
 
-**Description**: Improve UI/UX with better components and layouts.
+**Description**: Change the app name from "CivicsLens" to "Mindy" on the frontend.
 
 **Requirements**:
-- [ ] Add expand/collapse for ResultsPanel
-- [ ] Allow users to resize ResultsPanel width by dragging on border
-- [ ] Store panel size preference in local storage
-- [ ] Fix issue where live chat loading causes chat to jump and scroll out of view at the top of the screen
+- [ ] Update all instances of "CivicsLens" to "Mindy" in
+- [ ] Update intro/welcome message/component on chat/main page to be more personable and friendly ( like "Mindy" is there talking to the user explaining they are there to help with xyx )
+- [ ] Ensure consistency across all pages and components
+- [ ] Provide a sample prompt in additional to the prompt buttons on the main page to guide users on how to interact with Mindy ( primarily focused on a sentiment based, people/representative centric query )
+- [ ] Change app logo and favicon to reflect new logo at ~/Downloads/mindy_media_kit.zip
+- [ ] Integrate full media kit from ~/Downloads/mindy_media_kit.zip into the app
 
-### 2.3 Document Viewer
+**Implementation Notes**:
+- Search through all frontend files for "CivicsLens"
+- Update UI text and messages accordingly
+- Use Logo color where you see fit in the UI ( #cc3366 )
+
+### 2.1 Media Tab
+
+**Description**: Add a media tab to the results panel on the main page to show related news articles and videos.
+
+**Requirements**:
+- [ ] Create MediaCard component
+- [ ] Add media type tabs in ResultsPanel (e.g., News, Videos, Interviews)
+- [ ] Implement expandable media previews
+- [ ] Add links to source media
+
+**Implementation Notes**:
+- Use consistent card design across media types
+- See Documents tab & components for reference
+
+
+### 2.3 Real Contact Data
+
+**Description**: Integrate real contact data for legislators.
+
+**Requirements**:
+- [ ] Source reliable legislator contact data per legislator
+- [ ] If no email is available, use phone/fax/address/...
+- [ ] Create a legislators.json or similar data structure that is staticly loaded with:
+    - Name
+    - Name alias(es) ( used for matching with different naming conventions )
+      e.g., "Elizabeth Warren" -> "Senator Warren", "Sen. Warren", "Warren", "Ms. Warren", "Mrs. Elizabeth Warren", "Dr. Warren", etc. ( add more as needed )
+    - Office address
+    - Phone number
+    - Fax number
+    - Email address ( if available )
+    - Official contact page:
+      - URL
+      - Note on required info needs to be filled out by user
+- [ ] Update data loading logic to use real data, and search name aliases for matching if no exact match
+- [ ] Provide links to official contact pages per legislator ( with note on required info needs to be filled out by user )
+- [ ] Update ContactCard component to display real data
+- [ ] Test with multiple legislators to ensure data accuracy
+
+**Implementation Notes**:
+- Use official government APIs or datasets
+- Ensure data is up-to-date and accurate
+- Handle missing data gracefully
+- Scrape, check, and look into all data related to contact methods for legislators
+
+### 2.4 Document Viewer
 
 **Description**: Display related documents, hearings, and vote records.
 
@@ -46,7 +97,7 @@ Features that enhance the experience but aren't required for initial launch.
 
 ---
 
-### 2.4 Report Generation
+### 2.5 Report Generation
 
 **Description**: Generate and export advocacy reports.
 
@@ -61,25 +112,6 @@ Features that enhance the experience but aren't required for initial launch.
 - Report generation happens on backend
 - Frontend handles display and export
 - Consider print-friendly CSS
-
----
-
-### 2.5 Streaming Responses
-
-**Description**: Implement real-time streaming of AI responses from Maple AI.
-
-**Requirements**:
-- [ ] Set up SSE connection for streaming
-- [ ] Stream message text token-by-token
-- [ ] Update structured data as it arrives
-- [ ] Handle connection interruptions
-- [ ] Show connection status indicator
-
-**Implementation Notes**:
-- Maple Proxy API is streaming-only (`/v1/chat/completions`)
-- Improves perceived performance significantly
-- Backend proxies Maple stream to frontend via SSE
-- Handle TEE attestation delays gracefully
 
 ---
 
@@ -117,6 +149,24 @@ Features that enhance the experience but aren't required for initial launch.
 - Target WCAG 2.1 AA compliance
 - Use axe-core for automated testing
 - Manual testing with VoiceOver/NVDA
+
+---
+
+### 2.8 Speech-to-Text Input
+
+**Description**: Allow voice input for chat.
+
+**Requirements**:
+- [ ] Integrate Web Speech API
+- [ ] Integrate microphone button in chat input
+- [ ] Display real-time transcription
+- [ ] Handle start/stop recording
+- [ ] Allow editing of transcribed text
+
+**Implementation Notes**:
+- Fallback for unsupported browsers
+- Consider privacy implications
+- Test with various accents and speech patterns
 
 ---
 

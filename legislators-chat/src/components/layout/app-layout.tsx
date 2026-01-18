@@ -24,13 +24,8 @@ const MAX_PANEL_WIDTH = 80;
  * Mobile (< 768px): Full-width chat with Results in collapsible drawer below
  */
 export function AppLayout({ children, resultsPanel, className }: AppLayoutProps) {
-  const {
-    panelWidth,
-    isCollapsed,
-    isHydrated,
-    setPanelWidth,
-    toggleCollapsed,
-  } = usePanelPreferences();
+  const { panelWidth, isCollapsed, isHydrated, setPanelWidth, toggleCollapsed } =
+    usePanelPreferences();
 
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = React.useState(false);
@@ -88,13 +83,10 @@ export function AppLayout({ children, resultsPanel, className }: AppLayoutProps)
   const effectiveIsCollapsed = isHydrated ? isCollapsed : false;
 
   // Calculate styles for desktop only
-  const mainStyle: CSSProperties = isDesktop && !effectiveIsCollapsed
-    ? { width: `${100 - effectivePanelWidth}%` }
-    : {};
+  const mainStyle: CSSProperties =
+    isDesktop && !effectiveIsCollapsed ? { width: `${100 - effectivePanelWidth}%` } : {};
 
-  const asideStyle: CSSProperties = isDesktop
-    ? { width: `${effectivePanelWidth}%` }
-    : {};
+  const asideStyle: CSSProperties = isDesktop ? { width: `${effectivePanelWidth}%` } : {};
 
   return (
     <div
@@ -158,15 +150,15 @@ export function AppLayout({ children, resultsPanel, className }: AppLayoutProps)
               "flex-shrink-0 max-h-[40vh] md:max-h-[45vh]",
               "border-t",
               // Desktop: dynamic width side panel with collapse support
-              "lg:max-h-none lg:flex-none",
+              "lg:max-h-none lg:h-full lg:flex-none",
               "lg:border-t-0 lg:border-l",
               effectiveIsCollapsed && "lg:hidden"
             )}
             style={asideStyle}
           >
             {/* Desktop collapse button header */}
-            <div className="hidden lg:flex items-center justify-between px-3 py-2 border-b border-border bg-muted/30">
-              <span className="text-sm font-medium text-muted-foreground">Results</span>
+            <div className="hidden lg:flex items-center justify-between px-3 py-2.5 border-b border-border bg-secondary/30">
+              <span className="text-sm font-medium text-muted-foreground font-display">Results</span>
               <Button
                 variant="ghost"
                 size="icon"
@@ -183,9 +175,7 @@ export function AppLayout({ children, resultsPanel, className }: AppLayoutProps)
       )}
 
       {/* Drag overlay to prevent iframe/selection issues during drag */}
-      {isDragging && (
-        <div className="fixed inset-0 z-50 cursor-col-resize" />
-      )}
+      {isDragging && <div className="fixed inset-0 z-50 cursor-col-resize" />}
     </div>
   );
 }

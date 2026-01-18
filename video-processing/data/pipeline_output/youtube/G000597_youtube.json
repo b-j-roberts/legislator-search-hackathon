@@ -1,0 +1,56 @@
+{
+  "bioguide_id": "G000597",
+  "name": "Andrew R. Garbarino",
+  "total_found": 16,
+  "filtered_count": 4,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "o90a9nYzzDo",
+      "title": "135 GOP Reps Supported Red Flags. Was YOUR Congress Critter One Of Them?",
+      "url": "https://www.youtube.com/watch?v=o90a9nYzzDo",
+      "channel": "ARFCOM News",
+      "channel_id": "UCbiiqvaU4DuhAn33LqCz0qA",
+      "upload_date": null,
+      "duration": 661.0,
+      "view_count": 10090,
+      "description": ""
+    },
+    {
+      "video_id": "lJax5cccFwE",
+      "title": "9/12/22 Congressman Andrew Garbarino Announces $3 Million in Critical Sewer Funds",
+      "url": "https://www.youtube.com/watch?v=lJax5cccFwE",
+      "channel": "Islip Town",
+      "channel_id": "UCPEsN_gkt0njP0JmUYvaxEw",
+      "upload_date": null,
+      "duration": 790.0,
+      "view_count": 154,
+      "description": ""
+    },
+    {
+      "video_id": "whtV2b8W9OY",
+      "title": "Rep. Garbarino Urges House To Override Veto of Legislation Blocking D.C.'s Anti-Police Law",
+      "url": "https://www.youtube.com/watch?v=whtV2b8W9OY",
+      "channel": "Rep. Andrew Garbarino",
+      "channel_id": "UCX2bIeS3GwszQNxqPOGmtmw",
+      "upload_date": null,
+      "duration": 101.0,
+      "view_count": 66,
+      "description": ""
+    },
+    {
+      "video_id": "4VB6FZE_pLk",
+      "title": "Sec  Noem Lays Out Biggest Worldwide Threats to US at Homeland Security Hearing",
+      "url": "https://www.youtube.com/shorts/4VB6FZE_pLk",
+      "channel": "NTD",
+      "channel_id": "UC8Ioh4atNDO5a0Vy2qFmauQ",
+      "upload_date": null,
+      "duration": 61.0,
+      "view_count": 4589,
+      "description": ""
+    }
+  ]
+}

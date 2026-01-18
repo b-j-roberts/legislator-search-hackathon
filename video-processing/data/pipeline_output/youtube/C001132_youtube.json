@@ -1,0 +1,89 @@
+{
+  "bioguide_id": "C001132",
+  "name": "Elijah Crane",
+  "total_found": 26,
+  "filtered_count": 7,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "KdkUdMl86fw",
+      "title": "BTU #107 - Elijah Crane- SEALS to ABC's Shark Tank & Bottle Breacher",
+      "url": "https://www.youtube.com/watch?v=KdkUdMl86fw",
+      "channel": "Beyond the Uniform",
+      "channel_id": "UCg7mvqF3PmcmOsn7snuWjww",
+      "upload_date": null,
+      "duration": 2823.0,
+      "view_count": 40,
+      "description": ""
+    },
+    {
+      "video_id": "Wmfqhi-E9sk",
+      "title": "Rep. Elijah Crane Highlights  Recent Hearing on Biden's Botched Afghanistan Withdrawal",
+      "url": "https://www.youtube.com/watch?v=Wmfqhi-E9sk",
+      "channel": "Tony Perkins",
+      "channel_id": "UCK1k5jwrGprtSG0P2NJf52Q",
+      "upload_date": null,
+      "duration": 356.0,
+      "view_count": 87,
+      "description": ""
+    },
+    {
+      "video_id": "9JpYO5b1Zd4",
+      "title": "Rep. Elijah Crane Comments on the House Homeland Security Committee Hearing",
+      "url": "https://www.youtube.com/watch?v=9JpYO5b1Zd4",
+      "channel": "Tony Perkins",
+      "channel_id": "UCK1k5jwrGprtSG0P2NJf52Q",
+      "upload_date": null,
+      "duration": 910.0,
+      "view_count": 158,
+      "description": ""
+    },
+    {
+      "video_id": "Of_nvUJNwV4",
+      "title": "'You didn't answer my question': Rep. Crane torches Columbia AG Schwalb at\u00a0House\u00a0hearing",
+      "url": "https://www.youtube.com/watch?v=Of_nvUJNwV4",
+      "channel": "The Economic Times",
+      "channel_id": "UCJFOER35ggIWwsXh2ZDnqyg",
+      "upload_date": null,
+      "duration": 551.0,
+      "view_count": 2074,
+      "description": ""
+    },
+    {
+      "video_id": "m6-PN7jsSuI",
+      "title": "House Hearing on Butler, Pennsylvania Security Failures",
+      "url": "https://www.youtube.com/watch?v=m6-PN7jsSuI",
+      "channel": "The Union Herald",
+      "channel_id": "UCZk81g2YgSViCvD9JdvNQgA",
+      "upload_date": null,
+      "duration": 10208.0,
+      "view_count": 215,
+      "description": ""
+    },
+    {
+      "video_id": "BCwogZQdkNQ",
+      "title": "LIVE: Arizona Election 2024; Discussion with US House CD2 Republican candidate Jack Smith",
+      "url": "https://www.youtube.com/watch?v=BCwogZQdkNQ",
+      "channel": "ABC15 Arizona",
+      "channel_id": "UCIVk1L1-JmpdiGuZcVjImtA",
+      "upload_date": null,
+      "duration": 1720.0,
+      "view_count": 892,
+      "description": ""
+    },
+    {
+      "video_id": "nlx9xAm_SX8",
+      "title": "Arizona U.S. House Congressional District 2 Republican Debate  - June 24, 2024",
+      "url": "https://www.youtube.com/watch?v=nlx9xAm_SX8",
+      "channel": "KTAR News",
+      "channel_id": "UC4abf1syFz5KZ6w3vRMRHoQ",
+      "upload_date": null,
+      "duration": 1711.0,
+      "view_count": 135,
+      "description": ""
+    }
+  ]
+}

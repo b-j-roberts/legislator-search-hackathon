@@ -1,0 +1,45 @@
+{
+  "bioguide_id": "C001110",
+  "name": "J. Luis Correa",
+  "total_found": 7,
+  "filtered_count": 3,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "UAukooeIlHs",
+      "title": "Congressmen speak from inside locked down US Capitol amid Washington, DC protests",
+      "url": "https://www.youtube.com/watch?v=UAukooeIlHs",
+      "channel": "WBIR Channel 10",
+      "channel_id": "UCsefBCbI7P5Xr-edSOpbF4A",
+      "upload_date": null,
+      "duration": 548.0,
+      "view_count": 1421,
+      "description": ""
+    },
+    {
+      "video_id": "93jmfoz0uaw",
+      "title": "Congress Hearing on Oversight of the Federal Bureau of Investigation. #trump #fbi #secretservice",
+      "url": "https://www.youtube.com/watch?v=93jmfoz0uaw",
+      "channel": "Political Spin",
+      "channel_id": "UC6310UoangSlrKHWmRXhQbg",
+      "upload_date": null,
+      "duration": 15152.0,
+      "view_count": 61,
+      "description": ""
+    },
+    {
+      "video_id": "pfSePU9Z8F0",
+      "title": "2023 | Recognition from the U.S. House of Representatives",
+      "url": "https://www.youtube.com/watch?v=pfSePU9Z8F0",
+      "channel": "Mater Dei Football",
+      "channel_id": "UCVqiW82j3lCs92rtxtPuPQw",
+      "upload_date": null,
+      "duration": 69.0,
+      "view_count": 100,
+      "description": ""
+    }
+  ]
+}

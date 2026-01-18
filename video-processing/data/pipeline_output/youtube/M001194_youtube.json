@@ -1,0 +1,67 @@
+{
+  "bioguide_id": "M001194",
+  "name": "John R. Moolenaar",
+  "total_found": 18,
+  "filtered_count": 5,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "o90a9nYzzDo",
+      "title": "135 GOP Reps Supported Red Flags. Was YOUR Congress Critter One Of Them?",
+      "url": "https://www.youtube.com/watch?v=o90a9nYzzDo",
+      "channel": "ARFCOM News",
+      "channel_id": "UCbiiqvaU4DuhAn33LqCz0qA",
+      "upload_date": null,
+      "duration": 661.0,
+      "view_count": 10090,
+      "description": ""
+    },
+    {
+      "video_id": "nV30XXbfR9A",
+      "title": "Representative John Moolenaar's Remarks for USCIRF's Hearing on State-Controlled Religion in China",
+      "url": "https://www.youtube.com/watch?v=nV30XXbfR9A",
+      "channel": "USCIRF",
+      "channel_id": "UCajRarVRbuARwOiBs-eWSTg",
+      "upload_date": null,
+      "duration": 212.0,
+      "view_count": 53,
+      "description": ""
+    },
+    {
+      "video_id": "XooauKa7s40",
+      "title": "Rep. John Moolenaar Reads the Constitution on the House Floor",
+      "url": "https://www.youtube.com/watch?v=XooauKa7s40",
+      "channel": "Rep. John Moolenaar",
+      "channel_id": "UCnMvVN4a8roZu4crE0UW2DA",
+      "upload_date": null,
+      "duration": 28.0,
+      "view_count": 63,
+      "description": ""
+    },
+    {
+      "video_id": "3nLHCthU_ew",
+      "title": "Moolenaar's Opening Statement | Hearing on CCP's Predatory Price Manipulation of Global Rare-Earths",
+      "url": "https://www.youtube.com/watch?v=3nLHCthU_ew",
+      "channel": "The Select Committee on China",
+      "channel_id": "UCpXe-EZd7pE7QM1daNAk0mA",
+      "upload_date": null,
+      "duration": 333.0,
+      "view_count": 608,
+      "description": ""
+    },
+    {
+      "video_id": "vr4W1mxLwjQ",
+      "title": "LIVE: House Committee Discuss Potential Threat From Chinese Companies to US National Security",
+      "url": "https://www.youtube.com/watch?v=vr4W1mxLwjQ",
+      "channel": "NTD",
+      "channel_id": "UC8Ioh4atNDO5a0Vy2qFmauQ",
+      "upload_date": null,
+      "duration": 3300.0,
+      "view_count": 1452,
+      "description": ""
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "bioguide_id": "K000398",
+  "name": "Thomas H. Kean, Jr.",
+  "total_found": 35,
+  "filtered_count": 7,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "ieO2F9574fc",
+      "title": "Tom Kean's 80th Birthday Interview",
+      "url": "https://www.youtube.com/watch?v=ieO2F9574fc",
+      "channel": "Governors' Perspectives with Kent Manahan",
+      "channel_id": "UCZcFsxj5Sga9hikXU-TLhZA",
+      "upload_date": null,
+      "duration": 274.0,
+      "view_count": 107,
+      "description": ""
+    },
+    {
+      "video_id": "EcLsSV_8SKg",
+      "title": "2011 Offshore Wind Seminar: Senator Thomas H. Kean, Jr., New Jersey Senate Minority Leader",
+      "url": "https://www.youtube.com/watch?v=EcLsSV_8SKg",
+      "channel": "CSG East",
+      "channel_id": "UCLxSLfwMxFjOVoR2AF3ChuA",
+      "upload_date": null,
+      "duration": 109.0,
+      "view_count": 111,
+      "description": ""
+    },
+    {
+      "video_id": "_9Jp0h8kR6w",
+      "title": "Save Jersey Exclusive Interview: Tom Kean, Jr. 2/22/11",
+      "url": "https://www.youtube.com/watch?v=_9Jp0h8kR6w",
+      "channel": "SaveJersey",
+      "channel_id": "UC9pZB4tLJJTd1OGVBXMsF4g",
+      "upload_date": null,
+      "duration": 273.0,
+      "view_count": 187,
+      "description": ""
+    },
+    {
+      "video_id": "NSGjy5Bbk4Y",
+      "title": "Tom Kean Jr. predicts victory over incumbent Tom Malinowski in N.J.\u2019s 7th Congressional district",
+      "url": "https://www.youtube.com/watch?v=NSGjy5Bbk4Y",
+      "channel": "NJ.com",
+      "channel_id": "UCUUWDzrkuEztzddaW_sgQbA",
+      "upload_date": null,
+      "duration": 251.0,
+      "view_count": 3076,
+      "description": ""
+    },
+    {
+      "video_id": "xKzncfCYXD8",
+      "title": "Senate Republican Leader Tom Kean's Remarks During NJ Senate Floor Debate on FY 2022 State Budget",
+      "url": "https://www.youtube.com/watch?v=xKzncfCYXD8",
+      "channel": "New Jersey Senate Republicans",
+      "channel_id": "UCcX_AgnBX47BsC5c_QHMBSw",
+      "upload_date": null,
+      "duration": 228.0,
+      "view_count": 60,
+      "description": ""
+    },
+    {
+      "video_id": "_s-ui2XZmMc",
+      "title": "RNC chair Ronna McDaniel stumps for Tom Kean, Jr. in closely watched congressional race",
+      "url": "https://www.youtube.com/watch?v=_s-ui2XZmMc",
+      "channel": "News 12",
+      "channel_id": "UCFhbonoFqxg2b9FMRzYAwog",
+      "upload_date": null,
+      "duration": 116.0,
+      "view_count": 146,
+      "description": ""
+    },
+    {
+      "video_id": "qpw8R7MM5FY",
+      "title": "Remarks to the Delaware River Sojourn by Congressman Tom Kean, Jr.",
+      "url": "https://www.youtube.com/watch?v=qpw8R7MM5FY",
+      "channel": "Delaware River Basin Commission",
+      "channel_id": "UCjmRTNSffkfZ81GprjrirCg",
+      "upload_date": null,
+      "duration": 141.0,
+      "view_count": 188,
+      "description": ""
+    }
+  ]
+}

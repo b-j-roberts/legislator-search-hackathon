@@ -13,15 +13,15 @@ import type {
   Legislator,
   SearchParams,
   PaginatedResponse,
-} from './types';
+} from "./types";
 
 // =============================================================================
 // Configuration
 // =============================================================================
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
 const DEFAULT_TIMEOUT = 30000; // 30 seconds
-const STREAMING_ENABLED = process.env.NEXT_PUBLIC_ENABLE_STREAMING === 'true';
+const STREAMING_ENABLED = process.env.NEXT_PUBLIC_ENABLE_STREAMING === "true";
 
 // =============================================================================
 // Error Handling
@@ -35,7 +35,7 @@ export class ApiClientError extends Error {
 
   constructor(error: ApiError, status?: number) {
     super(error.message);
-    this.name = 'ApiClientError';
+    this.name = "ApiClientError";
     this.code = error.code;
     this.status = status;
     this.details = error.details;
@@ -46,7 +46,7 @@ export class ApiClientError extends Error {
 async function parseErrorResponse(response: Response): Promise<ApiError> {
   try {
     const body = await response.json();
-    if (body.error && typeof body.error === 'object') {
+    if (body.error && typeof body.error === "object") {
       return body.error as ApiError;
     }
     if (body.message) {
@@ -58,12 +58,12 @@ async function parseErrorResponse(response: Response): Promise<ApiError> {
     }
     return {
       code: `HTTP_${response.status}`,
-      message: response.statusText || 'An error occurred',
+      message: response.statusText || "An error occurred",
     };
   } catch {
     return {
       code: `HTTP_${response.status}`,
-      message: response.statusText || 'An error occurred',
+      message: response.statusText || "An error occurred",
     };
   }
 }
@@ -95,7 +95,7 @@ async function fetchWithTimeout<T>(
       ...fetchOptions,
       signal: controller.signal,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         ...fetchOptions.headers,
       },
     });
@@ -116,22 +116,22 @@ async function fetchWithTimeout<T>(
     }
 
     if (error instanceof Error) {
-      if (error.name === 'AbortError') {
+      if (error.name === "AbortError") {
         throw new ApiClientError({
-          code: 'TIMEOUT',
+          code: "TIMEOUT",
           message: `Request timed out after ${timeout}ms`,
         });
       }
 
       throw new ApiClientError({
-        code: 'NETWORK_ERROR',
-        message: error.message || 'Network error occurred',
+        code: "NETWORK_ERROR",
+        message: error.message || "Network error occurred",
       });
     }
 
     throw new ApiClientError({
-      code: 'UNKNOWN_ERROR',
-      message: 'An unknown error occurred',
+      code: "UNKNOWN_ERROR",
+      message: "An unknown error occurred",
     });
   }
 }
@@ -145,7 +145,7 @@ export type StreamCallback = (chunk: string, done: boolean) => void;
 
 /** Parse Server-Sent Events (SSE) data */
 function parseSSEData(data: string): { content?: string; done?: boolean } | null {
-  if (data === '[DONE]') {
+  if (data === "[DONE]") {
     return { done: true };
   }
 
@@ -170,45 +170,42 @@ function parseSSEData(data: string): { content?: string; done?: boolean } | null
 }
 
 /** Stream a fetch response with SSE handling */
-async function streamResponse(
-  response: Response,
-  onChunk: StreamCallback
-): Promise<string> {
+async function streamResponse(response: Response, onChunk: StreamCallback): Promise<string> {
   const reader = response.body?.getReader();
   if (!reader) {
     throw new ApiClientError({
-      code: 'STREAM_ERROR',
-      message: 'Response body is not readable',
+      code: "STREAM_ERROR",
+      message: "Response body is not readable",
     });
   }
 
   const decoder = new TextDecoder();
-  let fullContent = '';
-  let buffer = '';
+  let fullContent = "";
+  let buffer = "";
 
   try {
     while (true) {
       const { done, value } = await reader.read();
 
       if (done) {
-        onChunk('', true);
+        onChunk("", true);
         break;
       }
 
       buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split('\n');
-      buffer = lines.pop() || '';
+      const lines = buffer.split("\n");
+      buffer = lines.pop() || "";
 
       for (const line of lines) {
         const trimmed = line.trim();
-        if (!trimmed || trimmed === ':') continue;
+        if (!trimmed || trimmed === ":") continue;
 
-        if (trimmed.startsWith('data: ')) {
+        if (trimmed.startsWith("data: ")) {
           const data = trimmed.slice(6);
           const parsed = parseSSEData(data);
 
           if (parsed?.done) {
-            onChunk('', true);
+            onChunk("", true);
             return fullContent;
           }
 
@@ -232,36 +229,36 @@ async function streamResponse(
 
 /** Validate ChatRequest structure */
 function validateChatRequest(request: ChatRequest): void {
-  if (!request.message || typeof request.message !== 'string') {
+  if (!request.message || typeof request.message !== "string") {
     throw new ApiClientError({
-      code: 'VALIDATION_ERROR',
-      message: 'Message is required and must be a string',
+      code: "VALIDATION_ERROR",
+      message: "Message is required and must be a string",
     });
   }
 
   if (request.message.trim().length === 0) {
     throw new ApiClientError({
-      code: 'VALIDATION_ERROR',
-      message: 'Message cannot be empty',
+      code: "VALIDATION_ERROR",
+      message: "Message cannot be empty",
     });
   }
 }
 
 /** Validate ChatResponse structure */
 function validateChatResponse(data: unknown): ChatResponse {
-  if (!data || typeof data !== 'object') {
+  if (!data || typeof data !== "object") {
     throw new ApiClientError({
-      code: 'INVALID_RESPONSE',
-      message: 'Invalid response format',
+      code: "INVALID_RESPONSE",
+      message: "Invalid response format",
     });
   }
 
   const response = data as Record<string, unknown>;
 
-  if (typeof response.message !== 'string') {
+  if (typeof response.message !== "string") {
     throw new ApiClientError({
-      code: 'INVALID_RESPONSE',
-      message: 'Response missing required message field',
+      code: "INVALID_RESPONSE",
+      message: "Response missing required message field",
     });
   }
 
@@ -272,9 +269,9 @@ function validateChatResponse(data: unknown): ChatResponse {
     documents: Array.isArray(response.documents) ? response.documents : undefined,
     votes: Array.isArray(response.votes) ? response.votes : undefined,
     hearings: Array.isArray(response.hearings) ? response.hearings : undefined,
-    report: response.report as ChatResponse['report'],
+    report: response.report as ChatResponse["report"],
     sources: Array.isArray(response.sources) ? response.sources : [],
-    confidence: typeof response.confidence === 'number' ? response.confidence : 0,
+    confidence: typeof response.confidence === "number" ? response.confidence : 0,
   };
 }
 
@@ -294,19 +291,14 @@ export async function sendChatMessage(
 ): Promise<ChatResponse> {
   validateChatRequest(request);
 
-  const data = await fetchWithTimeout<ApiResponse<ChatResponse>>(
-    `${API_BASE_URL}/chat`,
-    {
-      method: 'POST',
-      body: JSON.stringify(request),
-      timeout: options.timeout,
-    }
-  );
+  const data = await fetchWithTimeout<ApiResponse<ChatResponse>>(`${API_BASE_URL}/chat`, {
+    method: "POST",
+    body: JSON.stringify(request),
+    timeout: options.timeout,
+  });
 
   if (!data.success || !data.data) {
-    throw new ApiClientError(
-      data.error || { code: 'UNKNOWN_ERROR', message: 'Request failed' }
-    );
+    throw new ApiClientError(data.error || { code: "UNKNOWN_ERROR", message: "Request failed" });
   }
 
   return validateChatResponse(data.data);
@@ -331,10 +323,10 @@ export async function sendChatMessageStream(
 
   try {
     const response = await fetch(`${API_BASE_URL}/chat`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        Accept: 'text/event-stream',
+        "Content-Type": "application/json",
+        Accept: "text/event-stream",
       },
       body: JSON.stringify(request),
       signal: controller.signal,
@@ -362,16 +354,16 @@ export async function sendChatMessageStream(
       throw error;
     }
 
-    if (error instanceof Error && error.name === 'AbortError') {
+    if (error instanceof Error && error.name === "AbortError") {
       throw new ApiClientError({
-        code: 'TIMEOUT',
+        code: "TIMEOUT",
         message: `Stream timed out after ${timeout}ms`,
       });
     }
 
     throw new ApiClientError({
-      code: 'STREAM_ERROR',
-      message: error instanceof Error ? error.message : 'Streaming failed',
+      code: "STREAM_ERROR",
+      message: error instanceof Error ? error.message : "Streaming failed",
     });
   }
 }
@@ -409,10 +401,10 @@ export async function getLegislator(
   id: string,
   options: { timeout?: number } = {}
 ): Promise<Legislator> {
-  if (!id || typeof id !== 'string') {
+  if (!id || typeof id !== "string") {
     throw new ApiClientError({
-      code: 'VALIDATION_ERROR',
-      message: 'Legislator ID is required',
+      code: "VALIDATION_ERROR",
+      message: "Legislator ID is required",
     });
   }
 
@@ -422,9 +414,7 @@ export async function getLegislator(
   );
 
   if (!data.success || !data.data) {
-    throw new ApiClientError(
-      data.error || { code: 'NOT_FOUND', message: 'Legislator not found' }
-    );
+    throw new ApiClientError(data.error || { code: "NOT_FOUND", message: "Legislator not found" });
   }
 
   return data.data;
@@ -443,10 +433,10 @@ export async function search<T>(
   params: SearchParams,
   options: { timeout?: number } = {}
 ): Promise<PaginatedResponse<T>> {
-  if (!params.query || typeof params.query !== 'string') {
+  if (!params.query || typeof params.query !== "string") {
     throw new ApiClientError({
-      code: 'VALIDATION_ERROR',
-      message: 'Search query is required',
+      code: "VALIDATION_ERROR",
+      message: "Search query is required",
     });
   }
 
@@ -458,7 +448,7 @@ export async function search<T>(
   });
 
   if (params.filters?.length) {
-    queryParams.set('filters', JSON.stringify(params.filters));
+    queryParams.set("filters", JSON.stringify(params.filters));
   }
 
   return fetchWithTimeout<PaginatedResponse<T>>(
@@ -487,21 +477,18 @@ export async function generateReport(
   request: ReportRequest,
   options: { timeout?: number } = {}
 ): Promise<ApiResponse<{ reportId: string; status: string }>> {
-  if (!request.topic || typeof request.topic !== 'string') {
+  if (!request.topic || typeof request.topic !== "string") {
     throw new ApiClientError({
-      code: 'VALIDATION_ERROR',
-      message: 'Report topic is required',
+      code: "VALIDATION_ERROR",
+      message: "Report topic is required",
     });
   }
 
-  return fetchWithTimeout(
-    `${API_BASE_URL}/report`,
-    {
-      method: 'POST',
-      body: JSON.stringify(request),
-      timeout: options.timeout || 60000, // Reports may take longer
-    }
-  );
+  return fetchWithTimeout(`${API_BASE_URL}/report`, {
+    method: "POST",
+    body: JSON.stringify(request),
+    timeout: options.timeout || 60000, // Reports may take longer
+  });
 }
 
 // =============================================================================
@@ -514,10 +501,7 @@ export async function generateReport(
  */
 export async function healthCheck(): Promise<boolean> {
   try {
-    await fetchWithTimeout<{ status: string }>(
-      `${API_BASE_URL}/health`,
-      { timeout: 5000 }
-    );
+    await fetchWithTimeout<{ status: string }>(`${API_BASE_URL}/health`, { timeout: 5000 });
     return true;
   } catch {
     return false;

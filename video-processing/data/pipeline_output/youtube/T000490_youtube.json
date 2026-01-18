@@ -1,0 +1,67 @@
+{
+  "bioguide_id": "T000490",
+  "name": "David J. Taylor",
+  "total_found": 32,
+  "filtered_count": 5,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "uZ7z3stx808",
+      "title": "Kerri Senkow: BuzzCity.ca Interview",
+      "url": "https://www.youtube.com/watch?v=uZ7z3stx808",
+      "channel": "BuzzCityeZine",
+      "channel_id": "UCntUVHs6KS_1sRJefSoVfHQ",
+      "upload_date": null,
+      "duration": 404.0,
+      "view_count": 641,
+      "description": ""
+    },
+    {
+      "video_id": "LX4C7KmrOIY",
+      "title": "BuzzCity.ca interview with Semko Fontaine Taylor",
+      "url": "https://www.youtube.com/watch?v=LX4C7KmrOIY",
+      "channel": "BuzzCityeZine",
+      "channel_id": "UCntUVHs6KS_1sRJefSoVfHQ",
+      "upload_date": null,
+      "duration": 1169.0,
+      "view_count": 167,
+      "description": ""
+    },
+    {
+      "video_id": "Sx1Nk8Bx6Eo",
+      "title": "\u201cCourt Sentences David Taylor | Full Robbery Plea Hearing | Deferred Adjudication Explained",
+      "url": "https://www.youtube.com/watch?v=Sx1Nk8Bx6Eo",
+      "channel": "The Case Diary",
+      "channel_id": "UCKkGD8fT3CHZWISIMEYqhGQ",
+      "upload_date": null,
+      "duration": 770.0,
+      "view_count": 39,
+      "description": ""
+    },
+    {
+      "video_id": "oFwbmI3fgV8",
+      "title": "US House Session LIVE | US House LIVE | US Congress LIVE | Trump LIVE | Russia Ukraine | Elon | N18G",
+      "url": "https://www.youtube.com/watch?v=oFwbmI3fgV8",
+      "channel": "CNN-News18",
+      "channel_id": "UCef1-8eOpJgud7szVPlZQAQ",
+      "upload_date": null,
+      "duration": 19014.0,
+      "view_count": 3075,
+      "description": ""
+    },
+    {
+      "video_id": "ujnmZDp06aU",
+      "title": "US House Session LIVE | US House Representatives LIVE | US Congress LIVE | Trump LIVE | N18G",
+      "url": "https://www.youtube.com/watch?v=ujnmZDp06aU",
+      "channel": "CNN-News18",
+      "channel_id": "UCef1-8eOpJgud7szVPlZQAQ",
+      "upload_date": null,
+      "duration": 28167.0,
+      "view_count": 13651,
+      "description": ""
+    }
+  ]
+}

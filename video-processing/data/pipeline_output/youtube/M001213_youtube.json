@@ -1,0 +1,45 @@
+{
+  "bioguide_id": "M001213",
+  "name": "Blake D. Moore",
+  "total_found": 3,
+  "filtered_count": 3,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "o90a9nYzzDo",
+      "title": "135 GOP Reps Supported Red Flags. Was YOUR Congress Critter One Of Them?",
+      "url": "https://www.youtube.com/watch?v=o90a9nYzzDo",
+      "channel": "ARFCOM News",
+      "channel_id": "UCbiiqvaU4DuhAn33LqCz0qA",
+      "upload_date": null,
+      "duration": 661.0,
+      "view_count": 10090,
+      "description": ""
+    },
+    {
+      "video_id": "pUyjEZIvtKI",
+      "title": "In stunning vote House Republicans fail to impeach Secretary Mayorkas",
+      "url": "https://www.youtube.com/watch?v=pUyjEZIvtKI",
+      "channel": "INSURANCE TECH OFFICIAL",
+      "channel_id": "UC8x-ME8vIQtckyHbunIuTrw",
+      "upload_date": null,
+      "duration": 209.0,
+      "view_count": 37,
+      "description": ""
+    },
+    {
+      "video_id": "Znh3zBwbCSo",
+      "title": "Rep. Blake Moore Calls for Energy Independence | House Natural Resources Committee | March 8, 2022",
+      "url": "https://www.youtube.com/watch?v=Znh3zBwbCSo",
+      "channel": "Rep. Blake Moore",
+      "channel_id": "UCu9WOwfOSpzNb7Tzahz2ydw",
+      "upload_date": null,
+      "duration": 314.0,
+      "view_count": 79,
+      "description": ""
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "bioguide_id": "M001235",
+  "name": "Riley M. Moore",
+  "total_found": 7,
+  "filtered_count": 4,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "8I41s_2D5-E",
+      "title": "US Congressman Riley M. Moore speak on more than 300 school children 12 teachers kidnapped",
+      "url": "https://www.youtube.com/watch?v=8I41s_2D5-E",
+      "channel": "Chigozie Ubaka",
+      "channel_id": "UCZJrjt_BulrxWXhk-Mb1Whw",
+      "upload_date": null,
+      "duration": 95.0,
+      "view_count": 1,
+      "description": ""
+    },
+    {
+      "video_id": "M5QiW0P1qGg",
+      "title": "Rep. Riley M. Moore: Why This Congressman Wants Nigeria Designated a 'Country of Particular Concern'",
+      "url": "https://www.youtube.com/watch?v=M5QiW0P1qGg",
+      "channel": "Ojemba Tv",
+      "channel_id": "UC9Iyesj2FiY1o388bAR3YXw",
+      "upload_date": null,
+      "duration": 231.0,
+      "view_count": 19,
+      "description": ""
+    },
+    {
+      "video_id": "sTQwN6V-4wE",
+      "title": "Insecurity In Nigeria: Congressman Riley M. Moore Speaks --Space",
+      "url": "https://www.youtube.com/watch?v=sTQwN6V-4wE",
+      "channel": "Njenje Media TV",
+      "channel_id": "UCuooZI9u0ZSGB58LMrT_T0w",
+      "upload_date": null,
+      "duration": 2351.0,
+      "view_count": 635,
+      "description": ""
+    },
+    {
+      "video_id": "yy95hT3SowI",
+      "title": "US Congressmen Speak Out: Nigeria's Response to Christian Persecution Under Scrutiny",
+      "url": "https://www.youtube.com/watch?v=yy95hT3SowI",
+      "channel": "The Creative Flow",
+      "channel_id": "UCcMF4hJvKmsiPv0ZXgInSVg",
+      "upload_date": null,
+      "duration": 99.0,
+      "view_count": 0,
+      "description": ""
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "bioguide_id": "D000617",
+  "name": "Suzan K. DelBene",
+  "total_found": 3,
+  "filtered_count": 1,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "V4nMA2o7e_c",
+      "title": "Full Committee Markup 12.13.17",
+      "url": "https://www.youtube.com/watch?v=V4nMA2o7e_c",
+      "channel": "House Committee on Natural Resources GOP",
+      "channel_id": "UCY08wEbJ8fztRofQ9eZs0-g",
+      "upload_date": null,
+      "duration": 6846.0,
+      "view_count": 1512,
+      "description": ""
+    }
+  ]
+}

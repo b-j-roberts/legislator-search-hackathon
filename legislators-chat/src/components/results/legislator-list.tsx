@@ -16,6 +16,12 @@ export interface LegislatorListProps {
   skeletonCount?: number;
   /** Custom message when list is empty */
   emptyMessage?: string;
+  /** Whether legislators can be selected */
+  selectable?: boolean;
+  /** IDs of selected legislators */
+  selectedIds?: string[];
+  /** Callback when a legislator is toggled */
+  onToggleSelect?: (legislator: Legislator) => void;
 }
 
 const itemVariants = {
@@ -30,11 +36,10 @@ function EmptyState({ message }: { message?: string }) {
       <div className="rounded-full bg-muted p-4 mb-4">
         <Users className="size-8 text-muted-foreground" />
       </div>
-      <h3 className="text-lg font-medium text-foreground mb-2">
-        No legislators found
-      </h3>
+      <h3 className="text-lg font-medium text-foreground mb-2">No legislators found</h3>
       <p className="text-sm text-muted-foreground max-w-xs">
-        {message || "Ask about a topic or issue to discover relevant legislators and their stances."}
+        {message ||
+          "Ask about a topic or issue to discover relevant legislators and their stances."}
       </p>
     </div>
   );
@@ -56,6 +61,9 @@ export function LegislatorList({
   className,
   skeletonCount = 3,
   emptyMessage,
+  selectable = false,
+  selectedIds = [],
+  onToggleSelect,
 }: LegislatorListProps) {
   if (isLoading) {
     return <LoadingState count={skeletonCount} />;
@@ -82,7 +90,12 @@ export function LegislatorList({
                 delay: index * 0.03, // Stagger effect
               }}
             >
-              <LegislatorCard legislator={legislator} />
+              <LegislatorCard
+                legislator={legislator}
+                selectable={selectable}
+                isSelected={selectedIds.includes(legislator.id)}
+                onToggleSelect={onToggleSelect}
+              />
             </motion.div>
           ))}
         </AnimatePresence>

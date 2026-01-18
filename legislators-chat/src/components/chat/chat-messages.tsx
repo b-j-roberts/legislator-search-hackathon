@@ -2,7 +2,17 @@
 
 import * as React from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { MessageSquare, ArrowDown } from "lucide-react";
+import {
+  ArrowDown,
+  Search,
+  Users,
+  FileText,
+  Vote,
+  ArrowRight,
+  Sparkles,
+  Heart,
+  MessageCircle,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
@@ -14,8 +24,8 @@ export interface ChatMessagesProps {
   messages: ChatMessage[];
   isLoading?: boolean;
   className?: string;
-  /** Callback to retry a failed message */
   onRetryMessage?: (messageId: string) => void;
+  onSuggestionClick?: (suggestion: string) => void;
 }
 
 const containerVariants = {
@@ -26,36 +36,161 @@ const containerVariants = {
   },
 };
 
-// How far from bottom (in pixels) to show the scroll button
 const SCROLL_BUTTON_THRESHOLD = 100;
 
-function EmptyState() {
+const SUGGESTIONS = [
+  {
+    icon: Heart,
+    title: "Find allies on your issue",
+    description: "Discover who champions causes you care about",
+    query: "Which representatives have spoken positively about affordable housing?",
+  },
+  {
+    icon: Users,
+    title: "Know your representatives",
+    description: "See where your legislators stand on key issues",
+    query: "What has my representative said about education funding?",
+  },
+  {
+    icon: Vote,
+    title: "Track voting patterns",
+    description: "See how legislators voted on issues you care about",
+    query: "How did senators vote on the recent infrastructure bill?",
+  },
+  {
+    icon: MessageCircle,
+    title: "Prepare to reach out",
+    description: "Get informed before contacting your rep",
+    query: "Help me understand my senator's position on healthcare reform",
+  },
+];
+
+function HeroEmptyState({
+  onSuggestionClick,
+}: {
+  onSuggestionClick?: (query: string) => void;
+}) {
   return (
-    <div className="flex flex-1 flex-col items-center justify-center p-6 text-center">
-      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted">
-        <MessageSquare className="h-8 w-8 text-muted-foreground" />
+    <div className="flex flex-1 flex-col items-center px-6 py-8 text-center overflow-auto relative min-h-0">
+      {/* Spacer to push content toward center but allow scrolling */}
+      <div className="flex-1 min-h-8 max-h-[15vh]" />
+      {/* Subtle background pattern */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-mindy/[0.05] rounded-full blur-3xl" />
+        <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] bg-mindy/[0.03] rounded-full blur-3xl" />
       </div>
-      <h2 className="mt-4 text-lg font-medium text-foreground">
-        Start a Conversation
-      </h2>
-      <p className="mt-2 max-w-sm text-sm text-muted-foreground">
-        Ask about legislators, congressional hearings, voting records, or any
-        topic you&apos;d like to research.
-      </p>
-      <div className="mt-6 flex flex-wrap justify-center gap-2">
-        {[
-          "Who represents my district?",
-          "Recent climate votes",
-          "Healthcare hearings",
-        ].map((suggestion) => (
-          <span
-            key={suggestion}
-            className="rounded-full border border-border bg-muted/50 px-3 py-1.5 text-xs text-muted-foreground"
-          >
-            {suggestion}
-          </span>
-        ))}
-      </div>
+
+      {/* Hero content */}
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        className="relative z-10 max-w-xl"
+      >
+        {/* Mindy logo */}
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.1, duration: 0.5 }}
+          className="mb-6 inline-flex"
+        >
+          <div className="relative flex items-center justify-center w-20 h-20">
+            <img
+              src="/mindy_media_kit/logos/mindy_icon_color.png"
+              alt="mindy"
+              width={80}
+              height={80}
+              className="object-contain"
+            />
+            <motion.div
+              className="absolute -top-1 -right-1 w-6 h-6 rounded-lg bg-mindy flex items-center justify-center"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.3, type: "spring", stiffness: 400, damping: 15 }}
+            >
+              <Sparkles className="w-3 h-3 text-white" />
+            </motion.div>
+          </div>
+        </motion.div>
+
+        {/* Main headline */}
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15, duration: 0.6 }}
+          className="font-display text-3xl md:text-4xl font-semibold tracking-tight text-balance leading-[1.15] mb-3"
+        >
+          Hi, I'm <span className="text-mindy">mindy</span>!
+        </motion.h1>
+
+        {/* Subtitle */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25, duration: 0.6 }}
+          className="text-muted-foreground text-base md:text-lg max-w-md mx-auto mb-4 text-balance leading-relaxed"
+        >
+          I'm here to help you connect with your representatives on the issues that matter to you.
+        </motion.p>
+
+        {/* Sample prompt */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.6 }}
+          className="text-muted-foreground/80 text-sm max-w-md mx-auto mb-8 text-balance leading-relaxed italic"
+        >
+          Try asking something like: "Which of my representatives support renewable energy, and how can I encourage them to do more?"
+        </motion.p>
+
+        {/* Suggestion cards - Editorial style */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35, duration: 0.6 }}
+          className="grid gap-3 w-full max-w-lg mx-auto"
+        >
+          {SUGGESTIONS.map((suggestion, index) => (
+            <motion.button
+              key={suggestion.title}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 + index * 0.08, duration: 0.5 }}
+              whileHover={{ x: 4 }}
+              whileTap={{ scale: 0.99 }}
+              onClick={() => onSuggestionClick?.(suggestion.query)}
+              className="group flex items-center gap-4 p-4 rounded-xl border border-border/60 bg-card/60 hover:bg-card hover:border-accent/30 hover:shadow-md transition-all duration-300 text-left card-shadow"
+            >
+              <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-secondary group-hover:bg-accent/10 transition-colors flex-shrink-0">
+                <suggestion.icon className="w-5 h-5 text-muted-foreground group-hover:text-accent transition-colors" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <span className="block text-sm font-medium text-foreground group-hover:text-foreground transition-colors">
+                  {suggestion.title}
+                </span>
+                <span className="block text-xs text-muted-foreground mt-0.5 truncate">
+                  {suggestion.description}
+                </span>
+              </div>
+              <ArrowRight className="w-4 h-4 text-muted-foreground/30 group-hover:text-accent group-hover:translate-x-0.5 transition-all flex-shrink-0" />
+            </motion.button>
+          ))}
+        </motion.div>
+
+        {/* Bottom hint */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.7, duration: 0.6 }}
+          className="mt-8 text-xs text-muted-foreground/60 flex items-center justify-center gap-2"
+        >
+          <Search className="w-3 h-3" />
+          <span>Ask me anything about your representatives</span>
+        </motion.p>
+      </motion.div>
+
+      {/* Bottom spacer for balanced layout */}
+      <div className="flex-1 min-h-8 max-h-[10vh]" />
     </div>
   );
 }
@@ -65,24 +200,22 @@ export function ChatMessages({
   isLoading = false,
   className,
   onRetryMessage,
+  onSuggestionClick,
 }: ChatMessagesProps) {
   const scrollAreaRef = React.useRef<HTMLDivElement>(null);
   const bottomRef = React.useRef<HTMLDivElement>(null);
   const [showScrollButton, setShowScrollButton] = React.useState(false);
 
-  // Track if we should auto-scroll (true by default, false when user scrolls up)
   const shouldAutoScrollRef = React.useRef(true);
-  // Track if scroll was triggered programmatically to ignore that scroll event
   const isProgrammaticScrollRef = React.useRef(false);
-  // Track last message count to detect new messages
   const lastMessageCountRef = React.useRef(messages.length);
 
-  // Get the actual scrollable viewport from ScrollArea
   const getScrollViewport = React.useCallback(() => {
-    return scrollAreaRef.current?.querySelector("[data-radix-scroll-area-viewport]") as HTMLElement | null;
+    return scrollAreaRef.current?.querySelector(
+      "[data-radix-scroll-area-viewport]"
+    ) as HTMLElement | null;
   }, []);
 
-  // Check if user is near the bottom of the scroll area
   const isNearBottom = React.useCallback(() => {
     const viewport = getScrollViewport();
     if (!viewport) return true;
@@ -91,7 +224,6 @@ export function ChatMessages({
     return scrollHeight - scrollTop - clientHeight < SCROLL_BUTTON_THRESHOLD;
   }, [getScrollViewport]);
 
-  // Scroll to bottom
   const scrollToBottom = React.useCallback(() => {
     const viewport = getScrollViewport();
     if (!viewport) return;
@@ -100,35 +232,29 @@ export function ChatMessages({
     viewport.scrollTop = viewport.scrollHeight;
     setShowScrollButton(false);
 
-    // Reset the flag after a short delay to allow the scroll event to fire
     requestAnimationFrame(() => {
       isProgrammaticScrollRef.current = false;
     });
   }, [getScrollViewport]);
 
-  // Handle user clicking scroll to bottom button
   const handleScrollToBottom = React.useCallback(() => {
     shouldAutoScrollRef.current = true;
     scrollToBottom();
   }, [scrollToBottom]);
 
-  // Track scroll position to detect user scrolling away
   React.useEffect(() => {
     const viewport = getScrollViewport();
     if (!viewport) return;
 
     const handleScroll = () => {
-      // Ignore programmatic scrolls
       if (isProgrammaticScrollRef.current) return;
 
       const nearBottom = isNearBottom();
 
-      // If user scrolls up (away from bottom), disable auto-scroll
       if (!nearBottom) {
         shouldAutoScrollRef.current = false;
         setShowScrollButton(true);
       } else {
-        // User scrolled back to bottom manually
         shouldAutoScrollRef.current = true;
         setShowScrollButton(false);
       }
@@ -138,14 +264,12 @@ export function ChatMessages({
     return () => viewport.removeEventListener("scroll", handleScroll);
   }, [getScrollViewport, isNearBottom]);
 
-  // Auto-scroll when new user message is sent
   React.useEffect(() => {
     const isNewMessage = messages.length > lastMessageCountRef.current;
     lastMessageCountRef.current = messages.length;
 
     if (isNewMessage && messages.length > 0) {
       const lastMessage = messages[messages.length - 1];
-      // Always scroll for new user messages and re-enable auto-scroll
       if (lastMessage?.role === "user") {
         shouldAutoScrollRef.current = true;
         scrollToBottom();
@@ -153,21 +277,18 @@ export function ChatMessages({
     }
   }, [messages.length, messages, scrollToBottom]);
 
-  // Auto-scroll during streaming if auto-scroll is enabled
   React.useEffect(() => {
     if (shouldAutoScrollRef.current) {
-      // Use RAF for smooth scroll during streaming
       requestAnimationFrame(() => {
         scrollToBottom();
       });
     }
   }, [messages, isLoading, scrollToBottom]);
 
-  // Show empty state if no messages
   if (messages.length === 0 && !isLoading) {
     return (
-      <div className={cn("flex flex-1 flex-col", className)}>
-        <EmptyState />
+      <div className={cn("flex flex-1 flex-col relative min-h-0 overflow-hidden", className)}>
+        <HeroEmptyState onSuggestionClick={onSuggestionClick} />
       </div>
     );
   }
@@ -175,12 +296,12 @@ export function ChatMessages({
   return (
     <div className={cn("relative flex-1 min-h-0", className)}>
       <ScrollArea ref={scrollAreaRef} className="h-full">
-        <div className="flex flex-col p-4">
+        <div className="flex flex-col p-4 md:p-6 lg:p-8 max-w-3xl mx-auto">
           <motion.div
             variants={containerVariants}
             initial="initial"
             animate="animate"
-            className="flex flex-col gap-4"
+            className="flex flex-col gap-5"
           >
             <AnimatePresence mode="popLayout">
               {messages.map((message) => (
@@ -200,18 +321,15 @@ export function ChatMessages({
               ))}
             </AnimatePresence>
 
-            {/* Typing indicator when loading */}
             <AnimatePresence>
               {isLoading && <TypingIndicator key="typing-indicator" />}
             </AnimatePresence>
           </motion.div>
 
-          {/* Invisible element for scroll anchor */}
           <div ref={bottomRef} className="h-px" aria-hidden="true" />
         </div>
       </ScrollArea>
 
-      {/* Scroll to bottom button - appears when user scrolls up */}
       <AnimatePresence>
         {showScrollButton && (
           <motion.div
@@ -224,10 +342,10 @@ export function ChatMessages({
               variant="secondary"
               size="sm"
               onClick={handleScrollToBottom}
-              className="shadow-lg gap-1.5"
+              className="shadow-lg gap-1.5 rounded-full px-4 bg-card border border-border"
             >
               <ArrowDown className="h-4 w-4" />
-              <span>Scroll to bottom</span>
+              <span>New messages</span>
             </Button>
           </motion.div>
         )}

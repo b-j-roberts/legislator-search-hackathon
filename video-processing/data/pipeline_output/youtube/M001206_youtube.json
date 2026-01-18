@@ -1,0 +1,100 @@
+{
+  "bioguide_id": "M001206",
+  "name": "Joseph D. Morelle",
+  "total_found": 28,
+  "filtered_count": 8,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "drZDEaXs2Z8",
+      "title": "Full interview with Congressman Joe Morelle",
+      "url": "https://www.youtube.com/watch?v=drZDEaXs2Z8",
+      "channel": "News 8 WROC",
+      "channel_id": "UCzocYTD8J3ezkaoND4iQPGA",
+      "upload_date": null,
+      "duration": 373.0,
+      "view_count": 159,
+      "description": ""
+    },
+    {
+      "video_id": "1RNDKeekBX0",
+      "title": "Adam Interviews Joe Morelle",
+      "url": "https://www.youtube.com/watch?v=1RNDKeekBX0",
+      "channel": "News 8 WROC",
+      "channel_id": "UCzocYTD8J3ezkaoND4iQPGA",
+      "upload_date": null,
+      "duration": 162.0,
+      "view_count": 60,
+      "description": ""
+    },
+    {
+      "video_id": "JdBDxpeNkd4",
+      "title": "Congressman Joseph Morelle Manages the Rule for H.R. 790",
+      "url": "https://www.youtube.com/watch?v=JdBDxpeNkd4",
+      "channel": "House Rules Committee Democrats",
+      "channel_id": "UC3LTS2HRaURCmt_kkWorvFw",
+      "upload_date": null,
+      "duration": 214.0,
+      "view_count": 86,
+      "description": ""
+    },
+    {
+      "video_id": "w9ZsIvZrtVQ",
+      "title": "Congressman Joe Morelle invites special guest to SOTU",
+      "url": "https://www.youtube.com/watch?v=w9ZsIvZrtVQ",
+      "channel": "News 8 WROC",
+      "channel_id": "UCzocYTD8J3ezkaoND4iQPGA",
+      "upload_date": null,
+      "duration": 116.0,
+      "view_count": 26,
+      "description": ""
+    },
+    {
+      "video_id": "11642floVyo",
+      "title": "Joe Morelle speaks after winning race in 25th Congressional District",
+      "url": "https://www.youtube.com/watch?v=11642floVyo",
+      "channel": "News 8 WROC",
+      "channel_id": "UCzocYTD8J3ezkaoND4iQPGA",
+      "upload_date": null,
+      "duration": 274.0,
+      "view_count": 196,
+      "description": ""
+    },
+    {
+      "video_id": "MLuLvVc6dxU",
+      "title": "NY-25 Congressional candidates Joe Morelle, George Mitris debate on News 8 (full video) - October 14",
+      "url": "https://www.youtube.com/watch?v=MLuLvVc6dxU",
+      "channel": "News 8 WROC",
+      "channel_id": "UCzocYTD8J3ezkaoND4iQPGA",
+      "upload_date": null,
+      "duration": 3495.0,
+      "view_count": 1418,
+      "description": ""
+    },
+    {
+      "video_id": "VTqyaz2QGUQ",
+      "title": "Adam Interviews 55th NY Senate candidate Samra Brouk",
+      "url": "https://www.youtube.com/watch?v=VTqyaz2QGUQ",
+      "channel": "News 8 WROC",
+      "channel_id": "UCzocYTD8J3ezkaoND4iQPGA",
+      "upload_date": null,
+      "duration": 441.0,
+      "view_count": 887,
+      "description": ""
+    },
+    {
+      "video_id": "Q40HgwGAI7E",
+      "title": "Senator Toby Ann Stavisky (Senate District 16)",
+      "url": "https://www.youtube.com/watch?v=Q40HgwGAI7E",
+      "channel": "redcrossny",
+      "channel_id": "UCqSnxPgPrMFfFUMedyK8OSA",
+      "upload_date": null,
+      "duration": 40.0,
+      "view_count": 76,
+      "description": ""
+    }
+  ]
+}

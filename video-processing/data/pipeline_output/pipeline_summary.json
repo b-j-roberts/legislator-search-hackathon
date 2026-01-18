@@ -1,17 +1,17 @@
 {
-  "run_date": "2026-01-17T15:31:37.042013",
-  "legislators_processed": 100,
+  "run_date": "2026-01-17T16:10:00.092609",
+  "legislators_processed": 437,
   "date_range": {
     "start": "2020-01-01",
     "end": "2026-12-31"
   },
   "internet_archive": {
-    "total_appearances": 0,
-    "legislators_with_results": 0
+    "total_appearances": 1884,
+    "legislators_with_results": 195
   },
   "youtube": {
-    "total_videos": 2507,
-    "legislators_with_results": 99
+    "total_videos": 9083,
+    "legislators_with_results": 431
   },
   "transcripts": {
     "extracted": 0,

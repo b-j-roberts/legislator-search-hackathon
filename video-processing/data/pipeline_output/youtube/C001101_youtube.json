@@ -1,0 +1,133 @@
+{
+  "bioguide_id": "C001101",
+  "name": "Katherine M. Clark",
+  "total_found": 29,
+  "filtered_count": 11,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "G4l5tthfoDk",
+      "title": "Congresswoman Katherine Clark on House sit-in",
+      "url": "https://www.youtube.com/watch?v=G4l5tthfoDk",
+      "channel": "CBS News",
+      "channel_id": "UC8p1vwvWtl6T73JiExfWs1g",
+      "upload_date": null,
+      "duration": 308.0,
+      "view_count": 936,
+      "description": ""
+    },
+    {
+      "video_id": "D9A-RNYcAEc",
+      "title": "A Message From Congresswoman Katherine Clark",
+      "url": "https://www.youtube.com/watch?v=D9A-RNYcAEc",
+      "channel": "Project Citizenship",
+      "channel_id": "UC3KBrleJnP-nYF_Jgipgevg",
+      "upload_date": null,
+      "duration": 76.0,
+      "view_count": 102,
+      "description": ""
+    },
+    {
+      "video_id": "GyAWswhRYJg",
+      "title": "Congresswoman Katherine Clark at the first-ever City of Framingham Inauguration - 2018",
+      "url": "https://www.youtube.com/watch?v=GyAWswhRYJg",
+      "channel": "Petroni Media Company LLC",
+      "channel_id": "UCaOfnGQXd1gEpMcYfimkcZg",
+      "upload_date": null,
+      "duration": 92.0,
+      "view_count": 23,
+      "description": ""
+    },
+    {
+      "video_id": "YFFlvVeCFfI",
+      "title": "Speech by Congresswoman Katherine Clark (Introduction by Priya Kaur Sawhney in English)",
+      "url": "https://www.youtube.com/watch?v=YFFlvVeCFfI",
+      "channel": "Nishkam TV",
+      "channel_id": "UCZSeUsdJ0bBZcZTKvB7cXFw",
+      "upload_date": null,
+      "duration": 438.0,
+      "view_count": 89,
+      "description": ""
+    },
+    {
+      "video_id": "5KP6tUT8bIg",
+      "title": "DeVos dodges questions about federal funds going to private schools that discriminate",
+      "url": "https://www.youtube.com/watch?v=5KP6tUT8bIg",
+      "channel": "Washington Post",
+      "channel_id": "UCHd62-u_v4DvJ8TCFtpi4GA",
+      "upload_date": null,
+      "duration": 256.0,
+      "view_count": 2956,
+      "description": ""
+    },
+    {
+      "video_id": "cD-x1xzkgnU",
+      "title": "Congresswoman Katherine Clark codes with KIBO",
+      "url": "https://www.youtube.com/watch?v=cD-x1xzkgnU",
+      "channel": "KinderLab Robotics",
+      "channel_id": "UCI1135I3x2d2Yq9x-mczpaw",
+      "upload_date": null,
+      "duration": 52.0,
+      "view_count": 225,
+      "description": ""
+    },
+    {
+      "video_id": "peBTiMdukLk",
+      "title": "House Democrats announce support for debt discharge petition",
+      "url": "https://www.youtube.com/watch?v=peBTiMdukLk",
+      "channel": "Washington Post",
+      "channel_id": "UCHd62-u_v4DvJ8TCFtpi4GA",
+      "upload_date": null,
+      "duration": 125.0,
+      "view_count": 17184,
+      "description": ""
+    },
+    {
+      "video_id": "oddlcSmpx_g",
+      "title": "Congresswoman Katherine Clark",
+      "url": "https://www.youtube.com/watch?v=oddlcSmpx_g",
+      "channel": "ProChoice Caucus",
+      "channel_id": "UC3IbxRBq6ggjNC4XvGKxwZA",
+      "upload_date": null,
+      "duration": 31.0,
+      "view_count": 223,
+      "description": ""
+    },
+    {
+      "video_id": "ZPiZAPQmfGg",
+      "title": "Congresswoman Clark: Education is right, not a privelege",
+      "url": "https://www.youtube.com/watch?v=ZPiZAPQmfGg",
+      "channel": "Katherine Clark",
+      "channel_id": "UCgaI52w7QKI8LtkSeCCmSuw",
+      "upload_date": null,
+      "duration": 67.0,
+      "view_count": 108,
+      "description": ""
+    },
+    {
+      "video_id": "dcY_k27dYCM",
+      "title": "Rep. Katherine Clark on House Democratic Priorities",
+      "url": "https://www.youtube.com/watch?v=dcY_k27dYCM",
+      "channel": "Katherine Clark",
+      "channel_id": "UCgaI52w7QKI8LtkSeCCmSuw",
+      "upload_date": null,
+      "duration": 67.0,
+      "view_count": 109,
+      "description": ""
+    },
+    {
+      "video_id": "-ugLcpp5Zfs",
+      "title": "MA Congresswoman Katherine M. Clark Feeling Inspired by the Thermo Fisher / BRCPS STEM Challenge!",
+      "url": "https://www.youtube.com/watch?v=-ugLcpp5Zfs",
+      "channel": "Boston Renaissance Charter Public School",
+      "channel_id": "UCShE-mS-CWU-xOfSyr5cANg",
+      "upload_date": null,
+      "duration": 40.0,
+      "view_count": 290,
+      "description": ""
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "bioguide_id": "S001221",
+  "name": "Hillary J. Scholten",
+  "total_found": 21,
+  "filtered_count": 5,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "jFRHqvl9Uk4",
+      "title": "Democrat Hillary Scholten projected to win 3rd Congressional District",
+      "url": "https://www.youtube.com/watch?v=jFRHqvl9Uk4",
+      "channel": "13 ON YOUR SIDE",
+      "channel_id": "UCuveMoRCsg7-W6ePw6lq7tA",
+      "upload_date": null,
+      "duration": 117.0,
+      "view_count": 447,
+      "description": ""
+    },
+    {
+      "video_id": "gNbQqn1bAHE",
+      "title": "FoKus Magazine Interview with Robert Marion",
+      "url": "https://www.youtube.com/watch?v=gNbQqn1bAHE",
+      "channel": "Official Love Lee Alston",
+      "channel_id": "UCP34Z2lFEvJf2wCYhdrLFCg",
+      "upload_date": null,
+      "duration": 235.0,
+      "view_count": 69,
+      "description": ""
+    },
+    {
+      "video_id": "Raph1OpvVNw",
+      "title": "Breaking the Barriers for Black Women in Electoral Politics",
+      "url": "https://www.youtube.com/watch?v=Raph1OpvVNw",
+      "channel": "Congressional Black Caucus Foundation",
+      "channel_id": "UCIiyUkRngpU_FG2eEAcwH-Q",
+      "upload_date": null,
+      "duration": 3410.0,
+      "view_count": 34,
+      "description": ""
+    },
+    {
+      "video_id": "XaKzvNsqneU",
+      "title": "The Hill's Rafael Bernal explains Bernie's appeal to Latinos",
+      "url": "https://www.youtube.com/watch?v=XaKzvNsqneU",
+      "channel": "The Hill",
+      "channel_id": "UCPWXiRWZ29zrxPFIQT7eHSA",
+      "upload_date": null,
+      "duration": 641.0,
+      "view_count": 24867,
+      "description": ""
+    },
+    {
+      "video_id": "NmNj0lbg-aE",
+      "title": "Donald Norcross Pays Tribute To Late Former New Jersey Congressman & Governor Jim Florio",
+      "url": "https://www.youtube.com/watch?v=NmNj0lbg-aE",
+      "channel": "Forbes Breaking News",
+      "channel_id": "UCg40OxZ1GYh3u3jBntB6DLg",
+      "upload_date": null,
+      "duration": 87.0,
+      "view_count": 499,
+      "description": ""
+    }
+  ]
+}
