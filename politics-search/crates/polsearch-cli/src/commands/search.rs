@@ -1,4 +1,4 @@
-//! Search command for congressional content using LanceDB hybrid search
+//! Search command for congressional content using `LanceDB` hybrid search
 
 use arrow_array::{Array, RecordBatch};
 use color_eyre::eyre::{eyre, Result};
@@ -6,10 +6,32 @@ use colored::Colorize;
 use futures::TryStreamExt;
 use lancedb::index::scalar::FullTextSearchQuery;
 use lancedb::query::{ExecutableQuery, QueryBase};
-use polsearch_pipeline::stages::TextEmbedder;
+use lancedb::Error as LanceError;
+use polsearch_pipeline::stages::{TextEmbedder, FTS_TABLE_NAME};
 use polsearch_util::truncate;
 use serde::Serialize;
 use uuid::Uuid;
+
+/// Check if a `LanceDB` error is due to a missing FTS inverted index
+fn is_missing_fts_index_error(e: &LanceError) -> bool {
+    let msg = e.to_string();
+    msg.contains("INVERTED index") || msg.contains("full text search")
+}
+
+/// Print a warning about missing FTS index with instructions
+fn print_fts_fallback_warning() {
+    eprintln!(
+        "{}",
+        "Warning: FTS index not found, falling back to vector search.".yellow()
+    );
+    eprintln!(
+        "{}",
+        "To enable full-text search, run:".yellow()
+    );
+    eprintln!("  polsearch db index          # for text_embeddings");
+    eprintln!("  polsearch fts index         # for text_fts (after ingesting)");
+    eprintln!();
+}
 
 use crate::{ContentTypeFilter, OutputFormat, SearchMode};
 
@@ -159,7 +181,7 @@ struct JsonOutput<'a> {
     has_more: bool,
 }
 
-/// Raw search result from LanceDB
+/// Raw search result from `LanceDB`
 struct RawSearchResult {
     content_id: Uuid,
     segment_index: i32,
@@ -171,7 +193,7 @@ struct RawSearchResult {
     speaker_name: Option<String>,
 }
 
-/// Execute search against LanceDB
+/// Execute search against `LanceDB`
 async fn execute_search(
     lancedb_path: &str,
     query: &str,
@@ -180,12 +202,12 @@ async fn execute_search(
     type_filter: Option<&str>,
 ) -> Result<Vec<RawSearchResult>> {
     let db = lancedb::connect(lancedb_path).execute().await?;
-    let table = db.open_table("text_embeddings").execute().await?;
 
     let filter_expr = type_filter.map(ToString::to_string);
 
     let batches: Vec<RecordBatch> = match mode {
         SearchMode::Vector => {
+            let table = db.open_table("text_embeddings").execute().await?;
             let mut embedder = TextEmbedder::new()?;
             let query_embedding = embedder.embed(query)?;
 
@@ -196,27 +218,95 @@ async fn execute_search(
             search.limit(limit).execute().await?.try_collect().await?
         }
         SearchMode::Fts => {
-            let mut search = table
-                .query()
-                .full_text_search(FullTextSearchQuery::new(query.to_string()));
-            if let Some(ref filter) = filter_expr {
-                search = search.only_if(filter.clone());
+            // try text_fts table first
+            let fts_table = db.open_table(FTS_TABLE_NAME).execute().await.ok();
+            let embeddings_table = db.open_table("text_embeddings").execute().await?;
+
+            // helper to attempt FTS on a table
+            let try_fts =
+                |table: lancedb::Table, filter: Option<String>| async move {
+                    let mut search = table
+                        .query()
+                        .full_text_search(FullTextSearchQuery::new(query.to_string()));
+                    if let Some(ref f) = filter {
+                        search = search.only_if(f.clone());
+                    }
+                    search.limit(limit).execute().await
+                };
+
+            // try text_fts first, then text_embeddings, then fallback to vector
+            let result = if let Some(fts_t) = fts_table {
+                match try_fts(fts_t, filter_expr.clone()).await {
+                    Ok(stream) => Ok(stream),
+                    Err(e) if is_missing_fts_index_error(&e) => {
+                        try_fts(embeddings_table.clone(), filter_expr.clone()).await
+                    }
+                    Err(e) => Err(e),
+                }
+            } else {
+                try_fts(embeddings_table.clone(), filter_expr.clone()).await
+            };
+
+            match result {
+                Ok(stream) => stream.try_collect().await?,
+                Err(e) if is_missing_fts_index_error(&e) => {
+                    print_fts_fallback_warning();
+                    // fallback to vector search on text_embeddings
+                    let mut embedder = TextEmbedder::new()?;
+                    let query_embedding = embedder.embed(query)?;
+                    let mut vector_search = embeddings_table.vector_search(query_embedding)?;
+                    if let Some(ref filter) = filter_expr {
+                        vector_search = vector_search.only_if(filter.clone());
+                    }
+                    vector_search
+                        .limit(limit)
+                        .execute()
+                        .await?
+                        .try_collect()
+                        .await?
+                }
+                Err(e) => return Err(e.into()),
             }
-            search.limit(limit).execute().await?.try_collect().await?
         }
         SearchMode::Hybrid => {
+            let table = db.open_table("text_embeddings").execute().await?;
             let mut embedder = TextEmbedder::new()?;
             let query_embedding = embedder.embed(query)?;
 
+            // try hybrid search first
             let mut search = table
-                .vector_search(query_embedding)?
+                .vector_search(query_embedding.clone())?
                 .full_text_search(FullTextSearchQuery::new(query.to_string()));
             if let Some(ref filter) = filter_expr {
                 search = search.only_if(filter.clone());
             }
-            search.limit(limit).execute().await?.try_collect().await?
+
+            match search.limit(limit).execute().await {
+                Ok(stream) => stream.try_collect().await?,
+                Err(e) if is_missing_fts_index_error(&e) => {
+                    print_fts_fallback_warning();
+                    // fallback to vector-only search
+                    let mut vector_search = table.vector_search(query_embedding)?;
+                    if let Some(ref filter) = filter_expr {
+                        vector_search = vector_search.only_if(filter.clone());
+                    }
+                    vector_search
+                        .limit(limit)
+                        .execute()
+                        .await?
+                        .try_collect()
+                        .await?
+                }
+                Err(e) => return Err(e.into()),
+            }
         }
         SearchMode::Phrase => {
+            // try text_fts table first, fall back to text_embeddings
+            let table = match db.open_table(FTS_TABLE_NAME).execute().await {
+                Ok(t) => t,
+                Err(_) => db.open_table("text_embeddings").execute().await?,
+            };
+
             let escaped_query = query.replace('\'', "''").replace('%', "\\%");
             let like_filter = format!("text LIKE '%{escaped_query}%'");
 
@@ -236,14 +326,17 @@ async fn execute_search(
         }
     };
 
-    parse_search_results(&batches)
+    parse_search_results(&batches, mode)
 }
 
-/// Parse LanceDB results into RawSearchResult structs
-fn parse_search_results(batches: &[RecordBatch]) -> Result<Vec<RawSearchResult>> {
+/// Parse `LanceDB` results into `RawSearchResult` structs
+fn parse_search_results(batches: &[RecordBatch], mode: SearchMode) -> Result<Vec<RawSearchResult>> {
     use arrow_array::{Float32Array, Int32Array, StringArray};
 
     let mut results = Vec::new();
+
+    // FTS and Phrase modes may use text_fts table which has a simpler schema
+    let is_fts_table = matches!(mode, SearchMode::Fts | SearchMode::Phrase);
 
     for batch in batches {
         let relevance_scores = batch
@@ -268,15 +361,19 @@ fn parse_search_results(batches: &[RecordBatch]) -> Result<Vec<RawSearchResult>>
             .and_then(|c| c.as_any().downcast_ref::<Int32Array>())
             .ok_or_else(|| eyre!("Missing segment_index column"))?;
 
+        // text_fts table doesn't have time columns
         let start_times = batch
             .column_by_name("start_time_ms")
-            .and_then(|c| c.as_any().downcast_ref::<Int32Array>())
-            .ok_or_else(|| eyre!("Missing start_time_ms column"))?;
+            .and_then(|c| c.as_any().downcast_ref::<Int32Array>());
 
         let end_times = batch
             .column_by_name("end_time_ms")
-            .and_then(|c| c.as_any().downcast_ref::<Int32Array>())
-            .ok_or_else(|| eyre!("Missing end_time_ms column"))?;
+            .and_then(|c| c.as_any().downcast_ref::<Int32Array>());
+
+        // require time columns only if not using FTS table
+        if !is_fts_table && (start_times.is_none() || end_times.is_none()) {
+            return Err(eyre!("Missing time columns in text_embeddings table"));
+        }
 
         let texts = batch
             .column_by_name("text")
@@ -293,7 +390,11 @@ fn parse_search_results(batches: &[RecordBatch]) -> Result<Vec<RawSearchResult>>
 
         for i in 0..batch.num_rows() {
             let content_id_str = content_ids.value(i);
-            let content_id = Uuid::parse_str(content_id_str)?;
+            // skip rows with invalid UUID content_ids (legacy vote embeddings)
+            let content_id = match Uuid::parse_str(content_id_str) {
+                Ok(id) => id,
+                Err(_) => continue,
+            };
 
             let score = relevance_scores
                 .map(|s| s.value(i))
@@ -323,8 +424,8 @@ fn parse_search_results(batches: &[RecordBatch]) -> Result<Vec<RawSearchResult>>
                 content_id,
                 segment_index: segment_indices.value(i),
                 text: texts.value(i).to_string(),
-                start_time_ms: start_times.value(i),
-                end_time_ms: end_times.value(i),
+                start_time_ms: start_times.map_or(0, |t| t.value(i)),
+                end_time_ms: end_times.map_or(0, |t| t.value(i)),
                 score,
                 content_type,
                 speaker_name,
@@ -502,7 +603,7 @@ fn print_results_grouped(
     }
 }
 
-/// Build a content type filter for LanceDB queries
+/// Build a content type filter for `LanceDB` queries
 fn build_content_type_filter(types: &[ContentTypeFilter]) -> Option<String> {
     if types.is_empty() || types.iter().any(|t| matches!(t, ContentTypeFilter::All)) {
         return None;

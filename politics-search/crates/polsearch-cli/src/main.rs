@@ -378,6 +378,10 @@ enum FtsCommands {
         #[arg(long)]
         speeches_path: Option<String>,
 
+        /// Ingest votes from PostgreSQL
+        #[arg(long)]
+        votes: bool,
+
         /// Limit files to process (for testing)
         #[arg(long)]
         limit: Option<usize>,
@@ -391,7 +395,7 @@ enum FtsCommands {
         dry_run: bool,
     },
 
-    /// Create FTS index on text_fts table
+    /// Create FTS index on `text_fts` table
     Index,
 }
 
@@ -517,6 +521,7 @@ async fn main() -> Result<()> {
                 FtsCommands::Ingest {
                     hearings_path,
                     speeches_path,
+                    votes,
                     limit,
                     force,
                     dry_run,
@@ -524,6 +529,7 @@ async fn main() -> Result<()> {
                     commands::fts::ingest(
                         hearings_path.as_deref(),
                         speeches_path.as_deref(),
+                        votes,
                         limit,
                         force,
                         dry_run,
