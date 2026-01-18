@@ -103,7 +103,6 @@ struct FilterParams<'a> {
     congress: Option<i16>,
     from_date: Option<&'a str>,
     to_date: Option<&'a str>,
-    speaker: Option<&'a str>,
 }
 
 impl<'a> FilterParams<'a> {
@@ -682,7 +681,6 @@ pub async fn search(
         congress: params.congress,
         from_date: params.from.as_deref(),
         to_date: params.to.as_deref(),
-        speaker: params.speaker.as_deref(),
     };
 
     // get filtered content IDs from PostgreSQL
@@ -710,8 +708,15 @@ pub async fn search(
         }));
     }
 
-    // build speaker filter for LanceDB
-    let speaker_filter = filter_params.speaker.map(build_speaker_filter);
+    // build speaker filter for LanceDB (only applies to hearings and floor_speeches)
+    let includes_hearings_or_speeches = content_types
+        .iter()
+        .any(|t| matches!(t, ContentType::All | ContentType::Hearing | ContentType::FloorSpeech));
+    let speaker_filter = if includes_hearings_or_speeches {
+        params.speaker.as_deref().map(build_speaker_filter)
+    } else {
+        None
+    };
 
     // combine all filters
     let combined_filter = combine_filters(vec![type_filter, content_id_filter, speaker_filter]);

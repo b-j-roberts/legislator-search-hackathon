@@ -285,6 +285,21 @@ impl HearingIngester {
         path: &Path,
         limit: Option<usize>,
     ) -> Result<IngestStats> {
+        self.ingest_directory_with_progress(path, limit, None).await
+    }
+
+    /// Ingest all JSON files in a directory with optional progress bar
+    ///
+    /// When a progress bar is provided, it will be incremented after each file.
+    ///
+    /// # Errors
+    /// Returns an error if directory reading fails
+    pub async fn ingest_directory_with_progress(
+        &mut self,
+        path: &Path,
+        limit: Option<usize>,
+        progress_bar: Option<&indicatif::ProgressBar>,
+    ) -> Result<IngestStats> {
         let mut total_stats = IngestStats::default();
 
         if !path.is_dir() {
@@ -307,7 +322,11 @@ impl HearingIngester {
         }
 
         let total = entries.len();
-        println!("{}", format!("Processing {} transcript files...", total).cyan());
+        let show_output = progress_bar.is_none();
+
+        if show_output {
+            println!("{}", format!("Processing {} transcript files...", total).cyan());
+        }
 
         for (i, entry) in entries.into_iter().enumerate() {
             let file_path = entry.path();
@@ -315,18 +334,23 @@ impl HearingIngester {
             let start = Instant::now();
             match self.ingest_file(&file_path).await {
                 Ok(stats) => {
-                    let duration = start.elapsed();
-                    if stats.files_skipped > 0 {
-                        println!("{} {} {}", progress, "Skipped".yellow(), file_path.display());
+                    let skipped = stats.files_skipped > 0;
+                    if let Some(pb) = progress_bar {
+                        pb.inc(1);
                     } else {
-                        println!(
-                            "{} {} {} ({} segments, {:.1}s)",
-                            progress,
-                            "Processed".green(),
-                            file_path.display(),
-                            stats.segments_created.to_string().cyan(),
-                            duration.as_secs_f64()
-                        );
+                        let duration = start.elapsed();
+                        if skipped {
+                            println!("{} {} {}", progress, "Skipped".yellow(), file_path.display());
+                        } else {
+                            println!(
+                                "{} {} {} ({} segments, {:.1}s)",
+                                progress,
+                                "Processed".green(),
+                                file_path.display(),
+                                stats.segments_created.to_string().cyan(),
+                                duration.as_secs_f64()
+                            );
+                        }
                     }
                     total_stats.files_processed += stats.files_processed;
                     total_stats.files_skipped += stats.files_skipped;
@@ -336,13 +360,15 @@ impl HearingIngester {
                     total_stats.embeddings_created += stats.embeddings_created;
                 }
                 Err(e) => {
-                    println!(
-                        "{} {} {}: {}",
-                        progress,
-                        "Failed".red(),
-                        file_path.display(),
-                        e
-                    );
+                    if show_output {
+                        println!(
+                            "{} {} {}: {}",
+                            progress,
+                            "Failed".red(),
+                            file_path.display(),
+                            e
+                        );
+                    }
                 }
             }
         }

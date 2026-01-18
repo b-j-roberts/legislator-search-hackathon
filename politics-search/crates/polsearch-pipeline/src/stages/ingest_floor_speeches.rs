@@ -310,6 +310,21 @@ impl FloorSpeechIngester {
         path: &Path,
         limit: Option<usize>,
     ) -> Result<FloorSpeechIngestStats> {
+        self.ingest_directory_with_progress(path, limit, None).await
+    }
+
+    /// Ingest all JSON files in a directory with optional progress bar
+    ///
+    /// When a progress bar is provided, it will be incremented after each file.
+    ///
+    /// # Errors
+    /// Returns an error if directory reading fails
+    pub async fn ingest_directory_with_progress(
+        &mut self,
+        path: &Path,
+        limit: Option<usize>,
+        progress_bar: Option<&indicatif::ProgressBar>,
+    ) -> Result<FloorSpeechIngestStats> {
         let mut total_stats = FloorSpeechIngestStats::default();
 
         if !path.is_dir() {
@@ -328,13 +343,20 @@ impl FloorSpeechIngester {
         }
 
         let total = entries.len();
-        info!("Processing {} floor speech files", total);
+        let show_output = progress_bar.is_none();
+
+        if show_output {
+            info!("Processing {} floor speech files", total);
+        }
 
         for (i, entry) in entries.into_iter().enumerate() {
             let file_path = entry.path();
             match self.ingest_file(&file_path).await {
                 Ok(stats) => {
-                    if stats.files_skipped > 0 {
+                    let skipped = stats.files_skipped > 0;
+                    if let Some(pb) = progress_bar {
+                        pb.inc(1);
+                    } else if skipped {
                         info!(
                             "[{}/{}] Skipped {} (already exists)",
                             i + 1,
@@ -358,13 +380,15 @@ impl FloorSpeechIngester {
                     total_stats.embeddings_created += stats.embeddings_created;
                 }
                 Err(e) => {
-                    warn!(
-                        "[{}/{}] Failed to process {}: {}",
-                        i + 1,
-                        total,
-                        file_path.display(),
-                        e
-                    );
+                    if show_output {
+                        warn!(
+                            "[{}/{}] Failed to process {}: {}",
+                            i + 1,
+                            total,
+                            file_path.display(),
+                            e
+                        );
+                    }
                 }
             }
         }

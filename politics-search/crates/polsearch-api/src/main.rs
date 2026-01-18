@@ -1,10 +1,11 @@
 //! REST API server for `PolSearch`
 
 mod error;
+mod middleware;
 mod models;
 mod routes;
 
-use axum::{routing::get, Router};
+use axum::{middleware as axum_mw, routing::get, Router};
 use color_eyre::eyre::Result;
 use polsearch_db::Database;
 use polsearch_pipeline::stages::TextEmbedder;
@@ -88,12 +89,19 @@ async fn main() -> Result<()> {
         search_timeout,
     });
 
-    // build router
-    let app = Router::new()
+    // build router with public and protected routes
+    let public_routes = Router::new()
         .route("/health", get(routes::health))
+        .merge(SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", ApiDoc::openapi()));
+
+    let protected_routes = Router::new()
         .route("/search", get(routes::search))
         .route("/content/{id}", get(routes::get_content))
-        .merge(SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", ApiDoc::openapi()))
+        .layer(axum_mw::from_fn(middleware::require_auth));
+
+    let app = Router::new()
+        .merge(public_routes)
+        .merge(protected_routes)
         .layer(CorsLayer::very_permissive())
         .layer(TraceLayer::new_for_http())
         .with_state(state);

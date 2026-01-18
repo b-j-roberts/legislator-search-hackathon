@@ -90,6 +90,33 @@ enum Commands {
         lancedb_path: String,
     },
 
+    /// Ingest all content in priority order (newest first, hearings before speeches)
+    IngestAll {
+        /// Starting year (default: 2025)
+        #[arg(long, default_value = "2025")]
+        start_year: i32,
+
+        /// Ending year (default: 2020)
+        #[arg(long, default_value = "2020")]
+        end_year: i32,
+
+        /// Directory with hearing transcript JSON files
+        #[arg(long, default_value = "data/transcripts")]
+        hearings_path: String,
+
+        /// Directory with floor speech JSON files
+        #[arg(long, default_value = "data/floor_speech_transcripts")]
+        speeches_path: String,
+
+        /// Force re-process even if content exists
+        #[arg(long)]
+        force: bool,
+
+        /// `LanceDB` storage path
+        #[arg(long, default_value = "~/.polsearch/lancedb")]
+        lancedb_path: String,
+    },
+
     /// Search congressional content
     Search {
         /// Search query
@@ -627,6 +654,25 @@ async fn main() -> Result<()> {
         Commands::Index { lancedb_path } => {
             let expanded = shellexpand::tilde(&lancedb_path).to_string();
             commands::index::run(&expanded).await?;
+        }
+        Commands::IngestAll {
+            start_year,
+            end_year,
+            hearings_path,
+            speeches_path,
+            force,
+            lancedb_path,
+        } => {
+            let expanded = shellexpand::tilde(&lancedb_path).to_string();
+            commands::ingest_all::run(
+                start_year,
+                end_year,
+                &hearings_path,
+                &speeches_path,
+                force,
+                &expanded,
+            )
+            .await?;
         }
         Commands::Search {
             query,

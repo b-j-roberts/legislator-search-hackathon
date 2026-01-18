@@ -6,12 +6,12 @@ use std::sync::Arc;
 use uuid::Uuid;
 
 use crate::error::ApiError;
-use crate::models::ContentDetailResponse;
+use crate::models::{ContentDetailResponse, VoteCounts};
 use crate::AppState;
 
 /// Get content details by ID
 ///
-/// Returns full metadata for a hearing or floor speech by its ID.
+/// Returns full metadata for a hearing, floor speech, or vote by its ID.
 #[utoipa::path(
     get,
     path = "/content/{id}",
@@ -44,6 +44,11 @@ pub async fn get_content(
             page_type: None,
             total_statements: hearing.total_statements,
             total_segments: hearing.total_segments,
+            vote_result: None,
+            vote_result_text: None,
+            vote_type: None,
+            category: None,
+            vote_counts: None,
         }));
     }
 
@@ -61,6 +66,38 @@ pub async fn get_content(
             page_type: Some(speech.page_type),
             total_statements: speech.total_statements,
             total_segments: speech.total_segments,
+            vote_result: None,
+            vote_result_text: None,
+            vote_type: None,
+            category: None,
+            vote_counts: None,
+        }));
+    }
+
+    // try to find as roll call vote
+    if let Some(vote) = state.db.roll_call_votes().get_by_id(id).await? {
+        return Ok(Json(ContentDetailResponse {
+            id: vote.id,
+            content_type: "vote".to_string(),
+            title: vote.question,
+            date: Some(vote.vote_date.format("%Y-%m-%d").to_string()),
+            source_url: vote.source_url,
+            committee: None,
+            chambers: Some(vote.chamber),
+            congress: Some(vote.congress),
+            page_type: None,
+            total_statements: 0,
+            total_segments: 1,
+            vote_result: Some(vote.result),
+            vote_result_text: vote.result_text,
+            vote_type: vote.vote_type,
+            category: vote.category,
+            vote_counts: Some(VoteCounts {
+                yea: vote.yea_count,
+                nay: vote.nay_count,
+                present: vote.present_count,
+                not_voting: vote.not_voting_count,
+            }),
         }));
     }
 

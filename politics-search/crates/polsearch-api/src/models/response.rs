@@ -101,13 +101,13 @@ pub struct HealthResponse {
     pub status: &'static str,
 }
 
-/// Content detail response for a single hearing or floor speech
+/// Content detail response for a single hearing, floor speech, or vote
 #[derive(Debug, Serialize, ToSchema)]
 pub struct ContentDetailResponse {
     /// Content ID
     pub id: Uuid,
 
-    /// Content type (`"hearing"` or `"floor_speech"`)
+    /// Content type (`"hearing"`, `"floor_speech"`, or `"vote"`)
     pub content_type: String,
 
     /// Content title
@@ -129,7 +129,7 @@ pub struct ContentDetailResponse {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub chambers: Option<String>,
 
-    /// Congress number (hearings only)
+    /// Congress number (hearings and votes)
     #[serde(skip_serializing_if = "Option::is_none")]
     pub congress: Option<i16>,
 
@@ -142,4 +142,33 @@ pub struct ContentDetailResponse {
 
     /// Total number of searchable segments in this content
     pub total_segments: i32,
+
+    /// Vote result, e.g. "Passed", "Failed" (votes only)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub vote_result: Option<String>,
+
+    /// Full result text, e.g. "Passed (215-206)" (votes only)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub vote_result_text: Option<String>,
+
+    /// Vote type, e.g. "On Passage", "On the Nomination" (votes only)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub vote_type: Option<String>,
+
+    /// Vote category, e.g. "passage", "amendment", "nomination" (votes only)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub category: Option<String>,
+
+    /// Vote counts (votes only)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub vote_counts: Option<VoteCounts>,
+}
+
+/// Vote count breakdown
+#[derive(Debug, Serialize, ToSchema)]
+pub struct VoteCounts {
+    pub yea: i32,
+    pub nay: i32,
+    pub present: i32,
+    pub not_voting: i32,
 }

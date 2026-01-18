@@ -49,6 +49,7 @@ anyhow = "1"
 
 # Utilities
 colored = "2"
+indicatif = "0.17"
 md-5 = "0.10"
 rand = "0.8"
 rayon = "1.10"
