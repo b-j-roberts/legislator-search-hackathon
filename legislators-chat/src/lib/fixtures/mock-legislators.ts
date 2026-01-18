@@ -20,6 +20,13 @@ export const mockLegislators: Legislator[] = [
   {
     id: "sen-warren-ma",
     name: "Elizabeth Warren",
+    aliases: [
+      "Senator Warren",
+      "Sen. Warren",
+      "Senator Elizabeth Warren",
+      "Ms. Warren",
+      "Warren",
+    ],
     party: "D",
     chamber: "Senate",
     state: "MA",
@@ -32,6 +39,10 @@ export const mockLegislators: Legislator[] = [
       email: "senator@warren.senate.gov",
       website: "https://www.warren.senate.gov",
       office: "309 Hart Senate Office Building, Washington, DC 20510",
+      contactPage: {
+        url: "https://www.warren.senate.gov/contact",
+        note: "Requires name, email, address, and topic selection. Massachusetts residents only.",
+      },
       socialMedia: {
         twitter: "@SenWarren",
         facebook: "senatorelizabethwarren",
@@ -65,6 +76,15 @@ export const mockLegislators: Legislator[] = [
   {
     id: "rep-jordan-oh-4",
     name: "Jim Jordan",
+    aliases: [
+      "Representative Jordan",
+      "Rep. Jordan",
+      "Congressman Jordan",
+      "Rep. Jim Jordan",
+      "James Jordan",
+      "Jordan",
+      "Chairman Jordan",
+    ],
     party: "R",
     chamber: "House",
     state: "OH",
@@ -78,6 +98,10 @@ export const mockLegislators: Legislator[] = [
       email: "oh04.rep@mail.house.gov",
       website: "https://jordan.house.gov",
       office: "2056 Rayburn House Office Building, Washington, DC 20515",
+      contactPage: {
+        url: "https://jordan.house.gov/contact",
+        note: "Requires name, email, address, and topic selection. OH-4 constituents prioritized.",
+      },
       socialMedia: {
         twitter: "@Jim_Jordan",
         facebook: "repjimjordan",
@@ -102,6 +126,14 @@ export const mockLegislators: Legislator[] = [
   {
     id: "sen-sanders-vt",
     name: "Bernie Sanders",
+    aliases: [
+      "Senator Sanders",
+      "Sen. Sanders",
+      "Senator Bernie Sanders",
+      "Bernard Sanders",
+      "Mr. Sanders",
+      "Sanders",
+    ],
     party: "I",
     chamber: "Senate",
     state: "VT",
@@ -114,6 +146,10 @@ export const mockLegislators: Legislator[] = [
       email: "senator@sanders.senate.gov",
       website: "https://www.sanders.senate.gov",
       office: "332 Dirksen Senate Office Building, Washington, DC 20510",
+      contactPage: {
+        url: "https://www.sanders.senate.gov/contact/",
+        note: "Requires name, email, address, and message. Vermont residents prioritized.",
+      },
       socialMedia: {
         twitter: "@SenSanders",
         facebook: "senatorsanders",
@@ -129,6 +165,16 @@ export const mockLegislators: Legislator[] = [
   {
     id: "rep-ocasio-cortez-ny-14",
     name: "Alexandria Ocasio-Cortez",
+    aliases: [
+      "Representative Ocasio-Cortez",
+      "Rep. Ocasio-Cortez",
+      "Congresswoman Ocasio-Cortez",
+      "AOC",
+      "Representative AOC",
+      "Alexandria Ocasio Cortez",
+      "Ms. Ocasio-Cortez",
+      "Ocasio-Cortez",
+    ],
     party: "D",
     chamber: "House",
     state: "NY",
@@ -141,6 +187,10 @@ export const mockLegislators: Legislator[] = [
       phone: "(202) 225-3965",
       website: "https://ocasio-cortez.house.gov",
       office: "229 Cannon House Office Building, Washington, DC 20515",
+      contactPage: {
+        url: "https://ocasio-cortez.house.gov/contact",
+        note: "Requires name, email, address, and topic selection. NY-14 constituents only.",
+      },
       socialMedia: {
         twitter: "@AOC",
         instagram: "aoc",
@@ -163,6 +213,15 @@ export const mockLegislators: Legislator[] = [
   {
     id: "sen-cruz-tx",
     name: "Ted Cruz",
+    aliases: [
+      "Senator Cruz",
+      "Sen. Cruz",
+      "Senator Ted Cruz",
+      "Rafael Cruz",
+      "Rafael Edward Cruz",
+      "Mr. Cruz",
+      "Cruz",
+    ],
     party: "R",
     chamber: "Senate",
     state: "TX",
@@ -174,6 +233,10 @@ export const mockLegislators: Legislator[] = [
       email: "senator@cruz.senate.gov",
       website: "https://www.cruz.senate.gov",
       office: "127A Russell Senate Office Building, Washington, DC 20510",
+      contactPage: {
+        url: "https://www.cruz.senate.gov/contact",
+        note: "Requires name, email, address, and topic selection. Texas residents only.",
+      },
       socialMedia: {
         twitter: "@SenTedCruz",
         facebook: "SenatorTedCruz",
@@ -325,6 +388,15 @@ export function isDevMode(): boolean {
 }
 
 /**
+ * Check if mock data feature flag is enabled.
+ * Requires NEXT_PUBLIC_USE_MOCK_DATA=true to enable.
+ * Disabled by default even in development mode.
+ */
+export function useMockData(): boolean {
+  return process.env.NEXT_PUBLIC_USE_MOCK_DATA === "true";
+}
+
+/**
  * Load mock legislators into the contact queue for development testing.
  * This saves directly to localStorage and returns the created queue.
  *
@@ -366,10 +438,10 @@ export function clearDevFixtures() {
 
 /**
  * Check if dev fixtures should be auto-loaded.
- * Returns true if in dev mode AND no existing queue data.
+ * Returns true if mock data flag is enabled AND no existing queue data.
  */
 export function shouldAutoLoadFixtures(): boolean {
-  if (!isDevMode()) return false;
+  if (!useMockData()) return false;
   if (typeof window === "undefined") return false;
 
   const existingQueue = loadQueue();
@@ -377,7 +449,7 @@ export function shouldAutoLoadFixtures(): boolean {
 }
 
 /**
- * Auto-load fixtures if appropriate (dev mode + no existing data).
+ * Auto-load fixtures if appropriate (mock data flag enabled + no existing data).
  * Call this from the contact page's useEffect.
  *
  * @returns true if fixtures were loaded, false otherwise
@@ -401,4 +473,5 @@ if (typeof window !== "undefined" && isDevMode()) {
     scenarios: getMockLegislatorsByScenario,
   };
   console.log("[Dev] Mock fixtures available: window.devFixtures.load(), window.devFixtures.clear()");
+  console.log("[Dev] To enable auto-loading mock data, set NEXT_PUBLIC_USE_MOCK_DATA=true");
 }

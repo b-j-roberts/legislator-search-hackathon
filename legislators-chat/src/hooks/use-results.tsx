@@ -3,7 +3,7 @@
 import * as React from "react";
 import type { ChatMessage, Legislator, Document, VoteRecord, Hearing, SearchResultData } from "@/lib/types";
 import type { ResultsTab } from "@/components/results";
-import { mockLegislators, isDevMode } from "@/lib/fixtures/mock-legislators";
+import { mockLegislators, useMockData } from "@/lib/fixtures/mock-legislators";
 
 // =============================================================================
 // Types
@@ -111,8 +111,8 @@ export function useResults(messages: ChatMessage[]): UseResultsReturn {
 
     const legislators = Array.from(legislatorMap.values());
 
-    // In dev mode, show mock legislators if no real results
-    const finalLegislators = isDevMode() && legislators.length === 0
+    // Show mock legislators if feature flag enabled and no real results
+    const finalLegislators = useMockData() && legislators.length === 0
       ? mockLegislators
       : legislators;
 

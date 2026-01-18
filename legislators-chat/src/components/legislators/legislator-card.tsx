@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Phone, Mail, Globe, ChevronDown, MapPin, Building2 } from "lucide-react";
+import { Phone, Mail, Globe, ChevronDown, MapPin, Building2, FileText, ExternalLink } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import type { Legislator, Party, Chamber } from "@/lib/types";
@@ -300,6 +300,40 @@ export function LegislatorCard({
                       >
                         {contact.email}
                       </a>
+                    </div>
+                  )}
+
+                  {/* Fax (if available) */}
+                  {contact.fax && (
+                    <div className="text-sm">
+                      <span className="font-medium text-foreground">Fax:</span>
+                      <span className="text-muted-foreground ml-2">{contact.fax}</span>
+                    </div>
+                  )}
+
+                  {/* Official contact page */}
+                  {contact.contactPage?.url && (
+                    <div className="text-sm">
+                      <span className="font-medium text-foreground flex items-center gap-1.5">
+                        <FileText className="size-3.5" />
+                        Official Contact Form:
+                      </span>
+                      <div className="mt-1.5 space-y-1">
+                        <a
+                          href={contact.contactPage.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 text-primary hover:underline"
+                        >
+                          Submit message online
+                          <ExternalLink className="size-3" />
+                        </a>
+                        {contact.contactPage.note && (
+                          <p className="text-xs text-muted-foreground italic">
+                            {contact.contactPage.note}
+                          </p>
+                        )}
+                      </div>
                     </div>
                   )}
 

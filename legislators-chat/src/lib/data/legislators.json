@@ -1,0 +1,1466 @@
+{
+  "version": "119th-congress",
+  "lastUpdated": "2025-01-18",
+  "source": "unitedstates/congress-legislators",
+  "legislators": [
+    {
+      "id": "sen-warren-ma",
+      "bioguideId": "W000817",
+      "name": "Elizabeth Warren",
+      "aliases": [
+        "Senator Warren",
+        "Sen. Warren",
+        "Sen Warren",
+        "Senator Elizabeth Warren",
+        "Sen. Elizabeth Warren",
+        "Ms. Warren",
+        "Mrs. Warren",
+        "Warren"
+      ],
+      "party": "D",
+      "chamber": "Senate",
+      "state": "MA",
+      "contact": {
+        "phone": "202-224-4543",
+        "office": "309 Hart Senate Office Building, Washington, DC 20510",
+        "website": "https://www.warren.senate.gov",
+        "contactPage": {
+          "url": "https://www.warren.senate.gov/contact",
+          "note": "Requires name, email, address, and topic selection. Massachusetts residents only."
+        },
+        "socialMedia": {
+          "twitter": "@SenWarren",
+          "facebook": "senatorelizabethwarren",
+          "instagram": "senwarren",
+          "youtube": "senelizabethwarren"
+        }
+      }
+    },
+    {
+      "id": "sen-sanders-vt",
+      "bioguideId": "S000033",
+      "name": "Bernard Sanders",
+      "aliases": [
+        "Bernie Sanders",
+        "Senator Sanders",
+        "Sen. Sanders",
+        "Sen Sanders",
+        "Senator Bernie Sanders",
+        "Sen. Bernie Sanders",
+        "Mr. Sanders",
+        "Sanders"
+      ],
+      "party": "I",
+      "chamber": "Senate",
+      "state": "VT",
+      "contact": {
+        "phone": "202-224-5141",
+        "office": "332 Dirksen Senate Office Building, Washington, DC 20510",
+        "website": "https://www.sanders.senate.gov",
+        "contactPage": {
+          "url": "https://www.sanders.senate.gov/contact/",
+          "note": "Requires name, email, address, and message. Vermont residents prioritized."
+        },
+        "socialMedia": {
+          "twitter": "@SenSanders",
+          "facebook": "senatorsanders",
+          "youtube": "senatorsanders"
+        }
+      }
+    },
+    {
+      "id": "sen-schumer-ny",
+      "bioguideId": "S000148",
+      "name": "Charles Schumer",
+      "aliases": [
+        "Chuck Schumer",
+        "Senator Schumer",
+        "Sen. Schumer",
+        "Sen Schumer",
+        "Senator Chuck Schumer",
+        "Sen. Chuck Schumer",
+        "Mr. Schumer",
+        "Schumer",
+        "Majority Leader Schumer"
+      ],
+      "party": "D",
+      "chamber": "Senate",
+      "state": "NY",
+      "contact": {
+        "phone": "202-224-6542",
+        "office": "322 Hart Senate Office Building, Washington, DC 20510",
+        "website": "https://www.schumer.senate.gov",
+        "contactPage": {
+          "url": "https://www.schumer.senate.gov/contact/email-chuck",
+          "note": "Requires name, email, address, and topic selection. New York residents only."
+        },
+        "socialMedia": {
+          "twitter": "@SenSchumer",
+          "facebook": "senschumer",
+          "instagram": "senschumer",
+          "youtube": "SenatorSchumer"
+        }
+      }
+    },
+    {
+      "id": "sen-mcconnell-ky",
+      "bioguideId": "M000355",
+      "name": "Mitch McConnell",
+      "aliases": [
+        "Senator McConnell",
+        "Sen. McConnell",
+        "Sen McConnell",
+        "Senator Mitch McConnell",
+        "Sen. Mitch McConnell",
+        "Mr. McConnell",
+        "McConnell",
+        "Minority Leader McConnell"
+      ],
+      "party": "R",
+      "chamber": "Senate",
+      "state": "KY",
+      "contact": {
+        "phone": "202-224-2541",
+        "office": "317 Russell Senate Office Building, Washington, DC 20510",
+        "website": "https://www.mcconnell.senate.gov",
+        "contactPage": {
+          "url": "https://www.mcconnell.senate.gov/public/index.cfm?p=contact",
+          "note": "Requires name, email, address, and subject selection. Kentucky residents only."
+        },
+        "socialMedia": {
+          "twitter": "@McConnellPress",
+          "facebook": "mitchmcconnell",
+          "instagram": "mcconnellpress"
+        }
+      }
+    },
+    {
+      "id": "sen-cruz-tx",
+      "bioguideId": "C001098",
+      "name": "Ted Cruz",
+      "aliases": [
+        "Senator Cruz",
+        "Sen. Cruz",
+        "Sen Cruz",
+        "Senator Ted Cruz",
+        "Sen. Ted Cruz",
+        "Rafael Cruz",
+        "Rafael Edward Cruz",
+        "Mr. Cruz",
+        "Cruz"
+      ],
+      "party": "R",
+      "chamber": "Senate",
+      "state": "TX",
+      "contact": {
+        "phone": "202-224-5922",
+        "office": "127A Russell Senate Office Building, Washington, DC 20510",
+        "website": "https://www.cruz.senate.gov",
+        "contactPage": {
+          "url": "https://www.cruz.senate.gov/contact",
+          "note": "Requires name, email, address, and topic selection. Texas residents only."
+        },
+        "socialMedia": {
+          "twitter": "@SenTedCruz",
+          "facebook": "SenatorTedCruz",
+          "instagram": "sentedcruz",
+          "youtube": "sentedcruz"
+        }
+      }
+    },
+    {
+      "id": "sen-cornyn-tx",
+      "bioguideId": "C001056",
+      "name": "John Cornyn",
+      "aliases": [
+        "Senator Cornyn",
+        "Sen. Cornyn",
+        "Sen Cornyn",
+        "Senator John Cornyn",
+        "Sen. John Cornyn",
+        "Mr. Cornyn",
+        "Cornyn"
+      ],
+      "party": "R",
+      "chamber": "Senate",
+      "state": "TX",
+      "contact": {
+        "phone": "202-224-2934",
+        "office": "517 Hart Senate Office Building, Washington, DC 20510",
+        "website": "https://www.cornyn.senate.gov",
+        "contactPage": {
+          "url": "https://www.cornyn.senate.gov/contact",
+          "note": "Requires name, email, address, and topic selection. Texas residents only."
+        },
+        "socialMedia": {
+          "twitter": "@JohnCornyn",
+          "facebook": "sen.johncornyn",
+          "youtube": "senjohncornyn"
+        }
+      }
+    },
+    {
+      "id": "sen-durbin-il",
+      "bioguideId": "D000563",
+      "name": "Richard Durbin",
+      "aliases": [
+        "Dick Durbin",
+        "Senator Durbin",
+        "Sen. Durbin",
+        "Sen Durbin",
+        "Senator Dick Durbin",
+        "Sen. Dick Durbin",
+        "Mr. Durbin",
+        "Durbin"
+      ],
+      "party": "D",
+      "chamber": "Senate",
+      "state": "IL",
+      "contact": {
+        "phone": "202-224-2152",
+        "office": "711 Hart Senate Office Building, Washington, DC 20510",
+        "website": "https://www.durbin.senate.gov",
+        "contactPage": {
+          "url": "https://www.durbin.senate.gov/contact/",
+          "note": "Requires name, email, address, and topic selection. Illinois residents only."
+        },
+        "socialMedia": {
+          "twitter": "@SenatorDurbin",
+          "facebook": "SenatorDurbin",
+          "youtube": "SenatorDurbin"
+        }
+      }
+    },
+    {
+      "id": "sen-graham-sc",
+      "bioguideId": "G000359",
+      "name": "Lindsey Graham",
+      "aliases": [
+        "Senator Graham",
+        "Sen. Graham",
+        "Sen Graham",
+        "Senator Lindsey Graham",
+        "Sen. Lindsey Graham",
+        "Mr. Graham",
+        "Graham"
+      ],
+      "party": "R",
+      "chamber": "Senate",
+      "state": "SC",
+      "contact": {
+        "phone": "202-224-5972",
+        "office": "211 Russell Senate Office Building, Washington, DC 20510",
+        "website": "https://www.lgraham.senate.gov/public",
+        "contactPage": {
+          "url": "https://www.lgraham.senate.gov/public/index.cfm/e-mail-senator-graham",
+          "note": "Requires name, email, address, and topic selection. South Carolina residents only."
+        },
+        "socialMedia": {
+          "twitter": "@GrahamBlog",
+          "facebook": "USSenatorLindseyGraham",
+          "youtube": "USSenLindseyGraham"
+        }
+      }
+    },
+    {
+      "id": "sen-collins-me",
+      "bioguideId": "C001035",
+      "name": "Susan Collins",
+      "aliases": [
+        "Senator Collins",
+        "Sen. Collins",
+        "Sen Collins",
+        "Senator Susan Collins",
+        "Sen. Susan Collins",
+        "Susan M. Collins",
+        "Ms. Collins",
+        "Collins"
+      ],
+      "party": "R",
+      "chamber": "Senate",
+      "state": "ME",
+      "contact": {
+        "phone": "202-224-2523",
+        "office": "413 Dirksen Senate Office Building, Washington, DC 20510",
+        "website": "https://www.collins.senate.gov",
+        "contactPage": {
+          "url": "https://www.collins.senate.gov/contact",
+          "note": "Requires name, email, address, and topic selection. Maine residents prioritized."
+        },
+        "socialMedia": {
+          "twitter": "@SenatorCollins",
+          "facebook": "susancollins",
+          "instagram": "sensusancollins",
+          "youtube": "SenatorSusanCollins"
+        }
+      }
+    },
+    {
+      "id": "sen-murkowski-ak",
+      "bioguideId": "M001153",
+      "name": "Lisa Murkowski",
+      "aliases": [
+        "Senator Murkowski",
+        "Sen. Murkowski",
+        "Sen Murkowski",
+        "Senator Lisa Murkowski",
+        "Sen. Lisa Murkowski",
+        "Ms. Murkowski",
+        "Murkowski"
+      ],
+      "party": "R",
+      "chamber": "Senate",
+      "state": "AK",
+      "contact": {
+        "phone": "202-224-6665",
+        "office": "522 Hart Senate Office Building, Washington, DC 20510",
+        "website": "https://www.murkowski.senate.gov",
+        "contactPage": {
+          "url": "https://www.murkowski.senate.gov/contact/email",
+          "note": "Requires name, email, address, and topic selection. Alaska residents only."
+        },
+        "socialMedia": {
+          "twitter": "@LisaMurkowski",
+          "facebook": "SenLisaMurkowski",
+          "instagram": "senlisamurkowski",
+          "youtube": "senatormurkowski"
+        }
+      }
+    },
+    {
+      "id": "sen-klobuchar-mn",
+      "bioguideId": "K000367",
+      "name": "Amy Klobuchar",
+      "aliases": [
+        "Senator Klobuchar",
+        "Sen. Klobuchar",
+        "Sen Klobuchar",
+        "Senator Amy Klobuchar",
+        "Sen. Amy Klobuchar",
+        "Ms. Klobuchar",
+        "Klobuchar"
+      ],
+      "party": "D",
+      "chamber": "Senate",
+      "state": "MN",
+      "contact": {
+        "phone": "202-224-3244",
+        "office": "425 Dirksen Senate Office Building, Washington, DC 20510",
+        "website": "https://www.klobuchar.senate.gov",
+        "contactPage": {
+          "url": "https://www.klobuchar.senate.gov/public/index.cfm/contact",
+          "note": "Requires name, email, address, and topic selection. Minnesota residents only."
+        },
+        "socialMedia": {
+          "twitter": "@SenAmyKlobuchar",
+          "youtube": "senatorklobuchar"
+        }
+      }
+    },
+    {
+      "id": "sen-cantwell-wa",
+      "bioguideId": "C000127",
+      "name": "Maria Cantwell",
+      "aliases": [
+        "Senator Cantwell",
+        "Sen. Cantwell",
+        "Sen Cantwell",
+        "Senator Maria Cantwell",
+        "Sen. Maria Cantwell",
+        "Ms. Cantwell",
+        "Cantwell"
+      ],
+      "party": "D",
+      "chamber": "Senate",
+      "state": "WA",
+      "contact": {
+        "phone": "202-224-3441",
+        "office": "511 Hart Senate Office Building, Washington, DC 20510",
+        "website": "https://www.cantwell.senate.gov",
+        "contactPage": {
+          "url": "https://www.cantwell.senate.gov/public/index.cfm/email-maria",
+          "note": "Requires name, email, address, and topic selection. Washington state residents only."
+        },
+        "socialMedia": {
+          "twitter": "@SenatorCantwell",
+          "facebook": "senatorcantwell",
+          "youtube": "SenatorCantwell"
+        }
+      }
+    },
+    {
+      "id": "sen-murray-wa",
+      "bioguideId": "M001111",
+      "name": "Patty Murray",
+      "aliases": [
+        "Senator Murray",
+        "Sen. Murray",
+        "Sen Murray",
+        "Senator Patty Murray",
+        "Sen. Patty Murray",
+        "Ms. Murray",
+        "Murray"
+      ],
+      "party": "D",
+      "chamber": "Senate",
+      "state": "WA",
+      "contact": {
+        "phone": "202-224-2621",
+        "office": "154 Russell Senate Office Building, Washington, DC 20510",
+        "website": "https://www.murray.senate.gov",
+        "contactPage": {
+          "url": "https://www.murray.senate.gov/write-to-patty/",
+          "note": "Requires name, email, address, and topic selection. Washington state residents only."
+        },
+        "socialMedia": {
+          "twitter": "@PattyMurray",
+          "instagram": "senpattymurray",
+          "youtube": "SenatorPattyMurray"
+        }
+      }
+    },
+    {
+      "id": "sen-thune-sd",
+      "bioguideId": "T000250",
+      "name": "John Thune",
+      "aliases": [
+        "Senator Thune",
+        "Sen. Thune",
+        "Sen Thune",
+        "Senator John Thune",
+        "Sen. John Thune",
+        "Mr. Thune",
+        "Thune",
+        "Majority Leader Thune"
+      ],
+      "party": "R",
+      "chamber": "Senate",
+      "state": "SD",
+      "contact": {
+        "phone": "202-224-2321",
+        "office": "511 Dirksen Senate Office Building, Washington, DC 20510",
+        "website": "https://www.thune.senate.gov",
+        "contactPage": {
+          "url": "https://www.thune.senate.gov/public/index.cfm/contact",
+          "note": "Requires name, email, address, and topic selection. South Dakota residents only."
+        },
+        "socialMedia": {
+          "twitter": "@SenJohnThune",
+          "facebook": "LeaderJohnThune",
+          "instagram": "senjohnthune",
+          "youtube": "johnthune"
+        }
+      }
+    },
+    {
+      "id": "sen-grassley-ia",
+      "bioguideId": "G000386",
+      "name": "Chuck Grassley",
+      "aliases": [
+        "Senator Grassley",
+        "Sen. Grassley",
+        "Sen Grassley",
+        "Senator Chuck Grassley",
+        "Sen. Chuck Grassley",
+        "Charles Grassley",
+        "Mr. Grassley",
+        "Grassley"
+      ],
+      "party": "R",
+      "chamber": "Senate",
+      "state": "IA",
+      "contact": {
+        "phone": "202-224-3744",
+        "office": "135 Hart Senate Office Building, Washington, DC 20510",
+        "website": "https://www.grassley.senate.gov",
+        "contactPage": {
+          "url": "https://www.grassley.senate.gov/contact",
+          "note": "Requires name, email, address, and topic selection. Iowa residents only."
+        },
+        "socialMedia": {
+          "twitter": "@ChuckGrassley",
+          "facebook": "grassley",
+          "instagram": "senatorchuckgrassley",
+          "youtube": "senchuckgrassley"
+        }
+      }
+    },
+    {
+      "id": "sen-wicker-ms",
+      "bioguideId": "W000437",
+      "name": "Roger Wicker",
+      "aliases": [
+        "Senator Wicker",
+        "Sen. Wicker",
+        "Sen Wicker",
+        "Senator Roger Wicker",
+        "Sen. Roger Wicker",
+        "Roger F. Wicker",
+        "Mr. Wicker",
+        "Wicker"
+      ],
+      "party": "R",
+      "chamber": "Senate",
+      "state": "MS",
+      "contact": {
+        "phone": "202-224-6253",
+        "office": "425 Russell Senate Office Building, Washington, DC 20510",
+        "website": "https://www.wicker.senate.gov",
+        "contactPage": {
+          "url": "https://www.wicker.senate.gov/public/index.cfm/contact",
+          "note": "Requires name, email, address, and topic selection. Mississippi residents only."
+        },
+        "socialMedia": {
+          "twitter": "@SenatorWicker",
+          "facebook": "SenatorWicker",
+          "instagram": "senatorwicker",
+          "youtube": "SenatorWicker"
+        }
+      }
+    },
+    {
+      "id": "sen-barrasso-wy",
+      "bioguideId": "B001261",
+      "name": "John Barrasso",
+      "aliases": [
+        "Senator Barrasso",
+        "Sen. Barrasso",
+        "Sen Barrasso",
+        "Senator John Barrasso",
+        "Sen. John Barrasso",
+        "Dr. Barrasso",
+        "Mr. Barrasso",
+        "Barrasso"
+      ],
+      "party": "R",
+      "chamber": "Senate",
+      "state": "WY",
+      "contact": {
+        "phone": "202-224-6441",
+        "office": "307 Dirksen Senate Office Building, Washington, DC 20510",
+        "website": "https://www.barrasso.senate.gov",
+        "contactPage": {
+          "url": "https://www.barrasso.senate.gov/public/index.cfm/contact-form",
+          "note": "Requires name, email, address, and topic selection. Wyoming residents only."
+        },
+        "socialMedia": {
+          "twitter": "@SenJohnBarrasso",
+          "facebook": "johnbarrasso",
+          "youtube": "barrassowyo"
+        }
+      }
+    },
+    {
+      "id": "sen-whitehouse-ri",
+      "bioguideId": "W000802",
+      "name": "Sheldon Whitehouse",
+      "aliases": [
+        "Senator Whitehouse",
+        "Sen. Whitehouse",
+        "Sen Whitehouse",
+        "Senator Sheldon Whitehouse",
+        "Sen. Sheldon Whitehouse",
+        "Mr. Whitehouse",
+        "Whitehouse"
+      ],
+      "party": "D",
+      "chamber": "Senate",
+      "state": "RI",
+      "contact": {
+        "phone": "202-224-2921",
+        "office": "530 Hart Senate Office Building, Washington, DC 20510",
+        "website": "https://www.whitehouse.senate.gov",
+        "contactPage": {
+          "url": "https://www.whitehouse.senate.gov/contact/email-sheldon",
+          "note": "Requires name, email, address, and topic selection. Rhode Island residents only."
+        },
+        "socialMedia": {
+          "twitter": "@SenWhitehouse",
+          "facebook": "SenatorWhitehouse",
+          "instagram": "SenWhitehouse",
+          "youtube": "SenatorWhitehouse"
+        }
+      }
+    },
+    {
+      "id": "sen-fetterman-pa",
+      "bioguideId": "F000479",
+      "name": "John Fetterman",
+      "aliases": [
+        "Senator Fetterman",
+        "Sen. Fetterman",
+        "Sen Fetterman",
+        "Senator John Fetterman",
+        "Sen. John Fetterman",
+        "Mr. Fetterman",
+        "Fetterman"
+      ],
+      "party": "D",
+      "chamber": "Senate",
+      "state": "PA",
+      "contact": {
+        "phone": "202-224-4254",
+        "office": "142 Russell Senate Office Building, Washington, DC 20510",
+        "website": "https://www.fetterman.senate.gov",
+        "contactPage": {
+          "url": "https://www.fetterman.senate.gov/contact/",
+          "note": "Requires name, email, address, and topic selection. Pennsylvania residents only."
+        },
+        "socialMedia": {
+          "twitter": "@SenFettermanPA",
+          "facebook": "SenatorFetterman",
+          "instagram": "senfettermanpa"
+        }
+      }
+    },
+    {
+      "id": "rep-jeffries-ny-8",
+      "bioguideId": "J000294",
+      "name": "Hakeem Jeffries",
+      "aliases": [
+        "Representative Jeffries",
+        "Rep. Jeffries",
+        "Rep Jeffries",
+        "Congressman Jeffries",
+        "Representative Hakeem Jeffries",
+        "Rep. Hakeem Jeffries",
+        "Mr. Jeffries",
+        "Jeffries",
+        "Minority Leader Jeffries",
+        "Leader Jeffries"
+      ],
+      "party": "D",
+      "chamber": "House",
+      "state": "NY",
+      "district": "8",
+      "contact": {
+        "phone": "202-225-5936",
+        "office": "2433 Rayburn House Office Building, Washington, DC 20515",
+        "website": "https://jeffries.house.gov",
+        "contactPage": {
+          "url": "https://jeffries.house.gov/contact",
+          "note": "Requires name, email, address, and topic selection. NY-8 constituents prioritized."
+        },
+        "socialMedia": {
+          "twitter": "@RepJeffries",
+          "facebook": "RepHakeemJeffries",
+          "instagram": "repjeffries"
+        }
+      }
+    },
+    {
+      "id": "rep-johnson-la-4",
+      "bioguideId": "J000299",
+      "name": "Mike Johnson",
+      "aliases": [
+        "Representative Johnson",
+        "Rep. Johnson",
+        "Rep Johnson",
+        "Congressman Johnson",
+        "Representative Mike Johnson",
+        "Rep. Mike Johnson",
+        "Mr. Johnson",
+        "Speaker Johnson",
+        "Speaker Mike Johnson"
+      ],
+      "party": "R",
+      "chamber": "House",
+      "state": "LA",
+      "district": "4",
+      "contact": {
+        "phone": "202-225-2777",
+        "office": "568 Cannon House Office Building, Washington, DC 20515",
+        "website": "https://mikejohnson.house.gov",
+        "contactPage": {
+          "url": "https://mikejohnson.house.gov/contact",
+          "note": "Requires name, email, address, and topic selection. LA-4 constituents prioritized."
+        },
+        "socialMedia": {
+          "twitter": "@RepMikeJohnson",
+          "facebook": "RepMikeJohnson",
+          "instagram": "RepMikeJohnson"
+        }
+      }
+    },
+    {
+      "id": "rep-scalise-la-1",
+      "bioguideId": "S001176",
+      "name": "Steve Scalise",
+      "aliases": [
+        "Representative Scalise",
+        "Rep. Scalise",
+        "Rep Scalise",
+        "Congressman Scalise",
+        "Representative Steve Scalise",
+        "Rep. Steve Scalise",
+        "Mr. Scalise",
+        "Scalise",
+        "Majority Leader Scalise"
+      ],
+      "party": "R",
+      "chamber": "House",
+      "state": "LA",
+      "district": "1",
+      "contact": {
+        "phone": "202-225-3015",
+        "office": "2049 Rayburn House Office Building, Washington, DC 20515",
+        "website": "https://scalise.house.gov",
+        "contactPage": {
+          "url": "https://scalise.house.gov/contact",
+          "note": "Requires name, email, address, and topic selection. LA-1 constituents prioritized."
+        },
+        "socialMedia": {
+          "twitter": "@SteveScalise",
+          "facebook": "RepSteveScalise",
+          "instagram": "stevescalise",
+          "youtube": "RepSteveScalise"
+        }
+      }
+    },
+    {
+      "id": "rep-ocasio-cortez-ny-14",
+      "bioguideId": "O000172",
+      "name": "Alexandria Ocasio-Cortez",
+      "aliases": [
+        "Representative Ocasio-Cortez",
+        "Rep. Ocasio-Cortez",
+        "Rep Ocasio-Cortez",
+        "Congresswoman Ocasio-Cortez",
+        "AOC",
+        "Representative AOC",
+        "Alexandria Ocasio Cortez",
+        "Ms. Ocasio-Cortez",
+        "Ocasio-Cortez"
+      ],
+      "party": "D",
+      "chamber": "House",
+      "state": "NY",
+      "district": "14",
+      "contact": {
+        "phone": "202-225-3965",
+        "office": "229 Cannon House Office Building, Washington, DC 20515",
+        "website": "https://ocasio-cortez.house.gov",
+        "contactPage": {
+          "url": "https://ocasio-cortez.house.gov/contact",
+          "note": "Requires name, email, address, and topic selection. NY-14 constituents only."
+        },
+        "socialMedia": {
+          "twitter": "@RepAOC",
+          "facebook": "repaoc"
+        }
+      }
+    },
+    {
+      "id": "rep-jordan-oh-4",
+      "bioguideId": "J000289",
+      "name": "Jim Jordan",
+      "aliases": [
+        "Representative Jordan",
+        "Rep. Jordan",
+        "Rep Jordan",
+        "Congressman Jordan",
+        "Representative Jim Jordan",
+        "Rep. Jim Jordan",
+        "James Jordan",
+        "Mr. Jordan",
+        "Jordan",
+        "Chairman Jordan"
+      ],
+      "party": "R",
+      "chamber": "House",
+      "state": "OH",
+      "district": "4",
+      "contact": {
+        "phone": "202-225-2676",
+        "office": "2056 Rayburn House Office Building, Washington, DC 20515",
+        "website": "https://jordan.house.gov",
+        "contactPage": {
+          "url": "https://jordan.house.gov/contact",
+          "note": "Requires name, email, address, and topic selection. OH-4 constituents prioritized."
+        },
+        "socialMedia": {
+          "twitter": "@Jim_Jordan",
+          "facebook": "repjimjordan",
+          "youtube": "RepJimJordan"
+        }
+      }
+    },
+    {
+      "id": "rep-pelosi-ca-11",
+      "bioguideId": "P000197",
+      "name": "Nancy Pelosi",
+      "aliases": [
+        "Representative Pelosi",
+        "Rep. Pelosi",
+        "Rep Pelosi",
+        "Congresswoman Pelosi",
+        "Representative Nancy Pelosi",
+        "Rep. Nancy Pelosi",
+        "Speaker Pelosi",
+        "Former Speaker Pelosi",
+        "Ms. Pelosi",
+        "Pelosi"
+      ],
+      "party": "D",
+      "chamber": "House",
+      "state": "CA",
+      "district": "11",
+      "contact": {
+        "phone": "202-225-4965",
+        "office": "2263 Rayburn House Office Building, Washington, DC 20515",
+        "website": "https://pelosi.house.gov",
+        "contactPage": {
+          "url": "https://pelosi.house.gov/contact-me/email-me",
+          "note": "Requires name, email, address, and topic selection. CA-11 constituents only."
+        },
+        "socialMedia": {
+          "twitter": "@SpeakerPelosi",
+          "facebook": "NancyPelosi",
+          "youtube": "nancypelosi"
+        }
+      }
+    },
+    {
+      "id": "rep-clyburn-sc-6",
+      "bioguideId": "C000537",
+      "name": "James Clyburn",
+      "aliases": [
+        "Representative Clyburn",
+        "Rep. Clyburn",
+        "Rep Clyburn",
+        "Congressman Clyburn",
+        "Representative James Clyburn",
+        "Rep. James Clyburn",
+        "Jim Clyburn",
+        "Mr. Clyburn",
+        "Clyburn"
+      ],
+      "party": "D",
+      "chamber": "House",
+      "state": "SC",
+      "district": "6",
+      "contact": {
+        "phone": "202-225-3315",
+        "office": "200 Cannon House Office Building, Washington, DC 20515",
+        "website": "https://clyburn.house.gov",
+        "contactPage": {
+          "url": "https://clyburn.house.gov/contact",
+          "note": "Requires name, email, address, and topic selection. SC-6 constituents prioritized."
+        },
+        "socialMedia": {
+          "twitter": "@RepJamesClyburn",
+          "facebook": "jameseclyburn",
+          "instagram": "repjamesclyburn",
+          "youtube": "repjamesclyburn"
+        }
+      }
+    },
+    {
+      "id": "rep-waters-ca-43",
+      "bioguideId": "W000187",
+      "name": "Maxine Waters",
+      "aliases": [
+        "Representative Waters",
+        "Rep. Waters",
+        "Rep Waters",
+        "Congresswoman Waters",
+        "Representative Maxine Waters",
+        "Rep. Maxine Waters",
+        "Ms. Waters",
+        "Waters"
+      ],
+      "party": "D",
+      "chamber": "House",
+      "state": "CA",
+      "district": "43",
+      "contact": {
+        "phone": "202-225-2201",
+        "office": "2221 Rayburn House Office Building, Washington, DC 20515",
+        "website": "https://waters.house.gov",
+        "contactPage": {
+          "url": "https://waters.house.gov/contact",
+          "note": "Requires name, email, address, and topic selection. CA-43 constituents only."
+        },
+        "socialMedia": {
+          "twitter": "@RepMaxineWaters",
+          "facebook": "MaxineWaters",
+          "instagram": "repmaxinewaters",
+          "youtube": "MaxineWaters"
+        }
+      }
+    },
+    {
+      "id": "rep-nadler-ny-12",
+      "bioguideId": "N000002",
+      "name": "Jerrold Nadler",
+      "aliases": [
+        "Representative Nadler",
+        "Rep. Nadler",
+        "Rep Nadler",
+        "Congressman Nadler",
+        "Representative Jerrold Nadler",
+        "Rep. Jerrold Nadler",
+        "Jerry Nadler",
+        "Mr. Nadler",
+        "Nadler"
+      ],
+      "party": "D",
+      "chamber": "House",
+      "state": "NY",
+      "district": "12",
+      "contact": {
+        "phone": "202-225-5635",
+        "office": "2132 Rayburn House Office Building, Washington, DC 20515",
+        "website": "https://nadler.house.gov",
+        "contactPage": {
+          "url": "https://nadler.house.gov/contact",
+          "note": "Requires name, email, address, and topic selection. NY-12 constituents only."
+        },
+        "socialMedia": {
+          "twitter": "@RepJerryNadler",
+          "facebook": "CongressmanNadler",
+          "youtube": "congressmannadler"
+        }
+      }
+    },
+    {
+      "id": "rep-mccarthy-ca-20",
+      "bioguideId": "M001165",
+      "name": "Kevin McCarthy",
+      "aliases": [
+        "Representative McCarthy",
+        "Rep. McCarthy",
+        "Rep McCarthy",
+        "Congressman McCarthy",
+        "Representative Kevin McCarthy",
+        "Rep. Kevin McCarthy",
+        "Former Speaker McCarthy",
+        "Mr. McCarthy",
+        "McCarthy"
+      ],
+      "party": "R",
+      "chamber": "House",
+      "state": "CA",
+      "district": "20",
+      "contact": {
+        "phone": "202-225-2915",
+        "office": "2468 Rayburn House Office Building, Washington, DC 20515",
+        "website": "https://kevinmccarthy.house.gov",
+        "contactPage": {
+          "url": "https://kevinmccarthy.house.gov/contact",
+          "note": "Requires name, email, address, and topic selection. CA-20 constituents prioritized."
+        },
+        "socialMedia": {
+          "twitter": "@GOPLeader",
+          "facebook": "RepKevinMcCarthy",
+          "instagram": "kevinomccarthy"
+        }
+      }
+    },
+    {
+      "id": "rep-comer-ky-1",
+      "bioguideId": "C001108",
+      "name": "James Comer",
+      "aliases": [
+        "Representative Comer",
+        "Rep. Comer",
+        "Rep Comer",
+        "Congressman Comer",
+        "Representative James Comer",
+        "Rep. James Comer",
+        "Jamie Comer",
+        "Mr. Comer",
+        "Comer",
+        "Chairman Comer"
+      ],
+      "party": "R",
+      "chamber": "House",
+      "state": "KY",
+      "district": "1",
+      "contact": {
+        "phone": "202-225-3115",
+        "office": "2410 Rayburn House Office Building, Washington, DC 20515",
+        "website": "https://comer.house.gov",
+        "contactPage": {
+          "url": "https://comer.house.gov/contact",
+          "note": "Requires name, email, address, and topic selection. KY-1 constituents prioritized."
+        },
+        "socialMedia": {
+          "twitter": "@RepJamesComer",
+          "facebook": "congressmancomer",
+          "instagram": "congressmancomer"
+        }
+      }
+    },
+    {
+      "id": "rep-gaetz-fl-1",
+      "bioguideId": "G000578",
+      "name": "Matt Gaetz",
+      "aliases": [
+        "Representative Gaetz",
+        "Rep. Gaetz",
+        "Rep Gaetz",
+        "Congressman Gaetz",
+        "Representative Matt Gaetz",
+        "Rep. Matt Gaetz",
+        "Matthew Gaetz",
+        "Mr. Gaetz",
+        "Gaetz"
+      ],
+      "party": "R",
+      "chamber": "House",
+      "state": "FL",
+      "district": "1",
+      "contact": {
+        "phone": "202-225-4136",
+        "office": "1721 Longworth House Office Building, Washington, DC 20515",
+        "website": "https://gaetz.house.gov",
+        "contactPage": {
+          "url": "https://gaetz.house.gov/contact",
+          "note": "Requires name, email, address, and topic selection. FL-1 constituents prioritized."
+        },
+        "socialMedia": {
+          "twitter": "@RepMattGaetz",
+          "facebook": "CongressmanMattGaetz",
+          "instagram": "repmattgaetz"
+        }
+      }
+    },
+    {
+      "id": "rep-omar-mn-5",
+      "bioguideId": "O000173",
+      "name": "Ilhan Omar",
+      "aliases": [
+        "Representative Omar",
+        "Rep. Omar",
+        "Rep Omar",
+        "Congresswoman Omar",
+        "Representative Ilhan Omar",
+        "Rep. Ilhan Omar",
+        "Ms. Omar",
+        "Omar"
+      ],
+      "party": "D",
+      "chamber": "House",
+      "state": "MN",
+      "district": "5",
+      "contact": {
+        "phone": "202-225-4755",
+        "office": "1730 Longworth House Office Building, Washington, DC 20515",
+        "website": "https://omar.house.gov",
+        "contactPage": {
+          "url": "https://omar.house.gov/contact",
+          "note": "Requires name, email, address, and topic selection. MN-5 constituents only."
+        },
+        "socialMedia": {
+          "twitter": "@Ilhan"
+        }
+      }
+    },
+    {
+      "id": "rep-tlaib-mi-12",
+      "bioguideId": "T000481",
+      "name": "Rashida Tlaib",
+      "aliases": [
+        "Representative Tlaib",
+        "Rep. Tlaib",
+        "Rep Tlaib",
+        "Congresswoman Tlaib",
+        "Representative Rashida Tlaib",
+        "Rep. Rashida Tlaib",
+        "Ms. Tlaib",
+        "Tlaib"
+      ],
+      "party": "D",
+      "chamber": "House",
+      "state": "MI",
+      "district": "12",
+      "contact": {
+        "phone": "202-225-5126",
+        "office": "225 Cannon House Office Building, Washington, DC 20515",
+        "website": "https://tlaib.house.gov",
+        "contactPage": {
+          "url": "https://tlaib.house.gov/contact",
+          "note": "Requires name, email, address, and topic selection. MI-12 constituents only."
+        },
+        "socialMedia": {
+          "twitter": "@RepRashida",
+          "facebook": "RepRashida",
+          "instagram": "reprashida",
+          "youtube": "UCl5GK07sD5TZIhKcsDNSExA"
+        }
+      }
+    },
+    {
+      "id": "rep-pressley-ma-7",
+      "bioguideId": "P000617",
+      "name": "Ayanna Pressley",
+      "aliases": [
+        "Representative Pressley",
+        "Rep. Pressley",
+        "Rep Pressley",
+        "Congresswoman Pressley",
+        "Representative Ayanna Pressley",
+        "Rep. Ayanna Pressley",
+        "Ms. Pressley",
+        "Pressley"
+      ],
+      "party": "D",
+      "chamber": "House",
+      "state": "MA",
+      "district": "7",
+      "contact": {
+        "phone": "202-225-5111",
+        "office": "1108 Longworth House Office Building, Washington, DC 20515",
+        "website": "https://pressley.house.gov",
+        "contactPage": {
+          "url": "https://pressley.house.gov/contact",
+          "note": "Requires name, email, address, and topic selection. MA-7 constituents only."
+        },
+        "socialMedia": {
+          "twitter": "@RepPressley",
+          "facebook": "RepAyannaPressley",
+          "instagram": "RepAyannaPressley",
+          "youtube": "UCkhjut8oXdxN7HGg5eRT9Fw"
+        }
+      }
+    },
+    {
+      "id": "rep-greene-ga-14",
+      "bioguideId": "G000596",
+      "name": "Marjorie Taylor Greene",
+      "aliases": [
+        "Representative Greene",
+        "Rep. Greene",
+        "Rep Greene",
+        "Congresswoman Greene",
+        "Representative Marjorie Taylor Greene",
+        "Rep. Marjorie Taylor Greene",
+        "MTG",
+        "Ms. Greene",
+        "Greene"
+      ],
+      "party": "R",
+      "chamber": "House",
+      "state": "GA",
+      "district": "14",
+      "contact": {
+        "phone": "202-225-5211",
+        "office": "403 Cannon House Office Building, Washington, DC 20515",
+        "website": "https://greene.house.gov",
+        "contactPage": {
+          "url": "https://greene.house.gov/contact",
+          "note": "Requires name, email, address, and topic selection. GA-14 constituents prioritized."
+        },
+        "socialMedia": {
+          "twitter": "@RepMTG",
+          "facebook": "RepMarjorieTaylorGreene"
+        }
+      }
+    },
+    {
+      "id": "rep-lieu-ca-36",
+      "bioguideId": "L000582",
+      "name": "Ted Lieu",
+      "aliases": [
+        "Representative Lieu",
+        "Rep. Lieu",
+        "Rep Lieu",
+        "Congressman Lieu",
+        "Representative Ted Lieu",
+        "Rep. Ted Lieu",
+        "Mr. Lieu",
+        "Lieu"
+      ],
+      "party": "D",
+      "chamber": "House",
+      "state": "CA",
+      "district": "36",
+      "contact": {
+        "phone": "202-225-3976",
+        "office": "2454 Rayburn House Office Building, Washington, DC 20515",
+        "website": "https://lieu.house.gov",
+        "contactPage": {
+          "url": "https://lieu.house.gov/contact",
+          "note": "Requires name, email, address, and topic selection. CA-36 constituents only."
+        },
+        "socialMedia": {
+          "twitter": "@RepTedLieu",
+          "facebook": "RepTedLieu",
+          "instagram": "RepTedLieu"
+        }
+      }
+    },
+    {
+      "id": "rep-khanna-ca-17",
+      "bioguideId": "K000389",
+      "name": "Ro Khanna",
+      "aliases": [
+        "Representative Khanna",
+        "Rep. Khanna",
+        "Rep Khanna",
+        "Congressman Khanna",
+        "Representative Ro Khanna",
+        "Rep. Ro Khanna",
+        "Rohit Khanna",
+        "Mr. Khanna",
+        "Khanna"
+      ],
+      "party": "D",
+      "chamber": "House",
+      "state": "CA",
+      "district": "17",
+      "contact": {
+        "phone": "202-225-2631",
+        "office": "306 Cannon House Office Building, Washington, DC 20515",
+        "website": "https://khanna.house.gov",
+        "contactPage": {
+          "url": "https://khanna.house.gov/contact",
+          "note": "Requires name, email, address, and topic selection. CA-17 constituents only."
+        },
+        "socialMedia": {
+          "twitter": "@RepRoKhanna",
+          "facebook": "RepRoKhanna",
+          "instagram": "reprokhanna"
+        }
+      }
+    },
+    {
+      "id": "rep-jayapal-wa-7",
+      "bioguideId": "J000298",
+      "name": "Pramila Jayapal",
+      "aliases": [
+        "Representative Jayapal",
+        "Rep. Jayapal",
+        "Rep Jayapal",
+        "Congresswoman Jayapal",
+        "Representative Pramila Jayapal",
+        "Rep. Pramila Jayapal",
+        "Ms. Jayapal",
+        "Jayapal"
+      ],
+      "party": "D",
+      "chamber": "House",
+      "state": "WA",
+      "district": "7",
+      "contact": {
+        "phone": "202-225-3106",
+        "office": "2346 Rayburn House Office Building, Washington, DC 20515",
+        "website": "https://jayapal.house.gov",
+        "contactPage": {
+          "url": "https://jayapal.house.gov/contact",
+          "note": "Requires name, email, address, and topic selection. WA-7 constituents only."
+        },
+        "socialMedia": {
+          "twitter": "@RepJayapal",
+          "facebook": "RepJayapal",
+          "instagram": "repjayapal"
+        }
+      }
+    },
+    {
+      "id": "rep-swalwell-ca-14",
+      "bioguideId": "S001193",
+      "name": "Eric Swalwell",
+      "aliases": [
+        "Representative Swalwell",
+        "Rep. Swalwell",
+        "Rep Swalwell",
+        "Congressman Swalwell",
+        "Representative Eric Swalwell",
+        "Rep. Eric Swalwell",
+        "Mr. Swalwell",
+        "Swalwell"
+      ],
+      "party": "D",
+      "chamber": "House",
+      "state": "CA",
+      "district": "14",
+      "contact": {
+        "phone": "202-225-5065",
+        "office": "407 Cannon House Office Building, Washington, DC 20515",
+        "website": "https://swalwell.house.gov",
+        "contactPage": {
+          "url": "https://swalwell.house.gov/contact",
+          "note": "Requires name, email, address, and topic selection. CA-14 constituents only."
+        },
+        "socialMedia": {
+          "twitter": "@RepSwalwell",
+          "facebook": "CongressmanEricSwalwell",
+          "instagram": "repswalwell",
+          "youtube": "ericswalwell"
+        }
+      }
+    },
+    {
+      "id": "rep-biggs-az-5",
+      "bioguideId": "B001302",
+      "name": "Andy Biggs",
+      "aliases": [
+        "Representative Biggs",
+        "Rep. Biggs",
+        "Rep Biggs",
+        "Congressman Biggs",
+        "Representative Andy Biggs",
+        "Rep. Andy Biggs",
+        "Mr. Biggs",
+        "Biggs"
+      ],
+      "party": "R",
+      "chamber": "House",
+      "state": "AZ",
+      "district": "5",
+      "contact": {
+        "phone": "202-225-2635",
+        "office": "2005 Rayburn House Office Building, Washington, DC 20515",
+        "website": "https://biggs.house.gov",
+        "contactPage": {
+          "url": "https://biggs.house.gov/contact",
+          "note": "Requires name, email, address, and topic selection. AZ-5 constituents prioritized."
+        },
+        "socialMedia": {
+          "twitter": "@RepAndyBiggsAZ",
+          "facebook": "RepAndyBiggs",
+          "instagram": "repandybiggs"
+        }
+      }
+    },
+    {
+      "id": "rep-gosar-az-9",
+      "bioguideId": "G000565",
+      "name": "Paul Gosar",
+      "aliases": [
+        "Representative Gosar",
+        "Rep. Gosar",
+        "Rep Gosar",
+        "Congressman Gosar",
+        "Representative Paul Gosar",
+        "Rep. Paul Gosar",
+        "Dr. Gosar",
+        "Mr. Gosar",
+        "Gosar"
+      ],
+      "party": "R",
+      "chamber": "House",
+      "state": "AZ",
+      "district": "9",
+      "contact": {
+        "phone": "202-225-2315",
+        "office": "2057 Rayburn House Office Building, Washington, DC 20515",
+        "website": "https://gosar.house.gov",
+        "contactPage": {
+          "url": "https://gosar.house.gov/contact",
+          "note": "Requires name, email, address, and topic selection. AZ-9 constituents prioritized."
+        },
+        "socialMedia": {
+          "twitter": "@RepGosar",
+          "facebook": "repgosar",
+          "instagram": "REPGOSAR",
+          "youtube": "repgosar"
+        }
+      }
+    },
+    {
+      "id": "rep-raskin-md-8",
+      "bioguideId": "R000606",
+      "name": "Jamie Raskin",
+      "aliases": [
+        "Representative Raskin",
+        "Rep. Raskin",
+        "Rep Raskin",
+        "Congressman Raskin",
+        "Representative Jamie Raskin",
+        "Rep. Jamie Raskin",
+        "Jamin Raskin",
+        "Mr. Raskin",
+        "Raskin"
+      ],
+      "party": "D",
+      "chamber": "House",
+      "state": "MD",
+      "district": "8",
+      "contact": {
+        "phone": "202-225-5341",
+        "office": "2242 Rayburn House Office Building, Washington, DC 20515",
+        "website": "https://raskin.house.gov",
+        "contactPage": {
+          "url": "https://raskin.house.gov/contact",
+          "note": "Requires name, email, address, and topic selection. MD-8 constituents only."
+        },
+        "socialMedia": {
+          "twitter": "@RepRaskin",
+          "facebook": "repraskin",
+          "instagram": "repraskin"
+        }
+      }
+    },
+    {
+      "id": "rep-crenshaw-tx-2",
+      "bioguideId": "C001120",
+      "name": "Dan Crenshaw",
+      "aliases": [
+        "Representative Crenshaw",
+        "Rep. Crenshaw",
+        "Rep Crenshaw",
+        "Congressman Crenshaw",
+        "Representative Dan Crenshaw",
+        "Rep. Dan Crenshaw",
+        "Daniel Crenshaw",
+        "Mr. Crenshaw",
+        "Crenshaw"
+      ],
+      "party": "R",
+      "chamber": "House",
+      "state": "TX",
+      "district": "2",
+      "contact": {
+        "phone": "202-225-6565",
+        "office": "413 Cannon House Office Building, Washington, DC 20515",
+        "website": "https://crenshaw.house.gov",
+        "contactPage": {
+          "url": "https://crenshaw.house.gov/contact",
+          "note": "Requires name, email, address, and topic selection. TX-2 constituents prioritized."
+        },
+        "socialMedia": {
+          "twitter": "@RepDanCrenshaw",
+          "facebook": "RepDanCrenshaw",
+          "instagram": "dancrenshawtx",
+          "youtube": "UC2XDiCjAHtJqnSEzrHAY5IQ"
+        }
+      }
+    },
+    {
+      "id": "rep-schiff-ca-30",
+      "bioguideId": "S001150",
+      "name": "Adam Schiff",
+      "aliases": [
+        "Representative Schiff",
+        "Rep. Schiff",
+        "Rep Schiff",
+        "Congressman Schiff",
+        "Representative Adam Schiff",
+        "Rep. Adam Schiff",
+        "Mr. Schiff",
+        "Schiff"
+      ],
+      "party": "D",
+      "chamber": "House",
+      "state": "CA",
+      "district": "30",
+      "contact": {
+        "phone": "202-225-4176",
+        "office": "2309 Rayburn House Office Building, Washington, DC 20515",
+        "website": "https://schiff.house.gov",
+        "contactPage": {
+          "url": "https://schiff.house.gov/contact",
+          "note": "Requires name, email, address, and topic selection. CA-30 constituents only."
+        },
+        "socialMedia": {
+          "twitter": "@RepAdamSchiff",
+          "facebook": "RepAdamSchiff",
+          "instagram": "repadamschiff"
+        }
+      }
+    }
+  ]
+}

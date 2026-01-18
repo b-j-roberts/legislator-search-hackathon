@@ -17,20 +17,6 @@ After implementing the feature, please provide a concise step-by-step instructio
 
 Features that enhance the experience but aren't required for initial launch.
 
-### 2.2 Issues with data cleaning between different chats/sessions
-
-**Description**: Fix data persistence and cleaning issues when switching between different chat sessions.
-
-**Requirements**:
-- [ ] Identify data leakage points between sessions for chat, contacts, and completions
-- [ ] Ensure each chat session has isolated state for autofilling fields, drafts/contact form fillings, contact/completion data/props, ...
-- [ ] Implement cleanup routines when switching sessions
-
-**Implementation Notes**:
-- Review state management logic
-- Test switching between multiple sessions rapidly
-- Ensure no residual data from previous sessions appears
-
 ### 2.3 Real Contact Data
 
 **Description**: Integrate real contact data for legislators.
@@ -38,6 +24,18 @@ Features that enhance the experience but aren't required for initial launch.
 **Requirements**:
 - [ ] Source reliable legislator contact data per legislator
 - [ ] If no email is available, use phone/fax/address/...
+- [ ] Create a legislators.json or similar data structure that is staticly loaded with:
+    - Name
+    - Name alias(es) ( used for matching with different naming conventions )
+      e.g., "Elizabeth Warren" -> "Senator Warren", "Sen. Warren", "Warren", "Ms. Warren", "Mrs. Elizabeth Warren", "Dr. Warren", etc. ( add more as needed )
+    - Office address
+    - Phone number
+    - Fax number
+    - Email address ( if available )
+    - Official contact page:
+      - URL
+      - Note on required info needs to be filled out by user
+- [ ] Update data loading logic to use real data, and search name aliases for matching if no exact match
 - [ ] Provide links to official contact pages per legislator ( with note on required info needs to be filled out by user )
 - [ ] Update ContactCard component to display real data
 - [ ] Test with multiple legislators to ensure data accuracy

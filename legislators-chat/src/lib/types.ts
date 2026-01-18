@@ -89,13 +89,24 @@ export interface SocialMedia {
   youtube?: string;
 }
 
+/** Official contact page details */
+export interface OfficialContactPage {
+  /** URL to the official contact form */
+  url: string;
+  /** Note about required info user needs to fill out */
+  note?: string;
+}
+
 /** Contact information for a legislator */
 export interface ContactInfo {
   phone?: string;
+  fax?: string;
   email?: string;
   website?: string;
   office?: string;
   socialMedia?: SocialMedia;
+  /** Official contact page with form */
+  contactPage?: OfficialContactPage;
 }
 
 // =============================================================================
@@ -126,6 +137,8 @@ export interface Statement {
 export interface Legislator {
   id: string;
   name: string;
+  /** Name aliases for matching different naming conventions */
+  aliases?: string[];
   party: Party;
   chamber: Chamber;
   state: StateAbbreviation;
