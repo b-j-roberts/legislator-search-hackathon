@@ -274,7 +274,9 @@ export function useResults(messages: ChatMessage[]): UseResultsReturn {
     const searchResults = Array.from(searchResultMap.values());
 
     // Extract speakers from search results
-    const speakers = extractSpeakersFromResults(searchResults);
+    // Feature flag: when true, only show speakers who match current legislators in our database
+    const currentLegislatorsOnly = process.env.NEXT_PUBLIC_FILTER_CURRENT_LEGISLATORS_ONLY === "true";
+    const speakers = extractSpeakersFromResults(searchResults, currentLegislatorsOnly);
 
     // Show mock legislators if feature flag enabled and no real results
     const finalLegislators = useMockData() && legislators.length === 0
