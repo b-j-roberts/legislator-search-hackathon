@@ -2,8 +2,19 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
-import { Users, FileText, Vote, ChevronUp, Send, CheckSquare, Square } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Users,
+  FileText,
+  Vote,
+  ChevronUp,
+  Send,
+  CheckSquare,
+  Square,
+  Calendar,
+  ExternalLink,
+  Building2,
+} from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import type {
@@ -11,17 +22,13 @@ import type {
   Document,
   VoteRecord,
   Hearing,
-  Party,
-  Chamber,
-  Stance,
-  StateAbbreviation,
-  SortOption,
 } from "@/lib/types";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { LegislatorList } from "./legislator-list";
 import { FilterBar, FilterChips } from "@/components/filters";
-import { useFilters, type FilterState } from "@/hooks/use-filters";
+import { useFilters } from "@/hooks/use-filters";
 import { useContact } from "@/hooks/use-contact";
 import { useChat } from "@/components/providers";
 import { extractAdvocacyContext } from "@/hooks/use-chat-extraction";
@@ -46,30 +53,147 @@ interface TabConfig {
   count: number;
 }
 
-function EmptyDocumentsState() {
+function EmptyState({
+  icon: Icon,
+  title,
+  description,
+}: {
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+  description: string;
+}) {
   return (
-    <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
-      <div className="rounded-full bg-muted p-4 mb-4">
-        <FileText className="size-8 text-muted-foreground" />
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="flex flex-col items-center justify-center py-16 px-6 text-center"
+    >
+      <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-muted/50 mb-4">
+        <Icon className="size-6 text-muted-foreground" />
       </div>
-      <h3 className="text-lg font-medium text-foreground mb-2">No documents found</h3>
-      <p className="text-sm text-muted-foreground max-w-xs">
-        Relevant documents, hearings, and transcripts will appear here.
-      </p>
-    </div>
+      <h3 className="font-display text-lg font-semibold text-foreground mb-2">
+        {title}
+      </h3>
+      <p className="text-sm text-muted-foreground max-w-[280px]">{description}</p>
+    </motion.div>
   );
 }
 
-function EmptyVotesState() {
+function DocumentCard({
+  title,
+  date,
+  type,
+  summary,
+  committee,
+}: {
+  title: string;
+  date: string;
+  type?: string;
+  summary?: string;
+  committee?: string;
+}) {
   return (
-    <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
-      <div className="rounded-full bg-muted p-4 mb-4">
-        <Vote className="size-8 text-muted-foreground" />
+    <motion.div
+      initial={{ opacity: 0, y: 5 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -2 }}
+      className="group p-4 rounded-xl border border-border/50 bg-card/50 hover:bg-card hover:border-border hover:shadow-md transition-all duration-200 cursor-pointer"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex-1 min-w-0">
+          <h4 className="font-medium text-sm text-foreground group-hover:text-accent transition-colors line-clamp-2">
+            {title}
+          </h4>
+          <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
+            <Calendar className="size-3" />
+            <span>{date}</span>
+            {(type || committee) && (
+              <>
+                <span className="text-border">|</span>
+                <Building2 className="size-3" />
+                <span className="truncate">{committee || type}</span>
+              </>
+            )}
+          </div>
+          {summary && (
+            <p className="text-sm text-muted-foreground mt-3 line-clamp-2 leading-relaxed">
+              {summary}
+            </p>
+          )}
+        </div>
+        <ExternalLink className="size-4 text-muted-foreground/0 group-hover:text-accent shrink-0 transition-colors" />
       </div>
-      <h3 className="text-lg font-medium text-foreground mb-2">No votes found</h3>
-      <p className="text-sm text-muted-foreground max-w-xs">
-        Voting records related to your query will appear here.
-      </p>
+    </motion.div>
+  );
+}
+
+function VoteCard({ vote }: { vote: VoteRecord }) {
+  const passed = vote.result === "passed";
+  const total = vote.yeas + vote.nays;
+  const yeasPercent = total > 0 ? (vote.yeas / total) * 100 : 0;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 5 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -2 }}
+      className="group p-4 rounded-xl border border-border/50 bg-card/50 hover:bg-card hover:border-border hover:shadow-md transition-all duration-200"
+    >
+      <div className="flex items-start justify-between gap-3 mb-3">
+        <h4 className="font-medium text-sm text-foreground group-hover:text-accent transition-colors line-clamp-2 flex-1">
+          {vote.billTitle}
+        </h4>
+        <Badge
+          variant="secondary"
+          className={cn(
+            "shrink-0 text-[10px] font-semibold uppercase tracking-wide",
+            passed
+              ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20"
+              : "bg-red-500/10 text-red-500 border-red-500/20"
+          )}
+        >
+          {vote.result}
+        </Badge>
+      </div>
+
+      <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
+        <Calendar className="size-3" />
+        <span>{vote.date}</span>
+        <span className="text-border">|</span>
+        <span className="capitalize">{vote.chamber}</span>
+      </div>
+
+      {/* Vote bar */}
+      <div className="relative h-2 rounded-full bg-muted overflow-hidden">
+        <motion.div
+          initial={{ width: 0 }}
+          animate={{ width: `${yeasPercent}%` }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="absolute inset-y-0 left-0 bg-emerald-500 rounded-full"
+        />
+      </div>
+
+      <div className="flex justify-between mt-2 text-xs font-medium">
+        <span className="text-emerald-500">Yeas: {vote.yeas}</span>
+        <span className="text-red-500">Nays: {vote.nays}</span>
+      </div>
+    </motion.div>
+  );
+}
+
+function LoadingSkeleton() {
+  return (
+    <div className="p-4 space-y-3">
+      {[1, 2, 3].map((i) => (
+        <div
+          key={i}
+          className="p-4 rounded-xl border border-border/30 bg-muted/20 animate-pulse"
+        >
+          <div className="h-4 w-3/4 bg-muted rounded mb-3" />
+          <div className="h-3 w-1/2 bg-muted/70 rounded mb-3" />
+          <div className="h-3 w-full bg-muted/50 rounded" />
+        </div>
+      ))}
     </div>
   );
 }
@@ -89,10 +213,8 @@ export function ResultsPanel({
   const [isMobileExpanded, setIsMobileExpanded] = React.useState(false);
   const [isSelectionMode, setIsSelectionMode] = React.useState(false);
 
-  // Chat context for extracting advocacy context
   const { messages } = useChat();
 
-  // Contact context for selection management
   const {
     selectedLegislators,
     toggleLegislator,
@@ -104,7 +226,6 @@ export function ResultsPanel({
     setAdvocacyContext,
   } = useContact();
 
-  // Filter and sort state
   const {
     filters,
     toggleParty,
@@ -118,19 +239,16 @@ export function ResultsPanel({
     applyFilters,
   } = useFilters();
 
-  // Apply filters to legislators
   const filteredLegislators = React.useMemo(
     () => applyFilters(legislators),
     [legislators, applyFilters]
   );
 
-  // Get selected IDs for the list
   const selectedIds = React.useMemo(
     () => selectedLegislators.map((l) => l.id),
     [selectedLegislators]
   );
 
-  // Calculate counts for tabs (filtered for legislators)
   const tabs: TabConfig[] = [
     { id: "people", label: "People", icon: Users, count: filteredLegislators.length },
     {
@@ -157,7 +275,6 @@ export function ResultsPanel({
 
   const handleToggleSelectionMode = () => {
     if (isSelectionMode) {
-      // Exiting selection mode - clear selections
       clearSelections();
     }
     setIsSelectionMode(!isSelectionMode);
@@ -168,7 +285,6 @@ export function ResultsPanel({
   };
 
   const handleContactRepresentatives = () => {
-    // Extract advocacy context from chat messages before navigating
     const extraction = extractAdvocacyContext(messages);
     if (extraction.advocacyContext) {
       setAdvocacyContext(extraction.advocacyContext, extraction.populatedFields);
@@ -179,42 +295,45 @@ export function ResultsPanel({
   };
 
   return (
-    <div className={cn("flex flex-col flex-1 min-h-0 bg-background", className)}>
-      {/* Mobile/Tablet toggle bar - only visible below desktop */}
-      <div className="lg:hidden border-b border-border">
+    <div className={cn("flex flex-col flex-1 min-h-0 bg-background/50", className)}>
+      {/* Mobile toggle bar */}
+      <div className="lg:hidden border-b border-border/50">
         <Button
           variant="ghost"
           onClick={toggleMobileExpand}
-          className="w-full flex items-center justify-between min-h-[48px] py-3 px-4 h-auto rounded-none touch-manipulation"
+          className="w-full flex items-center justify-between min-h-[52px] py-3 px-4 h-auto rounded-none touch-manipulation"
           aria-expanded={isMobileExpanded}
           aria-controls="results-panel-content"
         >
-          <span className="flex items-center gap-2 text-sm font-medium">
-            <Users className="size-5" />
-            Results
+          <span className="flex items-center gap-2.5 text-sm font-medium">
+            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-accent/10">
+              <Users className="size-4 text-accent" />
+            </div>
+            <span className="font-display">Results</span>
             {totalResults > 0 && (
-              <span className="bg-primary text-primary-foreground text-xs px-2 py-0.5 rounded-full min-w-[24px] text-center">
+              <Badge
+                variant="secondary"
+                className="bg-accent text-accent-foreground border-0 font-semibold"
+              >
                 {totalResults}
-              </span>
+              </Badge>
             )}
           </span>
           <motion.div
             animate={{ rotate: isMobileExpanded ? 180 : 0 }}
             transition={{ duration: 0.2 }}
           >
-            <ChevronUp className="size-5" />
+            <ChevronUp className="size-5 text-muted-foreground" />
           </motion.div>
         </Button>
       </div>
 
-      {/* Panel content - single Tabs instance with responsive visibility */}
+      {/* Panel content */}
       <div
         id="results-panel-content"
         className={cn(
           "flex-col flex-1 min-h-0 overflow-hidden transition-all duration-200",
-          // Mobile/Tablet: hidden by default, shown when expanded
           isMobileExpanded ? "flex" : "hidden",
-          // Desktop: always visible
           "lg:flex"
         )}
       >
@@ -224,18 +343,18 @@ export function ResultsPanel({
           className="flex flex-col flex-1 overflow-hidden"
         >
           {/* Tab navigation */}
-          <div className="flex-shrink-0 border-b border-border p-2 md:p-3">
-            <TabsList className="w-full grid grid-cols-3 h-auto">
+          <div className="flex-shrink-0 border-b border-border/50 p-3">
+            <TabsList className="w-full grid grid-cols-3 h-auto bg-muted/30 p-1 rounded-xl">
               {tabs.map((tab) => (
                 <TabsTrigger
                   key={tab.id}
                   value={tab.id}
-                  className="flex items-center justify-center gap-1.5 min-h-[44px] px-2 md:px-3 touch-manipulation"
+                  className="flex items-center justify-center gap-2 min-h-[42px] px-3 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm transition-all touch-manipulation"
                 >
-                  <tab.icon className="size-4 md:size-5 flex-shrink-0" />
-                  <span className="hidden md:inline text-sm">{tab.label}</span>
+                  <tab.icon className="size-4 flex-shrink-0" />
+                  <span className="hidden md:inline text-sm font-medium">{tab.label}</span>
                   {tab.count > 0 && (
-                    <span className="text-xs bg-muted-foreground/20 px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
+                    <span className="text-[11px] bg-accent text-accent-foreground px-2 py-0.5 rounded-full min-w-[22px] text-center font-semibold">
                       {tab.count}
                     </span>
                   )}
@@ -244,9 +363,9 @@ export function ResultsPanel({
             </TabsList>
           </div>
 
-          {/* Filter bar - only visible on People tab when there are legislators */}
+          {/* Filter bar */}
           {currentTab === "people" && legislators.length > 0 && (
-            <div className="flex-shrink-0 border-b border-border px-3 py-2 space-y-2">
+            <div className="flex-shrink-0 border-b border-border/50 px-3 py-3 space-y-2.5 bg-muted/20">
               <FilterBar
                 filters={filters}
                 onToggleParty={toggleParty}
@@ -268,42 +387,56 @@ export function ResultsPanel({
               {/* Selection mode controls */}
               <div className="flex items-center justify-between pt-1">
                 <Button
-                  variant={isSelectionMode ? "secondary" : "outline"}
+                  variant={isSelectionMode ? "default" : "outline"}
                   size="sm"
                   onClick={handleToggleSelectionMode}
-                  className="gap-1.5"
+                  className={cn(
+                    "gap-2 rounded-lg",
+                    isSelectionMode && "bg-accent text-accent-foreground hover:bg-accent/90"
+                  )}
                 >
                   {isSelectionMode ? (
                     <>
                       <CheckSquare className="size-4" />
-                      <span className="hidden sm:inline">Done selecting</span>
-                      <span className="sm:hidden">Done</span>
+                      <span className="hidden sm:inline">Done</span>
                     </>
                   ) : (
                     <>
                       <Square className="size-4" />
-                      <span className="hidden sm:inline">Select to contact</span>
-                      <span className="sm:hidden">Select</span>
+                      <span className="hidden sm:inline">Select</span>
                     </>
                   )}
                 </Button>
-                {isSelectionMode && (
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={handleSelectAll}
-                      disabled={selectedIds.length === filteredLegislators.length}
+                <AnimatePresence>
+                  {isSelectionMode && (
+                    <motion.div
+                      initial={{ opacity: 0, x: 10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 10 }}
+                      className="flex items-center gap-2"
                     >
-                      Select all
-                    </Button>
-                    {hasSelections && (
-                      <Button variant="ghost" size="sm" onClick={clearSelections}>
-                        Clear
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={handleSelectAll}
+                        disabled={selectedIds.length === filteredLegislators.length}
+                        className="text-xs"
+                      >
+                        Select all
                       </Button>
-                    )}
-                  </div>
-                )}
+                      {hasSelections && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={clearSelections}
+                          className="text-xs text-muted-foreground"
+                        >
+                          Clear
+                        </Button>
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
           )}
@@ -327,50 +460,32 @@ export function ResultsPanel({
 
             <TabsContent value="documents" className="h-full overflow-auto m-0">
               {isLoading ? (
-                <div className="p-4 space-y-4">
-                  {[1, 2, 3].map((i) => (
-                    <div key={i} className="space-y-2">
-                      <div className="h-5 w-3/4 bg-accent animate-pulse rounded" />
-                      <div className="h-4 w-full bg-accent animate-pulse rounded" />
-                      <div className="h-4 w-2/3 bg-accent animate-pulse rounded" />
-                    </div>
-                  ))}
-                </div>
+                <LoadingSkeleton />
               ) : documents.length === 0 && hearings.length === 0 ? (
-                <EmptyDocumentsState />
+                <EmptyState
+                  icon={FileText}
+                  title="No documents found"
+                  description="Relevant documents, hearings, and transcripts will appear here."
+                />
               ) : (
                 <div className="p-4 space-y-3">
                   {documents.map((doc) => (
-                    <div
+                    <DocumentCard
                       key={doc.id}
-                      className="p-3 rounded-lg border border-border bg-card hover:bg-accent/50 transition-colors"
-                    >
-                      <h4 className="font-medium text-sm text-foreground">{doc.title}</h4>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        {doc.date} - {doc.type}
-                      </p>
-                      {doc.summary && (
-                        <p className="text-sm text-muted-foreground mt-2 line-clamp-2">
-                          {doc.summary}
-                        </p>
-                      )}
-                    </div>
+                      title={doc.title}
+                      date={doc.date}
+                      type={doc.type}
+                      summary={doc.summary}
+                    />
                   ))}
                   {hearings.map((hearing) => (
-                    <div
+                    <DocumentCard
                       key={hearing.id}
-                      className="p-3 rounded-lg border border-border bg-card hover:bg-accent/50 transition-colors"
-                    >
-                      <h4 className="font-medium text-sm text-foreground">{hearing.title}</h4>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        {hearing.date} - {hearing.committee}
-                      </p>
-                      {hearing.summary && (
-                        <p className="text-sm text-muted-foreground mt-2 line-clamp-2">
-                          {hearing.summary}
-                        </p>
-                      )}
-                    </div>
+                      title={hearing.title}
+                      date={hearing.date}
+                      committee={hearing.committee}
+                      summary={hearing.summary}
+                    />
                   ))}
                 </div>
               )}
@@ -378,46 +493,17 @@ export function ResultsPanel({
 
             <TabsContent value="votes" className="h-full overflow-auto m-0">
               {isLoading ? (
-                <div className="p-4 space-y-4">
-                  {[1, 2, 3].map((i) => (
-                    <div key={i} className="space-y-2">
-                      <div className="h-5 w-3/4 bg-accent animate-pulse rounded" />
-                      <div className="h-4 w-full bg-accent animate-pulse rounded" />
-                    </div>
-                  ))}
-                </div>
+                <LoadingSkeleton />
               ) : votes.length === 0 ? (
-                <EmptyVotesState />
+                <EmptyState
+                  icon={Vote}
+                  title="No votes found"
+                  description="Voting records related to your query will appear here."
+                />
               ) : (
                 <div className="p-4 space-y-3">
                   {votes.map((vote) => (
-                    <div
-                      key={vote.id}
-                      className="p-3 rounded-lg border border-border bg-card hover:bg-accent/50 transition-colors"
-                    >
-                      <div className="flex items-center justify-between gap-2">
-                        <h4 className="font-medium text-sm text-foreground truncate">
-                          {vote.billTitle}
-                        </h4>
-                        <span
-                          className={cn(
-                            "text-xs px-2 py-0.5 rounded-full",
-                            vote.result === "passed"
-                              ? "bg-green-900/50 text-green-400"
-                              : "bg-red-900/50 text-red-400"
-                          )}
-                        >
-                          {vote.result}
-                        </span>
-                      </div>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        {vote.date} - {vote.chamber}
-                      </p>
-                      <div className="flex gap-3 mt-2 text-xs">
-                        <span className="text-green-400">Yeas: {vote.yeas}</span>
-                        <span className="text-red-400">Nays: {vote.nays}</span>
-                      </div>
-                    </div>
+                    <VoteCard key={vote.id} vote={vote} />
                   ))}
                 </div>
               )}
@@ -425,20 +511,26 @@ export function ResultsPanel({
           </div>
         </Tabs>
 
-        {/* Contact Representatives CTA - fixed at bottom, outside Tabs */}
-        {currentTab === "people" && hasSelections && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            className="flex-shrink-0 p-3 border-t border-border bg-background"
-          >
-            <Button onClick={handleContactRepresentatives} className="w-full gap-2" size="lg">
-              <Send className="size-4" />
-              Contact {selectionCount} Representative{selectionCount !== 1 ? "s" : ""}
-            </Button>
-          </motion.div>
-        )}
+        {/* Contact CTA */}
+        <AnimatePresence>
+          {currentTab === "people" && hasSelections && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              className="flex-shrink-0 p-4 border-t border-border/50 bg-background/80 backdrop-blur-sm"
+            >
+              <Button
+                onClick={handleContactRepresentatives}
+                className="w-full gap-2 rounded-xl bg-accent text-accent-foreground hover:bg-accent/90 shadow-md shadow-accent/20"
+                size="lg"
+              >
+                <Send className="size-4" />
+                Contact {selectionCount} Representative{selectionCount !== 1 ? "s" : ""}
+              </Button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

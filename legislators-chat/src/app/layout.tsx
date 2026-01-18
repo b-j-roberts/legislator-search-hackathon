@@ -1,14 +1,22 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { DM_Sans, Libre_Baskerville, Geist_Mono } from "next/font/google";
 import { ThemeProvider, ChatProvider, ContactProvider } from "@/components/providers";
 import { Header } from "@/components/layout";
 import { ConversationSidebar } from "@/components/conversation/conversation-sidebar";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const libreBaskerville = Libre_Baskerville({
+  variable: "--font-libre-baskerville",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
 });
 
 const geistMono = Geist_Mono({
@@ -31,7 +39,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased h-dvh flex overflow-hidden`}
+        className={`${dmSans.variable} ${libreBaskerville.variable} ${geistMono.variable} antialiased h-dvh flex overflow-hidden`}
       >
         <ThemeProvider>
           <ChatProvider>

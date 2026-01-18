@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { motion } from "framer-motion";
-import { Bot, User, AlertCircle, RefreshCw } from "lucide-react";
+import { AlertCircle, RefreshCw, Sparkles, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import type { MessageRole, MessageStatus } from "@/lib/types";
@@ -14,19 +14,18 @@ export interface ChatBubbleProps {
   status?: MessageStatus;
   error?: string;
   className?: string;
-  /** Callback for retrying failed messages */
   onRetry?: () => void;
 }
 
 const bubbleVariants = {
-  initial: { opacity: 0, y: 10, scale: 0.95 },
+  initial: { opacity: 0, y: 10, scale: 0.98 },
   animate: { opacity: 1, y: 0, scale: 1 },
-  exit: { opacity: 0, scale: 0.95 },
+  exit: { opacity: 0, scale: 0.98 },
 };
 
 const bubbleTransition = {
-  duration: 0.2,
-  ease: [0.4, 0, 0.2, 1] as const,
+  duration: 0.25,
+  ease: [0.22, 1, 0.36, 1] as const,
 };
 
 function formatTimestamp(timestamp: string): string {
@@ -57,29 +56,50 @@ export function ChatBubble({
       animate="animate"
       exit="exit"
       transition={bubbleTransition}
-      className={cn("flex gap-3", isUser ? "flex-row-reverse" : "flex-row", className)}
+      layout
+      className={cn(
+        "flex gap-3",
+        isUser ? "flex-row-reverse" : "flex-row",
+        className
+      )}
     >
       {/* Avatar */}
       <div
         className={cn(
-          "flex h-8 w-8 shrink-0 items-center justify-center rounded-full",
-          isUser ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+          "flex h-9 w-9 shrink-0 items-center justify-center rounded-xl transition-colors",
+          isUser
+            ? "bg-accent text-accent-foreground"
+            : "bg-gradient-to-br from-primary/10 to-primary/5 border border-border/50 text-primary dark:text-accent"
         )}
         aria-hidden="true"
       >
-        {isUser ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
+        {isUser ? (
+          <User className="h-4 w-4" />
+        ) : (
+          <Sparkles className="h-4 w-4" />
+        )}
       </div>
 
       {/* Bubble content */}
-      <div className={cn("flex max-w-[80%] flex-col gap-1", isUser ? "items-end" : "items-start")}>
+      <div
+        className={cn(
+          "flex max-w-[85%] md:max-w-[75%] flex-col gap-1.5",
+          isUser ? "items-end" : "items-start"
+        )}
+      >
+        {/* Role label */}
+        <span className="text-[10px] font-medium text-muted-foreground/70 uppercase tracking-wider px-1">
+          {isUser ? "You" : "Assistant"}
+        </span>
+
         {/* Message bubble */}
         <div
           className={cn(
-            "rounded-2xl px-4 py-2.5 text-base leading-relaxed",
+            "rounded-2xl px-4 py-3 text-[15px] leading-relaxed",
             isUser
-              ? "rounded-br-sm bg-primary text-primary-foreground"
-              : "rounded-bl-sm bg-muted text-foreground",
-            hasError && "border border-destructive"
+              ? "rounded-tr-md bg-accent text-accent-foreground shadow-sm"
+              : "rounded-tl-md bg-card border border-border/50 text-foreground shadow-sm",
+            hasError && "border-2 border-destructive/50 bg-destructive/5"
           )}
         >
           {/* Message content with proper whitespace handling */}
@@ -89,7 +109,7 @@ export function ChatBubble({
         {/* Metadata row: timestamp and status */}
         <div
           className={cn(
-            "flex items-center gap-2 text-xs text-muted-foreground",
+            "flex items-center gap-2 text-[11px] text-muted-foreground/60 px-1",
             isUser ? "flex-row-reverse" : "flex-row"
           )}
         >
@@ -100,32 +120,47 @@ export function ChatBubble({
 
           {/* Error indicator */}
           {hasError && (
-            <span className="flex items-center gap-1 text-destructive">
+            <span className="flex items-center gap-1 text-destructive font-medium">
               <AlertCircle className="h-3 w-3" />
-              <span>Failed to send</span>
+              <span>Failed</span>
             </span>
           )}
 
           {/* Sending indicator */}
-          {status === "sending" && <span className="text-muted-foreground">Sending...</span>}
+          {status === "sending" && (
+            <span className="text-muted-foreground/50 flex items-center gap-1">
+              <motion.span
+                animate={{ opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+                className="inline-block w-1.5 h-1.5 rounded-full bg-accent"
+              />
+              Sending
+            </span>
+          )}
         </div>
 
-        {/* Error message and retry button if present */}
+        {/* Error message and retry button */}
         {hasError && (
-          <div className="mt-1 flex items-center gap-2">
-            {error && <p className="text-xs text-destructive">{error}</p>}
+          <motion.div
+            initial={{ opacity: 0, y: -5 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex items-center gap-2 px-1"
+          >
+            {error && (
+              <p className="text-xs text-destructive/80">{error}</p>
+            )}
             {onRetry && (
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={onRetry}
-                className="h-6 px-2 text-xs text-destructive hover:text-destructive"
+                className="h-7 px-2 text-xs text-destructive hover:text-destructive hover:bg-destructive/10 rounded-lg"
               >
-                <RefreshCw className="mr-1 h-3 w-3" />
+                <RefreshCw className="mr-1.5 h-3 w-3" />
                 Retry
               </Button>
             )}
-          </div>
+          </motion.div>
         )}
       </div>
     </motion.div>

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { MessageSquare, ArrowDown } from "lucide-react";
+import { ArrowDown, Search, Users, FileText, Vote, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
@@ -14,8 +14,8 @@ export interface ChatMessagesProps {
   messages: ChatMessage[];
   isLoading?: boolean;
   className?: string;
-  /** Callback to retry a failed message */
   onRetryMessage?: (messageId: string) => void;
+  onSuggestionClick?: (suggestion: string) => void;
 }
 
 const containerVariants = {
@@ -26,32 +26,119 @@ const containerVariants = {
   },
 };
 
-// How far from bottom (in pixels) to show the scroll button
 const SCROLL_BUTTON_THRESHOLD = 100;
 
-function EmptyState() {
+const SUGGESTIONS = [
+  {
+    icon: Users,
+    title: "Find your representatives",
+    query: "Who represents my district in Congress?",
+  },
+  {
+    icon: Vote,
+    title: "Track voting records",
+    query: "Show me recent climate change votes",
+  },
+  {
+    icon: FileText,
+    title: "Research hearings",
+    query: "Find healthcare committee hearings from this year",
+  },
+];
+
+function HeroEmptyState({ onSuggestionClick }: { onSuggestionClick?: (query: string) => void }) {
   return (
-    <div className="flex flex-1 flex-col items-center justify-center p-6 text-center">
-      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted">
-        <MessageSquare className="h-8 w-8 text-muted-foreground" />
+    <div className="flex flex-1 flex-col items-center justify-center px-6 py-12 text-center overflow-hidden">
+      {/* Decorative background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl" />
       </div>
-      <h2 className="mt-4 text-lg font-medium text-foreground">Start a Conversation</h2>
-      <p className="mt-2 max-w-sm text-sm text-muted-foreground">
-        Ask about legislators, congressional hearings, voting records, or any topic you&apos;d like
-        to research.
-      </p>
-      <div className="mt-6 flex flex-wrap justify-center gap-2">
-        {["Who represents my district?", "Recent climate votes", "Healthcare hearings"].map(
-          (suggestion) => (
-            <span
-              key={suggestion}
-              className="rounded-full border border-border bg-muted/50 px-3 py-1.5 text-xs text-muted-foreground"
+
+      {/* Hero content */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className="relative z-10 max-w-2xl"
+      >
+        {/* Icon badge */}
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.1, duration: 0.5 }}
+          className="mb-8 inline-flex"
+        >
+          <div className="relative">
+            <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-accent/20 to-accent/5 border border-accent/20">
+              <Search className="w-7 h-7 text-accent" />
+            </div>
+            <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-accent flex items-center justify-center">
+              <span className="text-accent-foreground text-xs font-bold">AI</span>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Main headline */}
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+          className="font-display text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-balance leading-[1.1] mb-4"
+        >
+          Research your{" "}
+          <span className="text-accent">representatives</span>
+        </motion.h1>
+
+        {/* Subtitle */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.6 }}
+          className="text-muted-foreground text-base md:text-lg max-w-md mx-auto mb-10 text-balance"
+        >
+          Ask about legislators, voting records, committee hearings, and policy positions. Get informed, then take action.
+        </motion.p>
+
+        {/* Suggestion cards */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+          className="grid gap-3 sm:grid-cols-3 w-full max-w-xl mx-auto"
+        >
+          {SUGGESTIONS.map((suggestion, index) => (
+            <motion.button
+              key={suggestion.title}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 + index * 0.1, duration: 0.5 }}
+              whileHover={{ y: -2, transition: { duration: 0.2 } }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => onSuggestionClick?.(suggestion.query)}
+              className="group relative flex flex-col items-start p-4 rounded-xl border border-border/50 bg-card/50 hover:bg-card hover:border-accent/30 hover:shadow-lg transition-all duration-300 text-left"
             >
-              {suggestion}
-            </span>
-          )
-        )}
-      </div>
+              <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-muted/50 group-hover:bg-accent/10 transition-colors mb-3">
+                <suggestion.icon className="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors" />
+              </div>
+              <span className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">
+                {suggestion.title}
+              </span>
+              <ArrowRight className="absolute bottom-4 right-4 w-4 h-4 text-muted-foreground/0 group-hover:text-accent group-hover:translate-x-0.5 transition-all" />
+            </motion.button>
+          ))}
+        </motion.div>
+
+        {/* Bottom hint */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8, duration: 0.6 }}
+          className="mt-8 text-xs text-muted-foreground/60"
+        >
+          Type your question below or click a suggestion to get started
+        </motion.p>
+      </motion.div>
     </div>
   );
 }
@@ -61,26 +148,22 @@ export function ChatMessages({
   isLoading = false,
   className,
   onRetryMessage,
+  onSuggestionClick,
 }: ChatMessagesProps) {
   const scrollAreaRef = React.useRef<HTMLDivElement>(null);
   const bottomRef = React.useRef<HTMLDivElement>(null);
   const [showScrollButton, setShowScrollButton] = React.useState(false);
 
-  // Track if we should auto-scroll (true by default, false when user scrolls up)
   const shouldAutoScrollRef = React.useRef(true);
-  // Track if scroll was triggered programmatically to ignore that scroll event
   const isProgrammaticScrollRef = React.useRef(false);
-  // Track last message count to detect new messages
   const lastMessageCountRef = React.useRef(messages.length);
 
-  // Get the actual scrollable viewport from ScrollArea
   const getScrollViewport = React.useCallback(() => {
     return scrollAreaRef.current?.querySelector(
       "[data-radix-scroll-area-viewport]"
     ) as HTMLElement | null;
   }, []);
 
-  // Check if user is near the bottom of the scroll area
   const isNearBottom = React.useCallback(() => {
     const viewport = getScrollViewport();
     if (!viewport) return true;
@@ -89,7 +172,6 @@ export function ChatMessages({
     return scrollHeight - scrollTop - clientHeight < SCROLL_BUTTON_THRESHOLD;
   }, [getScrollViewport]);
 
-  // Scroll to bottom
   const scrollToBottom = React.useCallback(() => {
     const viewport = getScrollViewport();
     if (!viewport) return;
@@ -98,35 +180,29 @@ export function ChatMessages({
     viewport.scrollTop = viewport.scrollHeight;
     setShowScrollButton(false);
 
-    // Reset the flag after a short delay to allow the scroll event to fire
     requestAnimationFrame(() => {
       isProgrammaticScrollRef.current = false;
     });
   }, [getScrollViewport]);
 
-  // Handle user clicking scroll to bottom button
   const handleScrollToBottom = React.useCallback(() => {
     shouldAutoScrollRef.current = true;
     scrollToBottom();
   }, [scrollToBottom]);
 
-  // Track scroll position to detect user scrolling away
   React.useEffect(() => {
     const viewport = getScrollViewport();
     if (!viewport) return;
 
     const handleScroll = () => {
-      // Ignore programmatic scrolls
       if (isProgrammaticScrollRef.current) return;
 
       const nearBottom = isNearBottom();
 
-      // If user scrolls up (away from bottom), disable auto-scroll
       if (!nearBottom) {
         shouldAutoScrollRef.current = false;
         setShowScrollButton(true);
       } else {
-        // User scrolled back to bottom manually
         shouldAutoScrollRef.current = true;
         setShowScrollButton(false);
       }
@@ -136,14 +212,12 @@ export function ChatMessages({
     return () => viewport.removeEventListener("scroll", handleScroll);
   }, [getScrollViewport, isNearBottom]);
 
-  // Auto-scroll when new user message is sent
   React.useEffect(() => {
     const isNewMessage = messages.length > lastMessageCountRef.current;
     lastMessageCountRef.current = messages.length;
 
     if (isNewMessage && messages.length > 0) {
       const lastMessage = messages[messages.length - 1];
-      // Always scroll for new user messages and re-enable auto-scroll
       if (lastMessage?.role === "user") {
         shouldAutoScrollRef.current = true;
         scrollToBottom();
@@ -151,21 +225,18 @@ export function ChatMessages({
     }
   }, [messages.length, messages, scrollToBottom]);
 
-  // Auto-scroll during streaming if auto-scroll is enabled
   React.useEffect(() => {
     if (shouldAutoScrollRef.current) {
-      // Use RAF for smooth scroll during streaming
       requestAnimationFrame(() => {
         scrollToBottom();
       });
     }
   }, [messages, isLoading, scrollToBottom]);
 
-  // Show empty state if no messages
   if (messages.length === 0 && !isLoading) {
     return (
-      <div className={cn("flex flex-1 flex-col", className)}>
-        <EmptyState />
+      <div className={cn("flex flex-1 flex-col relative", className)}>
+        <HeroEmptyState onSuggestionClick={onSuggestionClick} />
       </div>
     );
   }
@@ -173,7 +244,7 @@ export function ChatMessages({
   return (
     <div className={cn("relative flex-1 min-h-0", className)}>
       <ScrollArea ref={scrollAreaRef} className="h-full">
-        <div className="flex flex-col p-4">
+        <div className="flex flex-col p-4 md:p-6 max-w-4xl mx-auto">
           <motion.div
             variants={containerVariants}
             initial="initial"
@@ -198,18 +269,15 @@ export function ChatMessages({
               ))}
             </AnimatePresence>
 
-            {/* Typing indicator when loading */}
             <AnimatePresence>
               {isLoading && <TypingIndicator key="typing-indicator" />}
             </AnimatePresence>
           </motion.div>
 
-          {/* Invisible element for scroll anchor */}
           <div ref={bottomRef} className="h-px" aria-hidden="true" />
         </div>
       </ScrollArea>
 
-      {/* Scroll to bottom button - appears when user scrolls up */}
       <AnimatePresence>
         {showScrollButton && (
           <motion.div
@@ -222,10 +290,10 @@ export function ChatMessages({
               variant="secondary"
               size="sm"
               onClick={handleScrollToBottom}
-              className="shadow-lg gap-1.5"
+              className="shadow-lg gap-1.5 rounded-full px-4"
             >
               <ArrowDown className="h-4 w-4" />
-              <span>Scroll to bottom</span>
+              <span>New messages</span>
             </Button>
           </motion.div>
         )}

@@ -10,28 +10,25 @@ import { useChat } from "@/components/providers";
 import { useResults, useNetworkStatus } from "@/hooks";
 import { MOCK_LEGISLATORS, MOCK_DOCUMENTS, MOCK_HEARINGS, MOCK_VOTES } from "@/lib/mock-data";
 
-// Set to true to use mock data for testing filters
 const USE_MOCK_DATA = process.env.NODE_ENV === "development";
 
 export default function Home() {
   const { messages, isLoading, error, sendMessage, retryMessage, clearError } = useChat();
   const { legislators, documents, votes, hearings, activeTab, setActiveTab } = useResults(messages);
   const { isOnline, wasOffline, resetWasOffline } = useNetworkStatus();
+  const [suggestionValue, setSuggestionValue] = React.useState("");
 
-  // Show toast when coming back online
   React.useEffect(() => {
     if (wasOffline && isOnline) {
       toast.success("You're back online!", {
         description: "Your connection has been restored.",
         duration: 3000,
       });
-      // Reset after showing toast
       const timer = setTimeout(resetWasOffline, 3500);
       return () => clearTimeout(timer);
     }
   }, [wasOffline, isOnline, resetWasOffline]);
 
-  // Show toast when going offline
   React.useEffect(() => {
     if (!isOnline) {
       toast.error("You're offline", {
@@ -41,7 +38,6 @@ export default function Home() {
     }
   }, [isOnline]);
 
-  // Handle retry with toast feedback
   const handleRetryMessage = React.useCallback(
     async (messageId: string) => {
       toast.promise(retryMessage(messageId), {
@@ -53,7 +49,6 @@ export default function Home() {
     [retryMessage]
   );
 
-  // Handle send with offline check
   const handleSendMessage = React.useCallback(
     async (content: string) => {
       if (!isOnline) {
@@ -63,11 +58,24 @@ export default function Home() {
         return;
       }
       await sendMessage(content);
+      setSuggestionValue(""); // Clear suggestion after sending
     },
     [sendMessage, isOnline]
   );
 
-  // Use mock data in development for testing
+  const handleSuggestionClick = React.useCallback(
+    (suggestion: string) => {
+      if (!isOnline) {
+        toast.error("You're offline", {
+          description: "Please check your connection and try again.",
+        });
+        return;
+      }
+      setSuggestionValue(suggestion);
+    },
+    [isOnline]
+  );
+
   const displayLegislators =
     USE_MOCK_DATA && legislators.length === 0 ? MOCK_LEGISLATORS : legislators;
   const displayDocuments = USE_MOCK_DATA && documents.length === 0 ? MOCK_DOCUMENTS : documents;
@@ -112,11 +120,17 @@ export default function Home() {
           messages={messages}
           isLoading={isLoading}
           onRetryMessage={handleRetryMessage}
+          onSuggestionClick={handleSuggestionClick}
         />
 
-        {/* Chat Input - fixed at bottom */}
+        {/* Chat Input */}
         <div className="flex-shrink-0">
-          <ChatInput onSend={handleSendMessage} isLoading={isLoading} disabled={!isOnline} />
+          <ChatInput
+            onSend={handleSendMessage}
+            isLoading={isLoading}
+            disabled={!isOnline}
+            initialValue={suggestionValue}
+          />
         </div>
       </div>
     </AppLayout>

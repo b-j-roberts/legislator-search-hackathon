@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Moon, Sun, Landmark, PanelLeftOpen, MessageSquarePlus, Users } from "lucide-react";
+import { Moon, Sun, PanelLeftOpen, MessageSquarePlus, Users } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useChat } from "@/hooks/use-chat";
 import { useContact } from "@/hooks/use-contact";
@@ -16,7 +16,6 @@ function ThemeToggle() {
   const [mounted, setMounted] = React.useState(false);
   const { resolvedTheme, setTheme } = useTheme();
 
-  // Avoid hydration mismatch by only rendering after mount
   React.useEffect(() => {
     setMounted(true);
   }, []);
@@ -25,10 +24,9 @@ function ThemeToggle() {
     setTheme(resolvedTheme === "dark" ? "light" : "dark");
   };
 
-  // Render placeholder with same dimensions to avoid layout shift
   if (!mounted) {
     return (
-      <div className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-input bg-background" />
+      <div className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/50 bg-background/50" />
     );
   }
 
@@ -36,12 +34,17 @@ function ThemeToggle() {
     <Tooltip>
       <TooltipTrigger asChild>
         <Button
-          variant="outline"
+          variant="ghost"
           size="icon"
           onClick={toggleTheme}
+          className="h-9 w-9 rounded-full hover:bg-accent/20 transition-colors"
           aria-label={`Switch to ${resolvedTheme === "dark" ? "light" : "dark"} mode`}
         >
-          {resolvedTheme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          {resolvedTheme === "dark" ? (
+            <Sun className="h-4 w-4 text-accent" />
+          ) : (
+            <Moon className="h-4 w-4" />
+          )}
         </Button>
       </TooltipTrigger>
       <TooltipContent>
@@ -51,21 +54,49 @@ function ThemeToggle() {
   );
 }
 
+// Custom Capitol dome icon for branding
+function CapitolIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      {/* Dome */}
+      <path d="M12 2C8 2 5 5 5 8v1h14V8c0-3-3-6-7-6z" />
+      {/* Dome top */}
+      <circle cx="12" cy="4" r="1" fill="currentColor" />
+      {/* Building base */}
+      <rect x="3" y="9" width="18" height="2" rx="0.5" />
+      {/* Columns */}
+      <line x1="6" y1="11" x2="6" y2="19" />
+      <line x1="10" y1="11" x2="10" y2="19" />
+      <line x1="14" y1="11" x2="14" y2="19" />
+      <line x1="18" y1="11" x2="18" y2="19" />
+      {/* Foundation */}
+      <rect x="2" y="19" width="20" height="3" rx="0.5" />
+    </svg>
+  );
+}
+
 export function Header() {
   const pathname = usePathname();
   const { toggleSidebar, isSidebarOpen, newConversation, conversations } = useChat();
   const { hasSelections, selectionCount, currentStep } = useContact();
 
-  // Determine if we're in the contact flow
   const isContactFlow = pathname?.startsWith("/contact") || currentStep === "contact";
 
   return (
     <TooltipProvider delayDuration={300}>
-      <header className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex-shrink-0">
-        <div className="flex h-14 md:h-16 items-center justify-between px-4 md:px-6">
+      <header className="sticky top-0 z-40 w-full border-b border-border/50 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 flex-shrink-0">
+        <div className="flex h-16 md:h-[72px] items-center justify-between px-4 md:px-8">
           {/* Left section - Menu and Branding */}
-          <div className="flex items-center gap-2">
-            {/* Sidebar Toggle - only show when sidebar is closed and not in contact flow */}
+          <div className="flex items-center gap-3">
+            {/* Sidebar Toggle */}
             {!isSidebarOpen && !isContactFlow && (
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -73,6 +104,7 @@ export function Header() {
                     variant="ghost"
                     size="icon"
                     onClick={toggleSidebar}
+                    className="h-9 w-9 rounded-full hover:bg-accent/20"
                     aria-label="Open chat history"
                   >
                     <PanelLeftOpen className="h-5 w-5" />
@@ -85,13 +117,25 @@ export function Header() {
             )}
 
             {/* Logo and Branding */}
-            <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-              <Landmark className="h-6 w-6 text-primary" />
-              <span className="text-lg font-semibold tracking-tight">Legislators Chat</span>
+            <Link
+              href="/"
+              className="flex items-center gap-3 group transition-all duration-300"
+            >
+              <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary/80 dark:from-accent dark:to-accent/80 shadow-sm group-hover:shadow-md transition-shadow">
+                <CapitolIcon className="h-5 w-5 text-primary-foreground dark:text-accent-foreground" />
+              </div>
+              <div className="flex flex-col">
+                <span className="font-display text-lg md:text-xl font-bold tracking-tight leading-none">
+                  Legislators
+                </span>
+                <span className="text-[10px] md:text-xs text-muted-foreground font-medium tracking-widest uppercase">
+                  Research & Connect
+                </span>
+              </div>
             </Link>
           </div>
 
-          {/* Center section - Progress Stepper (only on larger screens when in contact flow) */}
+          {/* Center section - Progress Stepper */}
           {isContactFlow && (
             <div className="hidden md:flex absolute left-1/2 -translate-x-1/2">
               <ProgressStepper currentStep={currentStep} />
@@ -99,16 +143,24 @@ export function Header() {
           )}
 
           {/* Right section - Actions */}
-          <div className="flex items-center gap-2">
-            {/* Selection indicator - show when we have selections on main page */}
+          <div className="flex items-center gap-2 md:gap-3">
+            {/* Selection indicator */}
             {hasSelections && !isContactFlow && (
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button variant="outline" size="sm" asChild className="gap-1.5">
+                  <Button
+                    variant="default"
+                    size="sm"
+                    asChild
+                    className="gap-2 rounded-full bg-accent text-accent-foreground hover:bg-accent/90 shadow-sm px-4"
+                  >
                     <Link href="/contact">
                       <Users className="h-4 w-4" />
-                      <span className="hidden sm:inline">Contact</span>
-                      <Badge variant="secondary" className="ml-1">
+                      <span className="hidden sm:inline font-medium">Contact</span>
+                      <Badge
+                        variant="secondary"
+                        className="ml-0.5 bg-accent-foreground/20 text-accent-foreground border-0 h-5 min-w-5 rounded-full"
+                      >
                         {selectionCount}
                       </Badge>
                     </Link>
@@ -123,15 +175,15 @@ export function Header() {
               </Tooltip>
             )}
 
-            {/* New Conversation Button - only show on larger screens when sidebar is closed */}
+            {/* New Conversation Button */}
             {!isSidebarOpen && conversations.length > 0 && !isContactFlow && (
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
-                    variant="outline"
+                    variant="ghost"
                     size="icon"
                     onClick={newConversation}
-                    className="hidden sm:flex"
+                    className="hidden sm:flex h-9 w-9 rounded-full hover:bg-accent/20"
                     aria-label="New conversation"
                   >
                     <MessageSquarePlus className="h-4 w-4" />

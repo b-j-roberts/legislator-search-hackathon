@@ -1,14 +1,15 @@
 "use client";
 
 import * as React from "react";
-import { Send, Mic, Loader2 } from "lucide-react";
+import { Send, Loader2, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
 const DEFAULT_MAX_CHARS = 4000;
 const MIN_ROWS = 1;
-const MAX_ROWS = 8;
+const MAX_ROWS = 6;
 
 export interface ChatInputProps {
   onSend: (message: string) => void;
@@ -16,6 +17,7 @@ export interface ChatInputProps {
   isLoading?: boolean;
   placeholder?: string;
   maxChars?: number;
+  initialValue?: string;
 }
 
 export function ChatInput({
@@ -24,24 +26,38 @@ export function ChatInput({
   isLoading = false,
   placeholder = "Ask about legislators, hearings, or voting records...",
   maxChars = DEFAULT_MAX_CHARS,
+  initialValue = "",
 }: ChatInputProps) {
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = React.useState(initialValue);
+  const [isFocused, setIsFocused] = React.useState(false);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+
+  // Update value when initialValue changes (for suggestions)
+  React.useEffect(() => {
+    if (initialValue) {
+      setValue(initialValue);
+      // Auto-send after a brief delay when suggestion is clicked
+      const timer = setTimeout(() => {
+        if (initialValue.trim()) {
+          onSend(initialValue.trim());
+          setValue("");
+        }
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [initialValue, onSend]);
 
   const charCount = value.length;
   const isOverLimit = charCount > maxChars;
   const canSend = value.trim().length > 0 && !isOverLimit && !disabled && !isLoading;
   const isDisabled = disabled || isLoading;
 
-  // Auto-resize textarea
   const adjustHeight = React.useCallback(() => {
     const textarea = textareaRef.current;
     if (!textarea) return;
 
-    // Reset height to calculate proper scrollHeight
     textarea.style.height = "auto";
 
-    // Calculate line height and constrain rows
     const computedStyle = window.getComputedStyle(textarea);
     const lineHeight = parseInt(computedStyle.lineHeight) || 24;
     const paddingTop = parseInt(computedStyle.paddingTop) || 0;
@@ -58,7 +74,6 @@ export function ChatInput({
     adjustHeight();
   }, [value, adjustHeight]);
 
-  // Focus textarea on mount
   React.useEffect(() => {
     if (!isDisabled) {
       textareaRef.current?.focus();
@@ -71,7 +86,6 @@ export function ChatInput({
     onSend(value.trim());
     setValue("");
 
-    // Reset height after clearing
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
     }
@@ -79,12 +93,10 @@ export function ChatInput({
 
   const handleKeyDown = React.useCallback(
     (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-      // Enter to send (without shift)
       if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
         handleSend();
       }
-      // Shift+Enter allows newline (default behavior)
     },
     [handleSend]
   );
@@ -94,81 +106,117 @@ export function ChatInput({
   }, []);
 
   return (
-    <div className="border-t border-border bg-background p-3 md:p-4">
-      <div className="flex items-end gap-2 md:gap-3">
-        {/* Voice input placeholder button */}
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          disabled
-          className="shrink-0 text-muted-foreground min-w-[44px] min-h-[44px] touch-manipulation"
-          aria-label="Voice input (coming soon)"
-        >
-          <Mic className="h-5 w-5" />
-        </Button>
-
-        {/* Textarea container */}
-        <div className="relative flex-1">
-          <Textarea
-            ref={textareaRef}
-            value={value}
-            onChange={handleChange}
-            onKeyDown={handleKeyDown}
-            placeholder={placeholder}
-            disabled={isDisabled}
-            rows={MIN_ROWS}
-            className={cn(
-              "min-h-[44px] resize-none pr-4 text-base leading-6",
-              isOverLimit &&
-                "border-destructive focus-visible:border-destructive focus-visible:ring-destructive/50"
-            )}
-            aria-label="Chat message input"
-            aria-describedby="char-count"
-          />
-
-          {/* Character count indicator */}
-          <div
-            id="char-count"
-            className={cn(
-              "absolute bottom-2 right-3 text-xs tabular-nums",
-              isOverLimit ? "text-destructive" : "text-muted-foreground"
-            )}
-            aria-live="polite"
-          >
-            {charCount > maxChars * 0.8 && (
-              <span>
-                {charCount.toLocaleString()}/{maxChars.toLocaleString()}
-              </span>
-            )}
-          </div>
+    <div className="relative px-4 md:px-6 pb-4 md:pb-6 pt-4">
+      {/* Floating input container with glass effect */}
+      <motion.div
+        initial={false}
+        animate={{
+          boxShadow: isFocused
+            ? "0 -4px 30px -5px rgba(232, 169, 69, 0.15), 0 4px 20px -5px rgba(0, 0, 0, 0.1)"
+            : "0 2px 20px -5px rgba(0, 0, 0, 0.1)",
+        }}
+        className={cn(
+          "relative rounded-2xl border transition-all duration-300 max-w-4xl mx-auto",
+          "bg-card/80 backdrop-blur-xl",
+          isFocused
+            ? "border-accent/30 ring-1 ring-accent/20"
+            : "border-border/50 hover:border-border"
+        )}
+      >
+        {/* AI indicator - inside the container */}
+        <div className="flex items-center gap-1.5 px-4 pt-3 pb-1">
+          <Sparkles className="w-3 h-3 text-accent" />
+          <span className="text-[10px] font-medium text-accent uppercase tracking-wide">AI-Powered</span>
         </div>
 
-        {/* Send button */}
-        <Button
-          type="button"
-          size="icon"
-          onClick={handleSend}
-          disabled={!canSend}
-          className="shrink-0 min-w-[44px] min-h-[44px] touch-manipulation"
-          aria-label={isLoading ? "Sending message..." : "Send message"}
-        >
-          {isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
-        </Button>
-      </div>
+        <div className="flex items-end gap-2 px-3 pb-3 md:px-4 md:pb-4">
+          {/* Textarea container */}
+          <div className="relative flex-1">
+            <Textarea
+              ref={textareaRef}
+              value={value}
+              onChange={handleChange}
+              onKeyDown={handleKeyDown}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
+              placeholder={placeholder}
+              disabled={isDisabled}
+              rows={MIN_ROWS}
+              className={cn(
+                "min-h-[48px] resize-none border-0 bg-transparent px-0 py-2",
+                "text-base leading-6 placeholder:text-muted-foreground/60",
+                "focus-visible:ring-0 focus-visible:ring-offset-0",
+                isOverLimit && "text-destructive"
+              )}
+              aria-label="Chat message input"
+              aria-describedby="char-count"
+            />
 
-      {/* Helper text - hidden on mobile for space efficiency */}
-      <p className="mt-2 text-xs text-muted-foreground hidden sm:block">
-        Press{" "}
-        <kbd className="rounded border border-border bg-muted px-1 py-0.5 font-mono text-[10px]">
-          Enter
-        </kbd>{" "}
-        to send,{" "}
-        <kbd className="rounded border border-border bg-muted px-1 py-0.5 font-mono text-[10px]">
-          Shift+Enter
-        </kbd>{" "}
-        for new line
-      </p>
+            {/* Character count indicator */}
+            {charCount > maxChars * 0.8 && (
+              <div
+                id="char-count"
+                className={cn(
+                  "absolute -bottom-1 right-0 text-[10px] tabular-nums",
+                  isOverLimit ? "text-destructive" : "text-muted-foreground/60"
+                )}
+                aria-live="polite"
+              >
+                {charCount.toLocaleString()}/{maxChars.toLocaleString()}
+              </div>
+            )}
+          </div>
+
+          {/* Send button */}
+          <motion.div
+            initial={false}
+            animate={{
+              scale: canSend ? 1 : 0.9,
+              opacity: canSend ? 1 : 0.5,
+            }}
+            transition={{ duration: 0.15 }}
+          >
+            <Button
+              type="button"
+              size="icon"
+              onClick={handleSend}
+              disabled={!canSend}
+              className={cn(
+                "shrink-0 h-11 w-11 rounded-xl transition-all duration-200 touch-manipulation",
+                canSend
+                  ? "bg-accent text-accent-foreground hover:bg-accent/90 shadow-md shadow-accent/20"
+                  : "bg-muted text-muted-foreground"
+              )}
+              aria-label={isLoading ? "Sending message..." : "Send message"}
+            >
+              {isLoading ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : (
+                <Send className="h-5 w-5" />
+              )}
+            </Button>
+          </motion.div>
+        </div>
+
+        {/* Helper text inside the container */}
+        <div className="hidden sm:flex items-center justify-between px-4 pb-3 text-[11px] text-muted-foreground/50">
+          <div className="flex items-center gap-3">
+            <span>
+              <kbd className="rounded bg-muted/50 px-1.5 py-0.5 font-mono text-[10px]">
+                Enter
+              </kbd>{" "}
+              to send
+            </span>
+            <span>
+              <kbd className="rounded bg-muted/50 px-1.5 py-0.5 font-mono text-[10px]">
+                Shift+Enter
+              </kbd>{" "}
+              new line
+            </span>
+          </div>
+          <span className="text-muted-foreground/40">Powered by Maple AI</span>
+        </div>
+      </motion.div>
     </div>
   );
 }
