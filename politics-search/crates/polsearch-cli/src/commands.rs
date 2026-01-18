@@ -3,6 +3,7 @@ pub mod db;
 pub mod embed_votes;
 pub mod fetch_floor_speeches;
 pub mod fts;
+pub mod index;
 pub mod ingest_floor_speeches;
 pub mod ingest_hearings;
 pub mod ingest_votes;

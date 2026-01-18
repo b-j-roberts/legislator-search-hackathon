@@ -4,10 +4,8 @@ use arrow_array::RecordBatch;
 use color_eyre::eyre::{Result, eyre};
 use colored::Colorize;
 use futures::TryStreamExt;
-use lancedb::index::Index;
 use lancedb::index::scalar::FullTextSearchQuery;
 use lancedb::query::{ExecutableQuery, QueryBase};
-use lancedb::table::OptimizeAction;
 use polsearch_pipeline::stages::TextEmbedder;
 use polsearch_util::truncate;
 
@@ -51,41 +49,6 @@ pub async fn show(lancedb_path: &str, table_name: &str, limit: usize) -> Result<
         _ => return Err(eyre!("Unknown table: {}", table_name)),
     }
 
-    Ok(())
-}
-
-/// Create FTS index on `text_embeddings` table
-pub async fn create_fts_index(lancedb_path: &str) -> Result<()> {
-    let db = lancedb::connect(lancedb_path).execute().await?;
-    let table = db.open_table("text_embeddings").execute().await?;
-
-    println!(
-        "{}",
-        "Creating FTS index on text_embeddings.text column...".yellow()
-    );
-    table
-        .create_index(
-            &["text"],
-            Index::FTS(lancedb::index::scalar::FtsIndexBuilder::default()),
-        )
-        .execute()
-        .await?;
-    println!("{}", "FTS index created".green());
-
-    // optimize all indices and prune old versions
-    println!(
-        "{}",
-        "Optimizing indices and pruning old versions...".yellow()
-    );
-    let stats = table.optimize(OptimizeAction::All).await?;
-    if let Some(compaction) = stats.compaction {
-        println!("  Compacted {} fragments", compaction.files_removed);
-    }
-    if let Some(prune) = stats.prune {
-        println!("  Pruned {} bytes", prune.bytes_removed);
-    }
-
-    println!("{}", "Done!".green().bold());
     Ok(())
 }
 
