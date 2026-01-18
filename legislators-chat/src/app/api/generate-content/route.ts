@@ -14,6 +14,7 @@ import {
   getAuthHeaders,
   isAIConfigured,
   getProviderName,
+  buildRequestBody,
 } from "@/lib/ai-client";
 
 interface GenerateContentRequest {
@@ -103,13 +104,15 @@ export async function POST(request: NextRequest): Promise<NextResponse<GenerateC
     const aiResponse = await fetch(getChatCompletionsUrl(), {
       method: "POST",
       headers: getAuthHeaders(),
-      body: JSON.stringify({
-        model: aiConfig.model,
-        messages,
-        stream: false,
-        temperature: 0.7, // Some creativity but not too random
-        max_tokens: 1500,
-      }),
+      body: JSON.stringify(
+        buildRequestBody({
+          model: aiConfig.model,
+          messages,
+          stream: false,
+          temperature: 0.7, // Some creativity but not too random
+          maxTokens: 1500,
+        })
+      ),
     });
 
     if (!aiResponse.ok) {

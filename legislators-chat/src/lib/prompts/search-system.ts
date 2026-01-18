@@ -105,6 +105,93 @@ export const SENSITIVE_TOPICS = [
 ] as const;
 
 /**
+ * Synonym mappings for common political search terms.
+ * Used to expand searches when no results are found.
+ * Key is the original term, values are related terms to try.
+ */
+export const SEARCH_SYNONYMS: Record<string, string[]> = {
+  // Firearms
+  "gun control": [
+    "firearms regulation",
+    "second amendment",
+    "gun violence prevention",
+    "firearm legislation",
+  ],
+  "gun rights": ["second amendment", "firearms", "gun ownership", "firearm rights"],
+  "gun violence": ["mass shooting", "firearm deaths", "gun safety"],
+  "assault weapons": ["AR-15", "semiautomatic weapons", "firearms ban"],
+
+  // Climate & Environment
+  "climate change": ["climate", "global warming", "environmental policy", "carbon emissions"],
+  "global warming": ["climate change", "climate", "greenhouse gases", "carbon"],
+  environment: ["climate", "environmental protection", "EPA", "pollution"],
+  "green new deal": ["climate policy", "environmental legislation", "clean energy"],
+
+  // Immigration
+  immigration: ["border", "migrants", "asylum", "border security", "visa"],
+  "border security": ["immigration", "border wall", "CBP", "border patrol"],
+  migrants: ["immigrants", "asylum seekers", "refugees", "immigration"],
+  asylum: ["refugees", "immigration", "migrants", "border"],
+  deportation: ["removal", "immigration enforcement", "ICE"],
+  daca: ["dreamers", "deferred action", "immigration"],
+
+  // Healthcare
+  healthcare: ["health care", "health insurance", "medical", "ACA"],
+  obamacare: ["affordable care act", "ACA", "health insurance", "healthcare"],
+  "medicare for all": ["single payer", "universal healthcare", "health insurance"],
+  "vaccine mandate": ["vaccination requirement", "immunization", "vaccine policy"],
+
+  // Economy
+  inflation: ["prices", "cost of living", "economy", "economic"],
+  taxes: ["tax policy", "taxation", "tax reform", "revenue"],
+  jobs: ["employment", "unemployment", "workforce", "labor"],
+  economy: ["economic policy", "GDP", "fiscal", "financial"],
+
+  // Education
+  education: ["schools", "students", "teachers", "learning"],
+  "student loans": ["student debt", "college costs", "higher education", "tuition"],
+  "critical race theory": ["CRT", "diversity curriculum", "education policy"],
+
+  // Criminal Justice
+  "police reform": ["law enforcement", "policing", "criminal justice reform"],
+  "criminal justice": ["sentencing", "incarceration", "justice reform", "prisons"],
+  "qualified immunity": ["police accountability", "law enforcement", "civil rights"],
+
+  // Foreign Policy
+  china: ["Chinese", "Beijing", "US-China", "trade"],
+  russia: ["Russian", "Moscow", "Putin", "Ukraine"],
+  ukraine: ["Russia", "military aid", "foreign assistance"],
+  "foreign aid": ["foreign assistance", "international aid", "USAID"],
+
+  // Social Issues
+  abortion: ["reproductive rights", "reproductive health", "Roe", "pregnancy"],
+  "reproductive rights": ["abortion", "reproductive health", "family planning"],
+  lgbtq: ["LGBT", "gay rights", "same-sex", "transgender"],
+  "voting rights": ["elections", "voter access", "ballot", "election security"],
+
+  // Technology
+  "big tech": ["technology companies", "social media", "tech regulation", "antitrust"],
+  "artificial intelligence": ["AI", "machine learning", "technology", "automation"],
+  cybersecurity: ["cyber attacks", "hacking", "data security", "cyber"],
+  privacy: ["data privacy", "surveillance", "data protection"],
+} as const;
+
+/**
+ * Priority order for filter removal when retrying failed searches.
+ * Filters are listed from most restrictive (remove first) to least restrictive.
+ * Date ranges are most commonly over-restrictive, type is usually helpful to keep.
+ */
+export const FILTER_REMOVAL_PRIORITY = [
+  "from", // Date filters are often too restrictive
+  "to",
+  "speaker", // Specific speakers may not have spoken on topic
+  "committee", // Committee assignments change
+  "congress", // Congress number may be wrong
+  "chamber", // Chamber filter is moderately restrictive
+  "type", // Type filters are usually helpful, remove last
+] as const;
+
+/**
  * Check if a query contains sensitive topic keywords.
  * Case-insensitive matching.
  */
@@ -120,6 +207,119 @@ export function containsSensitiveTopic(query: string): boolean {
 export function detectSensitiveTopics(query: string): string[] {
   const lowerQuery = query.toLowerCase();
   return SENSITIVE_TOPICS.filter((topic) => lowerQuery.includes(topic));
+}
+
+/**
+ * Get synonym suggestions for terms in a search query.
+ * Returns alternative terms that could be used to broaden the search.
+ *
+ * @param query The search query to find synonyms for
+ * @returns Array of synonym suggestions with the original term and alternatives
+ */
+export function getSynonymsForQuery(query: string): Array<{ term: string; synonyms: string[] }> {
+  const lowerQuery = query.toLowerCase();
+  const results: Array<{ term: string; synonyms: string[] }> = [];
+
+  for (const [term, synonyms] of Object.entries(SEARCH_SYNONYMS)) {
+    if (lowerQuery.includes(term.toLowerCase())) {
+      results.push({ term, synonyms: [...synonyms] });
+    }
+  }
+
+  return results;
+}
+
+/**
+ * Get the first suggested synonym replacement for a query.
+ * Useful for automated retry attempts.
+ *
+ * @param query The original query
+ * @returns A modified query with the first synonym substitution, or null if no synonyms found
+ */
+export function getFirstSynonymQuery(query: string): string | null {
+  const synonymMatches = getSynonymsForQuery(query);
+
+  if (synonymMatches.length === 0 || synonymMatches[0].synonyms.length === 0) {
+    return null;
+  }
+
+  const firstMatch = synonymMatches[0];
+  // Replace the term with the first synonym (case-insensitive)
+  const regex = new RegExp(firstMatch.term, "gi");
+  return query.replace(regex, firstMatch.synonyms[0]);
+}
+
+/**
+ * Determine which filter to remove next based on priority order.
+ * Returns the filter key that should be removed to broaden the search.
+ *
+ * @param currentFilters Object containing the current filter values
+ * @returns The filter key to remove, or null if no filters remain
+ */
+export function getNextFilterToRemove(
+  currentFilters: Record<string, unknown>
+): (typeof FILTER_REMOVAL_PRIORITY)[number] | null {
+  for (const filterKey of FILTER_REMOVAL_PRIORITY) {
+    if (currentFilters[filterKey] !== undefined && currentFilters[filterKey] !== null) {
+      return filterKey;
+    }
+  }
+  return null;
+}
+
+/**
+ * Get a human-readable description of what a filter removal will do.
+ * Used for transparency messages to users.
+ */
+export function getFilterRemovalDescription(filterKey: string): string {
+  const descriptions: Record<string, string> = {
+    from: "date range start",
+    to: "date range end",
+    speaker: "specific speaker",
+    committee: "committee",
+    congress: "Congress number",
+    chamber: "chamber (House/Senate)",
+    type: "content type",
+  };
+  return descriptions[filterKey] || filterKey;
+}
+
+/**
+ * Analyze search parameters and generate a retry strategy.
+ * Returns structured information about how to broaden a failed search.
+ */
+export function analyzeRetryStrategy(params: OriginalSearchParams["params"]): RetryStrategy {
+  const strategy: RetryStrategy = {
+    synonymSuggestions: getSynonymsForQuery(params.q),
+    filterToRemove: null,
+    filterRemovalDescription: null,
+    simplifiedQuery: null,
+    hasFiltersToRemove: false,
+    suggestWebSearch: false,
+    retryAttempt: 0,
+  };
+
+  // Check for filters that can be removed
+  const filterOnlyParams: Record<string, unknown> = { ...params };
+  delete filterOnlyParams.q;
+  delete filterOnlyParams.enrich;
+  delete filterOnlyParams.limit;
+  delete filterOnlyParams.offset;
+
+  const nextFilter = getNextFilterToRemove(filterOnlyParams);
+  if (nextFilter) {
+    strategy.filterToRemove = nextFilter;
+    strategy.filterRemovalDescription = getFilterRemovalDescription(nextFilter);
+    strategy.hasFiltersToRemove = true;
+  }
+
+  // Generate simplified query (remove quotes, special chars)
+  const simplified = params.q.replace(/["']/g, "").replace(/\s+/g, " ").trim();
+  if (simplified !== params.q) {
+    strategy.simplifiedQuery = simplified;
+  }
+
+  return strategy;
 }
 
 // =============================================================================
@@ -331,26 +531,136 @@ ${resultLines.join("\n\n")}
 }
 
 /**
- * Build a retry prompt when a search returns no results
+ * Build a retry prompt when a search returns no results.
+ * Uses synonym expansion and priority-based filter removal for smarter retries.
  *
  * @param originalParams The original search parameters that returned no results
+ * @param options Optional settings for retry behavior
  * @returns Prompt instructing the AI to retry with broader search
  */
-export function buildNoResultsRetryPrompt(originalParams: OriginalSearchParams): string {
+export function buildNoResultsRetryPrompt(
+  originalParams: OriginalSearchParams,
+  options: RetryPromptOptions = {}
+): string {
+  const { retryAttempt = 1, removedFilters = [], synonymsTried = false } = options;
+
+  const strategy = analyzeRetryStrategy(originalParams.params);
+
+  // Build the original parameters display
   const paramsList = Object.entries(originalParams.params)
-    .filter(([_, v]) => v !== undefined && v !== null)
+    .filter((entry) => entry[1] !== undefined && entry[1] !== null)
     .map(([k, v]) => `- ${k}: ${v}`)
     .join("\n");
 
-  return `The previous search returned no results. Original search parameters:
+  // Build synonym suggestions section
+  let synonymSection = "";
+  if (strategy.synonymSuggestions.length > 0 && !synonymsTried) {
+    const synonymLines = strategy.synonymSuggestions
+      .map(
+        (s) =>
+          `  - "${s.term}" → try: ${s.synonyms
+            .slice(0, 3)
+            .map((syn) => `"${syn}"`)
+            .join(", ")}`
+      )
+      .join("\n");
+    synonymSection = `
+### Synonym Suggestions
+Consider rephrasing with these alternative terms:
+${synonymLines}
+`;
+  }
+
+  // Build filter removal guidance section
+  let filterSection = "";
+  if (strategy.hasFiltersToRemove) {
+    const alreadyRemoved =
+      removedFilters.length > 0 ? `\nAlready tried removing: ${removedFilters.join(", ")}` : "";
+
+    filterSection = `
+### Filter Removal Priority
+Remove filters in this order (most to least restrictive):
+1. Date range (from/to) - often too narrow for specific topics
+2. Speaker - the person may not have spoken on this topic
+3. Committee - committee jurisdiction varies
+4. Congress number - may span multiple sessions
+5. Chamber - try both House and Senate
+6. Content type - search all types as last resort
+${alreadyRemoved}
+**Recommended next removal**: ${strategy.filterRemovalDescription || "No filters to remove"}
+`;
+  }
+
+  // Build transparency message for user
+  const userMessage = buildUserTransparencyMessage(strategy, retryAttempt, removedFilters);
+
+  // Determine if web search should be suggested
+  const webSearchFallback =
+    retryAttempt >= 3 || (!strategy.hasFiltersToRemove && synonymsTried)
+      ? `
+### Final Fallback
+If the retry still returns no results, inform the user:
+"${userMessage}"
+
+Consider suggesting they try a web search for more recent or broader information on this topic.`
+      : "";
+
+  return `[NO_RESULTS_RETRY - Attempt ${retryAttempt}]
+
+The previous search returned no results. Original search parameters:
 ${paramsList}
+${synonymSection}${filterSection}
+### Retry Instructions
+1. ${!synonymsTried && strategy.synonymSuggestions.length > 0 ? "Try synonym substitution first" : "Simplify the query keywords"}
+2. ${strategy.filterToRemove ? `Remove the "${strategy.filterRemovalDescription}" filter` : "Broaden to search all content types"}
+3. Keep the core intent of the user's question
 
-Please retry with a broader search by:
-1. Removing the most restrictive filter (speaker, committee, or date range)
-2. Using more general keywords in the query
-3. Expanding the content types if limited
+**IMPORTANT**: In your response, briefly explain to the user what you're broadening:
+"${userMessage}"
 
-Output a new search JSON with relaxed parameters.`;
+Output a new search JSON with relaxed parameters.
+${webSearchFallback}
+[END_NO_RESULTS_RETRY]`;
+}
+
+/**
+ * Generate a user-facing transparency message explaining what was broadened.
+ * Helps users understand why results may differ from their original request.
+ */
+export function buildUserTransparencyMessage(
+  strategy: RetryStrategy,
+  retryAttempt: number,
+  removedFilters: string[]
+): string {
+  const parts: string[] = [];
+
+  if (retryAttempt === 1) {
+    if (strategy.synonymSuggestions.length > 0) {
+      const firstTerm = strategy.synonymSuggestions[0].term;
+      const firstSyn = strategy.synonymSuggestions[0].synonyms[0];
+      parts.push(`searching for "${firstSyn}" instead of "${firstTerm}"`);
+    }
+    if (strategy.filterToRemove) {
+      parts.push(`removing the ${strategy.filterRemovalDescription} filter`);
+    }
+  } else if (retryAttempt === 2) {
+    if (removedFilters.length > 0) {
+      parts.push(`broadening the search by removing ${removedFilters.join(" and ")} filters`);
+    } else {
+      parts.push("using more general search terms");
+    }
+  } else {
+    parts.push("searching with minimal filters");
+    if (strategy.synonymSuggestions.length > 0) {
+      parts.push("trying alternative terminology");
+    }
+  }
+
+  if (parts.length === 0) {
+    return "I'm broadening my search to find relevant results.";
+  }
+
+  return `I'm ${parts.join(" and ")} to find relevant results.`;
 }
 
 // =============================================================================
@@ -389,4 +699,32 @@ export interface OriginalSearchParams {
     to?: string;
     limit?: number;
   };
+}
+
+/** Retry strategy analysis result */
+export interface RetryStrategy {
+  /** Synonym suggestions found for query terms */
+  synonymSuggestions: Array<{ term: string; synonyms: string[] }>;
+  /** Next filter to remove based on priority */
+  filterToRemove: (typeof FILTER_REMOVAL_PRIORITY)[number] | null;
+  /** Human-readable description of the filter to remove */
+  filterRemovalDescription: string | null;
+  /** Simplified version of the query (if applicable) */
+  simplifiedQuery: string | null;
+  /** Whether there are any filters that can be removed */
+  hasFiltersToRemove: boolean;
+  /** Whether to suggest a web search as fallback */
+  suggestWebSearch: boolean;
+  /** Current retry attempt number (for tracking) */
+  retryAttempt: number;
+}
+
+/** Options for building retry prompts */
+export interface RetryPromptOptions {
+  /** Current retry attempt (1 = first retry, 2 = second retry, etc.) */
+  retryAttempt?: number;
+  /** Filters that have already been removed in previous attempts */
+  removedFilters?: string[];
+  /** Whether synonyms have already been tried */
+  synonymsTried?: boolean;
 }

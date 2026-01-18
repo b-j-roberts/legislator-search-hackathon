@@ -552,13 +552,9 @@ export function setContactMethod(
 
   const legislator = queue.items[itemIndex].legislator;
 
-  // If trying to set call but no phone, keep email
+  // If trying to set call but no phone, keep current method
+  // (Email can always be selected - users can draft and use contact forms)
   if (method === "call" && !legislator.contact.phone) {
-    return queue;
-  }
-
-  // If trying to set email but no email, keep call
-  if (method === "email" && !legislator.contact.email) {
     return queue;
   }
 
@@ -595,11 +591,8 @@ export function setDefaultContactMethod(
       }
 
       // Respect availability - can't set call if no phone
+      // (Email can always be set - users can draft and use contact forms)
       if (method === "call" && !item.legislator.contact.phone) {
-        return item;
-      }
-      // Can't set email if no email
-      if (method === "email" && !item.legislator.contact.email) {
         return item;
       }
 
@@ -614,23 +607,13 @@ export function setDefaultContactMethod(
 }
 
 /**
- * Get the effective contact method for a legislator (respecting availability)
+ * Get the effective contact method for a legislator
+ * Note: We no longer auto-fallback when email/phone is missing.
+ * Users can draft emails even without an email address on file.
  */
 export function getEffectiveContactMethod(item: QueueItem): ContactMethod {
-  const { legislator, contactMethod } = item;
-  const preferred = contactMethod ?? "email";
-
-  // If preferred is call but no phone, fall back to email
-  if (preferred === "call" && !legislator.contact.phone) {
-    return "email";
-  }
-
-  // If preferred is email but no email, fall back to call
-  if (preferred === "email" && !legislator.contact.email) {
-    return "call";
-  }
-
-  return preferred;
+  const { contactMethod } = item;
+  return contactMethod ?? "email";
 }
 
 /**

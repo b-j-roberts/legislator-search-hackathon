@@ -120,15 +120,13 @@ function ActiveLegislatorHero({
                   {queuePosition} of {totalCount}
                 </span>
               </div>
-              {availability.hasBoth && (
-                <ContactMethodSelector
-                  value={effectiveMethod}
-                  onChange={onMethodChange}
-                  hasPhone={availability.hasPhone}
-                  hasEmail={availability.hasEmail}
-                  size="sm"
-                />
-              )}
+              <ContactMethodSelector
+                value={effectiveMethod}
+                onChange={onMethodChange}
+                hasPhone={availability.hasPhone}
+                hasEmail={availability.hasEmail}
+                size="sm"
+              />
             </div>
           </div>
 
@@ -171,7 +169,7 @@ function ActiveLegislatorHero({
             <div className="mt-6 pt-6 border-t border-border">
               <div className="flex flex-col sm:flex-row gap-4">
                 {/* Contact info box */}
-                {contactInfo && (
+                {contactInfo ? (
                   <div className="flex-1 flex items-center gap-3 px-4 py-3 rounded-xl bg-muted/50 border border-border">
                     <div className="flex-shrink-0">
                       {effectiveMethod === "call" ? (
@@ -196,7 +194,16 @@ function ActiveLegislatorHero({
                       )}
                     </Button>
                   </div>
-                )}
+                ) : effectiveMethod === "email" ? (
+                  <div className="flex-1 flex items-center gap-3 px-4 py-3 rounded-xl bg-amber-500/10 border border-amber-500/20">
+                    <div className="flex-shrink-0">
+                      <Mail className="size-5 text-amber-500" />
+                    </div>
+                    <span className="flex-1 text-sm text-amber-200">
+                      No email on file. Draft your message below and use their contact form.
+                    </span>
+                  </div>
+                ) : null}
 
                 {/* Action buttons */}
                 <div className="flex gap-3 flex-shrink-0">
@@ -214,6 +221,14 @@ function ActiveLegislatorHero({
                             Open Email
                           </>
                         )}
+                      </a>
+                    </Button>
+                  )}
+                  {!contactInfo && effectiveMethod === "email" && legislator.contact.contactPage?.url && (
+                    <Button size="lg" asChild className="gap-2 flex-1 sm:flex-initial">
+                      <a href={legislator.contact.contactPage.url} target="_blank" rel="noopener noreferrer">
+                        <Mail className="size-4" />
+                        Open Contact Form
                       </a>
                     </Button>
                   )}

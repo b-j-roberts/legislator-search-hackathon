@@ -17,66 +17,6 @@ After implementing the prompt changes, please test with sample queries and docum
 
 Core prompt fixes that directly impact user experience and reliability.
 
----
-
-### 1.2 Add Controversy Handling
-
-**Description**: Add guidance for handling politically sensitive topics (abortion, guns, immigration) to ensure nonpartisan responses.
-
-**Requirements**:
-- [ ] Create new `## HANDLING SENSITIVE TOPICS` section in search system prompt
-- [ ] Define list of sensitive topic keywords to detect
-- [ ] Add instructions for presenting multiple perspectives
-- [ ] Include examples of neutral language alternatives
-- [ ] Add guidance for declining to share personal opinions
-- [ ] Test with 10+ controversial topic queries
-
-**Implementation Notes**:
-- Reference: `PROMPT_ENGINEERING.md` → Search System Prompt → Engineering Goals
-- Topics to cover: abortion, gun control, immigration, LGBTQ+ rights, police reform
-- Key principle: present congressional record facts, not editorial stance
-
-**Sample Addition**:
-```
-## HANDLING SENSITIVE TOPICS
-When users ask about controversial issues:
-1. Present facts from congressional record without editorial stance
-2. Include voices from both parties when available
-3. Use neutral descriptors (e.g., "reproductive rights legislation" not "pro-life/pro-choice")
-4. If asked your opinion, redirect: "I can show you what legislators have said about this..."
-```
-
----
-
-### 1.3 Improve No Results Retry Strategy
-
-**Description**: Enhance the retry prompt to use synonym expansion and smarter filter removal instead of just dropping filters.
-
-**Requirements**:
-- [ ] Update `buildNoResultsRetryPrompt()` at `lib/prompts/search-system.ts:434-449`
-- [ ] Add synonym mapping for common political terms
-- [ ] Implement priority-based filter removal (date → speaker → committee → type)
-- [ ] Add user transparency message explaining what was broadened
-- [ ] Include web search suggestion as final fallback
-- [ ] Test with 10+ queries that typically return zero results
-
-**Implementation Notes**:
-- Common synonyms: "gun control" ↔ "firearms", "climate" ↔ "environment", "immigration" ↔ "border"
-- Filter removal priority based on restrictiveness
-- Final message should explain what was tried
-
-**Synonym Map Example**:
-```typescript
-const SEARCH_SYNONYMS: Record<string, string[]> = {
-  "gun control": ["firearms", "second amendment", "gun violence"],
-  "climate change": ["climate", "environment", "global warming"],
-  "immigration": ["border", "migrants", "asylum"],
-  // ... more
-};
-```
-
----
-
 ### 1.4 Simplify Sentiment Scale
 
 **Description**: Replace 0-100 sentiment scale with 5-tier system for more accurate and interpretable results.
