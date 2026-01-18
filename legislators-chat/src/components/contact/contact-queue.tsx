@@ -59,28 +59,6 @@ function CompletedState({ count }: { count: number }) {
   );
 }
 
-function ProgressHeader({ contacted, total }: { contacted: number; total: number }) {
-  const percentage = total > 0 ? (contacted / total) * 100 : 0;
-
-  return (
-    <div className="mb-4 space-y-2">
-      <div className="flex items-center justify-between text-sm">
-        <span className="text-muted-foreground">Progress</span>
-        <span className="font-medium text-foreground">
-          {contacted} of {total} contacted
-        </span>
-      </div>
-      <div className="h-2 bg-muted rounded-full overflow-hidden">
-        <motion.div
-          className="h-full bg-primary rounded-full"
-          initial={{ width: 0 }}
-          animate={{ width: `${percentage}%` }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
-        />
-      </div>
-    </div>
-  );
-}
 
 export function ContactQueue({ className }: ContactQueueProps) {
   const {
@@ -89,7 +67,6 @@ export function ContactQueue({ className }: ContactQueueProps) {
     skipCurrentLegislator,
     removeFromQueueById,
     setActiveLegislator,
-    contactedCount,
     isComplete,
     setLegislatorContactMethod,
   } = useContact();
@@ -134,7 +111,6 @@ export function ContactQueue({ className }: ContactQueueProps) {
   if (isComplete) {
     return (
       <div className={cn("", className)}>
-        <ProgressHeader contacted={contactedCount} total={queue.items.length} />
         <CompletedState count={queue.items.length} />
         {/* Still show the list but in completed state */}
         <div className="mt-6 space-y-2">
@@ -153,63 +129,116 @@ export function ContactQueue({ className }: ContactQueueProps) {
     );
   }
 
-  const itemIds = queue.items.map((item) => item.legislator.id);
+  // Separate pending/active items from completed items
+  const pendingItems = queue.items.filter(
+    (item) => item.status === "pending" || item.status === "active"
+  );
+  const completedItems = queue.items.filter(
+    (item) => item.status === "contacted" || item.status === "skipped"
+  );
+
+  // Only include pending items in drag context (completed can't be reordered)
+  const pendingItemIds = pendingItems.map((item) => item.legislator.id);
 
   return (
     <div className={cn("", className)}>
-      <ProgressHeader contacted={contactedCount} total={queue.items.length} />
-
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
         onDragEnd={handleDragEnd}
         modifiers={[restrictToVerticalAxis]}
       >
-        <SortableContext items={itemIds} strategy={verticalListSortingStrategy}>
+        <SortableContext items={pendingItemIds} strategy={verticalListSortingStrategy}>
           <div className="space-y-2">
             <AnimatePresence mode="popLayout">
-              {queue.items.map((item, index) => (
-                <motion.div
-                  key={item.legislator.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.2, delay: index * 0.03 }}
-                  layout
-                >
-                  <ContactQueueItem
-                    legislator={item.legislator}
-                    status={item.status}
-                    index={index}
-                    contactMethod={item.contactMethod}
-                    onContactMethodChange={(method) =>
-                      setLegislatorContactMethod(item.legislator.id, method)
-                    }
-                    onSkip={
-                      item.status !== "contacted"
-                        ? () => {
-                            if (item.status === "active") {
-                              skipCurrentLegislator();
-                            } else {
-                              // Move non-active pending item to end
-                              reorderQueueItems(index, queue.items.length - 1);
+              {pendingItems.map((item) => {
+                // Use original index for display
+                const originalIndex = queue.items.findIndex(
+                  (i) => i.legislator.id === item.legislator.id
+                );
+                return (
+                  <motion.div
+                    key={item.legislator.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
+                    layout
+                  >
+                    <ContactQueueItem
+                      legislator={item.legislator}
+                      status={item.status}
+                      index={originalIndex}
+                      contactMethod={item.contactMethod}
+                      onContactMethodChange={(method) =>
+                        setLegislatorContactMethod(item.legislator.id, method)
+                      }
+                      onSkip={
+                        item.status !== "contacted"
+                          ? () => {
+                              if (item.status === "active") {
+                                skipCurrentLegislator();
+                              } else {
+                                // Move non-active pending item to end
+                                reorderQueueItems(originalIndex, queue.items.length - 1);
+                              }
                             }
-                          }
-                        : undefined
-                    }
-                    onRemove={() => removeFromQueueById(item.legislator.id)}
-                    onSetActive={
-                      item.status === "pending"
-                        ? () => setActiveLegislator(item.legislator.id)
-                        : undefined
-                    }
-                  />
-                </motion.div>
-              ))}
+                          : undefined
+                      }
+                      onRemove={() => removeFromQueueById(item.legislator.id)}
+                      onSetActive={
+                        item.status === "pending"
+                          ? () => setActiveLegislator(item.legislator.id)
+                          : undefined
+                      }
+                    />
+                  </motion.div>
+                );
+              })}
             </AnimatePresence>
           </div>
         </SortableContext>
       </DndContext>
+
+      {/* Completed items section with separator */}
+      {completedItems.length > 0 && (
+        <div className="mt-4">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="flex-1 h-px bg-border" />
+            <span className="text-xs text-muted-foreground font-medium px-2">
+              Completed ({completedItems.length})
+            </span>
+            <div className="flex-1 h-px bg-border" />
+          </div>
+          <div className="space-y-2">
+            <AnimatePresence mode="popLayout">
+              {completedItems.map((item) => {
+                const originalIndex = queue.items.findIndex(
+                  (i) => i.legislator.id === item.legislator.id
+                );
+                return (
+                  <motion.div
+                    key={item.legislator.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
+                    layout
+                  >
+                    <ContactQueueItem
+                      legislator={item.legislator}
+                      status={item.status}
+                      index={originalIndex}
+                      contactMethod={item.contactMethod}
+                      onRemove={() => removeFromQueueById(item.legislator.id)}
+                    />
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

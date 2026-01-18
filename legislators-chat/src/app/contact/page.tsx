@@ -15,6 +15,7 @@ import {
   PanelRightClose,
   PanelRightOpen,
   ListOrdered,
+  GripVertical,
 } from "lucide-react";
 
 import { useContact, getEffectiveContactMethod, getContactAvailability } from "@/hooks/use-contact";
@@ -23,12 +24,17 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
-import { ProgressStepper } from "@/components/layout";
 import { ContactQueue, ContactMethodSelector, ContentGenerationPanel, MarkCompleteDialog, SessionSummary } from "@/components/contact";
 import type { ContactOutcome } from "@/components/contact";
 
 import type { QueueItem } from "@/hooks/use-contact";
 import type { ContactMethod } from "@/lib/types";
+import {
+  loadUIPreferences,
+  saveUIPreferences,
+  QUEUE_WIDTH_MIN,
+  QUEUE_WIDTH_MAX,
+} from "@/lib/ui-preferences";
 
 function EmptyState() {
   return (
@@ -182,6 +188,8 @@ interface QueueSidebarProps {
   totalCount: number;
   defaultContactMethod: ContactMethod;
   onSetDefaultMethod: (method: ContactMethod, applyToAll?: boolean) => void;
+  width: number;
+  onWidthChange: (width: number) => void;
 }
 
 function QueueSidebar({
@@ -191,10 +199,63 @@ function QueueSidebar({
   totalCount,
   defaultContactMethod,
   onSetDefaultMethod,
+  width,
+  onWidthChange,
 }: QueueSidebarProps) {
+  const [isResizing, setIsResizing] = React.useState(false);
+  const sidebarRef = React.useRef<HTMLDivElement>(null);
+  const widthRef = React.useRef(width);
+
+  // Keep ref in sync with width prop
+  React.useEffect(() => {
+    widthRef.current = width;
+  }, [width]);
+
+  // Handle resize drag
+  const handleResizeStart = React.useCallback(
+    (e: React.MouseEvent | React.TouchEvent) => {
+      e.preventDefault();
+      setIsResizing(true);
+
+      const startX = "touches" in e ? e.touches[0].clientX : e.clientX;
+      const startWidth = widthRef.current;
+
+      const handleMove = (moveEvent: MouseEvent | TouchEvent) => {
+        const currentX =
+          "touches" in moveEvent
+            ? moveEvent.touches[0].clientX
+            : moveEvent.clientX;
+        // Dragging left increases width (sidebar is on right)
+        const delta = startX - currentX;
+        const newWidth = Math.max(
+          QUEUE_WIDTH_MIN,
+          Math.min(QUEUE_WIDTH_MAX, startWidth + delta)
+        );
+        onWidthChange(newWidth);
+        widthRef.current = newWidth;
+      };
+
+      const handleEnd = () => {
+        setIsResizing(false);
+        document.removeEventListener("mousemove", handleMove);
+        document.removeEventListener("mouseup", handleEnd);
+        document.removeEventListener("touchmove", handleMove);
+        document.removeEventListener("touchend", handleEnd);
+        // Save to localStorage when drag ends using ref for current value
+        saveUIPreferences({ contactQueueWidth: widthRef.current });
+      };
+
+      document.addEventListener("mousemove", handleMove);
+      document.addEventListener("mouseup", handleEnd);
+      document.addEventListener("touchmove", handleMove);
+      document.addEventListener("touchend", handleEnd);
+    },
+    [onWidthChange]
+  );
+
   return (
     <>
-      {/* Toggle button (always visible) */}
+      {/* Mobile toggle button */}
       <Button
         variant="outline"
         size="sm"
@@ -210,7 +271,22 @@ function QueueSidebar({
         )}
       </Button>
 
-      {/* Sidebar */}
+      {/* Desktop expand button - shown when sidebar is collapsed */}
+      {!isOpen && (
+        <div className="hidden lg:flex items-start pt-3 pr-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onToggle}
+            className="h-8 w-8"
+            title="Expand contact queue"
+          >
+            <PanelRightOpen className="h-4 w-4" />
+          </Button>
+        </div>
+      )}
+
+      {/* Sidebar - mobile: slide-in drawer, desktop: side panel */}
       <AnimatePresence>
         {isOpen && (
           <>
@@ -223,34 +299,56 @@ function QueueSidebar({
               onClick={onToggle}
             />
 
+            {/* Resize handle - desktop only */}
+            <div
+              onMouseDown={handleResizeStart}
+              onTouchStart={handleResizeStart}
+              className={`hidden lg:flex items-center justify-center w-1 hover:w-1.5 bg-border hover:bg-primary/50 cursor-col-resize transition-all group ${
+                isResizing ? "w-1.5 bg-primary/50" : ""
+              }`}
+            >
+              <GripVertical
+                className={`h-6 w-4 text-muted-foreground/50 group-hover:text-primary transition-colors ${
+                  isResizing ? "text-primary" : ""
+                }`}
+              />
+            </div>
+
             {/* Sidebar panel */}
-            <motion.div
+            <motion.aside
+              ref={sidebarRef}
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="fixed right-0 top-0 bottom-0 w-full max-w-sm bg-background border-l border-border z-50 flex flex-col shadow-2xl lg:relative lg:shadow-none lg:z-auto"
+              style={{ width: `${width}px` }}
+              className="fixed right-0 top-0 bottom-0 w-full max-w-[500px] bg-background border-l border-border z-50 flex flex-col shadow-2xl lg:relative lg:shadow-none lg:z-auto lg:border-l-0"
             >
               {/* Sidebar header */}
-              <div className="flex-shrink-0 p-4 border-b border-border">
+              <div className="flex-shrink-0 px-3 py-2 border-b border-border bg-muted/30">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <ListOrdered className="size-5 text-muted-foreground" />
-                    <h2 className="font-semibold text-foreground">Contact Queue</h2>
+                    <ListOrdered className="size-4 text-muted-foreground" />
+                    <span className="text-sm font-medium text-muted-foreground">Queue</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Badge variant="outline">
+                    <Badge variant="outline" className="text-xs">
                       {contactedCount}/{totalCount}
                     </Badge>
-                    <Button variant="ghost" size="icon-sm" onClick={onToggle} className="lg:hidden">
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      onClick={onToggle}
+                      title="Collapse queue"
+                    >
                       <PanelRightClose className="size-4" />
                     </Button>
                   </div>
                 </div>
 
                 {/* Progress bar */}
-                <div className="mt-3">
-                  <div className="h-2 bg-muted rounded-full overflow-hidden">
+                <div className="mt-2">
+                  <div className="h-1.5 bg-muted rounded-full overflow-hidden">
                     <motion.div
                       className="h-full bg-primary"
                       initial={{ width: 0 }}
@@ -258,31 +356,27 @@ function QueueSidebar({
                       transition={{ duration: 0.5, ease: "easeOut" }}
                     />
                   </div>
-                  <p className="text-xs text-muted-foreground mt-1.5">
-                    {contactedCount === totalCount
-                      ? "All contacted!"
-                      : `${totalCount - contactedCount} remaining`}
-                  </p>
                 </div>
               </div>
 
-              {/* Default method preference */}
+              {/* Default method preference - compact row */}
               {totalCount > 1 && (
-                <div className="flex-shrink-0 p-4 border-b border-border bg-muted/30">
-                  <div className="space-y-2">
-                    <p className="text-xs font-medium text-muted-foreground">Default Method</p>
-                    <div className="flex items-center gap-2">
+                <div className="flex-shrink-0 px-3 py-2 border-b border-border">
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="text-xs font-medium text-muted-foreground">Default</p>
+                    <div className="flex items-center gap-1.5">
                       <ContactMethodSelector
                         value={defaultContactMethod}
                         onChange={(method) => onSetDefaultMethod(method, false)}
                         hasPhone={true}
                         hasEmail={true}
+                        size="sm"
                       />
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => onSetDefaultMethod(defaultContactMethod, true)}
-                        className="text-xs"
+                        className="text-xs h-7 px-2"
                       >
                         Apply All
                       </Button>
@@ -293,32 +387,14 @@ function QueueSidebar({
 
               {/* Queue list */}
               <ScrollArea className="flex-1">
-                <div className="p-4">
+                <div className="p-3">
                   <ContactQueue />
                 </div>
               </ScrollArea>
-            </motion.div>
+            </motion.aside>
           </>
         )}
       </AnimatePresence>
-
-      {/* Desktop sidebar toggle */}
-      {!isOpen && (
-        <div className="hidden lg:block">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={onToggle}
-            className="gap-1.5"
-          >
-            <PanelRightOpen className="size-4" />
-            Queue
-            <Badge variant="secondary" className="ml-1">
-              {contactedCount}/{totalCount}
-            </Badge>
-          </Button>
-        </div>
-      )}
     </>
   );
 }
@@ -343,6 +419,13 @@ function ContactPageContent() {
   } = useContact();
 
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
+  const [sidebarWidth, setSidebarWidth] = React.useState(384); // Default width
+
+  // Load UI preferences from localStorage on mount
+  React.useEffect(() => {
+    const prefs = loadUIPreferences();
+    setSidebarWidth(prefs.contactQueueWidth);
+  }, []);
 
   // Ensure we're on the contact step and initialize queue if needed
   React.useEffect(() => {
@@ -392,12 +475,11 @@ function ContactPageContent() {
       {/* Header */}
       <div className="flex-shrink-0 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="px-4 py-4">
-          <div className="flex items-center justify-between mb-3">
+          <div className="mb-3">
             <Button variant="ghost" size="sm" onClick={handleBack} className="gap-1.5">
               <ArrowLeft className="size-4" />
               Back to Research
             </Button>
-            <ProgressStepper currentStep={isComplete ? "complete" : "contact"} />
           </div>
           <div className="flex items-center justify-between">
             <div>
@@ -483,6 +565,8 @@ function ContactPageContent() {
             totalCount={totalCount}
             defaultContactMethod={defaultContactMethod}
             onSetDefaultMethod={setDefaultMethod}
+            width={sidebarWidth}
+            onWidthChange={setSidebarWidth}
           />
         )}
       </div>

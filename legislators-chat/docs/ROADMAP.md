@@ -13,46 +13,15 @@ After implementing the feature, please provide a concise step-by-step instructio
 
 ---
 
-# Phase 1: Contact Representatives MVP
-
-Enable users to transition from research/chat phase to taking action by contacting their representatives with AI-generated, personalized call scripts and email drafts.
-
-## 1.7 Session Summary
-
-**Description**: Provide summary view of completed outreach.
-
-**Requirements**:
-- [ ] Create summary page showing all contacted legislators
-- [ ] Display which method was used (call/email) for each
-- [ ] Show date/time of completion
-- [ ] Allow downloading full session as report
-- [ ] Provide "Share your impact" social templates
-- [ ] Option to clear session and start fresh
-- [ ] Link back to chat for continued research
-
-**Implementation Notes**:
-- Summary can be a modal or separate route
-- Include encouraging messaging about civic engagement
-- Track aggregate stats (total contacted, methods used)
-
----
-
 # Phase 2: Nice-to-Have
 
 Features that enhance the experience but aren't required for initial launch.
 
 ### 2.0 UI/UX Improvements
 
-**Description**: Polish UI components and interactions.
+**Description**: Polish UI/UX components and interactions.
 
-- [ ] Contact Page > Contact Queue: Individual cards inner content overflowing on rhs
-- [ ] Allow expanding/collapsing legislator cards in Contact Queue
-- [ ] Allow changing contact queue width (resizable panel) by dragging edge ( similar to results panel on main page)
-- [ ] Store user preferences for panel sizes in local storage
-- [ ] Move completed people/items in queue to bottom with visual separator
-- [ ] Remove Research > Contact > Complete tabs/flow from within contact page and only keep the one in the header
-- [ ] Remove progress at top of contact queue (redundant with contact queue header progress indicator )
-- [ ] Compress default method into row instead of column to save vertical space in contact queue
+- [ ] When moving to the Session complete page, it should set tab to Complete instead of staying on Contact
 
 ### 2.1 Leaning feature
 

@@ -129,144 +129,79 @@ export function ContactQueueItem({
           !isActive && !isContacted && onSetActive && "cursor-pointer hover:bg-muted/50"
         )}
       >
-        <CardHeader className="p-3 sm:p-4">
-          <div className="flex items-center gap-2 sm:gap-3">
-            {/* Drag handle */}
-            <button
-              {...attributes}
-              {...listeners}
-              className={cn(
-                "flex-shrink-0 cursor-grab active:cursor-grabbing p-1 rounded hover:bg-muted/50 transition-colors",
-                isContacted && "cursor-not-allowed opacity-50"
-              )}
-              aria-label="Drag to reorder"
-              disabled={isContacted}
-            >
-              <GripVertical className="size-4 text-muted-foreground" />
-            </button>
+        <CardHeader className="p-2.5 sm:p-3">
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 w-full">
+            {/* Left controls group - always stays together */}
+            <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+              {/* Drag handle */}
+              <button
+                {...attributes}
+                {...listeners}
+                className={cn(
+                  "cursor-grab active:cursor-grabbing p-1 rounded hover:bg-muted/50 transition-colors",
+                  isContacted && "cursor-not-allowed opacity-50"
+                )}
+                aria-label="Drag to reorder"
+                disabled={isContacted}
+              >
+                <GripVertical className="size-4 text-muted-foreground" />
+              </button>
 
-            {/* Queue position */}
-            <div
-              className={cn(
-                "flex-shrink-0 size-6 rounded-full flex items-center justify-center text-xs font-medium",
-                isActive
-                  ? "bg-primary text-primary-foreground"
-                  : isContacted
-                    ? "bg-green-500/20 text-green-400"
-                    : "bg-muted text-muted-foreground"
-              )}
-            >
-              {isContacted ? <Check className="size-3.5" /> : index + 1}
+              {/* Queue position */}
+              <div
+                className={cn(
+                  "size-6 rounded-full flex items-center justify-center text-xs font-medium",
+                  isActive
+                    ? "bg-primary text-primary-foreground"
+                    : isContacted
+                      ? "bg-green-500/20 text-green-400"
+                      : "bg-muted text-muted-foreground"
+                )}
+              >
+                {isContacted ? <Check className="size-3.5" /> : index + 1}
+              </div>
+
+              {/* Avatar with party color ring */}
+              <div className={cn("rounded-full p-0.5", partyColor)}>
+                <Avatar className="size-8 sm:size-10">
+                  {imageUrl && <AvatarImage src={imageUrl} alt={name} />}
+                  <AvatarFallback className="text-xs sm:text-sm font-medium">
+                    {getInitials(name)}
+                  </AvatarFallback>
+                </Avatar>
+              </div>
             </div>
 
-            {/* Avatar with party color ring */}
-            <div className={cn("rounded-full p-0.5 flex-shrink-0", partyColor)}>
-              <Avatar className="size-8 sm:size-10">
-                {imageUrl && <AvatarImage src={imageUrl} alt={name} />}
-                <AvatarFallback className="text-xs sm:text-sm font-medium">
-                  {getInitials(name)}
-                </AvatarFallback>
-              </Avatar>
-            </div>
-
-            {/* Info - takes remaining space but truncates */}
-            <div className="flex-1 min-w-0 overflow-hidden">
-              <div className="flex items-center gap-2">
-                <CardTitle className="text-sm sm:text-base truncate max-w-[120px] sm:max-w-none">{name}</CardTitle>
+            {/* Info section - wraps to new line when narrow */}
+            <div className="flex-1 min-w-[120px]">
+              <CardTitle className="text-sm">{name}</CardTitle>
+              <CardDescription className="text-xs flex items-center gap-1">
+                <span>{location}</span>
                 <Badge
                   variant="outline"
                   className={cn(
-                    "text-[10px] px-1.5 py-0 h-4 hidden sm:inline-flex flex-shrink-0",
+                    "text-[10px] px-1 py-0 h-3.5 ml-1",
                     partyConfig[party].bgColor
                   )}
                 >
                   {partyConfig[party].label}
                 </Badge>
-              </div>
-              <CardDescription className="text-xs sm:text-sm flex items-center gap-1 truncate">
-                <span className="hidden sm:inline">{chamber === "House" ? "Rep." : "Sen."}</span>
-                <MapPin className="size-3 sm:hidden flex-shrink-0" />
-                <span className="truncate">{location}</span>
               </CardDescription>
             </div>
 
-            {/* Status badge - shown on larger screens */}
-            <Badge
-              variant="outline"
-              className={cn("hidden lg:inline-flex text-xs flex-shrink-0", statusConfig[status].className)}
-            >
-              {statusConfig[status].label}
-            </Badge>
-
-            {/* Contact method badge - mobile compact view */}
-            {!isContacted && (
-              <div className="sm:hidden flex-shrink-0">
+            {/* Right controls group - contact badge and remove */}
+            <div className="flex items-center gap-1.5 flex-shrink-0 ml-auto">
+              {/* Contact method badge - compact view */}
+              {!isContacted && (
                 <ContactMethodBadge
                   method={contactMethod}
                   hasPhone={hasPhone}
                   hasEmail={hasEmail}
                   onToggle={hasBoth ? handleMethodToggle : undefined}
                 />
-              </div>
-            )}
-
-            {/* Actions - always visible */}
-            <div className="flex items-center gap-1 flex-shrink-0">
-              {/* Contact method selector - desktop only */}
-              {!isContacted && hasBoth && onContactMethodChange && (
-                <div className="hidden lg:block">
-                  <ContactMethodSelector
-                    value={contactMethod}
-                    onChange={onContactMethodChange}
-                    hasPhone={hasPhone}
-                    hasEmail={hasEmail}
-                    size="sm"
-                  />
-                </div>
               )}
 
-              {/* Primary contact button based on selected method - desktop only */}
-              {!isContacted && (
-                <Button
-                  variant={isActive ? "default" : "outline"}
-                  size="icon-sm"
-                  asChild
-                  className="hidden lg:inline-flex"
-                >
-                  {contactMethod === "call" && hasPhone ? (
-                    <a href={`tel:${contact.phone}`} aria-label={`Call ${name}`}>
-                      <Phone className="size-3.5" />
-                    </a>
-                  ) : hasEmail ? (
-                    <a href={`mailto:${contact.email}`} aria-label={`Email ${name}`}>
-                      <Mail className="size-3.5" />
-                    </a>
-                  ) : hasPhone ? (
-                    <a href={`tel:${contact.phone}`} aria-label={`Call ${name}`}>
-                      <Phone className="size-3.5" />
-                    </a>
-                  ) : (
-                    <span className="opacity-50">
-                      <Mail className="size-3.5" />
-                    </span>
-                  )}
-                </Button>
-              )}
-
-              {/* Skip button - hidden on very small screens */}
-              {!isContacted && onSkip && (
-                <Button
-                  variant="ghost"
-                  size="icon-sm"
-                  onClick={onSkip}
-                  aria-label={`Skip ${name}`}
-                  className="text-muted-foreground hover:text-foreground hidden sm:inline-flex"
-                >
-                  <SkipForward className="size-4" />
-                </Button>
-              )}
-
-              {/* Remove button - always visible */}
+              {/* Remove button */}
               {onRemove && (
                 <Button
                   variant="ghost"
