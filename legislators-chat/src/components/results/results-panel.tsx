@@ -23,6 +23,8 @@ import { LegislatorList } from "./legislator-list";
 import { FilterBar, FilterChips } from "@/components/filters";
 import { useFilters, type FilterState } from "@/hooks/use-filters";
 import { useContact } from "@/hooks/use-contact";
+import { useChat } from "@/components/providers";
+import { extractAdvocacyContext } from "@/hooks/use-chat-extraction";
 
 export type ResultsTab = "people" | "documents" | "votes";
 
@@ -87,6 +89,9 @@ export function ResultsPanel({
   const [isMobileExpanded, setIsMobileExpanded] = React.useState(false);
   const [isSelectionMode, setIsSelectionMode] = React.useState(false);
 
+  // Chat context for extracting advocacy context
+  const { messages } = useChat();
+
   // Contact context for selection management
   const {
     selectedLegislators,
@@ -96,6 +101,7 @@ export function ResultsPanel({
     setCurrentStep,
     selectionCount,
     hasSelections,
+    setAdvocacyContext,
   } = useContact();
 
   // Filter and sort state
@@ -162,6 +168,12 @@ export function ResultsPanel({
   };
 
   const handleContactRepresentatives = () => {
+    // Extract advocacy context from chat messages before navigating
+    const extraction = extractAdvocacyContext(messages);
+    if (extraction.advocacyContext) {
+      setAdvocacyContext(extraction.advocacyContext, extraction.populatedFields);
+    }
+
     setCurrentStep("contact");
     router.push("/contact");
   };

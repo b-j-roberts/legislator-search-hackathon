@@ -223,34 +223,46 @@ interface ContactContentProviderProps {
   children: React.ReactNode;
   /** Initial research context from chat phase */
   initialResearchContext?: string | null;
+  /** Full advocacy context extracted from chat for auto-populating form */
+  initialAdvocacyContext?: AdvocacyContext | null;
 }
 
 export function ContactContentProvider({
   children,
   initialResearchContext,
+  initialAdvocacyContext,
 }: ContactContentProviderProps) {
   const [state, dispatch] = React.useReducer(contentReducer, {
     isGenerating: false,
     error: null,
     content: {},
     selectedTone: "formal",
-    advocacyContext: initialResearchContext
-      ? { topic: initialResearchContext }
-      : null,
+    // Prefer full advocacy context if available, fallback to simple topic
+    advocacyContext: initialAdvocacyContext
+      ? initialAdvocacyContext
+      : initialResearchContext
+        ? { topic: initialResearchContext }
+        : null,
   });
 
   // Track which legislator is currently being generated
   const [generatingForId, setGeneratingForId] = React.useState<string | null>(null);
 
-  // Sync research context when it changes from parent
+  // Sync advocacy context when it changes from parent
   React.useEffect(() => {
-    if (initialResearchContext && !state.advocacyContext?.topic) {
+    // Prefer full advocacy context if available
+    if (initialAdvocacyContext && !state.advocacyContext?.topic) {
+      dispatch({
+        type: "SET_ADVOCACY_CONTEXT",
+        payload: initialAdvocacyContext,
+      });
+    } else if (initialResearchContext && !state.advocacyContext?.topic) {
       dispatch({
         type: "SET_ADVOCACY_CONTEXT",
         payload: { topic: initialResearchContext },
       });
     }
-  }, [initialResearchContext, state.advocacyContext?.topic]);
+  }, [initialAdvocacyContext, initialResearchContext, state.advocacyContext?.topic]);
 
   const generateContent = React.useCallback(
     async (

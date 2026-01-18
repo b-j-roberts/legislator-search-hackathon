@@ -12,6 +12,8 @@ import {
   Eye,
   ArrowLeft,
   Cloud,
+  Wand2,
+  AlertCircle,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -34,6 +36,8 @@ interface ContentGenerationPanelProps {
   contactMethod: ContactMethod;
   researchContext?: string | null;
   className?: string;
+  /** Fields that were auto-populated from chat extraction */
+  autoPopulatedFields?: (keyof AdvocacyContext)[];
 }
 
 interface AdvocacyContextFormProps {
@@ -42,6 +46,45 @@ interface AdvocacyContextFormProps {
   isExpanded: boolean;
   onToggleExpanded: () => void;
   disabled?: boolean;
+  /** Whether the form was auto-populated from chat */
+  isAutoPopulated?: boolean;
+  /** Fields that were auto-populated */
+  autoPopulatedFields?: (keyof AdvocacyContext)[];
+}
+
+/** Validation errors for the form */
+interface ValidationErrors {
+  topic?: string;
+  position?: string;
+  specificAsk?: string;
+  personalStory?: string;
+}
+
+/** Validate the advocacy context form fields */
+function validateAdvocacyContext(context: AdvocacyContext | null): ValidationErrors {
+  const errors: ValidationErrors = {};
+
+  if (!context?.topic?.trim()) {
+    errors.topic = "Topic is required";
+  } else if (context.topic.trim().length < 3) {
+    errors.topic = "Topic must be at least 3 characters";
+  } else if (context.topic.trim().length > 200) {
+    errors.topic = "Topic must be less than 200 characters";
+  }
+
+  if (context?.position && context.position.length > 100) {
+    errors.position = "Position must be less than 100 characters";
+  }
+
+  if (context?.specificAsk && context.specificAsk.length > 300) {
+    errors.specificAsk = "Specific ask must be less than 300 characters";
+  }
+
+  if (context?.personalStory && context.personalStory.length > 1000) {
+    errors.personalStory = "Personal story must be less than 1000 characters";
+  }
+
+  return errors;
 }
 
 function AdvocacyContextForm({
@@ -50,7 +93,22 @@ function AdvocacyContextForm({
   isExpanded,
   onToggleExpanded,
   disabled,
+  isAutoPopulated = false,
+  autoPopulatedFields = [],
 }: AdvocacyContextFormProps) {
+  const [touched, setTouched] = React.useState<Set<keyof AdvocacyContext>>(new Set());
+  const errors = validateAdvocacyContext(context);
+
+  const handleBlur = (field: keyof AdvocacyContext) => {
+    setTouched((prev) => new Set(prev).add(field));
+  };
+
+  const isFieldAutoPopulated = (field: keyof AdvocacyContext) =>
+    autoPopulatedFields.includes(field);
+
+  const showError = (field: keyof AdvocacyContext) =>
+    touched.has(field) && errors[field as keyof ValidationErrors];
+
   return (
     <Card className="border-dashed">
       <CardHeader className="pb-2">
@@ -62,6 +120,12 @@ function AdvocacyContextForm({
           <div className="flex items-center gap-2">
             <Edit3 className="size-4 text-muted-foreground" />
             <CardTitle className="text-sm font-medium">Customize Your Message</CardTitle>
+            {isAutoPopulated && autoPopulatedFields.length > 0 && (
+              <Badge variant="secondary" className="gap-1 text-xs">
+                <Wand2 className="size-3" />
+                Auto-filled
+              </Badge>
+            )}
           </div>
           {isExpanded ? (
             <ChevronUp className="size-4 text-muted-foreground" />
@@ -85,57 +149,145 @@ function AdvocacyContextForm({
             transition={{ duration: 0.2 }}
           >
             <CardContent className="space-y-4 pt-2">
+              {/* Auto-populate notice */}
+              {isAutoPopulated && autoPopulatedFields.length > 0 && (
+                <div className="flex items-start gap-2 p-3 rounded-lg bg-primary/5 border border-primary/20">
+                  <Wand2 className="size-4 text-primary mt-0.5 flex-shrink-0" />
+                  <div className="text-sm">
+                    <p className="font-medium text-foreground">
+                      Fields auto-filled from your research
+                    </p>
+                    <p className="text-muted-foreground text-xs mt-0.5">
+                      We extracted details from your chat. Feel free to edit any field.
+                    </p>
+                  </div>
+                </div>
+              )}
+
               {/* Main Topic */}
               <div className="space-y-1.5">
-                <label className="text-sm font-medium text-foreground">
+                <label className="text-sm font-medium text-foreground flex items-center gap-2">
                   Topic/Issue <span className="text-destructive">*</span>
+                  {isFieldAutoPopulated("topic") && (
+                    <Badge variant="outline" className="text-xs font-normal">
+                      <Wand2 className="size-2.5 mr-1" />
+                      auto-filled
+                    </Badge>
+                  )}
                 </label>
                 <Input
                   placeholder="e.g., Climate change legislation, Healthcare access..."
                   value={context?.topic || ""}
                   onChange={(e) => onUpdate({ topic: e.target.value })}
+                  onBlur={() => handleBlur("topic")}
                   disabled={disabled}
+                  className={cn(
+                    isFieldAutoPopulated("topic") && !touched.has("topic") && "border-primary/30 bg-primary/5",
+                    showError("topic") && "border-destructive"
+                  )}
                 />
+                {showError("topic") && (
+                  <p className="text-xs text-destructive flex items-center gap-1">
+                    <AlertCircle className="size-3" />
+                    {errors.topic}
+                  </p>
+                )}
               </div>
 
               {/* Position */}
               <div className="space-y-1.5">
-                <label className="text-sm font-medium text-foreground">Your Position</label>
+                <label className="text-sm font-medium text-foreground flex items-center gap-2">
+                  Your Position
+                  {isFieldAutoPopulated("position") && (
+                    <Badge variant="outline" className="text-xs font-normal">
+                      <Wand2 className="size-2.5 mr-1" />
+                      auto-filled
+                    </Badge>
+                  )}
+                </label>
                 <Input
                   placeholder="e.g., Support, Oppose, Request information about..."
                   value={context?.position || ""}
                   onChange={(e) => onUpdate({ position: e.target.value })}
+                  onBlur={() => handleBlur("position")}
                   disabled={disabled}
+                  className={cn(
+                    isFieldAutoPopulated("position") && !touched.has("position") && "border-primary/30 bg-primary/5",
+                    showError("position") && "border-destructive"
+                  )}
                 />
+                {showError("position") && (
+                  <p className="text-xs text-destructive flex items-center gap-1">
+                    <AlertCircle className="size-3" />
+                    {errors.position}
+                  </p>
+                )}
               </div>
 
               {/* Specific Ask */}
               <div className="space-y-1.5">
-                <label className="text-sm font-medium text-foreground">Specific Ask</label>
+                <label className="text-sm font-medium text-foreground flex items-center gap-2">
+                  Specific Ask
+                  {isFieldAutoPopulated("specificAsk") && (
+                    <Badge variant="outline" className="text-xs font-normal">
+                      <Wand2 className="size-2.5 mr-1" />
+                      auto-filled
+                    </Badge>
+                  )}
+                </label>
                 <Input
                   placeholder="e.g., Vote yes on HR 1234, Co-sponsor the bill..."
                   value={context?.specificAsk || ""}
                   onChange={(e) => onUpdate({ specificAsk: e.target.value })}
+                  onBlur={() => handleBlur("specificAsk")}
                   disabled={disabled}
+                  className={cn(
+                    isFieldAutoPopulated("specificAsk") && !touched.has("specificAsk") && "border-primary/30 bg-primary/5",
+                    showError("specificAsk") && "border-destructive"
+                  )}
                 />
+                {showError("specificAsk") && (
+                  <p className="text-xs text-destructive flex items-center gap-1">
+                    <AlertCircle className="size-3" />
+                    {errors.specificAsk}
+                  </p>
+                )}
               </div>
 
               {/* Personal Story */}
               <div className="space-y-1.5">
-                <label className="text-sm font-medium text-foreground">
+                <label className="text-sm font-medium text-foreground flex items-center gap-2">
                   Personal Connection (optional)
+                  {isFieldAutoPopulated("personalStory") && (
+                    <Badge variant="outline" className="text-xs font-normal">
+                      <Wand2 className="size-2.5 mr-1" />
+                      auto-filled
+                    </Badge>
+                  )}
                 </label>
                 <Textarea
                   placeholder="Share why this issue matters to you personally..."
                   value={context?.personalStory || ""}
                   onChange={(e) => onUpdate({ personalStory: e.target.value })}
+                  onBlur={() => handleBlur("personalStory")}
                   disabled={disabled}
                   rows={3}
-                  className="resize-none"
+                  className={cn(
+                    "resize-none",
+                    isFieldAutoPopulated("personalStory") && !touched.has("personalStory") && "border-primary/30 bg-primary/5",
+                    showError("personalStory") && "border-destructive"
+                  )}
                 />
-                <p className="text-xs text-muted-foreground">
-                  Personal stories make your message more compelling
-                </p>
+                {showError("personalStory") ? (
+                  <p className="text-xs text-destructive flex items-center gap-1">
+                    <AlertCircle className="size-3" />
+                    {errors.personalStory}
+                  </p>
+                ) : (
+                  <p className="text-xs text-muted-foreground">
+                    Personal stories make your message more compelling
+                  </p>
+                )}
               </div>
             </CardContent>
           </motion.div>
@@ -150,6 +302,7 @@ export function ContentGenerationPanel({
   contactMethod,
   researchContext,
   className,
+  autoPopulatedFields = [],
 }: ContentGenerationPanelProps) {
   const {
     state,
@@ -161,6 +314,9 @@ export function ContentGenerationPanel({
 
   const { getLegislatorDraft, saveLegislatorDraft } = useContact();
   const { content, isGenerating, error } = useActiveContent(activeItem);
+
+  // Track if context was auto-populated (has pre-filled fields)
+  const isAutoPopulated = autoPopulatedFields.length > 0;
 
   const [isContextExpanded, setIsContextExpanded] = React.useState(
     !state.advocacyContext?.topic
@@ -318,6 +474,8 @@ export function ContentGenerationPanel({
         isExpanded={isContextExpanded}
         onToggleExpanded={() => setIsContextExpanded(!isContextExpanded)}
         disabled={isGenerating}
+        isAutoPopulated={isAutoPopulated}
+        autoPopulatedFields={autoPopulatedFields}
       />
 
       {/* Generate Button (when no content yet) */}

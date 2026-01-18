@@ -53,7 +53,12 @@ export interface QueueItem {
 export interface QueueStorage {
   items: QueueItem[];
   activeIndex: number;
+  /** @deprecated Use advocacyContext.topic instead */
   researchContext: string | null;
+  /** Full advocacy context extracted from chat for auto-populating contact form */
+  advocacyContext?: AdvocacyContext | null;
+  /** Fields that were auto-populated from chat extraction */
+  autoPopulatedFields?: (keyof AdvocacyContext)[];
   /** User's default contact method preference */
   defaultContactMethod: ContactMethod;
   version: number;
@@ -134,7 +139,9 @@ export function clearQueue(): void {
 export function createQueue(
   legislators: Legislator[],
   researchContext: string | null = null,
-  defaultContactMethod: ContactMethod = "email"
+  defaultContactMethod: ContactMethod = "email",
+  advocacyContext?: AdvocacyContext | null,
+  autoPopulatedFields?: (keyof AdvocacyContext)[]
 ): QueueStorage {
   return {
     items: legislators.map((legislator, index) => ({
@@ -145,8 +152,25 @@ export function createQueue(
     })),
     activeIndex: legislators.length > 0 ? 0 : -1,
     researchContext,
+    advocacyContext: advocacyContext ?? (researchContext ? { topic: researchContext } : null),
+    autoPopulatedFields: autoPopulatedFields ?? [],
     defaultContactMethod,
     version: CURRENT_VERSION,
+  };
+}
+
+/**
+ * Update the advocacy context in an existing queue
+ */
+export function updateAdvocacyContext(
+  queue: QueueStorage,
+  advocacyContext: AdvocacyContext | null
+): QueueStorage {
+  return {
+    ...queue,
+    advocacyContext,
+    // Keep researchContext in sync for backwards compatibility
+    researchContext: advocacyContext?.topic ?? queue.researchContext,
   };
 }
 
@@ -158,6 +182,8 @@ function migrateQueue(queue: QueueStorage): QueueStorage {
   const migrated: QueueStorage = {
     ...queue,
     defaultContactMethod: queue.defaultContactMethod ?? "email",
+    // Migrate researchContext to advocacyContext if not present
+    advocacyContext: queue.advocacyContext ?? (queue.researchContext ? { topic: queue.researchContext } : null),
     version: CURRENT_VERSION,
   };
 

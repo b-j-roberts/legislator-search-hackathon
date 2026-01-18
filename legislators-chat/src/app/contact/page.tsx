@@ -415,6 +415,7 @@ function ContactPageContent() {
     setDefaultMethod,
     defaultContactMethod,
     researchContext,
+    autoPopulatedFields,
   } = useContact();
 
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
@@ -537,6 +538,7 @@ function ContactPageContent() {
                       activeItem={activeItem}
                       contactMethod={getEffectiveContactMethod(activeItem)}
                       researchContext={researchContext}
+                      autoPopulatedFields={autoPopulatedFields}
                     />
                   )}
                 </motion.div>
@@ -564,10 +566,13 @@ function ContactPageContent() {
 }
 
 export default function ContactPage() {
-  const { researchContext } = useContact();
+  const { researchContext, advocacyContext } = useContact();
 
   return (
-    <ContactContentProvider initialResearchContext={researchContext}>
+    <ContactContentProvider
+      initialResearchContext={researchContext}
+      initialAdvocacyContext={advocacyContext}
+    >
       <ContactPageContent />
     </ContactContentProvider>
   );

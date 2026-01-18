@@ -21,13 +21,70 @@ Features that enhance the experience but aren't required for initial launch.
 
 **Description**: Revamp the main landing page for better readability and user engagement using the frontend-design SKILL for claude.
 
+**Requirements**:
+- [ ] Think through overall layout and structure of the home page
+- [ ] Come up with a modern color scheme and typography
+- [ ] Design a better header
+- [ ] Design a more engaging and modern chat interface
+- [ ] Design a more engaging and modern result panel
+
+**Implementation Notes**:
+- Use consistent design language
+- Focus on usability and clarity
+- Consider responsive design for mobile
+- Try to reduce cognitive load for new users
+
 ### 2.1b UI Redesign ( Contact Page )
 
 **Description**: Update the contact page layout and styling for improved user experience using the frontend-design SKILL for claude.
 
+**Requirements**:
+- [ ] Think through overall layout and structure of the contact page
+- [ ] Use modern color scheme and typography consistent with main page
+- [ ] Design a better header/subheader section which takes up less space
+- [ ] Design a more engaging and modern contact components based on each contact method
+- [ ] Design a more engaging and modern contact queue with better spacing and alignment, more useful icons, and clearer information hierarchy
+- [ ] Ensure consistent design considerations for all components/forms and ensure nothing is too cluttered or overwhelming or crowded
+
+**Implementation Notes**:
+- Use consistent design language with main page
+- Focus on usability and clarity
+- Consider responsive design for mobile
+- Try to reduce cognitive load for new users
+
 ### 2.1c UI Redesign ( Complete Page )
 
 **Description**: Redesign the complete page to enhance visual appeal and usability using the frontend-design SKILL for claude.
+
+**Requirements**:
+- [ ] Rethink overall layout and structure of the complete page
+- [ ] Apply modern color scheme and typography consistent with other pages
+- [ ] Design a better header/subheader section which takes up less space
+- [ ] Create a more engaging and modern completion components based on each completion method
+- [ ] Ensure consistent design considerations for all components and ensure nothing is too cluttered or overwhelming or crowded
+
+**Implementation Notes**:
+- Use consistent design language with other pages
+- Focus on usability and clarity
+- Consider responsive design for mobile
+- Try to reduce cognitive load for new users
+
+### 2.2 Contact Page Auto-Populate
+
+**Description**: Auto-fill contact form based on home page chat.
+
+**Requirements**:
+- [ ] Capture key details from chat (name, email, message, subject)
+- [ ] Check what fields you think would be useful to auto-populate ( and can be captured from the chat )
+- [ ] Pre-fill contact form fields when navigating to contact page & when switching between people from contact queue
+- [ ] Allow user to edit pre-filled fields
+- [ ] Validate pre-filled data
+
+**Implementation Notes**:
+- Use context or state management to pass data
+- Ensure data privacy and security
+- Consider edge cases (e.g., incomplete data)
+- Test with various chat inputs
 
 ### 2.3 Document Viewer
 
@@ -119,6 +176,24 @@ Features that enhance the experience but aren't required for initial launch.
 - Target WCAG 2.1 AA compliance
 - Use axe-core for automated testing
 - Manual testing with VoiceOver/NVDA
+
+---
+
+### 2.8 Speech-to-Text Input
+
+**Description**: Allow voice input for chat.
+
+**Requirements**:
+- [ ] Integrate Web Speech API
+- [ ] Integrate microphone button in chat input
+- [ ] Display real-time transcription
+- [ ] Handle start/stop recording
+- [ ] Allow editing of transcribed text
+
+**Implementation Notes**:
+- Fallback for unsupported browsers
+- Consider privacy implications
+- Test with various accents and speech patterns
 
 ---
 

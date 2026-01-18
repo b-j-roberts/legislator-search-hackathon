@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import type { Legislator } from "@/lib/types";
+import type { Legislator, AdvocacyContext } from "@/lib/types";
 import type { ContactMethod } from "@/lib/types";
 import {
   type QueueStorage,
@@ -28,6 +28,7 @@ import {
   saveDraft,
   getSavedDraft,
   clearDraft,
+  updateAdvocacyContext as updateQueueAdvocacyContext,
 } from "@/lib/queue-storage";
 
 // =============================================================================
@@ -64,6 +65,14 @@ interface ContactContextValue {
   researchContext: string | null;
   /** Set the research context */
   setResearchContext: (context: string | null) => void;
+  /** Full advocacy context extracted from chat for auto-populating contact form */
+  advocacyContext: AdvocacyContext | null;
+  /** Set the advocacy context (extracted from chat) */
+  setAdvocacyContext: (context: AdvocacyContext | null, populatedFields?: (keyof AdvocacyContext)[]) => void;
+  /** Update specific fields of advocacy context */
+  updateAdvocacyContext: (updates: Partial<AdvocacyContext>) => void;
+  /** Fields that were auto-populated from chat extraction */
+  autoPopulatedFields: (keyof AdvocacyContext)[];
   /** Whether there are any selections */
   hasSelections: boolean;
   /** Number of selections */
@@ -120,6 +129,8 @@ type ContactAction =
   | { type: "SET_ALL"; payload: Legislator[] }
   | { type: "SET_STEP"; payload: ContactStep }
   | { type: "SET_RESEARCH_CONTEXT"; payload: string | null }
+  | { type: "SET_ADVOCACY_CONTEXT"; payload: { context: AdvocacyContext | null; populatedFields?: (keyof AdvocacyContext)[] } }
+  | { type: "UPDATE_ADVOCACY_CONTEXT"; payload: Partial<AdvocacyContext> }
   | { type: "SET_QUEUE"; payload: QueueStorage | null }
   | { type: "HYDRATE_QUEUE"; payload: QueueStorage };
 
@@ -127,6 +138,8 @@ interface ContactState {
   selectedLegislators: Legislator[];
   currentStep: ContactStep;
   researchContext: string | null;
+  advocacyContext: AdvocacyContext | null;
+  autoPopulatedFields: (keyof AdvocacyContext)[];
   queue: QueueStorage | null;
 }
 
@@ -194,6 +207,32 @@ function contactReducer(state: ContactState, action: ContactAction): ContactStat
       return {
         ...state,
         researchContext: action.payload,
+        // Also update advocacy context topic for consistency
+        advocacyContext: action.payload
+          ? { ...state.advocacyContext, topic: action.payload }
+          : state.advocacyContext,
+      };
+    }
+
+    case "SET_ADVOCACY_CONTEXT": {
+      return {
+        ...state,
+        advocacyContext: action.payload.context,
+        autoPopulatedFields: action.payload.populatedFields ?? [],
+        // Keep researchContext in sync
+        researchContext: action.payload.context?.topic ?? state.researchContext,
+      };
+    }
+
+    case "UPDATE_ADVOCACY_CONTEXT": {
+      const newContext = state.advocacyContext
+        ? { ...state.advocacyContext, ...action.payload }
+        : { topic: "", ...action.payload };
+      return {
+        ...state,
+        advocacyContext: newContext,
+        // Keep researchContext in sync if topic was updated
+        researchContext: action.payload.topic ?? state.researchContext,
       };
     }
 
@@ -212,6 +251,8 @@ function contactReducer(state: ContactState, action: ContactAction): ContactStat
         queue: action.payload,
         selectedLegislators: legislators,
         researchContext: action.payload.researchContext,
+        advocacyContext: action.payload.advocacyContext ?? null,
+        autoPopulatedFields: action.payload.autoPopulatedFields ?? [],
       };
     }
 
@@ -239,6 +280,8 @@ export function ContactProvider({ children }: ContactProviderProps) {
     selectedLegislators: [],
     currentStep: "research",
     researchContext: null,
+    advocacyContext: null,
+    autoPopulatedFields: [],
     queue: null,
   });
 
@@ -293,11 +336,40 @@ export function ContactProvider({ children }: ContactProviderProps) {
     dispatch({ type: "SET_RESEARCH_CONTEXT", payload: context });
   }, []);
 
+  const setAdvocacyContext = React.useCallback((context: AdvocacyContext | null, populatedFields?: (keyof AdvocacyContext)[]) => {
+    dispatch({ type: "SET_ADVOCACY_CONTEXT", payload: { context, populatedFields } });
+    // Also update the queue if it exists
+    if (state.queue) {
+      const newQueue = updateQueueAdvocacyContext(state.queue, context);
+      // Also update autoPopulatedFields in queue
+      newQueue.autoPopulatedFields = populatedFields ?? [];
+      dispatch({ type: "SET_QUEUE", payload: newQueue });
+    }
+  }, [state.queue]);
+
+  const updateAdvocacyContext = React.useCallback((updates: Partial<AdvocacyContext>) => {
+    dispatch({ type: "UPDATE_ADVOCACY_CONTEXT", payload: updates });
+    // Also update the queue if it exists
+    if (state.queue) {
+      const newContext = state.advocacyContext
+        ? { ...state.advocacyContext, ...updates }
+        : { topic: "", ...updates };
+      const newQueue = updateQueueAdvocacyContext(state.queue, newContext);
+      dispatch({ type: "SET_QUEUE", payload: newQueue });
+    }
+  }, [state.queue, state.advocacyContext]);
+
   // Queue management functions
   const initializeQueue = React.useCallback(() => {
-    const newQueue = createQueue(state.selectedLegislators, state.researchContext);
+    const newQueue = createQueue(
+      state.selectedLegislators,
+      state.researchContext,
+      "email",
+      state.advocacyContext,
+      state.autoPopulatedFields
+    );
     dispatch({ type: "SET_QUEUE", payload: newQueue });
-  }, [state.selectedLegislators, state.researchContext]);
+  }, [state.selectedLegislators, state.researchContext, state.advocacyContext, state.autoPopulatedFields]);
 
   const reorderQueueItems = React.useCallback(
     (fromIndex: number, toIndex: number) => {
@@ -414,6 +486,10 @@ export function ContactProvider({ children }: ContactProviderProps) {
     setCurrentStep,
     researchContext: state.researchContext,
     setResearchContext,
+    advocacyContext: state.advocacyContext,
+    setAdvocacyContext,
+    updateAdvocacyContext,
+    autoPopulatedFields: state.autoPopulatedFields,
     hasSelections: state.selectedLegislators.length > 0,
     selectionCount: state.selectedLegislators.length,
     // Queue management
