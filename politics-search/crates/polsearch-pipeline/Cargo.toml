@@ -51,6 +51,7 @@ anyhow = "1"
 colored = "2"
 md-5 = "0.10"
 rand = "0.8"
+rayon = "1.10"
 tokio-stream = "0.1"
 
 # HTML parsing (for CREC documents)
