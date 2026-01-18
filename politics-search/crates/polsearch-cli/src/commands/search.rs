@@ -7,7 +7,7 @@ use futures::TryStreamExt;
 use lancedb::index::scalar::FullTextSearchQuery;
 use lancedb::query::{ExecutableQuery, QueryBase};
 use lancedb::Error as LanceError;
-use polsearch_db::Database;
+use polsearch_db::{Database, FloorSpeechMetadata, HearingMetadata};
 use polsearch_pipeline::stages::{TextEmbedder, FTS_TABLE_NAME};
 use polsearch_util::truncate;
 use serde::Serialize;
@@ -539,7 +539,7 @@ async fn enrich_results(results: &mut [SearchResult]) -> Result<()> {
             "hearing" => {
                 if r.content_id == nil_uuid {
                     // FTS result - lookup by package_id
-                    if let Some((title, _committee, date)) =
+                    if let Some(&HearingMetadata { ref title, date, .. }) =
                         hearing_metadata_by_pkg.get(&r.content_id_str)
                     {
                         r.title = Some(title.clone());
@@ -547,7 +547,7 @@ async fn enrich_results(results: &mut [SearchResult]) -> Result<()> {
                     }
                 } else {
                     // embeddings result - lookup by UUID
-                    if let Some((title, _committee, date)) = hearing_metadata.get(&r.content_id) {
+                    if let Some(&HearingMetadata { ref title, date, .. }) = hearing_metadata.get(&r.content_id) {
                         r.title = Some(title.clone());
                         r.date = date.map(|d| d.format("%Y-%m-%d").to_string());
                     }
@@ -563,7 +563,7 @@ async fn enrich_results(results: &mut [SearchResult]) -> Result<()> {
             "floor_speech" => {
                 if r.content_id == nil_uuid {
                     // FTS result - lookup by event_id
-                    if let Some((title, _chamber, date)) =
+                    if let Some(&FloorSpeechMetadata { ref title, date, .. }) =
                         floor_speech_metadata_by_event.get(&r.content_id_str)
                     {
                         r.title = Some(title.clone());
@@ -571,7 +571,7 @@ async fn enrich_results(results: &mut [SearchResult]) -> Result<()> {
                     }
                 } else {
                     // embeddings result - lookup by UUID
-                    if let Some((title, _chamber, date)) =
+                    if let Some(&FloorSpeechMetadata { ref title, date, .. }) =
                         floor_speech_metadata.get(&r.content_id)
                     {
                         r.title = Some(title.clone());

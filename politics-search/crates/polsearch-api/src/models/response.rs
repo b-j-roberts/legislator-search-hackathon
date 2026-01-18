@@ -107,7 +107,7 @@ pub struct ContentDetailResponse {
     /// Content ID
     pub id: Uuid,
 
-    /// Content type ("hearing" or "floor_speech")
+    /// Content type (`"hearing"` or `"floor_speech"`)
     pub content_type: String,
 
     /// Content title
@@ -117,7 +117,7 @@ pub struct ContentDetailResponse {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub date: Option<String>,
 
-    /// Source URL to the original document on GovInfo
+    /// Source URL to the original document on `GovInfo`
     #[serde(skip_serializing_if = "Option::is_none")]
     pub source_url: Option<String>,
 
