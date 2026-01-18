@@ -9,6 +9,7 @@ use color_eyre::eyre::Result;
 use polsearch_db::Database;
 use polsearch_pipeline::stages::TextEmbedder;
 use std::sync::Arc;
+use std::time::Duration;
 use tokio::sync::Mutex;
 use tower_http::cors::CorsLayer;
 use tower_http::trace::TraceLayer;
@@ -20,6 +21,7 @@ pub struct AppState {
     pub db: Database,
     pub embedder: Mutex<TextEmbedder>,
     pub lancedb_path: String,
+    pub search_timeout: Duration,
 }
 
 #[derive(OpenApi)]
@@ -64,6 +66,11 @@ async fn main() -> Result<()> {
     let database_url = std::env::var("DATABASE_URL")?;
     let lancedb_path = std::env::var("LANCEDB_PATH")
         .unwrap_or_else(|_| shellexpand::tilde("~/.polsearch/lancedb").to_string());
+    let search_timeout_secs: u64 = std::env::var("SEARCH_TIMEOUT_SECS")
+        .ok()
+        .and_then(|s| s.parse().ok())
+        .unwrap_or(30);
+    let search_timeout = Duration::from_secs(search_timeout_secs);
 
     // connect to PostgreSQL
     tracing::info!("Connecting to PostgreSQL...");
@@ -77,6 +84,7 @@ async fn main() -> Result<()> {
         db,
         embedder: Mutex::new(embedder),
         lancedb_path,
+        search_timeout,
     });
 
     // build router

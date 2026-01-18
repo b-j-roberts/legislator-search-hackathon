@@ -9,7 +9,7 @@ use lancedb::query::{ExecutableQuery, QueryBase};
 use lancedb::Error as LanceError;
 use polsearch_db::Database;
 use polsearch_pipeline::stages::{TextEmbedder, FTS_TABLE_NAME};
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 use std::sync::Arc;
 use uuid::Uuid;
 
@@ -102,10 +102,11 @@ struct FilterParams<'a> {
     congress: Option<i16>,
     from_date: Option<&'a str>,
     to_date: Option<&'a str>,
+    speaker: Option<&'a str>,
 }
 
 impl<'a> FilterParams<'a> {
-    fn has_filters(&self) -> bool {
+    fn has_pg_filters(&self) -> bool {
         self.chamber.is_some()
             || self.committee.is_some()
             || self.congress.is_some()
@@ -114,13 +115,19 @@ impl<'a> FilterParams<'a> {
     }
 }
 
+/// Build speaker name filter for LanceDB (case-insensitive LIKE)
+fn build_speaker_filter(speaker: &str) -> String {
+    let escaped = speaker.replace('\'', "''").replace('%', "\\%");
+    format!("LOWER(speaker_name) LIKE '%{}%'", escaped.to_lowercase())
+}
+
 /// Get filtered content IDs from PostgreSQL based on filter params
 async fn get_filtered_content_ids(
     db: &Database,
     content_types: &[ContentType],
     filters: &FilterParams<'_>,
 ) -> Result<Option<HashSet<Uuid>>, ApiError> {
-    if !filters.has_filters() {
+    if !filters.has_pg_filters() {
         return Ok(None);
     }
 
@@ -500,6 +507,91 @@ async fn enrich_results(results: &mut [SearchResult], db: &Database) -> Result<(
     Ok(())
 }
 
+/// Expand search results with context segments from LanceDB
+async fn expand_context(
+    results: &mut [SearchResult],
+    lancedb_path: &str,
+    context_count: i32,
+) -> Result<(), ApiError> {
+    use arrow_array::{Int32Array, StringArray};
+
+    if results.is_empty() || context_count == 0 {
+        return Ok(());
+    }
+
+    let db = lancedb::connect(lancedb_path).execute().await?;
+    let table = db.open_table("text_embeddings").execute().await?;
+
+    // group results by content_id for efficient querying
+    let mut content_segments: HashMap<Uuid, Vec<(usize, i32)>> = HashMap::new();
+    for (idx, result) in results.iter().enumerate() {
+        content_segments
+            .entry(result.content_id)
+            .or_default()
+            .push((idx, result.segment_index));
+    }
+
+    // for each content, fetch all needed context segments in one query
+    for (content_id, segments) in content_segments {
+        // calculate min and max segment indices needed
+        let min_idx = segments.iter().map(|(_, idx)| idx - context_count).min().unwrap_or(0);
+        let max_idx = segments.iter().map(|(_, idx)| idx + context_count).max().unwrap_or(0);
+
+        // query for all segments in range for this content
+        let filter = format!(
+            "content_id = '{}' AND segment_index >= {} AND segment_index <= {}",
+            content_id, min_idx, max_idx
+        );
+
+        let batches: Vec<RecordBatch> = table
+            .query()
+            .only_if(filter)
+            .select(lancedb::query::Select::columns(&["segment_index", "text"]))
+            .execute()
+            .await?
+            .try_collect()
+            .await?;
+
+        // build map of segment_index -> text
+        let mut segment_texts: HashMap<i32, String> = HashMap::new();
+        for batch in &batches {
+            if let (Some(indices), Some(texts)) = (
+                batch.column_by_name("segment_index").and_then(|c| c.as_any().downcast_ref::<Int32Array>()),
+                batch.column_by_name("text").and_then(|c| c.as_any().downcast_ref::<StringArray>()),
+            ) {
+                for i in 0..batch.num_rows() {
+                    segment_texts.insert(indices.value(i), texts.value(i).to_string());
+                }
+            }
+        }
+
+        // populate context for each result from this content
+        for (result_idx, segment_idx) in segments {
+            let result = &mut results[result_idx];
+
+            // get context_before (in order from earliest to just before current)
+            let mut before = Vec::new();
+            for i in (segment_idx - context_count)..segment_idx {
+                if let Some(text) = segment_texts.get(&i) {
+                    before.push(text.clone());
+                }
+            }
+            result.context_before = before;
+
+            // get context_after (in order from just after current to latest)
+            let mut after = Vec::new();
+            for i in (segment_idx + 1)..=(segment_idx + context_count) {
+                if let Some(text) = segment_texts.get(&i) {
+                    after.push(text.clone());
+                }
+            }
+            result.context_after = after;
+        }
+    }
+
+    Ok(())
+}
+
 /// Search endpoint handler
 #[utoipa::path(
     get,
@@ -538,10 +630,11 @@ pub async fn search(
         congress: params.congress,
         from_date: params.from.as_deref(),
         to_date: params.to.as_deref(),
+        speaker: params.speaker.as_deref(),
     };
 
     // get filtered content IDs from PostgreSQL
-    let (content_id_filter, empty_filter_result) = if filter_params.has_filters() {
+    let (content_id_filter, empty_filter_result) = if filter_params.has_pg_filters() {
         let filtered_ids = get_filtered_content_ids(&state.db, &content_types, &filter_params).await?;
         match filtered_ids {
             Some(ids) if ids.is_empty() => (None, true),
@@ -565,8 +658,11 @@ pub async fn search(
         }));
     }
 
+    // build speaker filter for LanceDB
+    let speaker_filter = filter_params.speaker.map(build_speaker_filter);
+
     // combine all filters
-    let combined_filter = combine_filters(vec![type_filter, content_id_filter]);
+    let combined_filter = combine_filters(vec![type_filter, content_id_filter, speaker_filter]);
 
     // execute search
     let mode: InternalMode = params.mode.into();
@@ -574,15 +670,17 @@ pub async fn search(
 
     let (mut raw_results, mode_used) = {
         let mut embedder = state.embedder.lock().await;
-        execute_search(
+        let search_future = execute_search(
             &state.lancedb_path,
             query,
             fetch_count,
             mode,
             combined_filter.as_deref(),
             &mut embedder,
-        )
-        .await?
+        );
+        tokio::time::timeout(state.search_timeout, search_future)
+            .await
+            .map_err(|_| ApiError::Internal("Search timed out".into()))??
     };
 
     // skip offset
@@ -636,7 +734,13 @@ pub async fn search(
         }
     }
 
-    // TODO: add context expansion when params.context > 0
+    // expand context if requested
+    if params.context > 0 {
+        let context_count = params.context.min(10) as i32;
+        if let Err(e) = expand_context(&mut results, &state.lancedb_path, context_count).await {
+            tracing::warn!("Failed to expand context: {}", e);
+        }
+    }
 
     let total_returned = results.len();
 
