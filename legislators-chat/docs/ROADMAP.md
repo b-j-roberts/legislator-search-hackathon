@@ -17,24 +17,6 @@ After implementing the feature, please provide a concise step-by-step instructio
 
 Enable users to transition from research/chat phase to taking action by contacting their representatives with AI-generated, personalized call scripts and email drafts.
 
-## 1.2 Contact Method Selection
-
-**Description**: Let users choose between call script or email for each representative.
-
-**Requirements**:
-- [ ] Create contact method toggle (Call / Email) per legislator
-- [ ] Display relevant contact info based on selection (phone vs email)
-- [ ] Allow both methods for same legislator if desired
-- [ ] Show availability indicators (e.g., email available, phone hours)
-- [ ] Remember last-used preference
-
-**Implementation Notes**:
-- Some legislators may only have certain contact methods available
-- Default to email if no phone number available
-- Consider showing both options with tabs
-
----
-
 ## 1.3 AI Content Generation
 
 **Description**: Generate personalized call scripts and email drafts using AI.

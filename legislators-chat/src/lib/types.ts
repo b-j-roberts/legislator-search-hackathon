@@ -406,3 +406,105 @@ export interface ContactAvailability {
   /** Office hours note (e.g., "9AM-5PM EST") */
   phoneHours?: string;
 }
+
+// =============================================================================
+// AI Content Generation Types
+// =============================================================================
+
+/** Tone preference for generated content */
+export type TonePreference = "formal" | "passionate" | "personal" | "concise";
+
+/** User's advocacy context for content generation */
+export interface AdvocacyContext {
+  /** Main topic/issue the user cares about */
+  topic: string;
+  /** User's position on the issue */
+  position?: string;
+  /** Personal story or reason for caring (optional) */
+  personalStory?: string;
+  /** Specific ask/action requested from legislator */
+  specificAsk?: string;
+  /** Key points from research phase */
+  keyFindings?: string[];
+}
+
+/** Generated call script structure */
+export interface CallScript {
+  /** Opening/introduction line */
+  introduction: string;
+  /** Key talking points to cover */
+  talkingPoints: string[];
+  /** Responses to anticipated questions/pushback */
+  anticipatedResponses: {
+    question: string;
+    response: string;
+  }[];
+  /** Closing statement with call-to-action */
+  closing: string;
+  /** Estimated call duration in seconds */
+  estimatedDuration: number;
+}
+
+/** Generated email draft structure */
+export interface EmailDraft {
+  /** Multiple subject line options */
+  subjectLines: string[];
+  /** Proper salutation */
+  salutation: string;
+  /** Opening paragraph */
+  opening: string;
+  /** Main body paragraphs */
+  body: string[];
+  /** Specific citations or references */
+  citations?: {
+    text: string;
+    source: string;
+    url?: string;
+  }[];
+  /** Professional closing */
+  closing: string;
+  /** Signature line */
+  signature: string;
+}
+
+/** Parameters for generating contact content */
+export interface ContentGenerationParams {
+  /** The legislator to generate content for */
+  legislator: Legislator;
+  /** User's advocacy context */
+  advocacyContext: AdvocacyContext;
+  /** Desired tone for the content */
+  tone: TonePreference;
+  /** Type of content to generate */
+  contentType: "call" | "email";
+  /** Include specific votes/hearings references */
+  includeReferences?: boolean;
+}
+
+/** Generated content for a specific legislator */
+export interface GeneratedContent {
+  /** Unique ID for this generation */
+  id: string;
+  /** Legislator ID this content is for */
+  legislatorId: string;
+  /** Timestamp of generation */
+  generatedAt: string;
+  /** Parameters used for generation */
+  params: Omit<ContentGenerationParams, "legislator">;
+  /** Generated call script (if contentType is 'call') */
+  callScript?: CallScript;
+  /** Generated email draft (if contentType is 'email') */
+  emailDraft?: EmailDraft;
+}
+
+/** State for content generation */
+export interface ContentGenerationState {
+  /** Whether content is currently being generated */
+  isGenerating: boolean;
+  /** Error message if generation failed */
+  error?: string;
+  /** Generated content indexed by legislator ID */
+  content: Record<string, GeneratedContent>;
+  /** Currently selected tone */
+  selectedTone: TonePreference;
+}
