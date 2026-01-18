@@ -157,8 +157,8 @@ export function AppLayout({ children, resultsPanel, className }: AppLayoutProps)
             style={asideStyle}
           >
             {/* Desktop collapse button header */}
-            <div className="hidden lg:flex items-center justify-between px-3 py-2 border-b border-border bg-muted/30">
-              <span className="text-sm font-medium text-muted-foreground">Results</span>
+            <div className="hidden lg:flex items-center justify-between px-3 py-2.5 border-b border-border bg-secondary/30">
+              <span className="text-sm font-medium text-muted-foreground font-display">Results</span>
               <Button
                 variant="ghost"
                 size="icon"

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Send, Loader2, Sparkles } from "lucide-react";
+import { Send, Loader2, Landmark } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -106,30 +106,22 @@ export function ChatInput({
   }, []);
 
   return (
-    <div className="relative px-4 md:px-6 pb-4 md:pb-6 pt-4">
-      {/* Floating input container with glass effect */}
+    <div className="relative px-4 md:px-6 lg:px-8 pb-4 md:pb-6 pt-3">
+      {/* Input container */}
       <motion.div
         initial={false}
         animate={{
           boxShadow: isFocused
-            ? "0 -4px 30px -5px rgba(232, 169, 69, 0.15), 0 4px 20px -5px rgba(0, 0, 0, 0.1)"
-            : "0 2px 20px -5px rgba(0, 0, 0, 0.1)",
+            ? "0 0 0 1px var(--border), 0 4px 24px -4px rgba(0, 0, 0, 0.12)"
+            : "0 0 0 1px var(--border), 0 2px 8px -2px rgba(0, 0, 0, 0.06)",
         }}
         className={cn(
-          "relative rounded-2xl border transition-all duration-300 max-w-4xl mx-auto",
-          "bg-card/80 backdrop-blur-xl",
-          isFocused
-            ? "border-accent/30 ring-1 ring-accent/20"
-            : "border-border/50 hover:border-border"
+          "relative rounded-xl transition-all duration-200 max-w-3xl mx-auto overflow-hidden",
+          "bg-card",
+          isFocused && "ring-1 ring-accent/20"
         )}
       >
-        {/* AI indicator - inside the container */}
-        <div className="flex items-center gap-1.5 px-4 pt-3 pb-1">
-          <Sparkles className="w-3 h-3 text-accent" />
-          <span className="text-[10px] font-medium text-accent uppercase tracking-wide">AI-Powered</span>
-        </div>
-
-        <div className="flex items-end gap-2 px-3 pb-3 md:px-4 md:pb-4">
+        <div className="flex items-end gap-2 p-3 md:p-4">
           {/* Textarea container */}
           <div className="relative flex-1">
             <Textarea
@@ -143,8 +135,8 @@ export function ChatInput({
               disabled={isDisabled}
               rows={MIN_ROWS}
               className={cn(
-                "min-h-[48px] resize-none border-0 bg-transparent px-0 py-2",
-                "text-base leading-6 placeholder:text-muted-foreground/60",
+                "min-h-[44px] resize-none border-0 bg-transparent pl-3 pr-0 py-2",
+                "text-[15px] leading-6 placeholder:text-muted-foreground/50",
                 "focus-visible:ring-0 focus-visible:ring-offset-0",
                 isOverLimit && "text-destructive"
               )}
@@ -157,8 +149,8 @@ export function ChatInput({
               <div
                 id="char-count"
                 className={cn(
-                  "absolute -bottom-1 right-0 text-[10px] tabular-nums",
-                  isOverLimit ? "text-destructive" : "text-muted-foreground/60"
+                  "absolute -bottom-1 right-0 text-[10px] tabular-nums font-mono",
+                  isOverLimit ? "text-destructive" : "text-muted-foreground/50"
                 )}
                 aria-live="polite"
               >
@@ -171,7 +163,7 @@ export function ChatInput({
           <motion.div
             initial={false}
             animate={{
-              scale: canSend ? 1 : 0.9,
+              scale: canSend ? 1 : 0.95,
               opacity: canSend ? 1 : 0.5,
             }}
             transition={{ duration: 0.15 }}
@@ -182,39 +174,42 @@ export function ChatInput({
               onClick={handleSend}
               disabled={!canSend}
               className={cn(
-                "shrink-0 h-11 w-11 rounded-xl transition-all duration-200 touch-manipulation",
+                "shrink-0 h-10 w-10 rounded-lg transition-all duration-200 touch-manipulation",
                 canSend
-                  ? "bg-accent text-accent-foreground hover:bg-accent/90 shadow-md shadow-accent/20"
-                  : "bg-muted text-muted-foreground"
+                  ? "bg-primary dark:bg-accent text-primary-foreground dark:text-accent-foreground hover:bg-primary/90 dark:hover:bg-accent/90"
+                  : "bg-secondary text-muted-foreground"
               )}
               aria-label={isLoading ? "Sending message..." : "Send message"}
             >
               {isLoading ? (
-                <Loader2 className="h-5 w-5 animate-spin" />
+                <Loader2 className="h-[18px] w-[18px] animate-spin" />
               ) : (
-                <Send className="h-5 w-5" />
+                <Send className="h-[18px] w-[18px]" />
               )}
             </Button>
           </motion.div>
         </div>
 
-        {/* Helper text inside the container */}
-        <div className="hidden sm:flex items-center justify-between px-4 pb-3 text-[11px] text-muted-foreground/50">
-          <div className="flex items-center gap-3">
-            <span>
-              <kbd className="rounded bg-muted/50 px-1.5 py-0.5 font-mono text-[10px]">
+        {/* Footer with hints */}
+        <div className="flex items-center justify-between px-4 pb-3 pt-0 text-[11px] text-muted-foreground/40">
+          <div className="hidden sm:flex items-center gap-4">
+            <span className="flex items-center gap-1">
+              <kbd className="rounded bg-secondary px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground/60">
                 Enter
-              </kbd>{" "}
-              to send
+              </kbd>
+              <span>send</span>
             </span>
-            <span>
-              <kbd className="rounded bg-muted/50 px-1.5 py-0.5 font-mono text-[10px]">
+            <span className="flex items-center gap-1">
+              <kbd className="rounded bg-secondary px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground/60">
                 Shift+Enter
-              </kbd>{" "}
-              new line
+              </kbd>
+              <span>new line</span>
             </span>
           </div>
-          <span className="text-muted-foreground/40">Powered by Maple AI</span>
+          <span className="flex items-center gap-1.5 text-muted-foreground/30">
+            <Landmark className="h-3 w-3" />
+            <span>Powered by Maple AI</span>
+          </span>
         </div>
       </motion.div>
     </div>

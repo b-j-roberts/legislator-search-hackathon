@@ -2,7 +2,16 @@
 
 import * as React from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowDown, Search, Users, FileText, Vote, ArrowRight } from "lucide-react";
+import {
+  ArrowDown,
+  Search,
+  Users,
+  FileText,
+  Vote,
+  Landmark,
+  ArrowRight,
+  Sparkles,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
@@ -31,51 +40,63 @@ const SCROLL_BUTTON_THRESHOLD = 100;
 const SUGGESTIONS = [
   {
     icon: Users,
-    title: "Find your representatives",
+    title: "Find representatives",
+    description: "Discover who represents your district",
     query: "Who represents my district in Congress?",
   },
   {
     icon: Vote,
     title: "Track voting records",
+    description: "See how legislators voted on key issues",
     query: "Show me recent climate change votes",
   },
   {
     icon: FileText,
     title: "Research hearings",
+    description: "Explore committee hearings and testimony",
     query: "Find healthcare committee hearings from this year",
   },
 ];
 
-function HeroEmptyState({ onSuggestionClick }: { onSuggestionClick?: (query: string) => void }) {
+function HeroEmptyState({
+  onSuggestionClick,
+}: {
+  onSuggestionClick?: (query: string) => void;
+}) {
   return (
-    <div className="flex flex-1 flex-col items-center justify-center px-6 py-12 text-center overflow-hidden">
-      {/* Decorative background elements */}
+    <div className="flex flex-1 flex-col items-center px-6 py-8 text-center overflow-auto relative min-h-0">
+      {/* Spacer to push content toward center but allow scrolling */}
+      <div className="flex-1 min-h-8 max-h-[15vh]" />
+      {/* Subtle background pattern */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-accent/[0.03] rounded-full blur-3xl" />
+        <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] bg-primary/[0.02] rounded-full blur-3xl" />
       </div>
 
       {/* Hero content */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="relative z-10 max-w-2xl"
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        className="relative z-10 max-w-xl"
       >
-        {/* Icon badge */}
+        {/* Decorative icon */}
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.1, duration: 0.5 }}
-          className="mb-8 inline-flex"
+          className="mb-6 inline-flex"
         >
-          <div className="relative">
-            <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-accent/20 to-accent/5 border border-accent/20">
-              <Search className="w-7 h-7 text-accent" />
-            </div>
-            <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-accent flex items-center justify-center">
-              <span className="text-accent-foreground text-xs font-bold">AI</span>
-            </div>
+          <div className="relative flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 border border-border/50">
+            <Landmark className="w-7 h-7 text-primary dark:text-accent" />
+            <motion.div
+              className="absolute -top-1 -right-1 w-6 h-6 rounded-lg bg-accent flex items-center justify-center"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.3, type: "spring", stiffness: 400, damping: 15 }}
+            >
+              <Sparkles className="w-3 h-3 text-accent-foreground" />
+            </motion.div>
           </div>
         </motion.div>
 
@@ -83,48 +104,54 @@ function HeroEmptyState({ onSuggestionClick }: { onSuggestionClick?: (query: str
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.6 }}
-          className="font-display text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-balance leading-[1.1] mb-4"
+          transition={{ delay: 0.15, duration: 0.6 }}
+          className="font-display text-3xl md:text-4xl font-semibold tracking-tight text-balance leading-[1.15] mb-3"
         >
-          Research your{" "}
-          <span className="text-accent">representatives</span>
+          Explore Congress with{" "}
+          <span className="text-gradient">AI-powered</span> research
         </motion.h1>
 
         {/* Subtitle */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.6 }}
-          className="text-muted-foreground text-base md:text-lg max-w-md mx-auto mb-10 text-balance"
+          transition={{ delay: 0.25, duration: 0.6 }}
+          className="text-muted-foreground text-base md:text-lg max-w-md mx-auto mb-10 text-balance leading-relaxed"
         >
-          Ask about legislators, voting records, committee hearings, and policy positions. Get informed, then take action.
+          Ask about legislators, voting records, committee hearings, and policy positions.
+          Get informed, then take action.
         </motion.p>
 
-        {/* Suggestion cards */}
+        {/* Suggestion cards - Editorial style */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.6 }}
-          className="grid gap-3 sm:grid-cols-3 w-full max-w-xl mx-auto"
+          transition={{ delay: 0.35, duration: 0.6 }}
+          className="grid gap-3 w-full max-w-lg mx-auto"
         >
           {SUGGESTIONS.map((suggestion, index) => (
             <motion.button
               key={suggestion.title}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 + index * 0.1, duration: 0.5 }}
-              whileHover={{ y: -2, transition: { duration: 0.2 } }}
-              whileTap={{ scale: 0.98 }}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 + index * 0.08, duration: 0.5 }}
+              whileHover={{ x: 4 }}
+              whileTap={{ scale: 0.99 }}
               onClick={() => onSuggestionClick?.(suggestion.query)}
-              className="group relative flex flex-col items-start p-4 rounded-xl border border-border/50 bg-card/50 hover:bg-card hover:border-accent/30 hover:shadow-lg transition-all duration-300 text-left"
+              className="group flex items-center gap-4 p-4 rounded-xl border border-border/60 bg-card/60 hover:bg-card hover:border-accent/30 hover:shadow-md transition-all duration-300 text-left card-shadow"
             >
-              <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-muted/50 group-hover:bg-accent/10 transition-colors mb-3">
-                <suggestion.icon className="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors" />
+              <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-secondary group-hover:bg-accent/10 transition-colors flex-shrink-0">
+                <suggestion.icon className="w-5 h-5 text-muted-foreground group-hover:text-accent transition-colors" />
               </div>
-              <span className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">
-                {suggestion.title}
-              </span>
-              <ArrowRight className="absolute bottom-4 right-4 w-4 h-4 text-muted-foreground/0 group-hover:text-accent group-hover:translate-x-0.5 transition-all" />
+              <div className="flex-1 min-w-0">
+                <span className="block text-sm font-medium text-foreground group-hover:text-foreground transition-colors">
+                  {suggestion.title}
+                </span>
+                <span className="block text-xs text-muted-foreground mt-0.5 truncate">
+                  {suggestion.description}
+                </span>
+              </div>
+              <ArrowRight className="w-4 h-4 text-muted-foreground/30 group-hover:text-accent group-hover:translate-x-0.5 transition-all flex-shrink-0" />
             </motion.button>
           ))}
         </motion.div>
@@ -133,12 +160,16 @@ function HeroEmptyState({ onSuggestionClick }: { onSuggestionClick?: (query: str
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
-          className="mt-8 text-xs text-muted-foreground/60"
+          transition={{ delay: 0.7, duration: 0.6 }}
+          className="mt-8 text-xs text-muted-foreground/60 flex items-center justify-center gap-2"
         >
-          Type your question below or click a suggestion to get started
+          <Search className="w-3 h-3" />
+          <span>Type your question below or select a suggestion</span>
         </motion.p>
       </motion.div>
+
+      {/* Bottom spacer for balanced layout */}
+      <div className="flex-1 min-h-8 max-h-[10vh]" />
     </div>
   );
 }
@@ -235,7 +266,7 @@ export function ChatMessages({
 
   if (messages.length === 0 && !isLoading) {
     return (
-      <div className={cn("flex flex-1 flex-col relative", className)}>
+      <div className={cn("flex flex-1 flex-col relative min-h-0 overflow-hidden", className)}>
         <HeroEmptyState onSuggestionClick={onSuggestionClick} />
       </div>
     );
@@ -244,12 +275,12 @@ export function ChatMessages({
   return (
     <div className={cn("relative flex-1 min-h-0", className)}>
       <ScrollArea ref={scrollAreaRef} className="h-full">
-        <div className="flex flex-col p-4 md:p-6 max-w-4xl mx-auto">
+        <div className="flex flex-col p-4 md:p-6 lg:p-8 max-w-3xl mx-auto">
           <motion.div
             variants={containerVariants}
             initial="initial"
             animate="animate"
-            className="flex flex-col gap-4"
+            className="flex flex-col gap-5"
           >
             <AnimatePresence mode="popLayout">
               {messages.map((message) => (
@@ -290,7 +321,7 @@ export function ChatMessages({
               variant="secondary"
               size="sm"
               onClick={handleScrollToBottom}
-              className="shadow-lg gap-1.5 rounded-full px-4"
+              className="shadow-lg gap-1.5 rounded-full px-4 bg-card border border-border"
             >
               <ArrowDown className="h-4 w-4" />
               <span>New messages</span>

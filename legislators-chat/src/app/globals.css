@@ -6,9 +6,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-dm-sans);
-  --font-serif: var(--font-libre-baskerville);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-source-sans);
+  --font-serif: var(--font-playfair);
+  --font-mono: var(--font-jetbrains);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -40,6 +40,10 @@
   --color-card: var(--card);
   --color-gold: var(--gold);
   --color-gold-foreground: var(--gold-foreground);
+  --color-copper: var(--copper);
+  --color-copper-foreground: var(--copper-foreground);
+  --color-teal: var(--teal);
+  --color-teal-foreground: var(--teal-foreground);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -49,79 +53,139 @@
   --radius-4xl: calc(var(--radius) + 16px);
 }
 
-/* Light Mode - Warm cream with navy accents */
+/*
+ * Design System: "Congressional Archive"
+ * A sophisticated civic aesthetic blending institutional gravitas with modern editorial design
+ */
+
+/* Light Mode - Warm ivory with slate and copper accents */
 :root {
-  --radius: 0.75rem;
-  --background: #faf9f7;
-  --foreground: #0c1222;
-  --card: #ffffff;
-  --card-foreground: #0c1222;
-  --popover: #ffffff;
-  --popover-foreground: #0c1222;
-  --primary: #0c1222;
-  --primary-foreground: #faf9f7;
-  --secondary: #f0ebe3;
-  --secondary-foreground: #0c1222;
-  --muted: #f0ebe3;
-  --muted-foreground: #64748b;
-  --accent: #e8a945;
-  --accent-foreground: #0c1222;
-  --destructive: #dc2626;
-  --border: #e2ddd5;
-  --input: #e2ddd5;
-  --ring: #e8a945;
-  --gold: #e8a945;
-  --gold-foreground: #0c1222;
-  --chart-1: #e8a945;
-  --chart-2: #3b82f6;
-  --chart-3: #22c55e;
-  --chart-4: #ef4444;
-  --chart-5: #8b5cf6;
-  --sidebar: #f5f3f0;
-  --sidebar-foreground: #0c1222;
-  --sidebar-primary: #0c1222;
-  --sidebar-primary-foreground: #faf9f7;
-  --sidebar-accent: #f0ebe3;
-  --sidebar-accent-foreground: #0c1222;
-  --sidebar-border: #e2ddd5;
-  --sidebar-ring: #e8a945;
+  --radius: 0.625rem;
+
+  /* Core backgrounds */
+  --background: #f8f6f3;
+  --foreground: #1e2328;
+
+  /* Card surfaces - warm ivory like archival paper */
+  --card: #fffefa;
+  --card-foreground: #1e2328;
+
+  /* Popover/dropdown surfaces */
+  --popover: #fffefa;
+  --popover-foreground: #1e2328;
+
+  /* Primary - deep slate blue for authoritative text/buttons */
+  --primary: #2d3a4a;
+  --primary-foreground: #f8f6f3;
+
+  /* Secondary - muted warm gray */
+  --secondary: #eae6e0;
+  --secondary-foreground: #2d3a4a;
+
+  /* Muted - subtle background tones */
+  --muted: #f0ece6;
+  --muted-foreground: #6b7280;
+
+  /* Accent - warm copper/amber for highlights */
+  --accent: #b87333;
+  --accent-foreground: #fffefa;
+
+  /* Destructive actions */
+  --destructive: #c53030;
+
+  /* Borders - subtle warm tones */
+  --border: #e2ddd4;
+  --input: #e2ddd4;
+  --ring: #b87333;
+
+  /* Extended palette */
+  --gold: #c9a959;
+  --gold-foreground: #1e2328;
+  --copper: #b87333;
+  --copper-foreground: #fffefa;
+  --teal: #2d6a6a;
+  --teal-foreground: #fffefa;
+
+  /* Chart colors */
+  --chart-1: #b87333;
+  --chart-2: #2d6a6a;
+  --chart-3: #5b8c5b;
+  --chart-4: #c53030;
+  --chart-5: #6b5b8c;
+
+  /* Sidebar */
+  --sidebar: #f3f0eb;
+  --sidebar-foreground: #1e2328;
+  --sidebar-primary: #2d3a4a;
+  --sidebar-primary-foreground: #f8f6f3;
+  --sidebar-accent: #eae6e0;
+  --sidebar-accent-foreground: #1e2328;
+  --sidebar-border: #e2ddd4;
+  --sidebar-ring: #b87333;
 }
 
-/* Dark Mode - Deep navy with warm gold accents */
+/* Dark Mode - Deep charcoal with warm copper accents */
 .dark {
-  --background: #0c1222;
-  --foreground: #f5f3f0;
-  --card: #151d30;
-  --card-foreground: #f5f3f0;
-  --popover: #151d30;
-  --popover-foreground: #f5f3f0;
-  --primary: #e8a945;
-  --primary-foreground: #0c1222;
-  --secondary: #1e293b;
-  --secondary-foreground: #f5f3f0;
-  --muted: #1e293b;
-  --muted-foreground: #94a3b8;
-  --accent: #e8a945;
-  --accent-foreground: #0c1222;
+  /* Core backgrounds - rich charcoal with subtle warmth */
+  --background: #141618;
+  --foreground: #e8e4df;
+
+  /* Card surfaces - elevated charcoal */
+  --card: #1c1f22;
+  --card-foreground: #e8e4df;
+
+  /* Popover surfaces */
+  --popover: #1c1f22;
+  --popover-foreground: #e8e4df;
+
+  /* Primary - warm copper becomes primary in dark mode */
+  --primary: #d4915c;
+  --primary-foreground: #141618;
+
+  /* Secondary - muted charcoal */
+  --secondary: #252a2e;
+  --secondary-foreground: #e8e4df;
+
+  /* Muted */
+  --muted: #252a2e;
+  --muted-foreground: #9ca3af;
+
+  /* Accent - bright copper */
+  --accent: #d4915c;
+  --accent-foreground: #141618;
+
+  /* Destructive */
   --destructive: #ef4444;
+
+  /* Borders - subtle */
   --border: rgba(255, 255, 255, 0.08);
   --input: rgba(255, 255, 255, 0.1);
-  --ring: #e8a945;
-  --gold: #e8a945;
-  --gold-foreground: #0c1222;
-  --chart-1: #e8a945;
-  --chart-2: #60a5fa;
-  --chart-3: #4ade80;
+  --ring: #d4915c;
+
+  /* Extended palette */
+  --gold: #d4a84d;
+  --gold-foreground: #141618;
+  --copper: #d4915c;
+  --copper-foreground: #141618;
+  --teal: #4ecdc4;
+  --teal-foreground: #141618;
+
+  /* Chart colors */
+  --chart-1: #d4915c;
+  --chart-2: #4ecdc4;
+  --chart-3: #6bd47a;
   --chart-4: #f87171;
   --chart-5: #a78bfa;
-  --sidebar: #151d30;
-  --sidebar-foreground: #f5f3f0;
-  --sidebar-primary: #e8a945;
-  --sidebar-primary-foreground: #0c1222;
-  --sidebar-accent: #1e293b;
-  --sidebar-accent-foreground: #f5f3f0;
+
+  /* Sidebar */
+  --sidebar: #1c1f22;
+  --sidebar-foreground: #e8e4df;
+  --sidebar-primary: #d4915c;
+  --sidebar-primary-foreground: #141618;
+  --sidebar-accent: #252a2e;
+  --sidebar-accent-foreground: #e8e4df;
   --sidebar-border: rgba(255, 255, 255, 0.08);
-  --sidebar-ring: #e8a945;
+  --sidebar-ring: #d4915c;
 }
 
 @layer base {
@@ -133,20 +197,24 @@
   }
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 }
 
 /* Typography utilities */
 @layer utilities {
+  /* Display font - Playfair for headlines */
   .font-display {
-    font-family: var(--font-libre-baskerville), Georgia, serif;
+    font-family: var(--font-playfair), Georgia, serif;
+    font-feature-settings: "liga" 1, "calt" 1;
+    letter-spacing: -0.01em;
   }
 
   .text-balance {
     text-wrap: balance;
   }
 
-  /* Subtle grain texture overlay */
+  /* Subtle grain texture overlay - like aged paper */
   .grain-overlay {
     position: relative;
   }
@@ -155,26 +223,26 @@
     content: "";
     position: absolute;
     inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.025;
     pointer-events: none;
     z-index: 0;
   }
 
   /* Glass effect for cards */
   .glass {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(255, 254, 250, 0.8);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
   }
 
   .dark .glass {
-    background: rgba(21, 29, 48, 0.8);
+    background: rgba(28, 31, 34, 0.85);
   }
 
-  /* Gradient text */
+  /* Gradient text - copper to gold */
   .text-gradient {
-    background: linear-gradient(135deg, var(--gold) 0%, #f5c563 50%, var(--gold) 100%);
+    background: linear-gradient(135deg, var(--copper) 0%, var(--gold) 50%, var(--copper) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -182,15 +250,88 @@
 
   /* Subtle border glow */
   .border-glow {
-    box-shadow: 0 0 0 1px var(--border), 0 0 20px -5px var(--gold);
+    box-shadow: 0 0 0 1px var(--border), 0 0 24px -6px var(--copper);
   }
 
-  /* Decorative geometric pattern */
+  /* Inset shadow for depth */
+  .inset-shadow {
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06);
+  }
+
+  /* Elevated card shadow */
+  .card-shadow {
+    box-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.04),
+      0 4px 8px rgba(0, 0, 0, 0.04),
+      0 8px 16px rgba(0, 0, 0, 0.02);
+  }
+
+  .dark .card-shadow {
+    box-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.2),
+      0 4px 8px rgba(0, 0, 0, 0.15),
+      0 8px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Decorative geometric pattern - neoclassical inspired */
   .civic-pattern {
     background-image:
-      linear-gradient(135deg, transparent 45%, var(--border) 45%, var(--border) 55%, transparent 55%),
-      linear-gradient(225deg, transparent 45%, var(--border) 45%, var(--border) 55%, transparent 55%);
-    background-size: 20px 20px;
-    opacity: 0.5;
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 40px,
+        var(--border) 40px,
+        var(--border) 41px
+      );
+    opacity: 0.3;
+  }
+
+  /* Decorative line accent */
+  .line-accent::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--copper), transparent);
+  }
+
+  /* Archive paper texture */
+  .paper-texture {
+    background-image:
+      linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(0,0,0,0.01) 100%),
+      url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23000000' fill-opacity='0.01' fill-rule='evenodd'/%3E%3C/svg%3E");
+  }
+
+  .dark .paper-texture {
+    background-image:
+      linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.01) 100%);
+  }
+}
+
+/* Custom scrollbar styling */
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: var(--muted-foreground);
   }
 }

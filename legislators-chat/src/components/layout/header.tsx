@@ -3,8 +3,9 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Moon, Sun, PanelLeftOpen, MessageSquarePlus, Users } from "lucide-react";
+import { Moon, Sun, PanelLeftOpen, MessageSquarePlus, Users, Landmark } from "lucide-react";
 import { useTheme } from "next-themes";
+import { motion } from "framer-motion";
 import { useChat } from "@/hooks/use-chat";
 import { useContact } from "@/hooks/use-contact";
 import { Button } from "@/components/ui/button";
@@ -26,7 +27,7 @@ function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <div className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/50 bg-background/50" />
+      <div className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border/50 bg-background/50" />
     );
   }
 
@@ -37,13 +38,13 @@ function ThemeToggle() {
           variant="ghost"
           size="icon"
           onClick={toggleTheme}
-          className="h-9 w-9 rounded-full hover:bg-accent/20 transition-colors"
+          className="h-9 w-9 rounded-lg hover:bg-secondary transition-colors"
           aria-label={`Switch to ${resolvedTheme === "dark" ? "light" : "dark"} mode`}
         >
           {resolvedTheme === "dark" ? (
-            <Sun className="h-4 w-4 text-accent" />
+            <Sun className="h-[18px] w-[18px] text-accent" />
           ) : (
-            <Moon className="h-4 w-4" />
+            <Moon className="h-[18px] w-[18px] text-muted-foreground" />
           )}
         </Button>
       </TooltipTrigger>
@@ -51,35 +52,6 @@ function ThemeToggle() {
         <p>Toggle theme</p>
       </TooltipContent>
     </Tooltip>
-  );
-}
-
-// Custom Capitol dome icon for branding
-function CapitolIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      {/* Dome */}
-      <path d="M12 2C8 2 5 5 5 8v1h14V8c0-3-3-6-7-6z" />
-      {/* Dome top */}
-      <circle cx="12" cy="4" r="1" fill="currentColor" />
-      {/* Building base */}
-      <rect x="3" y="9" width="18" height="2" rx="0.5" />
-      {/* Columns */}
-      <line x1="6" y1="11" x2="6" y2="19" />
-      <line x1="10" y1="11" x2="10" y2="19" />
-      <line x1="14" y1="11" x2="14" y2="19" />
-      <line x1="18" y1="11" x2="18" y2="19" />
-      {/* Foundation */}
-      <rect x="2" y="19" width="20" height="3" rx="0.5" />
-    </svg>
   );
 }
 
@@ -92,8 +64,11 @@ export function Header() {
 
   return (
     <TooltipProvider delayDuration={300}>
-      <header className="sticky top-0 z-40 w-full border-b border-border/50 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 flex-shrink-0">
-        <div className="flex h-16 md:h-[72px] items-center justify-between px-4 md:px-8">
+      <header className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur-md supports-[backdrop-filter]:bg-background/80 flex-shrink-0">
+        {/* Decorative top line */}
+        <div className="h-[2px] bg-gradient-to-r from-transparent via-accent/50 to-transparent" />
+
+        <div className="flex h-14 md:h-16 items-center justify-between px-4 md:px-6">
           {/* Left section - Menu and Branding */}
           <div className="flex items-center gap-3">
             {/* Sidebar Toggle */}
@@ -104,10 +79,10 @@ export function Header() {
                     variant="ghost"
                     size="icon"
                     onClick={toggleSidebar}
-                    className="h-9 w-9 rounded-full hover:bg-accent/20"
+                    className="h-9 w-9 rounded-lg hover:bg-secondary"
                     aria-label="Open chat history"
                   >
-                    <PanelLeftOpen className="h-5 w-5" />
+                    <PanelLeftOpen className="h-5 w-5 text-muted-foreground" />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent side="bottom">
@@ -121,15 +96,19 @@ export function Header() {
               href="/"
               className="flex items-center gap-3 group transition-all duration-300"
             >
-              <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary/80 dark:from-accent dark:to-accent/80 shadow-sm group-hover:shadow-md transition-shadow">
-                <CapitolIcon className="h-5 w-5 text-primary-foreground dark:text-accent-foreground" />
-              </div>
+              <motion.div
+                className="relative flex items-center justify-center w-9 h-9 rounded-lg bg-primary dark:bg-accent"
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.2 }}
+              >
+                <Landmark className="h-[18px] w-[18px] text-primary-foreground dark:text-accent-foreground" />
+              </motion.div>
               <div className="flex flex-col">
-                <span className="font-display text-lg md:text-xl font-bold tracking-tight leading-none">
-                  Legislators
+                <span className="font-display text-lg font-semibold tracking-tight leading-none text-foreground">
+                  CivicLens
                 </span>
-                <span className="text-[10px] md:text-xs text-muted-foreground font-medium tracking-widest uppercase">
-                  Research & Connect
+                <span className="text-[10px] text-muted-foreground font-medium tracking-wider uppercase mt-0.5">
+                  Congressional Research
                 </span>
               </div>
             </Link>
@@ -143,28 +122,34 @@ export function Header() {
           )}
 
           {/* Right section - Actions */}
-          <div className="flex items-center gap-2 md:gap-3">
+          <div className="flex items-center gap-2">
             {/* Selection indicator */}
             {hasSelections && !isContactFlow && (
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button
-                    variant="default"
-                    size="sm"
-                    asChild
-                    className="gap-2 rounded-full bg-accent text-accent-foreground hover:bg-accent/90 shadow-sm px-4"
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.2 }}
                   >
-                    <Link href="/contact">
-                      <Users className="h-4 w-4" />
-                      <span className="hidden sm:inline font-medium">Contact</span>
-                      <Badge
-                        variant="secondary"
-                        className="ml-0.5 bg-accent-foreground/20 text-accent-foreground border-0 h-5 min-w-5 rounded-full"
-                      >
-                        {selectionCount}
-                      </Badge>
-                    </Link>
-                  </Button>
+                    <Button
+                      variant="default"
+                      size="sm"
+                      asChild
+                      className="gap-2 rounded-lg bg-accent text-accent-foreground hover:bg-accent/90 shadow-sm px-3 h-9"
+                    >
+                      <Link href="/contact">
+                        <Users className="h-4 w-4" />
+                        <span className="hidden sm:inline text-sm font-medium">Contact</span>
+                        <Badge
+                          variant="secondary"
+                          className="ml-0.5 bg-accent-foreground/20 text-accent-foreground border-0 h-5 min-w-5 px-1.5 rounded-md text-xs font-semibold"
+                        >
+                          {selectionCount}
+                        </Badge>
+                      </Link>
+                    </Button>
+                  </motion.div>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>
@@ -183,10 +168,10 @@ export function Header() {
                     variant="ghost"
                     size="icon"
                     onClick={newConversation}
-                    className="hidden sm:flex h-9 w-9 rounded-full hover:bg-accent/20"
+                    className="hidden sm:flex h-9 w-9 rounded-lg hover:bg-secondary"
                     aria-label="New conversation"
                   >
-                    <MessageSquarePlus className="h-4 w-4" />
+                    <MessageSquarePlus className="h-[18px] w-[18px] text-muted-foreground" />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
@@ -194,6 +179,9 @@ export function Header() {
                 </TooltipContent>
               </Tooltip>
             )}
+
+            {/* Divider */}
+            <div className="hidden sm:block w-px h-6 bg-border mx-1" />
 
             {/* Theme Toggle */}
             <ThemeToggle />

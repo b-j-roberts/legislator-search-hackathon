@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { motion } from "framer-motion";
-import { AlertCircle, RefreshCw, Sparkles, User } from "lucide-react";
+import { AlertCircle, RefreshCw, Landmark, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import type { MessageRole, MessageStatus } from "@/lib/types";
@@ -18,13 +18,13 @@ export interface ChatBubbleProps {
 }
 
 const bubbleVariants = {
-  initial: { opacity: 0, y: 10, scale: 0.98 },
+  initial: { opacity: 0, y: 12, scale: 0.98 },
   animate: { opacity: 1, y: 0, scale: 1 },
   exit: { opacity: 0, scale: 0.98 },
 };
 
 const bubbleTransition = {
-  duration: 0.25,
+  duration: 0.3,
   ease: [0.22, 1, 0.36, 1] as const,
 };
 
@@ -66,39 +66,39 @@ export function ChatBubble({
       {/* Avatar */}
       <div
         className={cn(
-          "flex h-9 w-9 shrink-0 items-center justify-center rounded-xl transition-colors",
+          "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-colors",
           isUser
-            ? "bg-accent text-accent-foreground"
-            : "bg-gradient-to-br from-primary/10 to-primary/5 border border-border/50 text-primary dark:text-accent"
+            ? "bg-primary dark:bg-accent text-primary-foreground dark:text-accent-foreground"
+            : "bg-secondary border border-border/50 text-muted-foreground"
         )}
         aria-hidden="true"
       >
         {isUser ? (
           <User className="h-4 w-4" />
         ) : (
-          <Sparkles className="h-4 w-4" />
+          <Landmark className="h-4 w-4" />
         )}
       </div>
 
       {/* Bubble content */}
       <div
         className={cn(
-          "flex max-w-[85%] md:max-w-[75%] flex-col gap-1.5",
+          "flex max-w-[85%] md:max-w-[80%] flex-col gap-1",
           isUser ? "items-end" : "items-start"
         )}
       >
         {/* Role label */}
-        <span className="text-[10px] font-medium text-muted-foreground/70 uppercase tracking-wider px-1">
-          {isUser ? "You" : "Assistant"}
+        <span className="text-[10px] font-medium text-muted-foreground/70 uppercase tracking-wider px-0.5">
+          {isUser ? "You" : "CivicLens"}
         </span>
 
         {/* Message bubble */}
         <div
           className={cn(
-            "rounded-2xl px-4 py-3 text-[15px] leading-relaxed",
+            "rounded-xl px-4 py-3 text-[15px] leading-relaxed",
             isUser
-              ? "rounded-tr-md bg-accent text-accent-foreground shadow-sm"
-              : "rounded-tl-md bg-card border border-border/50 text-foreground shadow-sm",
+              ? "rounded-tr-sm bg-primary dark:bg-accent text-primary-foreground dark:text-accent-foreground"
+              : "rounded-tl-sm bg-card border border-border text-foreground card-shadow",
             hasError && "border-2 border-destructive/50 bg-destructive/5"
           )}
         >
@@ -109,7 +109,7 @@ export function ChatBubble({
         {/* Metadata row: timestamp and status */}
         <div
           className={cn(
-            "flex items-center gap-2 text-[11px] text-muted-foreground/60 px-1",
+            "flex items-center gap-2 text-[11px] text-muted-foreground/50 px-0.5 mt-0.5",
             isUser ? "flex-row-reverse" : "flex-row"
           )}
         >
@@ -130,7 +130,7 @@ export function ChatBubble({
           {status === "sending" && (
             <span className="text-muted-foreground/50 flex items-center gap-1">
               <motion.span
-                animate={{ opacity: [0.5, 1, 0.5] }}
+                animate={{ opacity: [0.4, 1, 0.4] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
                 className="inline-block w-1.5 h-1.5 rounded-full bg-accent"
               />
@@ -144,7 +144,7 @@ export function ChatBubble({
           <motion.div
             initial={{ opacity: 0, y: -5 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex items-center gap-2 px-1"
+            className="flex items-center gap-2 px-0.5"
           >
             {error && (
               <p className="text-xs text-destructive/80">{error}</p>

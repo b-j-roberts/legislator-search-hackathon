@@ -14,6 +14,7 @@ import {
   Calendar,
   ExternalLink,
   Building2,
+  Landmark,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -42,7 +43,6 @@ export interface ResultsPanelProps {
   documents?: Document[];
   votes?: VoteRecord[];
   hearings?: Hearing[];
-  /** Search results from PolSearch API - takes precedence over documents/votes/hearings */
   searchResults?: SearchResultData[];
   isLoading?: boolean;
   activeTab?: ResultsTab;
@@ -72,34 +72,27 @@ function EmptyState({
       animate={{ opacity: 1, y: 0 }}
       className="flex flex-col items-center justify-center py-16 px-6 text-center"
     >
-      <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-muted/50 mb-4">
-        <Icon className="size-6 text-muted-foreground" />
+      <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-secondary mb-4">
+        <Icon className="size-5 text-muted-foreground" />
       </div>
-      <h3 className="font-display text-lg font-semibold text-foreground mb-2">
+      <h3 className="font-display text-base font-semibold text-foreground mb-1.5">
         {title}
       </h3>
-      <p className="text-sm text-muted-foreground max-w-[280px]">{description}</p>
+      <p className="text-sm text-muted-foreground max-w-[260px] leading-relaxed">
+        {description}
+      </p>
     </motion.div>
   );
 }
 
-/** Props for SearchDocumentCard - displays search results from PolSearch API */
 interface SearchDocumentCardProps {
-  /** Document title */
   title: string;
-  /** Document date (YYYY-MM-DD format) */
   date?: string;
-  /** Content type (hearing, floor_speech) */
   contentType?: string;
-  /** Text snippet from the document */
   text?: string;
-  /** Speaker name attribution */
   speakerName?: string;
-  /** Congressional chamber (House/Senate) */
   chamber?: string;
-  /** Committee name for hearings */
   committee?: string;
-  /** External URL to source document */
   sourceUrl?: string;
 }
 
@@ -124,18 +117,17 @@ function SearchDocumentCard({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 5 }}
+      initial={{ opacity: 0, y: 4 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -2 }}
+      whileHover={{ y: -1 }}
       onClick={handleClick}
       className={cn(
-        "group p-4 rounded-xl border border-border/50 bg-card/50 hover:bg-card hover:border-border hover:shadow-md transition-all duration-200",
+        "group p-4 rounded-xl border border-border bg-card hover:border-accent/30 hover:shadow-md transition-all duration-200 card-shadow",
         sourceUrl && "cursor-pointer"
       )}
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
-          {/* Title and type badge */}
           <div className="flex items-start gap-2">
             <h4 className="font-medium text-sm text-foreground group-hover:text-accent transition-colors line-clamp-2 flex-1">
               {title}
@@ -143,14 +135,13 @@ function SearchDocumentCard({
             {displayType && (
               <Badge
                 variant="secondary"
-                className="shrink-0 text-[10px] font-medium uppercase tracking-wide bg-muted/50"
+                className="shrink-0 text-[10px] font-medium uppercase tracking-wide bg-secondary text-muted-foreground"
               >
                 {displayType}
               </Badge>
             )}
           </div>
 
-          {/* Metadata row: date, chamber, committee, speaker */}
           <div className="flex items-center flex-wrap gap-x-2 gap-y-1 mt-2 text-xs text-muted-foreground">
             {formattedDate && (
               <>
@@ -168,27 +159,25 @@ function SearchDocumentCard({
               <>
                 {(formattedDate || chamber) && <span className="text-border">|</span>}
                 <Building2 className="size-3" />
-                <span className="truncate max-w-[200px]">{committee}</span>
+                <span className="truncate max-w-[180px]">{committee}</span>
               </>
             )}
             {speakerName && (
               <>
                 {(formattedDate || chamber || committee) && <span className="text-border">|</span>}
                 <Users className="size-3" />
-                <span className="truncate max-w-[150px]">{speakerName}</span>
+                <span className="truncate max-w-[140px]">{speakerName}</span>
               </>
             )}
           </div>
 
-          {/* Text snippet */}
           {text && (
-            <p className="text-sm text-muted-foreground mt-3 line-clamp-3 leading-relaxed">
+            <p className="text-sm text-muted-foreground mt-3 line-clamp-2 leading-relaxed">
               {text}
             </p>
           )}
         </div>
 
-        {/* External link indicator */}
         {sourceUrl && (
           <ExternalLink className="size-4 text-muted-foreground/0 group-hover:text-accent shrink-0 transition-colors mt-0.5" />
         )}
@@ -197,7 +186,6 @@ function SearchDocumentCard({
   );
 }
 
-/** Format date string to readable format */
 function formatDate(dateStr: string): string {
   try {
     const date = new Date(dateStr);
@@ -211,7 +199,6 @@ function formatDate(dateStr: string): string {
   }
 }
 
-/** Legacy DocumentCard for backward compatibility with old Document/Hearing types */
 function DocumentCard({
   title,
   date,
@@ -227,10 +214,10 @@ function DocumentCard({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 5 }}
+      initial={{ opacity: 0, y: 4 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -2 }}
-      className="group p-4 rounded-xl border border-border/50 bg-card/50 hover:bg-card hover:border-border hover:shadow-md transition-all duration-200 cursor-pointer"
+      whileHover={{ y: -1 }}
+      className="group p-4 rounded-xl border border-border bg-card hover:border-accent/30 hover:shadow-md transition-all duration-200 cursor-pointer card-shadow"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
@@ -260,17 +247,11 @@ function DocumentCard({
   );
 }
 
-/** Props for SearchVoteCard - displays vote search results from PolSearch API */
 interface SearchVoteCardProps {
-  /** Vote title or description */
   title: string;
-  /** Vote date (YYYY-MM-DD format) */
   date?: string;
-  /** Text snippet about the vote */
   text?: string;
-  /** Congressional chamber (House/Senate) */
   chamber?: string;
-  /** External URL to source */
   sourceUrl?: string;
 }
 
@@ -291,31 +272,29 @@ function SearchVoteCard({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 5 }}
+      initial={{ opacity: 0, y: 4 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -2 }}
+      whileHover={{ y: -1 }}
       onClick={handleClick}
       className={cn(
-        "group p-4 rounded-xl border border-border/50 bg-card/50 hover:bg-card hover:border-border hover:shadow-md transition-all duration-200",
+        "group p-4 rounded-xl border border-border bg-card hover:border-accent/30 hover:shadow-md transition-all duration-200 card-shadow",
         sourceUrl && "cursor-pointer"
       )}
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
-          {/* Title with vote badge */}
           <div className="flex items-start gap-2">
             <h4 className="font-medium text-sm text-foreground group-hover:text-accent transition-colors line-clamp-2 flex-1">
               {title}
             </h4>
             <Badge
               variant="secondary"
-              className="shrink-0 text-[10px] font-medium uppercase tracking-wide bg-violet-500/10 text-violet-500 border-violet-500/20"
+              className="shrink-0 text-[10px] font-medium uppercase tracking-wide bg-teal/10 text-teal border-teal/20"
             >
               Vote
             </Badge>
           </div>
 
-          {/* Metadata: date and chamber */}
           <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
             {formattedDate && (
               <>
@@ -331,15 +310,13 @@ function SearchVoteCard({
             )}
           </div>
 
-          {/* Text snippet */}
           {text && (
-            <p className="text-sm text-muted-foreground mt-3 line-clamp-3 leading-relaxed">
+            <p className="text-sm text-muted-foreground mt-3 line-clamp-2 leading-relaxed">
               {text}
             </p>
           )}
         </div>
 
-        {/* External link indicator */}
         {sourceUrl && (
           <ExternalLink className="size-4 text-muted-foreground/0 group-hover:text-accent shrink-0 transition-colors mt-0.5" />
         )}
@@ -348,7 +325,6 @@ function SearchVoteCard({
   );
 }
 
-/** Legacy VoteCard for backward compatibility with structured VoteRecord type */
 function VoteCard({ vote }: { vote: VoteRecord }) {
   const passed = vote.result === "passed";
   const total = vote.yeas + vote.nays;
@@ -356,10 +332,10 @@ function VoteCard({ vote }: { vote: VoteRecord }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 5 }}
+      initial={{ opacity: 0, y: 4 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -2 }}
-      className="group p-4 rounded-xl border border-border/50 bg-card/50 hover:bg-card hover:border-border hover:shadow-md transition-all duration-200"
+      whileHover={{ y: -1 }}
+      className="group p-4 rounded-xl border border-border bg-card hover:border-accent/30 hover:shadow-md transition-all duration-200 card-shadow"
     >
       <div className="flex items-start justify-between gap-3 mb-3">
         <h4 className="font-medium text-sm text-foreground group-hover:text-accent transition-colors line-clamp-2 flex-1">
@@ -370,7 +346,7 @@ function VoteCard({ vote }: { vote: VoteRecord }) {
           className={cn(
             "shrink-0 text-[10px] font-semibold uppercase tracking-wide",
             passed
-              ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20"
+              ? "bg-emerald-500/10 text-emerald-600 border-emerald-500/20"
               : "bg-red-500/10 text-red-500 border-red-500/20"
           )}
         >
@@ -385,8 +361,7 @@ function VoteCard({ vote }: { vote: VoteRecord }) {
         <span className="capitalize">{vote.chamber}</span>
       </div>
 
-      {/* Vote bar */}
-      <div className="relative h-2 rounded-full bg-muted overflow-hidden">
+      <div className="relative h-1.5 rounded-full bg-secondary overflow-hidden">
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: `${yeasPercent}%` }}
@@ -396,7 +371,7 @@ function VoteCard({ vote }: { vote: VoteRecord }) {
       </div>
 
       <div className="flex justify-between mt-2 text-xs font-medium">
-        <span className="text-emerald-500">Yeas: {vote.yeas}</span>
+        <span className="text-emerald-600">Yeas: {vote.yeas}</span>
         <span className="text-red-500">Nays: {vote.nays}</span>
       </div>
     </motion.div>
@@ -409,11 +384,11 @@ function LoadingSkeleton() {
       {[1, 2, 3].map((i) => (
         <div
           key={i}
-          className="p-4 rounded-xl border border-border/30 bg-muted/20 animate-pulse"
+          className="p-4 rounded-xl border border-border/50 bg-card animate-pulse"
         >
-          <div className="h-4 w-3/4 bg-muted rounded mb-3" />
-          <div className="h-3 w-1/2 bg-muted/70 rounded mb-3" />
-          <div className="h-3 w-full bg-muted/50 rounded" />
+          <div className="h-4 w-3/4 bg-secondary rounded mb-3" />
+          <div className="h-3 w-1/2 bg-secondary/70 rounded mb-3" />
+          <div className="h-3 w-full bg-secondary/50 rounded" />
         </div>
       ))}
     </div>
@@ -472,7 +447,6 @@ export function ResultsPanel({
     [selectedLegislators]
   );
 
-  // Filter search results by content_type
   const searchDocuments = React.useMemo(
     () => searchResults.filter((r) => r.content_type === "hearing" || r.content_type === "floor_speech"),
     [searchResults]
@@ -483,24 +457,17 @@ export function ResultsPanel({
     [searchResults]
   );
 
-  // Use search results if available, otherwise fall back to legacy props
   const hasSearchResults = searchResults.length > 0;
   const effectiveDocumentCount = hasSearchResults ? searchDocuments.length : documents.length + hearings.length;
   const effectiveVoteCount = hasSearchResults ? searchVotes.length : votes.length;
 
   const tabs: TabConfig[] = [
     { id: "people", label: "People", icon: Users, count: filteredLegislators.length },
-    {
-      id: "documents",
-      label: "Documents",
-      icon: FileText,
-      count: effectiveDocumentCount,
-    },
+    { id: "documents", label: "Documents", icon: FileText, count: effectiveDocumentCount },
     { id: "votes", label: "Votes", icon: Vote, count: effectiveVoteCount },
   ];
 
-  const totalResults =
-    filteredLegislators.length + effectiveDocumentCount + effectiveVoteCount;
+  const totalResults = filteredLegislators.length + effectiveDocumentCount + effectiveVoteCount;
 
   const handleTabChange = (value: string) => {
     const tab = value as ResultsTab;
@@ -534,9 +501,9 @@ export function ResultsPanel({
   };
 
   return (
-    <div className={cn("flex flex-col flex-1 min-h-0 bg-background/50", className)}>
+    <div className={cn("flex flex-col flex-1 min-h-0 bg-background", className)}>
       {/* Mobile toggle bar */}
-      <div className="lg:hidden border-b border-border/50">
+      <div className="lg:hidden border-b border-border">
         <Button
           variant="ghost"
           onClick={toggleMobileExpand}
@@ -545,8 +512,8 @@ export function ResultsPanel({
           aria-controls="results-panel-content"
         >
           <span className="flex items-center gap-2.5 text-sm font-medium">
-            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-accent/10">
-              <Users className="size-4 text-accent" />
+            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-secondary">
+              <Landmark className="size-4 text-muted-foreground" />
             </div>
             <span className="font-display">Results</span>
             {totalResults > 0 && (
@@ -582,18 +549,18 @@ export function ResultsPanel({
           className="flex flex-col flex-1 overflow-hidden"
         >
           {/* Tab navigation */}
-          <div className="flex-shrink-0 border-b border-border/50 p-3">
-            <TabsList className="w-full grid grid-cols-3 h-auto bg-muted/30 p-1 rounded-xl">
+          <div className="flex-shrink-0 border-b border-border px-3 py-3">
+            <TabsList className="w-full grid grid-cols-3 h-auto bg-secondary/50 p-1 rounded-lg">
               {tabs.map((tab) => (
                 <TabsTrigger
                   key={tab.id}
                   value={tab.id}
-                  className="flex items-center justify-center gap-2 min-h-[42px] px-3 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm transition-all touch-manipulation"
+                  className="flex items-center justify-center gap-1.5 min-h-[38px] px-2 rounded-md data-[state=active]:bg-card data-[state=active]:shadow-sm transition-all touch-manipulation"
                 >
                   <tab.icon className="size-4 flex-shrink-0" />
                   <span className="hidden md:inline text-sm font-medium">{tab.label}</span>
                   {tab.count > 0 && (
-                    <span className="text-[11px] bg-accent text-accent-foreground px-2 py-0.5 rounded-full min-w-[22px] text-center font-semibold">
+                    <span className="text-[10px] bg-accent text-accent-foreground px-1.5 py-0.5 rounded-md min-w-[20px] text-center font-semibold">
                       {tab.count}
                     </span>
                   )}
@@ -604,7 +571,7 @@ export function ResultsPanel({
 
           {/* Filter bar */}
           {currentTab === "people" && legislators.length > 0 && (
-            <div className="flex-shrink-0 border-b border-border/50 px-3 py-3 space-y-2.5 bg-muted/20">
+            <div className="flex-shrink-0 border-b border-border px-3 py-3 space-y-2.5 bg-secondary/20">
               <FilterBar
                 filters={filters}
                 onToggleParty={toggleParty}
@@ -630,7 +597,7 @@ export function ResultsPanel({
                   size="sm"
                   onClick={handleToggleSelectionMode}
                   className={cn(
-                    "gap-2 rounded-lg",
+                    "gap-2 rounded-lg h-8",
                     isSelectionMode && "bg-accent text-accent-foreground hover:bg-accent/90"
                   )}
                 >
@@ -659,7 +626,7 @@ export function ResultsPanel({
                         size="sm"
                         onClick={handleSelectAll}
                         disabled={selectedIds.length === filteredLegislators.length}
-                        className="text-xs"
+                        className="text-xs h-8"
                       >
                         Select all
                       </Button>
@@ -668,7 +635,7 @@ export function ResultsPanel({
                           variant="ghost"
                           size="sm"
                           onClick={clearSelections}
-                          className="text-xs text-muted-foreground"
+                          className="text-xs text-muted-foreground h-8"
                         >
                           Clear
                         </Button>
@@ -682,7 +649,7 @@ export function ResultsPanel({
 
           {/* Tab content */}
           <div className="flex-1 min-h-0 overflow-hidden">
-            <TabsContent value="people" className="h-full overflow-auto m-0">
+            <TabsContent value="people" className="h-full overflow-auto m-0 scrollbar-thin">
               <LegislatorList
                 legislators={filteredLegislators}
                 isLoading={isLoading}
@@ -697,7 +664,7 @@ export function ResultsPanel({
               />
             </TabsContent>
 
-            <TabsContent value="documents" className="h-full overflow-auto m-0">
+            <TabsContent value="documents" className="h-full overflow-auto m-0 scrollbar-thin">
               {isLoading ? (
                 <LoadingSkeleton />
               ) : effectiveDocumentCount === 0 ? (
@@ -707,7 +674,6 @@ export function ResultsPanel({
                   description="Relevant documents, hearings, and transcripts will appear here."
                 />
               ) : hasSearchResults ? (
-                // Render search results (PolSearch API format)
                 <div className="p-4 space-y-3">
                   {searchDocuments.map((result) => (
                     <SearchDocumentCard
@@ -724,7 +690,6 @@ export function ResultsPanel({
                   ))}
                 </div>
               ) : (
-                // Render legacy document/hearing format
                 <div className="p-4 space-y-3">
                   {documents.map((doc) => (
                     <DocumentCard
@@ -748,7 +713,7 @@ export function ResultsPanel({
               )}
             </TabsContent>
 
-            <TabsContent value="votes" className="h-full overflow-auto m-0">
+            <TabsContent value="votes" className="h-full overflow-auto m-0 scrollbar-thin">
               {isLoading ? (
                 <LoadingSkeleton />
               ) : effectiveVoteCount === 0 ? (
@@ -758,7 +723,6 @@ export function ResultsPanel({
                   description="Voting records related to your query will appear here."
                 />
               ) : hasSearchResults ? (
-                // Render search results (PolSearch API format)
                 <div className="p-4 space-y-3">
                   {searchVotes.map((result) => (
                     <SearchVoteCard
@@ -772,7 +736,6 @@ export function ResultsPanel({
                   ))}
                 </div>
               ) : (
-                // Render legacy VoteRecord format
                 <div className="p-4 space-y-3">
                   {votes.map((vote) => (
                     <VoteCard key={vote.id} vote={vote} />
@@ -790,11 +753,11 @@ export function ResultsPanel({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
-              className="flex-shrink-0 p-4 border-t border-border/50 bg-background/80 backdrop-blur-sm"
+              className="flex-shrink-0 p-4 border-t border-border bg-card"
             >
               <Button
                 onClick={handleContactRepresentatives}
-                className="w-full gap-2 rounded-xl bg-accent text-accent-foreground hover:bg-accent/90 shadow-md shadow-accent/20"
+                className="w-full gap-2 rounded-lg bg-accent text-accent-foreground hover:bg-accent/90"
                 size="lg"
               >
                 <Send className="size-4" />

@@ -1,27 +1,28 @@
 import type { Metadata } from "next";
-import { DM_Sans, Libre_Baskerville, Geist_Mono } from "next/font/google";
+import { Source_Sans_3, Playfair_Display, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider, ChatProvider, ContactProvider } from "@/components/providers";
 import { Header } from "@/components/layout";
 import { ConversationSidebar } from "@/components/conversation/conversation-sidebar";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
+const sourceSans = Source_Sans_3({
+  variable: "--font-source-sans",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
-const libreBaskerville = Libre_Baskerville({
-  variable: "--font-libre-baskerville",
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
-  weight: ["400", "700"],
+  weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains",
   subsets: ["latin"],
+  weight: ["400", "500"],
 });
 
 export const metadata: Metadata = {
@@ -39,7 +40,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${dmSans.variable} ${libreBaskerville.variable} ${geistMono.variable} antialiased h-dvh flex overflow-hidden`}
+        className={`${sourceSans.variable} ${playfair.variable} ${jetbrainsMono.variable} antialiased h-dvh flex overflow-hidden`}
       >
         <ThemeProvider>
           <ChatProvider>
