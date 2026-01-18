@@ -1,4 +1,4 @@
-//! Unified FTS index creation for all LanceDB tables
+//! Unified FTS index creation for all `LanceDB` tables
 
 use color_eyre::eyre::Result;
 use colored::Colorize;

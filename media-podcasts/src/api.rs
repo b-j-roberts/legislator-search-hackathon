@@ -9,6 +9,7 @@ use tracing::{debug, info, warn};
 const LISTEN_NOTES_API_BASE: &str = "https://listen-api.listennotes.com/api/v2";
 
 /// Listen Notes API client for podcast search
+#[allow(dead_code)]
 pub struct PodcastClient {
     http: HttpClient,
     api_key: String,
@@ -28,6 +29,7 @@ impl PodcastClient {
     }
 
     /// Create a client from the LISTEN_NOTES_API_KEY environment variable
+    #[allow(dead_code)]
     pub fn from_env() -> Result<Self> {
         let api_key = std::env::var("LISTEN_NOTES_API_KEY")
             .map_err(|_| eyre::eyre!("LISTEN_NOTES_API_KEY environment variable not set"))?;
@@ -87,6 +89,7 @@ impl PodcastClient {
     }
 
     /// Get podcast details by ID
+    #[allow(dead_code)]
     pub fn get_podcast(&self, podcast_id: &str) -> Result<PodcastDetail> {
         let url = format!("{}/podcasts/{}", LISTEN_NOTES_API_BASE, podcast_id);
 
@@ -122,7 +125,6 @@ impl PodcastClient {
         max_results: u32,
     ) -> Result<Vec<MediaAppearance>> {
         let mut appearances = Vec::new();
-        let mut offset = 0;
         let page_size = 10; // Listen Notes returns 10 per page by default
 
         // search terms for finding political podcast appearances
@@ -134,7 +136,7 @@ impl PodcastClient {
         info!("Searching Listen Notes for {}", member_name);
 
         for query in &search_queries {
-            offset = 0;
+            let mut offset = 0;
 
             loop {
                 let response = self.search_episodes(query, offset, start_date, end_date)?;
@@ -154,16 +156,14 @@ impl PodcastClient {
                     };
 
                     // filter by date range
-                    if let Some(start) = start_date {
-                        if date < start {
+                    if let Some(start) = start_date
+                        && date < start {
                             continue;
                         }
-                    }
-                    if let Some(end) = end_date {
-                        if date > end {
+                    if let Some(end) = end_date
+                        && date > end {
                             continue;
                         }
-                    }
 
                     // check if this episode likely features our member
                     let title_lower = episode.title_original.to_lowercase();
@@ -258,12 +258,13 @@ fn timestamp_to_date(ts_ms: i64) -> Option<NaiveDate> {
 // API response types
 
 #[derive(Debug, Deserialize)]
+#[allow(dead_code)]
 pub struct SearchResponse {
-    pub count: u32,
+    count: u32,
     pub total: u32,
     #[serde(default)]
     pub results: Vec<EpisodeResult>,
-    pub next_offset: u32,
+    next_offset: u32,
 }
 
 #[derive(Debug, Deserialize)]
@@ -280,19 +281,21 @@ pub struct EpisodeResult {
 }
 
 #[derive(Debug, Deserialize)]
+#[allow(dead_code)]
 pub struct PodcastInfo {
-    pub id: String,
+    id: String,
     pub title_original: String,
-    pub publisher_original: Option<String>,
+    publisher_original: Option<String>,
 }
 
 #[derive(Debug, Deserialize)]
+#[allow(dead_code)]
 pub struct PodcastDetail {
-    pub id: String,
-    pub title: String,
-    pub description: Option<String>,
-    pub publisher: Option<String>,
-    pub total_episodes: u32,
+    id: String,
+    title: String,
+    description: Option<String>,
+    publisher: Option<String>,
+    total_episodes: u32,
 }
 
 // URL encoding helper

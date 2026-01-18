@@ -27,6 +27,7 @@ impl YoutubeClient {
     }
 
     /// Create a client from the YOUTUBE_API_KEY environment variable
+    #[allow(dead_code)]
     pub fn from_env() -> Result<Self> {
         let api_key = std::env::var("YOUTUBE_API_KEY")
             .map_err(|_| eyre::eyre!("YOUTUBE_API_KEY environment variable not set"))?;
@@ -88,6 +89,7 @@ impl YoutubeClient {
     }
 
     /// Get channel details by ID
+    #[allow(dead_code)]
     pub fn get_channel(&self, channel_id: &str) -> Result<ChannelListResponse> {
         let url = format!(
             "{}/channels?part=snippet&id={}&key={}",
@@ -109,8 +111,6 @@ impl YoutubeClient {
         max_pages: u32,
     ) -> Result<Vec<MediaAppearance>> {
         let mut appearances = Vec::new();
-        let mut page_token: Option<String> = None;
-        let mut pages = 0;
 
         // search terms to find relevant political content
         let search_queries = [
@@ -122,8 +122,8 @@ impl YoutubeClient {
         info!("Searching YouTube for {}", member_name);
 
         for query in &search_queries {
-            page_token = None;
-            pages = 0;
+            let mut page_token: Option<String> = None;
+            let mut pages = 0;
 
             loop {
                 let response = self.search(
@@ -163,27 +163,24 @@ impl YoutubeClient {
                     };
 
                     // filter by date range
-                    if let Some(start) = start_date {
-                        if date < start {
+                    if let Some(start) = start_date
+                        && date < start {
                             continue;
                         }
-                    }
-                    if let Some(end) = end_date {
-                        if date > end {
+                    if let Some(end) = end_date
+                        && date > end {
                             continue;
                         }
-                    }
 
                     let video_url = format!("https://www.youtube.com/watch?v={}", video.id);
 
                     let mut media = MediaInfo::new().with_video(video_url);
 
                     // parse duration if available
-                    if let Some(ref content_details) = video.content_details {
-                        if let Some(secs) = parse_duration(&content_details.duration) {
+                    if let Some(ref content_details) = video.content_details
+                        && let Some(secs) = parse_duration(&content_details.duration) {
                             media = media.with_duration(secs);
                         }
-                    }
 
                     // determine outlet from channel
                     let channel_name = video.snippet.channel_title.clone();
@@ -337,10 +334,11 @@ pub struct SearchItemId {
 }
 
 #[derive(Debug, Deserialize)]
+#[allow(dead_code)]
 pub struct SearchSnippet {
     pub title: String,
     #[serde(default)]
-    pub description: String,
+    description: String,
     #[serde(rename = "publishedAt")]
     pub published_at: String,
     #[serde(rename = "channelTitle")]
@@ -348,11 +346,12 @@ pub struct SearchSnippet {
 }
 
 #[derive(Debug, Deserialize)]
+#[allow(dead_code)]
 pub struct PageInfo {
     #[serde(rename = "totalResults")]
     pub total_results: u32,
     #[serde(rename = "resultsPerPage")]
-    pub results_per_page: u32,
+    results_per_page: u32,
 }
 
 #[derive(Debug, Deserialize)]
@@ -362,15 +361,17 @@ pub struct VideoListResponse {
 }
 
 #[derive(Debug, Deserialize)]
+#[allow(dead_code)]
 pub struct VideoItem {
     pub id: String,
     pub snippet: VideoSnippet,
     #[serde(rename = "contentDetails")]
     pub content_details: Option<ContentDetails>,
-    pub statistics: Option<VideoStatistics>,
+    statistics: Option<VideoStatistics>,
 }
 
 #[derive(Debug, Deserialize)]
+#[allow(dead_code)]
 pub struct VideoSnippet {
     pub title: String,
     #[serde(default)]
@@ -378,7 +379,7 @@ pub struct VideoSnippet {
     #[serde(rename = "publishedAt")]
     pub published_at: String,
     #[serde(rename = "channelId")]
-    pub channel_id: String,
+    channel_id: String,
     #[serde(rename = "channelTitle")]
     pub channel_title: String,
     #[serde(default)]
@@ -391,30 +392,34 @@ pub struct ContentDetails {
 }
 
 #[derive(Debug, Deserialize)]
+#[allow(dead_code)]
 pub struct VideoStatistics {
     #[serde(rename = "viewCount")]
-    pub view_count: Option<String>,
+    view_count: Option<String>,
     #[serde(rename = "likeCount")]
-    pub like_count: Option<String>,
+    like_count: Option<String>,
 }
 
 #[derive(Debug, Deserialize)]
+#[allow(dead_code)]
 pub struct ChannelListResponse {
     #[serde(default)]
-    pub items: Vec<ChannelItem>,
+    items: Vec<ChannelItem>,
 }
 
 #[derive(Debug, Deserialize)]
+#[allow(dead_code)]
 pub struct ChannelItem {
-    pub id: String,
-    pub snippet: ChannelSnippet,
+    id: String,
+    snippet: ChannelSnippet,
 }
 
 #[derive(Debug, Deserialize)]
+#[allow(dead_code)]
 pub struct ChannelSnippet {
-    pub title: String,
+    title: String,
     #[serde(default)]
-    pub description: String,
+    description: String,
 }
 
 // URL encoding helper

@@ -49,7 +49,8 @@ pub enum Chamber {
 
 impl Chamber {
     #[must_use]
-    pub fn as_str(&self) -> &'static str {
+    #[allow(dead_code)]
+    pub const fn as_str(&self) -> &'static str {
         match self {
             Self::House => "house",
             Self::Senate => "senate",
@@ -57,8 +58,8 @@ impl Chamber {
     }
 }
 
-fn default_limit() -> usize { 10 }
-fn default_enrich() -> bool { true }
+const fn default_limit() -> usize { 10 }
+const fn default_enrich() -> bool { true }
 
 /// Search query parameters
 #[derive(Debug, Deserialize, IntoParams)]
@@ -72,7 +73,7 @@ pub struct SearchParams {
     #[serde(default)]
     pub mode: SearchMode,
 
-    /// Content types to search (comma-separated: hearing,floor_speech,vote,all)
+    /// Content types to search (comma-separated: `hearing,floor_speech,vote,all`)
     #[serde(default, rename = "type")]
     #[param(value_type = Option<String>)]
     pub content_type: Option<String>,
@@ -86,7 +87,7 @@ pub struct SearchParams {
     #[serde(default)]
     pub offset: usize,
 
-    /// Include metadata from PostgreSQL
+    /// Include metadata from `PostgreSQL`
     #[serde(default = "default_enrich")]
     pub enrich: bool,
 
@@ -97,6 +98,7 @@ pub struct SearchParams {
 
     /// Context scope (same content or related)
     #[serde(default)]
+    #[allow(dead_code)]
     pub context_scope: ContextScope,
 
     /// Filter by speaker name (fuzzy match)

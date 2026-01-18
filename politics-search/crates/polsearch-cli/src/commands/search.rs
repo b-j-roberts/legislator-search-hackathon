@@ -464,7 +464,7 @@ fn parse_search_results(batches: &[RecordBatch], mode: SearchMode) -> Result<Vec
     Ok(results)
 }
 
-/// Enrich search results with metadata from PostgreSQL
+/// Enrich search results with metadata from `PostgreSQL`
 async fn enrich_results(results: &mut [SearchResult]) -> Result<()> {
     if results.is_empty() {
         return Ok(());

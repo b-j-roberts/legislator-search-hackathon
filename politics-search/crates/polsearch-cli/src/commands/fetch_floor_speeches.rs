@@ -8,7 +8,7 @@ use polsearch_pipeline::stages::{is_procedural_crec_title, parse_crec_html, Crec
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 use std::fs;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Arc;
 use std::time::Duration;
@@ -221,10 +221,11 @@ pub async fn run(
 }
 
 /// Fetch a single floor speech with retry logic
+#[allow(clippy::too_many_arguments)]
 async fn fetch_single(
     client: &Client,
     entry: FloorSpeechEntry,
-    output_path: &PathBuf,
+    output_path: &Path,
     dry_run: bool,
     pb: &ProgressBar,
     fetched: &Arc<AtomicUsize>,

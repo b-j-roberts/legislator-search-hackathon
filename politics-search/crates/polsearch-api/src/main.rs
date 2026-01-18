@@ -1,4 +1,4 @@
-//! REST API server for PolSearch
+//! REST API server for `PolSearch`
 
 mod error;
 mod models;

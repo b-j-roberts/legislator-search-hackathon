@@ -19,13 +19,13 @@ use crate::models::{
 };
 use crate::AppState;
 
-/// Check if a LanceDB error is due to a missing FTS inverted index
+/// Check if a `LanceDB` error is due to a missing FTS inverted index
 fn is_missing_fts_index_error(e: &LanceError) -> bool {
     let msg = e.to_string();
     msg.contains("INVERTED index") || msg.contains("full text search")
 }
 
-/// Raw search result from LanceDB
+/// Raw search result from `LanceDB`
 struct RawSearchResult {
     content_id: Uuid,
     content_id_str: String,
@@ -49,7 +49,7 @@ enum InternalMode {
 }
 
 impl InternalMode {
-    fn as_str(self) -> &'static str {
+    const fn as_str(self) -> &'static str {
         match self {
             Self::Hybrid => "hybrid",
             Self::Vector => "vector",
@@ -70,7 +70,7 @@ impl From<RequestMode> for InternalMode {
     }
 }
 
-/// Build content type filter for LanceDB
+/// Build content type filter for `LanceDB`
 fn build_content_type_filter(types: &[ContentType]) -> Option<String> {
     if types.is_empty() || types.iter().any(|t| matches!(t, ContentType::All)) {
         return None;
@@ -96,7 +96,7 @@ fn build_content_type_filter(types: &[ContentType]) -> Option<String> {
     }
 }
 
-/// Filter parameters for PostgreSQL pre-filtering
+/// Filter parameters for `PostgreSQL` pre-filtering
 struct FilterParams<'a> {
     chamber: Option<&'a Chamber>,
     committee: Option<&'a str>,
@@ -107,7 +107,7 @@ struct FilterParams<'a> {
 }
 
 impl<'a> FilterParams<'a> {
-    fn has_pg_filters(&self) -> bool {
+    const fn has_pg_filters(&self) -> bool {
         self.chamber.is_some()
             || self.committee.is_some()
             || self.congress.is_some()
@@ -116,13 +116,13 @@ impl<'a> FilterParams<'a> {
     }
 }
 
-/// Build speaker name filter for LanceDB (case-insensitive LIKE)
+/// Build speaker name filter for `LanceDB` (case-insensitive LIKE)
 fn build_speaker_filter(speaker: &str) -> String {
     let escaped = speaker.replace('\'', "''").replace('%', "\\%");
     format!("LOWER(speaker_name) LIKE '%{}%'", escaped.to_lowercase())
 }
 
-/// Get filtered content IDs from PostgreSQL based on filter params
+/// Get filtered content IDs from `PostgreSQL` based on filter params
 async fn get_filtered_content_ids(
     db: &Database,
     content_types: &[ContentType],
@@ -169,7 +169,7 @@ async fn get_filtered_content_ids(
     Ok(Some(all_ids))
 }
 
-/// Build content_id IN filter for LanceDB
+/// Build `content_id` IN filter for `LanceDB`
 fn build_content_id_filter(ids: &HashSet<Uuid>) -> Option<String> {
     if ids.is_empty() {
         return None;
@@ -208,7 +208,7 @@ fn normalize_score(score: f32, mode: InternalMode, max_score: f32) -> f32 {
     }
 }
 
-/// Execute search against LanceDB
+/// Execute search against `LanceDB`
 async fn execute_search(
     lancedb_path: &str,
     query: &str,
@@ -327,7 +327,7 @@ async fn execute_search(
     Ok((results, mode_used))
 }
 
-/// Parse LanceDB results into RawSearchResult structs
+/// Parse `LanceDB` results into `RawSearchResult` structs
 fn parse_search_results(
     batches: &[RecordBatch],
     mode: InternalMode,
@@ -438,7 +438,7 @@ fn parse_search_results(
     Ok(results)
 }
 
-/// Enrich search results with metadata from PostgreSQL
+/// Enrich search results with metadata from `PostgreSQL`
 async fn enrich_results(results: &mut [SearchResult], db: &Database) -> Result<(), ApiError> {
     if results.is_empty() {
         return Ok(());
@@ -503,14 +503,16 @@ async fn enrich_results(results: &mut [SearchResult], db: &Database) -> Result<(
         match r.content_type.as_str() {
             "hearing" => {
                 if is_nil {
-                    if let Some((title, _committee, date)) = hearing_pkg_metadata.get(&r.content_id_str) {
+                    if let Some((title, _committee, date, source_url)) = hearing_pkg_metadata.get(&r.content_id_str) {
                         r.title = Some(title.clone());
                         r.date = date.map(|d| d.format("%Y-%m-%d").to_string());
+                        r.source_url = source_url.clone();
                     }
                 } else {
-                    if let Some((title, _committee, date)) = hearing_metadata.get(&r.content_id) {
+                    if let Some((title, _committee, date, source_url)) = hearing_metadata.get(&r.content_id) {
                         r.title = Some(title.clone());
                         r.date = date.map(|d| d.format("%Y-%m-%d").to_string());
+                        r.source_url = source_url.clone();
                     }
                     if r.speaker_name.is_none() {
                         if let Some(speaker) = hearing_speakers.get(&(r.content_id, r.segment_index)) {
@@ -521,14 +523,16 @@ async fn enrich_results(results: &mut [SearchResult], db: &Database) -> Result<(
             }
             "floor_speech" => {
                 if is_nil {
-                    if let Some((title, _chamber, date)) = floor_speech_event_metadata.get(&r.content_id_str) {
+                    if let Some((title, _chamber, date, source_url)) = floor_speech_event_metadata.get(&r.content_id_str) {
                         r.title = Some(title.clone());
                         r.date = date.map(|d| d.format("%Y-%m-%d").to_string());
+                        r.source_url = source_url.clone();
                     }
                 } else {
-                    if let Some((title, _chamber, date)) = floor_speech_metadata.get(&r.content_id) {
+                    if let Some((title, _chamber, date, source_url)) = floor_speech_metadata.get(&r.content_id) {
                         r.title = Some(title.clone());
                         r.date = date.map(|d| d.format("%Y-%m-%d").to_string());
+                        r.source_url = source_url.clone();
                     }
                     if r.speaker_name.is_none() {
                         if let Some(speaker) =
@@ -546,7 +550,7 @@ async fn enrich_results(results: &mut [SearchResult], db: &Database) -> Result<(
     Ok(())
 }
 
-/// Expand search results with context segments from LanceDB
+/// Expand search results with context segments from `LanceDB`
 async fn expand_context(
     results: &mut [SearchResult],
     lancedb_path: &str,
@@ -642,6 +646,7 @@ async fn expand_context(
         (status = 500, description = "Internal error")
     )
 )]
+#[allow(clippy::significant_drop_tightening)]
 pub async fn search(
     State(state): State<Arc<AppState>>,
     Query(params): Query<SearchParams>,
@@ -762,6 +767,7 @@ pub async fn search(
             speaker_name: r.speaker_name,
             title: r.title,
             date: None,
+            source_url: None,
             context_before: vec![],
             context_after: vec![],
         })

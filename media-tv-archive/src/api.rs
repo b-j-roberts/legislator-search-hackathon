@@ -64,16 +64,14 @@ impl TvArchiveClient {
             };
 
             // filter by date range
-            if let Some(start) = start_date {
-                if date < start {
+            if let Some(start) = start_date
+                && date < start {
                     continue;
                 }
-            }
-            if let Some(end) = end_date {
-                if date > end {
+            if let Some(end) = end_date
+                && date > end {
                     continue;
                 }
-            }
 
             // determine outlet from identifier or collection
             let (outlet_name, outlet_type) =
@@ -90,11 +88,10 @@ impl TvArchiveClient {
             let mut media = MediaInfo::new().with_video(&video_url);
 
             // add transcript snippet
-            if let Some(ref snippet) = transcript_snippet {
-                if !snippet.is_empty() {
+            if let Some(ref snippet) = transcript_snippet
+                && !snippet.is_empty() {
                     media = media.with_transcript(snippet.clone());
                 }
-            }
 
             // calculate duration from start timestamp if available
             if let Some(start_sec) = result.start {
@@ -120,11 +117,10 @@ impl TvArchiveClient {
             appearance = appearance.with_media(media);
 
             // use transcript snippet as description if available
-            if let Some(snippet) = transcript_snippet {
-                if !snippet.is_empty() {
+            if let Some(snippet) = transcript_snippet
+                && !snippet.is_empty() {
                     appearance = appearance.with_description(snippet);
                 }
-            }
 
             // add topics if available
             if let Some(topics) = result.topic {
@@ -252,6 +248,7 @@ fn strip_tags(text: &str) -> String {
 // API response types for TV search endpoint
 
 #[derive(Debug, Deserialize)]
+#[allow(dead_code)]
 pub struct TvSearchResult {
     pub identifier: String,
     pub title: String,
@@ -266,9 +263,9 @@ pub struct TvSearchResult {
     #[serde(default)]
     pub collection: Option<String>,
     #[serde(default)]
-    pub creator: Option<String>,
+    creator: Option<String>,
     #[serde(default)]
-    pub downloads: Option<u32>,
+    downloads: Option<u32>,
 }
 
 // URL encoding helper

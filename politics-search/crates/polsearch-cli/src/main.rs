@@ -83,7 +83,7 @@ enum Commands {
         command: UtilCommands,
     },
 
-    /// Create FTS indexes on all tables (text_fts, text_embeddings)
+    /// Create FTS indexes on all tables (`text_fts`, `text_embeddings`)
     Index {
         /// `LanceDB` storage path
         #[arg(long, default_value = "~/.polsearch/lancedb")]
@@ -400,7 +400,7 @@ enum FtsCommands {
         #[arg(long)]
         speeches_path: Option<String>,
 
-        /// Ingest votes from PostgreSQL
+        /// Ingest votes from `PostgreSQL`
         #[arg(long)]
         votes: bool,
 

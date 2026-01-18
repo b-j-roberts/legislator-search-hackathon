@@ -288,7 +288,7 @@ impl FtsIngester {
         })
     }
 
-    /// Get existing hearing content IDs from LanceDB FTS table
+    /// Get existing hearing content IDs from `LanceDB` FTS table
     async fn get_existing_hearing_ids(&self) -> Result<HashSet<String>> {
         if self.force {
             return Ok(HashSet::new());
@@ -296,7 +296,7 @@ impl FtsIngester {
         self.get_existing_content_ids("hearing").await
     }
 
-    /// Get existing floor speech content IDs from LanceDB FTS table
+    /// Get existing floor speech content IDs from `LanceDB` FTS table
     async fn get_existing_speech_ids(&self) -> Result<HashSet<String>> {
         if self.force {
             return Ok(HashSet::new());
@@ -304,7 +304,7 @@ impl FtsIngester {
         self.get_existing_content_ids("floor_speech").await
     }
 
-    /// Get existing content IDs from LanceDB FTS table for a given content type
+    /// Get existing content IDs from `LanceDB` FTS table for a given content type
     async fn get_existing_content_ids(&self, content_type: &str) -> Result<HashSet<String>> {
         use arrow_array::cast::AsArray;
         use futures::TryStreamExt;
@@ -423,7 +423,7 @@ impl FtsIngester {
             info!(
                 "Written batch {}/{} ({} records)",
                 i + 1,
-                (total_records + BATCH_SIZE - 1) / BATCH_SIZE,
+                total_records.div_ceil(BATCH_SIZE),
                 chunk.len()
             );
         }
@@ -518,7 +518,7 @@ impl FtsIngester {
             info!(
                 "Written batch {}/{} ({} records)",
                 i + 1,
-                (total_records + BATCH_SIZE - 1) / BATCH_SIZE,
+                total_records.div_ceil(BATCH_SIZE),
                 chunk.len()
             );
         }

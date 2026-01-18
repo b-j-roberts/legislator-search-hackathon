@@ -219,22 +219,22 @@ impl<'a> FloorSpeechRepo<'a> {
         Ok(ids.into_iter().map(|(id,)| id).collect())
     }
 
-    /// Batch fetch floor speech metadata (title, chamber, date) for search result enrichment
+    /// Batch fetch floor speech metadata (title, chamber, date, source_url) for search result enrichment
     ///
     /// # Errors
     /// Returns `DbError` if the query fails
     pub async fn get_metadata_batch(
         &self,
         ids: &[Uuid],
-    ) -> Result<std::collections::HashMap<Uuid, (String, Option<String>, Option<chrono::NaiveDate>)>, DbError> {
+    ) -> Result<std::collections::HashMap<Uuid, (String, Option<String>, Option<chrono::NaiveDate>, Option<String>)>, DbError> {
         use std::collections::HashMap;
 
         if ids.is_empty() {
             return Ok(HashMap::new());
         }
 
-        let rows: Vec<(Uuid, String, Option<String>, Option<chrono::NaiveDate>)> = sqlx::query_as(
-            "SELECT id, title, chamber, speech_date FROM floor_speeches WHERE id = ANY($1)",
+        let rows: Vec<(Uuid, String, Option<String>, Option<chrono::NaiveDate>, Option<String>)> = sqlx::query_as(
+            "SELECT id, title, chamber, speech_date, source_url FROM floor_speeches WHERE id = ANY($1)",
         )
         .bind(ids)
         .fetch_all(self.pool)
@@ -242,26 +242,26 @@ impl<'a> FloorSpeechRepo<'a> {
 
         Ok(rows
             .into_iter()
-            .map(|(id, title, chamber, date)| (id, (title, chamber, date)))
+            .map(|(id, title, chamber, date, source_url)| (id, (title, chamber, date, source_url)))
             .collect())
     }
 
-    /// Batch fetch floor speech metadata by event_id (for FTS results)
+    /// Batch fetch floor speech metadata by `event_id` (for FTS results)
     ///
     /// # Errors
     /// Returns `DbError` if the query fails
     pub async fn get_metadata_batch_by_event_id(
         &self,
         event_ids: &[String],
-    ) -> Result<std::collections::HashMap<String, (String, Option<String>, Option<chrono::NaiveDate>)>, DbError> {
+    ) -> Result<std::collections::HashMap<String, (String, Option<String>, Option<chrono::NaiveDate>, Option<String>)>, DbError> {
         use std::collections::HashMap;
 
         if event_ids.is_empty() {
             return Ok(HashMap::new());
         }
 
-        let rows: Vec<(String, String, Option<String>, Option<chrono::NaiveDate>)> = sqlx::query_as(
-            "SELECT event_id, title, chamber, speech_date FROM floor_speeches WHERE event_id = ANY($1)",
+        let rows: Vec<(String, String, Option<String>, Option<chrono::NaiveDate>, Option<String>)> = sqlx::query_as(
+            "SELECT event_id, title, chamber, speech_date, source_url FROM floor_speeches WHERE event_id = ANY($1)",
         )
         .bind(event_ids)
         .fetch_all(self.pool)
@@ -269,7 +269,7 @@ impl<'a> FloorSpeechRepo<'a> {
 
         Ok(rows
             .into_iter()
-            .map(|(event_id, title, chamber, date)| (event_id, (title, chamber, date)))
+            .map(|(event_id, title, chamber, date, source_url)| (event_id, (title, chamber, date, source_url)))
             .collect())
     }
 }
