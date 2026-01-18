@@ -3,6 +3,7 @@
 use crate::DbError;
 use polsearch_core::Hearing;
 use sqlx::PgPool;
+use std::collections::HashSet;
 use uuid::Uuid;
 
 pub struct HearingRepo<'a> {
@@ -232,5 +233,70 @@ impl<'a> HearingRepo<'a> {
             .execute(self.pool)
             .await?;
         Ok(())
+    }
+
+    /// Get all package IDs as a set for fast lookup
+    ///
+    /// # Errors
+    /// Returns `DbError` if the query fails
+    pub async fn get_all_package_ids(&self) -> Result<HashSet<String>, DbError> {
+        let ids: Vec<(String,)> = sqlx::query_as("SELECT package_id FROM hearings")
+            .fetch_all(self.pool)
+            .await?;
+        Ok(ids.into_iter().map(|(id,)| id).collect())
+    }
+
+    /// Batch fetch hearing metadata (title, committee, date) for search result enrichment
+    ///
+    /// # Errors
+    /// Returns `DbError` if the query fails
+    pub async fn get_metadata_batch(
+        &self,
+        ids: &[Uuid],
+    ) -> Result<std::collections::HashMap<Uuid, (String, Option<String>, Option<chrono::NaiveDate>)>, DbError> {
+        use std::collections::HashMap;
+
+        if ids.is_empty() {
+            return Ok(HashMap::new());
+        }
+
+        let rows: Vec<(Uuid, String, Option<String>, Option<chrono::NaiveDate>)> = sqlx::query_as(
+            "SELECT id, title, committee_raw, hearing_date FROM hearings WHERE id = ANY($1)",
+        )
+        .bind(ids)
+        .fetch_all(self.pool)
+        .await?;
+
+        Ok(rows
+            .into_iter()
+            .map(|(id, title, committee, date)| (id, (title, committee, date)))
+            .collect())
+    }
+
+    /// Batch fetch hearing metadata by package_id (for FTS results)
+    ///
+    /// # Errors
+    /// Returns `DbError` if the query fails
+    pub async fn get_metadata_batch_by_package_id(
+        &self,
+        package_ids: &[String],
+    ) -> Result<std::collections::HashMap<String, (String, Option<String>, Option<chrono::NaiveDate>)>, DbError> {
+        use std::collections::HashMap;
+
+        if package_ids.is_empty() {
+            return Ok(HashMap::new());
+        }
+
+        let rows: Vec<(String, String, Option<String>, Option<chrono::NaiveDate>)> = sqlx::query_as(
+            "SELECT package_id, title, committee_raw, hearing_date FROM hearings WHERE package_id = ANY($1)",
+        )
+        .bind(package_ids)
+        .fetch_all(self.pool)
+        .await?;
+
+        Ok(rows
+            .into_iter()
+            .map(|(pkg_id, title, committee, date)| (pkg_id, (title, committee, date)))
+            .collect())
     }
 }
