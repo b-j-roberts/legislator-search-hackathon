@@ -35,10 +35,10 @@ release-api:
 [group('build')]
 release: release-cli release-api
 
-# Build and push Docker image
+# Build and push Docker image (tags both git sha and latest)
 [group('build')]
 docker:
-    cd politics-search && nsc build . -t ghcr.io/praveenperera/polsearch-api:latest --push
+    cd politics-search && nsc build . -t ghcr.io/praveenperera/polsearch-api:$(git cch) --push
 
 # ------------------------------------------------------------------------------
 # lint

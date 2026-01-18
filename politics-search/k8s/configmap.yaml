@@ -7,7 +7,9 @@ metadata:
     app.kubernetes.io/name: polsearch-api
 data:
   PORT: "3000"
-  LOG_LEVEL: "info"
+  RUST_LOG: "polsearch_api=info,warn"
   SEARCH_TIMEOUT_SECS: "30"
   AWS_ENDPOINT_URL: "https://nyc3.digitaloceanspaces.com"
   AWS_REGION: "nyc3"
+  FASTEMBED_MODEL_URL: "s3://polsearch-models/fastembed-cache.tar.gz"
+  FASTEMBED_CACHE_DIR: "/home/polsearch/.fastembed_cache"
