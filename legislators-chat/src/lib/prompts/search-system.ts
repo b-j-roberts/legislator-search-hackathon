@@ -345,8 +345,10 @@ export const SEARCH_SYSTEM_PROMPT = `You are a congressional research assistant 
 
 Output search JSON in fenced code block:
 \`\`\`json
-{"action":"search","params":{"q":"topic keywords","enrich":true}}
+{"action":"search","params":{"q":"topic keywords","enrich":true,"exclude_witnesses":true,"from":"2025-01-01","to":"2025-12-31","limit":30}}
 \`\`\`
+
+**DEFAULT PARAMS** (always include): \`enrich:true\`, \`exclude_witnesses:true\`, \`from:"2025-01-01"\`, \`to:"2025-12-31"\`, \`limit:30\`
 
 ### Parameters
 
@@ -354,14 +356,16 @@ Output search JSON in fenced code block:
 |-------|----------|------|-------------|
 | q | Yes | string | **Concise topic keywords only** (NOT the full user question) |
 | enrich | Yes | boolean | Always \`true\` - provides speaker_name, speaker_type, source_url |
+| exclude_witnesses | Yes | boolean | Always \`true\` - filters out witness testimony to focus on legislator statements |
 | type | No | string | \`hearing\`,\`floor_speech\`,\`vote\` (comma-separated) |
 | speaker | No | string | **Legislator name** - fuzzy match, works with "Warren", "Sen. Warren", or "Elizabeth Warren" |
 | committee | No | string | Partial name works (e.g., "Judiciary", "Armed Services") |
 | chamber | No | string | \`"house"\` or \`"senate"\` (lowercase) |
 | congress | No | number | 116, 117, 118, or 119 |
-| from/to | No | string | \`YYYY-MM-DD\` or \`YYYY-MM\` |
-| limit | No | number | 1-100 (default: 20, use higher for people-focused searches) |
+| from/to | No | string | \`YYYY-MM-DD\` or \`YYYY-MM\` (default: from \`2025-01-01\` to \`2025-12-31\`) |
+| limit | No | number | 1-100 (default: 30, use higher for people-focused searches) |
 | offset | No | number | Pagination offset |
+| context | No | number | 1-10: get N segments before/after each match for expanded context (use for follow-up questions) |
 
 ### Speaker Types (returned in results)
 
@@ -386,27 +390,28 @@ The \`q\` parameter must contain **only the core topic/keywords**, not the full 
 
 ## EXAMPLES
 
+**Note**: All examples below assume the required defaults: \`enrich:true, exclude_witnesses:true, from:"2025-01-01", to:"2025-12-31", limit:30\`
+
 ### Topic Searches
-| User Query | Key Params |
+| User Query | Key Params (+ defaults) |
 |------------|------------|
-| "What have senators said about climate change?" | \`q:"climate change", chamber:"senate", limit:30\` |
-| "Infrastructure hearings in 2023" | \`q:"infrastructure", type:"hearing", from:"2023-01", to:"2023-12"\` |
-| "Tell me about transnational repression" | \`q:"transnational repression", limit:30\` |
+| "What have senators said about climate change?" | \`q:"climate change", chamber:"senate"\` |
+| "Infrastructure hearings in 2023" | \`q:"infrastructure", type:"hearing", from:"2023-01-01", to:"2023-12-31"\` (override date) |
+| "Tell me about transnational repression" | \`q:"transnational repression"\` |
 | "Votes on the Inflation Reduction Act" | \`q:"Inflation Reduction Act", type:"vote"\` |
 
 ### People/Legislator Searches (PRIMARY FOCUS)
-| User Query | Key Params |
+| User Query | Key Params (+ defaults) |
 |------------|------------|
 | "What has Elizabeth Warren said about banking?" | \`q:"banking", speaker:"Warren", limit:40\` |
 | "Find legislators who support AI regulation" | \`q:"AI regulation support", type:"floor_speech,hearing", limit:50\` |
-| "Who testified about TikTok?" | \`q:"TikTok", type:"hearing", limit:40\` |
+| "Who testified about TikTok?" | \`q:"TikTok", type:"hearing", limit:40, exclude_witnesses:false\` (include witnesses) |
 | "Representatives speaking on border security" | \`q:"border security", chamber:"house", type:"floor_speech", limit:40\` |
 | "What are Ted Cruz's positions?" | \`q:"*", speaker:"Cruz", limit:50\` (broad search for all their statements) |
 | "Which senators discussed Ukraine aid?" | \`q:"Ukraine aid", chamber:"senate", limit:40\` |
-| "Witnesses who testified on Big Tech" | \`q:"Big Tech antitrust", type:"hearing", limit:30\` |
 
 ### Legislator Contact Research
-| User Query | Key Params |
+| User Query | Key Params (+ defaults) |
 |------------|------------|
 | "I want to contact my senator about housing" | \`q:"housing", chamber:"senate", limit:40\` |
 | "Legislators I can reach out to about veterans" | \`q:"veterans", type:"floor_speech,hearing", limit:50\` |
@@ -416,6 +421,7 @@ The \`q\` parameter must contain **only the core topic/keywords**, not the full 
 **Refine** (words: "only", "just", "filter", "from those"): Add constraints to previous search
 **Expand** (new related topic): Search new topic, results merge
 **Analyze** (summarize, compare): Don't search—use existing results
+**More context** (words: "more context", "surrounding", "what else", "full statement"): Re-search with \`context:3\` or higher to get surrounding segments
 
 ## NO RESULTS STRATEGY
 

@@ -29,6 +29,7 @@ export interface SearchParams {
   limit?: number;
   offset?: number;
   enrich?: boolean;
+  exclude_witnesses?: boolean;
   context?: number;
   context_scope?: ContextScope;
   speaker?: string;
@@ -223,6 +224,7 @@ export async function searchContent(
   if (params.type) searchParams.set("type", params.type);
   if (params.limit) searchParams.set("limit", params.limit.toString());
   if (params.offset) searchParams.set("offset", params.offset.toString());
+  if (params.exclude_witnesses !== undefined) searchParams.set("exclude_witnesses", params.exclude_witnesses.toString());
   if (params.context) searchParams.set("context", params.context.toString());
   if (params.context_scope) searchParams.set("context_scope", params.context_scope);
   if (params.speaker) searchParams.set("speaker", params.speaker);

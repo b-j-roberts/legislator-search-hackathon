@@ -30,6 +30,8 @@ export interface SearchActionParams {
   limit?: number;
   offset?: number;
   enrich?: boolean;
+  exclude_witnesses?: boolean;
+  context?: number;
 }
 
 /** Result of parsing an AI response */
@@ -288,6 +290,8 @@ export function toSearchParams(params: SearchActionParams): Omit<SearchParams, "
     ...(params.to && { to: params.to }),
     ...(params.limit && { limit: params.limit }),
     ...(params.offset && { offset: params.offset }),
+    ...(params.exclude_witnesses !== undefined && { exclude_witnesses: params.exclude_witnesses }),
+    ...(params.context && { context: params.context }),
   };
 }
 

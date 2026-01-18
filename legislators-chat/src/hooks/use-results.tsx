@@ -67,40 +67,11 @@ function extractChamber(name: string, resultChamber?: string): Chamber | undefin
   return undefined;
 }
 
-/** Speaker types that represent legislators (not witnesses, experts, etc.) */
-const LEGISLATOR_SPEAKER_TYPES: Set<string> = new Set([
-  "representative",
-  "senator",
-  "presiding_officer",
-]);
-
-/**
- * Check if a speaker type represents a legislator
- */
-function isLegislatorSpeakerType(speakerType?: string): boolean {
-  if (!speakerType) return false;
-  return LEGISLATOR_SPEAKER_TYPES.has(speakerType.toLowerCase());
-}
-
-/**
- * Infer if a speaker is a legislator from their name prefix
- * Used as fallback when speaker_type is not available
- */
-function inferIsLegislatorFromName(name: string): boolean {
-  const lowerName = name.toLowerCase();
-  const legislatorPrefixes = [
-    "sen.", "senator",
-    "rep.", "representative",
-    "mr. speaker", "madam speaker",
-    "the speaker", "mr. president", "madam president",
-  ];
-  return legislatorPrefixes.some(prefix => lowerName.startsWith(prefix));
-}
-
 /**
  * Extract unique speakers from search results and aggregate their metadata.
- * Only includes speakers who match CURRENT legislators in our database.
- * This filters out former legislators (like retired senators) and non-legislators (witnesses, experts).
+ * When currentLegislatorsOnly is true (default), only includes speakers who match
+ * a current legislator in our database. This filters out witnesses, experts, and
+ * former legislators by checking if their name matches any current senator/representative.
  *
  * @param searchResults - Array of search result data
  * @param currentLegislatorsOnly - Whether to require match to current legislators (default: true)
@@ -123,14 +94,6 @@ function extractSpeakersFromResults(
 
   for (const result of searchResults) {
     if (!result.speaker_name) continue;
-
-    // Check if speaker type indicates a legislator (not a witness/expert)
-    const hasLegislatorType = result.speaker_type
-      ? isLegislatorSpeakerType(result.speaker_type)
-      : inferIsLegislatorFromName(result.speaker_name);
-
-    // Skip non-legislators (witnesses, experts, etc.)
-    if (!hasLegislatorType) continue;
 
     const id = normalizeSpeakerName(result.speaker_name);
     const existing = speakerMap.get(id);

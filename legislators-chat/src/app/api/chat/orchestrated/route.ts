@@ -115,6 +115,7 @@ export async function POST(
     const content = data.choices?.[0]?.message?.content;
 
     if (!content) {
+      console.error("AI returned empty response. Full response data:", JSON.stringify(data, null, 2));
       return NextResponse.json(
         {
           error: {
