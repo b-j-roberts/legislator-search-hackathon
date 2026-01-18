@@ -118,6 +118,10 @@ pub struct SearchParams {
 
     /// End date (YYYY-MM-DD or YYYY-MM)
     pub to: Option<String>,
+
+    /// Exclude witnesses from results (only return congressional speakers)
+    #[serde(default)]
+    pub exclude_witnesses: bool,
 }
 
 impl SearchParams {

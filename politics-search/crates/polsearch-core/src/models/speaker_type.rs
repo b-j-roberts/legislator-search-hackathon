@@ -31,6 +31,24 @@ impl SpeakerType {
         }
     }
 
+    /// Returns true if this speaker is a member of Congress or presiding officer
+    #[must_use]
+    pub const fn is_congressional(&self) -> bool {
+        matches!(self, Self::Senator | Self::Representative | Self::PresidingOfficer)
+    }
+
+    /// Parse from string representation
+    #[must_use]
+    pub fn from_str(s: &str) -> Self {
+        match s {
+            "senator" => Self::Senator,
+            "representative" => Self::Representative,
+            "presiding_officer" => Self::PresidingOfficer,
+            "witness" => Self::Witness,
+            _ => Self::Unknown,
+        }
+    }
+
     /// Detect speaker type from label, content type, and chamber
     #[must_use]
     pub fn detect(label: &str, content_type: &str, chamber: Option<&str>) -> Self {

@@ -60,7 +60,7 @@ spec:
             runAsUser: 0
       containers:
         - name: polsearch-api
-          image: ghcr.io/praveenperera/polsearch-api:b513a831c3756c71b9901f866bbbb981d6befa8c
+          image: ghcr.io/praveenperera/polsearch-api:532227d72d71ba8a8c9a1ef192fa17ed21752c30
           imagePullPolicy: Always
           ports:
             - containerPort: 3000

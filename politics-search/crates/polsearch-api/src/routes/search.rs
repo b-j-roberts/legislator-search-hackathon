@@ -943,6 +943,15 @@ pub async fn search(
         }
     }
 
+    // filter out witnesses if requested
+    if params.exclude_witnesses {
+        results.retain(|r| {
+            r.speaker_type
+                .as_ref()
+                .map_or(true, |st| SpeakerType::from_str(st).is_congressional())
+        });
+    }
+
     // expand context if requested
     if params.context > 0 {
         let context_count = params.context.min(10) as i32;
