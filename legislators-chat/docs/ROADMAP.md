@@ -17,30 +17,6 @@ After implementing the feature, please provide a concise step-by-step instructio
 
 Enable users to transition from research/chat phase to taking action by contacting their representatives with AI-generated, personalized call scripts and email drafts.
 
-## 1.6 Context Switching & Persistence
-
-**Description**: Allow async work across multiple legislators.
-
-**Requirements**:
-- [ ] Auto-save draft content when switching legislators
-- [ ] Preserve AI refinement chat history per legislator
-- [ ] Store all state in local storage:
-  - Queue order
-  - Draft content per legislator
-  - Completion status
-  - Contact method selections
-  - Refinement chat history
-- [ ] Show "Draft saved" indicator
-- [ ] Warn before leaving with unsaved changes
-- [ ] Allow resuming from any point in queue
-
-**Implementation Notes**:
-- Use localStorage with structured key schema
-- Consider IndexedDB for larger chat histories
-- Implement debounced auto-save (every 2-3 seconds of inactivity)
-
----
-
 ## 1.7 Session Summary
 
 **Description**: Provide summary view of completed outreach.

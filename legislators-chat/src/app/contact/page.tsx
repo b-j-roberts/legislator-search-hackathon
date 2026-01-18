@@ -15,7 +15,6 @@ import {
   PanelRightClose,
   PanelRightOpen,
   ListOrdered,
-  PartyPopper,
 } from "lucide-react";
 
 import { useContact, getEffectiveContactMethod, getContactAvailability } from "@/hooks/use-contact";
@@ -25,7 +24,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { ProgressStepper } from "@/components/layout";
-import { ContactQueue, ContactMethodSelector, ContentGenerationPanel, MarkCompleteDialog } from "@/components/contact";
+import { ContactQueue, ContactMethodSelector, ContentGenerationPanel, MarkCompleteDialog, SessionSummary } from "@/components/contact";
 import type { ContactOutcome } from "@/components/contact";
 
 import type { QueueItem } from "@/hooks/use-contact";
@@ -51,49 +50,6 @@ function EmptyState() {
   );
 }
 
-function CompletedState({ totalContacted }: { totalContacted: number }) {
-  return (
-    <div className="flex flex-col items-center justify-center py-16 px-4 text-center">
-      <motion.div
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ type: "spring", duration: 0.5 }}
-        className="rounded-full bg-green-500/20 p-4 mb-4"
-      >
-        <PartyPopper className="size-8 text-green-500" />
-      </motion.div>
-      <motion.h3
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-        className="text-xl font-semibold text-foreground mb-2"
-      >
-        All Done!
-      </motion.h3>
-      <motion.p
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-        className="text-muted-foreground max-w-xs mb-6"
-      >
-        You&apos;ve contacted {totalContacted} representative{totalContacted !== 1 ? "s" : ""}. Your
-        voice matters!
-      </motion.p>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.4 }}
-      >
-        <Button asChild>
-          <Link href="/">
-            <ArrowLeft className="size-4 mr-2" />
-            Back to Research
-          </Link>
-        </Button>
-      </motion.div>
-    </div>
-  );
-}
 
 interface ActiveContactPanelProps {
   item: QueueItem;
@@ -383,6 +339,7 @@ function ContactPageContent() {
     setDefaultMethod,
     defaultContactMethod,
     researchContext,
+    clearSelections,
   } = useContact();
 
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
@@ -410,6 +367,17 @@ function ContactPageContent() {
     markCurrentContacted(outcome, notes);
   };
 
+  const handleClearSession = () => {
+    clearSelections();
+    setCurrentStep("research");
+    router.push("/");
+  };
+
+  const handleContinueResearch = () => {
+    setCurrentStep("research");
+    router.push("/");
+  };
+
   const totalCount = queue?.items.length ?? 0;
 
   // Calculate progress text
@@ -429,11 +397,13 @@ function ContactPageContent() {
               <ArrowLeft className="size-4" />
               Back to Research
             </Button>
-            <ProgressStepper currentStep="contact" />
+            <ProgressStepper currentStep={isComplete ? "complete" : "contact"} />
           </div>
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-foreground">Contact Your Representatives</h1>
+              <h1 className="text-2xl font-bold text-foreground">
+                {isComplete ? "Session Complete" : "Contact Your Representatives"}
+              </h1>
               <p className="text-muted-foreground mt-0.5">{progressText}</p>
             </div>
           </div>
@@ -448,8 +418,13 @@ function ContactPageContent() {
             <div className="max-w-3xl mx-auto px-4 py-6">
               {!hasSelections && !queue ? (
                 <EmptyState />
-              ) : isComplete ? (
-                <CompletedState totalContacted={contactedCount} />
+              ) : isComplete && queue ? (
+                <SessionSummary
+                  items={queue.items}
+                  researchContext={researchContext}
+                  onClearSession={handleClearSession}
+                  onContinueResearch={handleContinueResearch}
+                />
               ) : (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
