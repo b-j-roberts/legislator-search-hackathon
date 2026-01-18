@@ -621,26 +621,31 @@ export function ResultsPanel({
           </div>
 
           {/* Filter bar - show for both legislators and speakers from search results */}
+          {/* Hidden behind feature flag - filtering now done at API layer */}
           {currentTab === "people" && (legislators.length > 0 || speakers.length > 0) && (
             <div className="flex-shrink-0 border-b border-border px-3 py-3 space-y-2.5 bg-secondary/20">
-              <FilterBar
-                filters={filters}
-                onToggleParty={toggleParty}
-                onToggleChamber={toggleChamber}
-                onToggleState={toggleState}
-                onToggleStance={hasSearchResults ? undefined : toggleStance} // Disable stance filter for search results
-                onSetSortBy={setSortBy}
-                onClearFilters={clearFilters}
-                hasActiveFilters={hasActiveFilters}
-                activeFilterCount={activeFilterCount}
-              />
-              <FilterChips
-                filters={filters}
-                onRemoveParty={toggleParty}
-                onRemoveChamber={toggleChamber}
-                onRemoveState={toggleState}
-                onRemoveStance={hasSearchResults ? undefined : toggleStance} // Disable stance chip removal for search results
-              />
+              {process.env.NEXT_PUBLIC_ENABLE_CLIENT_FILTERS === "true" && (
+                <>
+                  <FilterBar
+                    filters={filters}
+                    onToggleParty={toggleParty}
+                    onToggleChamber={toggleChamber}
+                    onToggleState={toggleState}
+                    onToggleStance={hasSearchResults ? undefined : toggleStance} // Disable stance filter for search results
+                    onSetSortBy={setSortBy}
+                    onClearFilters={clearFilters}
+                    hasActiveFilters={hasActiveFilters}
+                    activeFilterCount={activeFilterCount}
+                  />
+                  <FilterChips
+                    filters={filters}
+                    onRemoveParty={toggleParty}
+                    onRemoveChamber={toggleChamber}
+                    onRemoveState={toggleState}
+                    onRemoveStance={hasSearchResults ? undefined : toggleStance} // Disable stance chip removal for search results
+                  />
+                </>
+              )}
               {/* Selection mode controls - show when there are contactable legislators */}
               {hasContactableLegislators && (
                 <div className="flex items-center justify-between pt-1">
