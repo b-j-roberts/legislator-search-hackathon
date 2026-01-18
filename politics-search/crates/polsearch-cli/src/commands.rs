@@ -1,22 +1,12 @@
-pub mod backfill_batches;
-pub mod backfill_duration;
-pub mod backfill_speakers;
 pub mod committees;
 pub mod db;
-pub mod fetch_episodes;
+pub mod embed_votes;
 pub mod fetch_floor_speeches;
 pub mod ingest_floor_speeches;
 pub mod ingest_hearings;
 pub mod ingest_votes;
-pub mod list_podcasts;
-pub mod merge_speakers;
+pub mod missing_hearings;
 pub mod search;
-pub mod seed;
-pub mod speakers;
-pub mod stats;
-pub mod status;
-pub mod transcribe_plan;
-pub mod verify;
 
 use color_eyre::eyre::Result;
 use polsearch_db::Database;

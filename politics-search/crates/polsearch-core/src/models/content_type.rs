@@ -11,12 +11,12 @@ pub enum ContentType {
     /// All content types (default)
     #[default]
     All,
-    /// Podcast episodes
-    Podcast,
     /// Congressional hearing transcripts
     Hearing,
     /// Congressional Record floor speeches
     FloorSpeech,
+    /// Congressional vote records
+    Vote,
 }
 
 impl ContentType {
@@ -25,9 +25,9 @@ impl ContentType {
     pub const fn as_db_value(&self) -> &'static str {
         match self {
             Self::All => "all",
-            Self::Podcast => "podcast",
             Self::Hearing => "hearing",
             Self::FloorSpeech => "floor_speech",
+            Self::Vote => "vote",
         }
     }
 
@@ -42,9 +42,9 @@ impl fmt::Display for ContentType {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::All => write!(f, "all"),
-            Self::Podcast => write!(f, "podcast"),
             Self::Hearing => write!(f, "hearing"),
             Self::FloorSpeech => write!(f, "floor_speech"),
+            Self::Vote => write!(f, "vote"),
         }
     }
 }
@@ -55,11 +55,10 @@ impl FromStr for ContentType {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s.to_lowercase().as_str() {
             "all" => Ok(Self::All),
-            "podcast" => Ok(Self::Podcast),
             "hearing" => Ok(Self::Hearing),
             "floor_speech" | "floorspeech" => Ok(Self::FloorSpeech),
+            "vote" => Ok(Self::Vote),
             _ => Err(format!("Unknown content type: {s}")),
         }
     }
 }
-

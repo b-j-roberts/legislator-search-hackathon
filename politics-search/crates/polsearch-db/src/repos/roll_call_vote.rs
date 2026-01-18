@@ -208,4 +208,59 @@ impl<'a> RollCallVoteRepo<'a> {
         .await?;
         Ok(votes)
     }
+
+    /// Get all votes with pagination
+    ///
+    /// # Errors
+    /// Returns `DbError` if the query fails
+    pub async fn get_all_paginated(
+        &self,
+        offset: i64,
+        limit: i64,
+    ) -> Result<Vec<RollCallVote>, DbError> {
+        let votes = sqlx::query_as::<_, RollCallVote>(
+            "SELECT * FROM roll_call_votes ORDER BY vote_date DESC LIMIT $1 OFFSET $2",
+        )
+        .bind(limit)
+        .bind(offset)
+        .fetch_all(self.pool)
+        .await?;
+        Ok(votes)
+    }
+
+    /// Get votes by their vote_ids (string identifiers like "h1-116.2019")
+    ///
+    /// # Errors
+    /// Returns `DbError` if the query fails
+    pub async fn get_by_vote_ids(&self, vote_ids: &[String]) -> Result<Vec<RollCallVote>, DbError> {
+        if vote_ids.is_empty() {
+            return Ok(Vec::new());
+        }
+
+        let votes = sqlx::query_as::<_, RollCallVote>(
+            "SELECT * FROM roll_call_votes WHERE vote_id = ANY($1) ORDER BY vote_date DESC",
+        )
+        .bind(vote_ids)
+        .fetch_all(self.pool)
+        .await?;
+        Ok(votes)
+    }
+
+    /// Get votes by their UUIDs
+    ///
+    /// # Errors
+    /// Returns `DbError` if the query fails
+    pub async fn get_by_ids(&self, ids: &[Uuid]) -> Result<Vec<RollCallVote>, DbError> {
+        if ids.is_empty() {
+            return Ok(Vec::new());
+        }
+
+        let votes = sqlx::query_as::<_, RollCallVote>(
+            "SELECT * FROM roll_call_votes WHERE id = ANY($1) ORDER BY vote_date DESC",
+        )
+        .bind(ids)
+        .fetch_all(self.pool)
+        .await?;
+        Ok(votes)
+    }
 }

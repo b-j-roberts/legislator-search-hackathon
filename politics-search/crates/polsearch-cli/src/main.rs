@@ -10,17 +10,17 @@ mod commands;
 pub enum ContentTypeFilter {
     /// All content types
     All,
-    /// Podcast episodes only
-    Podcast,
     /// Congressional hearing transcripts only
     Hearing,
     /// Congressional Record floor speeches only
     FloorSpeech,
+    /// Congressional vote records only
+    Vote,
 }
 
 #[derive(Parser)]
 #[command(name = "polsearch")]
-#[command(about = "Political content transcription and search CLI")]
+#[command(about = "Political content search CLI")]
 #[command(version)]
 #[command(styles = cli::get_styles())]
 struct Cli {
@@ -33,87 +33,6 @@ enum Commands {
     /// Print version information
     Version,
 
-    /// Load podcasts from YAML into the database
-    Seed,
-
-    /// Fetch episodes from RSS feeds for all podcasts
-    FetchContent,
-
-    /// List all podcasts with episode counts
-    ListSources,
-
-    /// Create a transcription batch for episodes
-    TranscribePlan {
-        /// Single month (e.g., 2026-01)
-        #[arg(long)]
-        month: Option<String>,
-
-        /// Entire year (e.g., 2026)
-        #[arg(long)]
-        year: Option<i32>,
-
-        /// Start of date range (e.g., 2024-06)
-        #[arg(long)]
-        from: Option<String>,
-
-        /// End of date range (e.g., 2025-01)
-        #[arg(long)]
-        to: Option<String>,
-
-        /// Filter to a specific podcast by slug
-        #[arg(long)]
-        podcast: Option<String>,
-
-        /// Batch priority (higher = processed first)
-        #[arg(long, default_value = "0")]
-        priority: i32,
-    },
-
-    /// Show global progress and active batches
-    Status,
-
-    /// Show transcription statistics
-    Stats {
-        /// Filter to a specific podcast by slug
-        #[arg(long)]
-        podcast: Option<String>,
-
-        /// Start of date range (e.g., 2024-06)
-        #[arg(long)]
-        from: Option<String>,
-
-        /// End of date range (e.g., 2025-01)
-        #[arg(long)]
-        to: Option<String>,
-
-        /// Show per-podcast breakdown
-        #[arg(long)]
-        detailed: bool,
-    },
-
-    /// Backfill missing data for transcribed episodes
-    Backfill {
-        #[command(subcommand)]
-        command: BackfillCommands,
-    },
-
-    /// Merge duplicate speakers
-    MergeSpeakers {
-        /// Speaker ID to merge from
-        #[arg(long)]
-        from: String,
-
-        /// Speaker ID to merge into
-        #[arg(long)]
-        into: String,
-    },
-
-    /// List and inspect speakers
-    Speakers {
-        #[command(subcommand)]
-        command: SpeakersCommands,
-    },
-
     /// Inspect `LanceDB` tables
     Db {
         #[command(subcommand)]
@@ -121,25 +40,6 @@ enum Commands {
 
         /// `LanceDB` storage path
         #[arg(long, default_value = "~/.polsearch/lancedb", global = true)]
-        lancedb_path: String,
-    },
-
-    /// Verify transcribed episodes have complete data in Postgres and `LanceDB`
-    Verify {
-        /// Filter to a specific podcast by slug
-        #[arg(long)]
-        podcast: Option<String>,
-
-        /// Filter to a specific month (e.g., 2024-06)
-        #[arg(long)]
-        month: Option<String>,
-
-        /// Maximum number of episodes to check
-        #[arg(long)]
-        limit: Option<usize>,
-
-        /// `LanceDB` storage path
-        #[arg(long, default_value = "~/.polsearch/lancedb")]
         lancedb_path: String,
     },
 
@@ -245,7 +145,49 @@ enum Commands {
         dry_run: bool,
     },
 
-    /// Search transcribed podcast content
+    /// Embed vote data for semantic search
+    EmbedVotes {
+        /// Limit votes to embed (for testing)
+        #[arg(long)]
+        limit: Option<usize>,
+
+        /// Force re-embed even if already embedded
+        #[arg(long)]
+        force: bool,
+
+        /// Dry run - show what would be embedded without making changes
+        #[arg(long)]
+        dry_run: bool,
+
+        /// `LanceDB` storage path
+        #[arg(long, default_value = "~/.polsearch/lancedb")]
+        lancedb_path: String,
+    },
+
+    /// Find hearings missing transcripts by comparing YAML to existing transcripts
+    MissingHearings {
+        /// Path to Congress.gov hearings YAML file
+        #[arg(long)]
+        yaml: String,
+
+        /// Directory with existing transcript JSON files
+        #[arg(long, default_value = "data/transcripts")]
+        transcripts: String,
+
+        /// Output file (stdout if not specified)
+        #[arg(long)]
+        output: Option<String>,
+
+        /// Filter to specific congress (116, 117, 118, 119)
+        #[arg(long)]
+        congress: Option<i16>,
+
+        /// Filter to specific chamber (house, senate)
+        #[arg(long)]
+        chamber: Option<String>,
+    },
+
+    /// Search congressional content
     Search {
         /// Search query
         query: String,
@@ -258,7 +200,7 @@ enum Commands {
         #[arg(long, default_value = "0")]
         offset: usize,
 
-        /// Group results by podcast and episode
+        /// Group results by source
         #[arg(long)]
         group: bool,
 
@@ -266,13 +208,9 @@ enum Commands {
         #[arg(long, value_enum, default_value = "hybrid")]
         mode: SearchMode,
 
-        /// Filter by content type (comma-separated: all, podcast, hearing)
+        /// Filter by content type (comma-separated: all, hearing, floor_speech)
         #[arg(long, default_value = "all", value_delimiter = ',')]
         r#type: Vec<ContentTypeFilter>,
-
-        /// Filter by podcast slug (fuzzy match supported)
-        #[arg(long)]
-        podcast: Option<String>,
 
         /// Start of date range (e.g., 2024-06)
         #[arg(long)]
@@ -282,7 +220,7 @@ enum Commands {
         #[arg(long)]
         to: Option<String>,
 
-        /// Filter by speaker slug
+        /// Filter by speaker name
         #[arg(long)]
         speaker: Option<String>,
 
@@ -290,11 +228,11 @@ enum Commands {
         #[arg(long)]
         committee: Option<String>,
 
-        /// Filter by chamber: house, senate (hearings only)
+        /// Filter by chamber: house, senate
         #[arg(long)]
         chamber: Option<String>,
 
-        /// Filter by congress number (hearings only)
+        /// Filter by congress number
         #[arg(long)]
         congress: Option<i16>,
 
@@ -368,16 +306,6 @@ enum DbCommands {
 }
 
 #[derive(Subcommand)]
-enum SpeakersCommands {
-    /// List all speakers with their podcast appearances
-    List {
-        /// Only show speakers with at least this many appearances
-        #[arg(long)]
-        min_appearances: Option<i32>,
-    },
-}
-
-#[derive(Subcommand)]
 enum CommitteesCommands {
     /// List all committees
     List {
@@ -397,29 +325,11 @@ enum CommitteesCommands {
     },
 }
 
-#[derive(Subcommand)]
-enum BackfillCommands {
-    /// Backfill speaker matching for already-transcribed episodes
-    Speakers {
-        /// `LanceDB` storage path (defaults to ~/.polsearch/lancedb)
-        #[arg(long, default_value = "~/.polsearch/lancedb")]
-        lancedb_path: String,
-    },
-
-    /// Backfill audio duration for transcribed episodes missing it
-    Duration,
-
-    /// Backfill batch status and counts from task data
-    Batches,
-}
-
-
 #[tokio::main]
 async fn main() -> Result<()> {
     color_eyre::install()?;
     dotenvy::dotenv().ok();
 
-    // default to info level, but set lance file_audit to debug
     #[expect(clippy::expect_used)]
     let filter = EnvFilter::from_default_env().add_directive(
         "lance_io::utils::file_audit=debug"
@@ -435,44 +345,6 @@ async fn main() -> Result<()> {
         Commands::Version => {
             println!("polsearch {}", env!("CARGO_PKG_VERSION"));
         }
-        Commands::Seed => commands::seed::run().await?,
-        Commands::FetchContent => commands::fetch_episodes::run().await?,
-        Commands::ListSources => commands::list_podcasts::run().await?,
-        Commands::TranscribePlan {
-            month,
-            year,
-            from,
-            to,
-            podcast,
-            priority,
-        } => commands::transcribe_plan::run(month, year, from, to, podcast, priority).await?,
-        Commands::Status => commands::status::run().await?,
-        Commands::Stats {
-            podcast,
-            from,
-            to,
-            detailed,
-        } => commands::stats::run(podcast, from, to, detailed).await?,
-        Commands::Backfill { command } => match command {
-            BackfillCommands::Speakers { lancedb_path } => {
-                let expanded = shellexpand::tilde(&lancedb_path).to_string();
-                commands::backfill_speakers::run(&expanded).await?;
-            }
-            BackfillCommands::Duration => {
-                commands::backfill_duration::run().await?;
-            }
-            BackfillCommands::Batches => {
-                commands::backfill_batches::run().await?;
-            }
-        },
-        Commands::MergeSpeakers { from, into } => {
-            commands::merge_speakers::run(&from, &into).await?;
-        }
-        Commands::Speakers { command } => match command {
-            SpeakersCommands::List { min_appearances } => {
-                commands::speakers::list(min_appearances).await?;
-            }
-        },
         Commands::Db {
             command,
             lancedb_path,
@@ -488,15 +360,6 @@ async fn main() -> Result<()> {
                 }
                 DbCommands::Index => commands::db::create_fts_index(&expanded).await?,
             }
-        }
-        Commands::Verify {
-            podcast,
-            month,
-            limit,
-            lancedb_path,
-        } => {
-            let expanded = shellexpand::tilde(&lancedb_path).to_string();
-            commands::verify::run(podcast, month, limit, &expanded).await?;
         }
         Commands::IngestHearings {
             path,
@@ -547,6 +410,24 @@ async fn main() -> Result<()> {
         } => {
             commands::ingest_votes::run(&path, limit, force, dry_run).await?;
         }
+        Commands::EmbedVotes {
+            limit,
+            force,
+            dry_run,
+            lancedb_path,
+        } => {
+            let expanded = shellexpand::tilde(&lancedb_path).to_string();
+            commands::embed_votes::run(limit, force, dry_run, &expanded).await?;
+        }
+        Commands::MissingHearings {
+            yaml,
+            transcripts,
+            output,
+            congress,
+            chamber,
+        } => {
+            commands::missing_hearings::run(&yaml, &transcripts, output, congress, chamber).await?;
+        }
         Commands::Search {
             query,
             limit,
@@ -554,7 +435,6 @@ async fn main() -> Result<()> {
             group,
             mode,
             r#type,
-            podcast,
             from,
             to,
             speaker,
@@ -567,8 +447,8 @@ async fn main() -> Result<()> {
         } => {
             let expanded = shellexpand::tilde(&lancedb_path).to_string();
             commands::search::run(
-                &query, limit, offset, group, mode, r#type, podcast, from, to, speaker,
-                committee, chamber, congress, &expanded, format, context,
+                &query, limit, offset, group, mode, r#type, from, to, speaker, committee, chamber,
+                congress, &expanded, format, context,
             )
             .await?;
         }
