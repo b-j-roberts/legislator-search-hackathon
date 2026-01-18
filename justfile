@@ -15,13 +15,25 @@ list:
 build:
     cargo build -p polsearch-cli --manifest-path politics-search/Cargo.toml
 
-# Build release and install to ~/.local/bin
+# Build CLI release and install to ~/.local/bin
 [group('build')]
-release:
+release-cli:
     cargo build --release -p polsearch-cli --manifest-path politics-search/Cargo.toml
     mkdir -p ~/.local/bin
     cp politics-search/target/release/polsearch ~/.local/bin/polsearch
     @echo "✓ Installed polsearch to ~/.local/bin/polsearch"
+
+# Build API release and install to ~/.local/bin
+[group('build')]
+release-api:
+    cargo build --release -p polsearch-api --manifest-path politics-search/Cargo.toml
+    mkdir -p ~/.local/bin
+    cp politics-search/target/release/polsearch-api ~/.local/bin/polsearch-api
+    @echo "✓ Installed polsearch-api to ~/.local/bin/polsearch-api"
+
+# Build both CLI and API release
+[group('build')]
+release: release-cli release-api
 
 # ------------------------------------------------------------------------------
 # lint
@@ -45,6 +57,11 @@ clippy:
 [group('run')]
 run *args:
     cargo run --release -p polsearch-cli --manifest-path politics-search/Cargo.toml -- "$@"
+
+# Run the API server
+[group('run')]
+run-api:
+    cargo run --release -p polsearch-api --manifest-path politics-search/Cargo.toml
 
 # ------------------------------------------------------------------------------
 # database
