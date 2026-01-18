@@ -228,7 +228,7 @@ impl<'a> RollCallVoteRepo<'a> {
         Ok(votes)
     }
 
-    /// Get votes by their vote_ids (string identifiers like "h1-116.2019")
+    /// Get votes by their `vote_ids` (string identifiers like "h1-116.2019")
     ///
     /// # Errors
     /// Returns `DbError` if the query fails
@@ -259,6 +259,41 @@ impl<'a> RollCallVoteRepo<'a> {
             "SELECT * FROM roll_call_votes WHERE id = ANY($1) ORDER BY vote_date DESC",
         )
         .bind(ids)
+        .fetch_all(self.pool)
+        .await?;
+        Ok(votes)
+    }
+
+    /// Count votes by year
+    ///
+    /// # Errors
+    /// Returns `DbError` if the query fails
+    pub async fn count_by_year(&self, year: i32) -> Result<i64, DbError> {
+        let count: (i64,) = sqlx::query_as(
+            "SELECT COUNT(*) FROM roll_call_votes WHERE EXTRACT(YEAR FROM vote_date) = $1",
+        )
+        .bind(year)
+        .fetch_one(self.pool)
+        .await?;
+        Ok(count.0)
+    }
+
+    /// Get votes by year with pagination
+    ///
+    /// # Errors
+    /// Returns `DbError` if the query fails
+    pub async fn get_by_year_paginated(
+        &self,
+        year: i32,
+        offset: i64,
+        limit: i64,
+    ) -> Result<Vec<RollCallVote>, DbError> {
+        let votes = sqlx::query_as::<_, RollCallVote>(
+            "SELECT * FROM roll_call_votes WHERE EXTRACT(YEAR FROM vote_date) = $1 ORDER BY vote_date DESC LIMIT $2 OFFSET $3",
+        )
+        .bind(year)
+        .bind(limit)
+        .bind(offset)
         .fetch_all(self.pool)
         .await?;
         Ok(votes)

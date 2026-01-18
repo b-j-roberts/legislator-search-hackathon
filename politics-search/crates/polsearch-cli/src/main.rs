@@ -43,81 +43,22 @@ enum Commands {
         lancedb_path: String,
     },
 
-    /// Ingest congressional hearing transcripts
-    IngestHearings {
-        /// Directory with transcript JSON files
-        #[arg(long, default_value = "data/transcripts")]
-        path: String,
-
-        /// Limit files to process (for testing)
-        #[arg(long)]
-        limit: Option<usize>,
-
-        /// Force re-process even if hearing exists
-        #[arg(long)]
-        force: bool,
-
-        /// Dry run - show what would be processed without making changes
-        #[arg(long)]
-        dry_run: bool,
-
-        /// Validate JSON files without ingesting
-        #[arg(long)]
-        validate: bool,
-
-        /// `LanceDB` storage path
-        #[arg(long, default_value = "~/.polsearch/lancedb")]
-        lancedb_path: String,
+    /// Manage congressional hearing data
+    Hearings {
+        #[command(subcommand)]
+        command: HearingsCommands,
     },
 
-    /// Fetch floor speech transcripts from `GovInfo`
-    FetchFloorSpeeches {
-        /// Year to fetch (e.g., 2024)
-        #[arg(long)]
-        year: i32,
-
-        /// Output directory for JSON files
-        #[arg(long, default_value = "data/floor_speech_transcripts")]
-        output: String,
-
-        /// Limit speeches to fetch (for testing)
-        #[arg(long)]
-        limit: Option<usize>,
-
-        /// Force re-fetch existing files
-        #[arg(long)]
-        force: bool,
-
-        /// Dry run - show what would be fetched without downloading
-        #[arg(long)]
-        dry_run: bool,
+    /// Manage floor speech data
+    Speeches {
+        #[command(subcommand)]
+        command: SpeechesCommands,
     },
 
-    /// Ingest Congressional Record floor speech transcripts
-    IngestFloorSpeeches {
-        /// Directory with transcript JSON files
-        #[arg(long, default_value = "data/floor_speech_transcripts")]
-        path: String,
-
-        /// Limit files to process (for testing)
-        #[arg(long)]
-        limit: Option<usize>,
-
-        /// Force re-process even if speech exists
-        #[arg(long)]
-        force: bool,
-
-        /// Dry run - show what would be processed without making changes
-        #[arg(long)]
-        dry_run: bool,
-
-        /// Validate JSON files without ingesting
-        #[arg(long)]
-        validate: bool,
-
-        /// `LanceDB` storage path
-        #[arg(long, default_value = "~/.polsearch/lancedb")]
-        lancedb_path: String,
+    /// Manage vote data
+    Votes {
+        #[command(subcommand)]
+        command: VotesCommands,
     },
 
     /// List and manage committees
@@ -126,65 +67,14 @@ enum Commands {
         command: CommitteesCommands,
     },
 
-    /// Ingest congressional vote data
-    IngestVotes {
-        /// Directory with vote data files
-        #[arg(long, default_value = "data/votes")]
-        path: String,
-
-        /// Limit files to process (for testing)
-        #[arg(long)]
-        limit: Option<usize>,
-
-        /// Force re-process even if vote exists
-        #[arg(long)]
-        force: bool,
-
-        /// Dry run - show what would be processed without making changes
-        #[arg(long)]
-        dry_run: bool,
-    },
-
-    /// Embed vote data for semantic search
-    EmbedVotes {
-        /// Limit votes to embed (for testing)
-        #[arg(long)]
-        limit: Option<usize>,
-
-        /// Force re-embed even if already embedded
-        #[arg(long)]
-        force: bool,
-
-        /// Dry run - show what would be embedded without making changes
-        #[arg(long)]
-        dry_run: bool,
+    /// Fast text-only ingestion for FTS (no embeddings)
+    Fts {
+        #[command(subcommand)]
+        command: FtsCommands,
 
         /// `LanceDB` storage path
-        #[arg(long, default_value = "~/.polsearch/lancedb")]
+        #[arg(long, default_value = "~/.polsearch/lancedb", global = true)]
         lancedb_path: String,
-    },
-
-    /// Find hearings missing transcripts by comparing YAML to existing transcripts
-    MissingHearings {
-        /// Path to Congress.gov hearings YAML file
-        #[arg(long)]
-        yaml: String,
-
-        /// Directory with existing transcript JSON files
-        #[arg(long, default_value = "data/transcripts")]
-        transcripts: String,
-
-        /// Output file (stdout if not specified)
-        #[arg(long)]
-        output: Option<String>,
-
-        /// Filter to specific congress (116, 117, 118, 119)
-        #[arg(long)]
-        congress: Option<i16>,
-
-        /// Filter to specific chamber (house, senate)
-        #[arg(long)]
-        chamber: Option<String>,
     },
 
     /// Search congressional content
@@ -208,7 +98,7 @@ enum Commands {
         #[arg(long, value_enum, default_value = "hybrid")]
         mode: SearchMode,
 
-        /// Filter by content type (comma-separated: all, hearing, floor_speech)
+        /// Filter by content type (all, hearing, floor-speech, vote)
         #[arg(long, default_value = "all", value_delimiter = ',')]
         r#type: Vec<ContentTypeFilter>,
 
@@ -325,6 +215,186 @@ enum CommitteesCommands {
     },
 }
 
+#[derive(Subcommand)]
+enum HearingsCommands {
+    /// Ingest congressional hearing transcripts
+    Ingest {
+        /// Directory with transcript JSON files
+        #[arg(long, default_value = "data/transcripts")]
+        path: String,
+
+        /// Limit files to process (for testing)
+        #[arg(long)]
+        limit: Option<usize>,
+
+        /// Force re-process even if hearing exists
+        #[arg(long)]
+        force: bool,
+
+        /// Dry run - show what would be processed without making changes
+        #[arg(long)]
+        dry_run: bool,
+
+        /// Validate JSON files without ingesting
+        #[arg(long)]
+        validate: bool,
+
+        /// `LanceDB` storage path
+        #[arg(long, default_value = "~/.polsearch/lancedb")]
+        lancedb_path: String,
+    },
+
+    /// Find hearings missing transcripts
+    Missing {
+        /// Path to Congress.gov hearings YAML file
+        #[arg(long)]
+        yaml: String,
+
+        /// Directory with existing transcript JSON files
+        #[arg(long, default_value = "data/transcripts")]
+        transcripts: String,
+
+        /// Output file (stdout if not specified)
+        #[arg(long)]
+        output: Option<String>,
+
+        /// Filter to specific congress (116, 117, 118, 119)
+        #[arg(long)]
+        congress: Option<i16>,
+
+        /// Filter to specific chamber (house, senate)
+        #[arg(long)]
+        chamber: Option<String>,
+    },
+}
+
+#[derive(Subcommand)]
+enum SpeechesCommands {
+    /// Fetch floor speech transcripts from `GovInfo`
+    Fetch {
+        /// Year to fetch (e.g., 2024)
+        #[arg(long)]
+        year: i32,
+
+        /// Output directory for JSON files
+        #[arg(long, default_value = "data/floor_speech_transcripts")]
+        output: String,
+
+        /// Limit speeches to fetch (for testing)
+        #[arg(long)]
+        limit: Option<usize>,
+
+        /// Force re-fetch existing files
+        #[arg(long)]
+        force: bool,
+
+        /// Dry run - show what would be fetched without downloading
+        #[arg(long)]
+        dry_run: bool,
+    },
+
+    /// Ingest Congressional Record floor speech transcripts
+    Ingest {
+        /// Directory with transcript JSON files
+        #[arg(long, default_value = "data/floor_speech_transcripts")]
+        path: String,
+
+        /// Limit files to process (for testing)
+        #[arg(long)]
+        limit: Option<usize>,
+
+        /// Force re-process even if speech exists
+        #[arg(long)]
+        force: bool,
+
+        /// Dry run - show what would be processed without making changes
+        #[arg(long)]
+        dry_run: bool,
+
+        /// Validate JSON files without ingesting
+        #[arg(long)]
+        validate: bool,
+
+        /// `LanceDB` storage path
+        #[arg(long, default_value = "~/.polsearch/lancedb")]
+        lancedb_path: String,
+    },
+}
+
+#[derive(Subcommand)]
+enum VotesCommands {
+    /// Ingest congressional vote data
+    Ingest {
+        /// Directory with vote data files
+        #[arg(long, default_value = "data/votes")]
+        path: String,
+
+        /// Limit files to process (for testing)
+        #[arg(long)]
+        limit: Option<usize>,
+
+        /// Force re-process even if vote exists
+        #[arg(long)]
+        force: bool,
+
+        /// Dry run - show what would be processed without making changes
+        #[arg(long)]
+        dry_run: bool,
+    },
+
+    /// Embed vote data for semantic search
+    Embed {
+        /// Limit votes to embed (for testing)
+        #[arg(long)]
+        limit: Option<usize>,
+
+        /// Force re-embed even if already embedded
+        #[arg(long)]
+        force: bool,
+
+        /// Dry run - show what would be embedded without making changes
+        #[arg(long)]
+        dry_run: bool,
+
+        /// Filter to votes from a specific year (e.g., 2025)
+        #[arg(long)]
+        year: Option<i32>,
+
+        /// `LanceDB` storage path
+        #[arg(long, default_value = "~/.polsearch/lancedb")]
+        lancedb_path: String,
+    },
+}
+
+#[derive(Subcommand)]
+enum FtsCommands {
+    /// Ingest text for FTS (no embeddings, fast)
+    Ingest {
+        /// Directory with hearing transcript JSON files
+        #[arg(long)]
+        hearings_path: Option<String>,
+
+        /// Directory with floor speech JSON files
+        #[arg(long)]
+        speeches_path: Option<String>,
+
+        /// Limit files to process (for testing)
+        #[arg(long)]
+        limit: Option<usize>,
+
+        /// Force re-process even if content exists
+        #[arg(long)]
+        force: bool,
+
+        /// Dry run - show what would be processed without making changes
+        #[arg(long)]
+        dry_run: bool,
+    },
+
+    /// Create FTS index on text_fts table
+    Index,
+}
+
 #[tokio::main]
 async fn main() -> Result<()> {
     color_eyre::install()?;
@@ -361,39 +431,75 @@ async fn main() -> Result<()> {
                 DbCommands::Index => commands::db::create_fts_index(&expanded).await?,
             }
         }
-        Commands::IngestHearings {
-            path,
-            limit,
-            force,
-            dry_run,
-            validate,
-            lancedb_path,
-        } => {
-            let expanded = shellexpand::tilde(&lancedb_path).to_string();
-            commands::ingest_hearings::run(&path, limit, force, dry_run, validate, &expanded)
+        Commands::Hearings { command } => match command {
+            HearingsCommands::Ingest {
+                path,
+                limit,
+                force,
+                dry_run,
+                validate,
+                lancedb_path,
+            } => {
+                let expanded = shellexpand::tilde(&lancedb_path).to_string();
+                commands::ingest_hearings::run(&path, limit, force, dry_run, validate, &expanded)
+                    .await?;
+            }
+            HearingsCommands::Missing {
+                yaml,
+                transcripts,
+                output,
+                congress,
+                chamber,
+            } => {
+                commands::missing_hearings::run(&yaml, &transcripts, output, congress, chamber)
+                    .await?;
+            }
+        },
+        Commands::Speeches { command } => match command {
+            SpeechesCommands::Fetch {
+                year,
+                output,
+                limit,
+                force,
+                dry_run,
+            } => {
+                commands::fetch_floor_speeches::run(year, &output, limit, force, dry_run).await?;
+            }
+            SpeechesCommands::Ingest {
+                path,
+                limit,
+                force,
+                dry_run,
+                validate,
+                lancedb_path,
+            } => {
+                let expanded = shellexpand::tilde(&lancedb_path).to_string();
+                commands::ingest_floor_speeches::run(
+                    &path, limit, force, dry_run, validate, &expanded,
+                )
                 .await?;
-        }
-        Commands::FetchFloorSpeeches {
-            year,
-            output,
-            limit,
-            force,
-            dry_run,
-        } => {
-            commands::fetch_floor_speeches::run(year, &output, limit, force, dry_run).await?;
-        }
-        Commands::IngestFloorSpeeches {
-            path,
-            limit,
-            force,
-            dry_run,
-            validate,
-            lancedb_path,
-        } => {
-            let expanded = shellexpand::tilde(&lancedb_path).to_string();
-            commands::ingest_floor_speeches::run(&path, limit, force, dry_run, validate, &expanded)
-                .await?;
-        }
+            }
+        },
+        Commands::Votes { command } => match command {
+            VotesCommands::Ingest {
+                path,
+                limit,
+                force,
+                dry_run,
+            } => {
+                commands::ingest_votes::run(&path, limit, force, dry_run).await?;
+            }
+            VotesCommands::Embed {
+                limit,
+                force,
+                dry_run,
+                year,
+                lancedb_path,
+            } => {
+                let expanded = shellexpand::tilde(&lancedb_path).to_string();
+                commands::embed_votes::run(limit, force, dry_run, year, &expanded).await?;
+            }
+        },
         Commands::Committees { command } => match command {
             CommitteesCommands::List { chamber, counts } => {
                 commands::committees::list(chamber, counts).await?;
@@ -402,31 +508,33 @@ async fn main() -> Result<()> {
                 commands::committees::search(&query).await?;
             }
         },
-        Commands::IngestVotes {
-            path,
-            limit,
-            force,
-            dry_run,
-        } => {
-            commands::ingest_votes::run(&path, limit, force, dry_run).await?;
-        }
-        Commands::EmbedVotes {
-            limit,
-            force,
-            dry_run,
+        Commands::Fts {
+            command,
             lancedb_path,
         } => {
             let expanded = shellexpand::tilde(&lancedb_path).to_string();
-            commands::embed_votes::run(limit, force, dry_run, &expanded).await?;
-        }
-        Commands::MissingHearings {
-            yaml,
-            transcripts,
-            output,
-            congress,
-            chamber,
-        } => {
-            commands::missing_hearings::run(&yaml, &transcripts, output, congress, chamber).await?;
+            match command {
+                FtsCommands::Ingest {
+                    hearings_path,
+                    speeches_path,
+                    limit,
+                    force,
+                    dry_run,
+                } => {
+                    commands::fts::ingest(
+                        hearings_path.as_deref(),
+                        speeches_path.as_deref(),
+                        limit,
+                        force,
+                        dry_run,
+                        &expanded,
+                    )
+                    .await?;
+                }
+                FtsCommands::Index => {
+                    commands::fts::index(&expanded).await?;
+                }
+            }
         }
         Commands::Search {
             query,

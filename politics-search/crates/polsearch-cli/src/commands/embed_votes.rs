@@ -7,14 +7,27 @@ use arrow_array::{
 use arrow_schema::{DataType, Field, Schema};
 use color_eyre::eyre::Result;
 use colored::Colorize;
-use futures::TryStreamExt;
-use lancedb::query::{ExecutableQuery, QueryBase};
 use polsearch_core::RollCallVote;
 use polsearch_pipeline::stages::TextEmbedder;
 use std::sync::Arc;
 use std::time::Instant;
 
 use super::get_database;
+
+/// Format seconds as human-readable duration (e.g., "2m 30s" or "1h 5m")
+fn format_eta(seconds: f64) -> String {
+    if seconds < 60.0 {
+        format!("{}s", seconds.round() as u64)
+    } else if seconds < 3600.0 {
+        let mins = (seconds / 60.0).floor() as u64;
+        let secs = (seconds % 60.0).round() as u64;
+        format!("{}m {}s", mins, secs)
+    } else {
+        let hours = (seconds / 3600.0).floor() as u64;
+        let mins = ((seconds % 3600.0) / 60.0).round() as u64;
+        format!("{}h {}m", hours, mins)
+    }
+}
 
 /// Embedding statistics
 #[derive(Debug, Default)]
@@ -29,14 +42,21 @@ pub async fn run(
     limit: Option<usize>,
     force: bool,
     dry_run: bool,
+    year: Option<i32>,
     lancedb_path: &str,
 ) -> Result<()> {
     let db = get_database().await?;
 
-    let total_count = db.roll_call_votes().count().await?;
+    let total_count = if let Some(y) = year {
+        db.roll_call_votes().count_by_year(y).await?
+    } else {
+        db.roll_call_votes().count().await?
+    };
+
+    let year_msg = year.map_or(String::new(), |y| format!(" from {}", y));
     println!(
         "{}",
-        format!("Found {} votes in database", total_count).cyan()
+        format!("Found {} votes{} in database", total_count, year_msg).cyan()
     );
 
     if dry_run {
@@ -44,8 +64,9 @@ pub async fn run(
         println!(
             "{}",
             format!(
-                "[DRY RUN] Would embed {} votes{}",
+                "[DRY RUN] Would embed {} votes{}{}",
                 process_count,
+                year_msg,
                 if force { " (force mode)" } else { "" }
             )
             .yellow()
@@ -79,10 +100,15 @@ pub async fn run(
         }
 
         let fetch_size = BATCH_SIZE.min(remaining);
-        let votes = db
-            .roll_call_votes()
-            .get_all_paginated(offset, fetch_size)
-            .await?;
+        let votes = if let Some(y) = year {
+            db.roll_call_votes()
+                .get_by_year_paginated(y, offset, fetch_size)
+                .await?
+        } else {
+            db.roll_call_votes()
+                .get_all_paginated(offset, fetch_size)
+                .await?
+        };
 
         if votes.is_empty() {
             break;
@@ -109,13 +135,24 @@ pub async fn run(
         }
 
         let processed = offset + votes.len() as i64;
-        if processed % 1000 == 0 || votes.len() < BATCH_SIZE as usize {
+        {
+            let elapsed = start.elapsed().as_secs_f64();
+            let eta_str = if processed > 0 && elapsed > 0.0 {
+                let rate = processed as f64 / elapsed;
+                let remaining = total_count as f64 - processed as f64;
+                let eta_seconds = remaining / rate;
+                format!(" - ETA: {}", format_eta(eta_seconds))
+            } else {
+                String::new()
+            };
+
             println!(
-                "  Processed {}/{} votes ({} embedded, {} skipped)",
+                "  Processed {}/{} votes ({} embedded, {} skipped){}",
                 processed.to_string().cyan(),
                 total_count.to_string().dimmed(),
                 stats.embeddings_created.to_string().green(),
-                stats.votes_skipped.to_string().yellow()
+                stats.votes_skipped.to_string().yellow(),
+                eta_str.dimmed()
             );
         }
 
@@ -155,7 +192,7 @@ async fn check_vote_embedded(lancedb: &lancedb::Connection, vote_id: &str) -> Re
     let filter = format!("content_type = 'vote' AND id = '{vote_id}'");
 
     use futures::TryStreamExt;
-    use lancedb::query::QueryBase;
+    use lancedb::query::{ExecutableQuery, QueryBase};
 
     let batches: Vec<RecordBatch> = table
         .query()
@@ -188,7 +225,7 @@ fn build_vote_text(vote: &RollCallVote) -> String {
     parts.join(". ")
 }
 
-/// Embed a batch of votes and write to LanceDB
+/// Embed a batch of votes and write to `LanceDB`
 async fn embed_and_write_batch(
     lancedb: &lancedb::Connection,
     embedder: &mut TextEmbedder,
@@ -225,7 +262,8 @@ async fn embed_and_write_batch(
 
     let ids: Vec<String> = votes.iter().map(|v| v.id.to_string()).collect();
     let content_types: Vec<&str> = vec!["vote"; votes.len()];
-    let content_ids: Vec<String> = votes.iter().map(|v| v.vote_id.clone()).collect();
+    // use vote UUID for content_id (matches hearings/floor speeches pattern)
+    let content_ids: Vec<String> = votes.iter().map(|v| v.id.to_string()).collect();
     let statement_ids: Vec<Option<String>> = vec![None; votes.len()];
     let segment_indices: Vec<i32> = vec![0; votes.len()];
     let start_times: Vec<i32> = vec![0; votes.len()];
