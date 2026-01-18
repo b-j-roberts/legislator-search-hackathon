@@ -155,6 +155,122 @@ SCOPE: "what do they think" → "Would you like statements from Democrats, Repub
 
 ---
 
+### 1.6 Ensure Reliable Legislator & Document Retrieval
+
+**Description**: Modify prompts and orchestration to reliably extract legislators and documents from most user queries. This is critical for the core value proposition of the app.
+
+**Requirements**:
+- [ ] Add "## SEARCH BIAS" section to search system prompt encouraging search for substantive queries
+- [ ] Add instruction to ALWAYS search when topic could have congressional record data
+- [ ] Add "## LEGISLATOR EXTRACTION" section requiring AI to list legislators found
+- [ ] Update results synthesis prompt to explicitly call out legislators with their full names
+- [ ] Add post-search step in orchestration to match speaker_names to legislators.json
+- [ ] Integrate `findLegislatorsByName()` from `lib/legislator-lookup.ts` into results processing
+- [ ] Return extracted legislators as structured data alongside the response
+- [ ] Test with 20+ queries to ensure >85% legislator extraction rate
+
+**Implementation Notes**:
+- Current gap: Search returns `speaker_name` but no matching to static legislator data
+- `legislator-lookup.ts` has `findLegislatorsByName()` and `enrichLegislatorWithContactData()` ready to use
+- Orchestration hook (`use-search-orchestration.tsx`) needs to extract unique speakers and match them
+- AI should be instructed to format legislator names consistently (e.g., "Sen. Elizabeth Warren (D-MA)")
+
+**Prompt Addition for Search System**:
+```
+## SEARCH BIAS
+
+When in doubt, SEARCH. This tool's primary value is connecting users with congressional records.
+
+ALWAYS search when the user:
+- Mentions any political topic (healthcare, taxes, immigration, climate, etc.)
+- Asks about legislation, bills, or laws
+- Mentions any legislator by name
+- Asks "what do they think about X" or similar opinion/stance questions
+- Uses words like "position", "stance", "voted", "said", "supports", "opposes"
+
+Only skip searching for:
+- Pure greetings ("hi", "hello")
+- Meta questions about how to use the tool
+- Requests to contact a legislator (use existing data)
+
+## LEGISLATOR EXTRACTION
+
+When presenting search results, ALWAYS:
+1. List the legislators mentioned by full name with party and state: "Sen. Elizabeth Warren (D-MA)"
+2. Group findings by legislator when multiple are found
+3. Note if a legislator has taken multiple positions over time
+4. Offer to help the user contact any legislator mentioned
+```
+
+**Orchestration Enhancement**:
+```typescript
+// After search results received, extract legislators:
+const extractLegislatorsFromResults = (results: SearchResult[]): Legislator[] => {
+  const speakerNames = [...new Set(results.map(r => r.speaker_name).filter(Boolean))];
+  return speakerNames
+    .map(name => findBestMatchingLegislator(name))
+    .filter((l): l is Legislator => l !== undefined)
+    .map(enrichLegislatorWithContactData);
+};
+
+// Return in OrchestrationResult:
+return {
+  content: lastResponse,
+  searchResults,
+  searchQuery,
+  searchPerformed: true,
+  legislators: extractLegislatorsFromResults(searchResults), // NEW
+  error: null,
+};
+```
+
+**UI Integration**:
+- Display extracted legislators in a sidebar/panel
+- Show "Contact" button for each legislator found
+- Allow clicking legislator to navigate to contact flow with pre-filled context
+
+---
+
+### 1.7 Add Search Trigger Keywords
+
+**Description**: Create explicit keyword detection to ensure searches are triggered for common political queries.
+
+**Requirements**:
+- [ ] Create `lib/prompts/search-triggers.ts` with keyword lists
+- [ ] Define categories: legislators, topics, actions, document types
+- [ ] Add pre-prompt check that flags queries likely needing search
+- [ ] Inject "This query likely needs a search" hint into system prompt when detected
+- [ ] Test keyword coverage with 50+ sample queries
+
+**Implementation Notes**:
+- Keywords should cover common variations (e.g., "senator", "sen.", "Sen")
+- Topic keywords: healthcare, abortion, guns, immigration, climate, taxes, budget, military, education
+- Action keywords: voted, said, testified, sponsored, opposed, supported, cosponsored
+- Combine with query intent detection in `lib/query-intent.ts`
+
+**Keyword Categories**:
+```typescript
+const SEARCH_TRIGGER_KEYWORDS = {
+  legislators: [
+    /\b(senator|sen\.?|representative|rep\.?|congressman|congresswoman)\b/i,
+    /\b(pelosi|schumer|mcconnell|warren|sanders|ocasio-cortez|cruz|hawley)\b/i,
+  ],
+  topics: [
+    /\b(healthcare|abortion|gun|immigration|climate|tax|budget|military|education)\b/i,
+    /\b(bill|legislation|act|amendment|resolution|vote|hearing)\b/i,
+  ],
+  actions: [
+    /\b(voted?|said|testified|sponsored|opposed|supported|cosponsored|introduced)\b/i,
+    /\b(position|stance|view|opinion|record)\b/i,
+  ],
+  questions: [
+    /\b(what|who|how|when|where|which)\b.*\b(think|say|vote|support|oppose)\b/i,
+  ],
+};
+```
+
+---
+
 # Phase 2: Feature Enhancements
 
 Improvements to existing prompts for better output quality.

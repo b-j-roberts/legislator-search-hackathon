@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { motion } from "framer-motion";
-import { AlertCircle, RefreshCw, Landmark, User } from "lucide-react";
+import { AlertCircle, RefreshCw, User } from "lucide-react";
 import ReactMarkdown, { Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { cn } from "@/lib/utils";
@@ -128,17 +128,23 @@ export function ChatBubble({
       {/* Avatar */}
       <div
         className={cn(
-          "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-colors",
+          "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-colors overflow-hidden",
           isUser
             ? "bg-primary dark:bg-accent text-primary-foreground dark:text-accent-foreground"
-            : "bg-secondary border border-border/50 text-muted-foreground"
+            : "bg-white border border-border/50"
         )}
         aria-hidden="true"
       >
         {isUser ? (
           <User className="h-4 w-4" />
         ) : (
-          <Landmark className="h-4 w-4" />
+          <img
+            src="/mindy_media_kit/logos/mindy_icon_color.png"
+            alt="mindy"
+            width={32}
+            height={32}
+            className="object-contain"
+          />
         )}
       </div>
 
@@ -151,7 +157,7 @@ export function ChatBubble({
       >
         {/* Role label */}
         <span className="text-[10px] font-medium text-muted-foreground/70 uppercase tracking-wider px-0.5">
-          {isUser ? "You" : "CivicLens"}
+          {isUser ? "You" : "mindy"}
         </span>
 
         {/* Message bubble */}

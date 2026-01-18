@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Send, Loader2, Landmark } from "lucide-react";
+import { Send, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -207,7 +207,13 @@ export function ChatInput({
             </span>
           </div>
           <span className="flex items-center gap-1.5 text-muted-foreground/30">
-            <Landmark className="h-3 w-3" />
+            <img
+              src="/mindy_media_kit/logos/mindy_icon_color.png"
+              alt="mindy"
+              width={12}
+              height={12}
+              className="object-contain opacity-50"
+            />
             <span>Powered by Maple AI</span>
           </span>
         </div>

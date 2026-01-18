@@ -44,6 +44,8 @@
   --color-copper-foreground: var(--copper-foreground);
   --color-teal: var(--teal);
   --color-teal-foreground: var(--teal-foreground);
+  --color-mindy: var(--mindy);
+  --color-mindy-foreground: var(--mindy-foreground);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -105,6 +107,8 @@
   --copper-foreground: #fffefa;
   --teal: #2d6a6a;
   --teal-foreground: #fffefa;
+  --mindy: #cc3366;
+  --mindy-foreground: #ffffff;
 
   /* Chart colors */
   --chart-1: #b87333;
@@ -169,6 +173,8 @@
   --copper-foreground: #141618;
   --teal: #4ecdc4;
   --teal-foreground: #141618;
+  --mindy: #e84080;
+  --mindy-foreground: #ffffff;
 
   /* Chart colors */
   --chart-1: #d4915c;

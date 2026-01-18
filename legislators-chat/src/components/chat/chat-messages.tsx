@@ -8,9 +8,10 @@ import {
   Users,
   FileText,
   Vote,
-  Landmark,
   ArrowRight,
   Sparkles,
+  Heart,
+  MessageCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -39,22 +40,28 @@ const SCROLL_BUTTON_THRESHOLD = 100;
 
 const SUGGESTIONS = [
   {
+    icon: Heart,
+    title: "Find allies on your issue",
+    description: "Discover who champions causes you care about",
+    query: "Which representatives have spoken positively about affordable housing?",
+  },
+  {
     icon: Users,
-    title: "Find representatives",
-    description: "Discover who represents your district",
-    query: "Who represents my district in Congress?",
+    title: "Know your representatives",
+    description: "See where your legislators stand on key issues",
+    query: "What has my representative said about education funding?",
   },
   {
     icon: Vote,
-    title: "Track voting records",
-    description: "See how legislators voted on key issues",
-    query: "Show me recent climate change votes",
+    title: "Track voting patterns",
+    description: "See how legislators voted on issues you care about",
+    query: "How did senators vote on the recent infrastructure bill?",
   },
   {
-    icon: FileText,
-    title: "Research hearings",
-    description: "Explore committee hearings and testimony",
-    query: "Find healthcare committee hearings from this year",
+    icon: MessageCircle,
+    title: "Prepare to reach out",
+    description: "Get informed before contacting your rep",
+    query: "Help me understand my senator's position on healthcare reform",
   },
 ];
 
@@ -69,8 +76,8 @@ function HeroEmptyState({
       <div className="flex-1 min-h-8 max-h-[15vh]" />
       {/* Subtle background pattern */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-accent/[0.03] rounded-full blur-3xl" />
-        <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] bg-primary/[0.02] rounded-full blur-3xl" />
+        <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-mindy/[0.05] rounded-full blur-3xl" />
+        <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] bg-mindy/[0.03] rounded-full blur-3xl" />
       </div>
 
       {/* Hero content */}
@@ -80,22 +87,28 @@ function HeroEmptyState({
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         className="relative z-10 max-w-xl"
       >
-        {/* Decorative icon */}
+        {/* Mindy logo */}
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.1, duration: 0.5 }}
           className="mb-6 inline-flex"
         >
-          <div className="relative flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 border border-border/50">
-            <Landmark className="w-7 h-7 text-primary dark:text-accent" />
+          <div className="relative flex items-center justify-center w-20 h-20">
+            <img
+              src="/mindy_media_kit/logos/mindy_icon_color.png"
+              alt="mindy"
+              width={80}
+              height={80}
+              className="object-contain"
+            />
             <motion.div
-              className="absolute -top-1 -right-1 w-6 h-6 rounded-lg bg-accent flex items-center justify-center"
+              className="absolute -top-1 -right-1 w-6 h-6 rounded-lg bg-mindy flex items-center justify-center"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.3, type: "spring", stiffness: 400, damping: 15 }}
             >
-              <Sparkles className="w-3 h-3 text-accent-foreground" />
+              <Sparkles className="w-3 h-3 text-white" />
             </motion.div>
           </div>
         </motion.div>
@@ -107,8 +120,7 @@ function HeroEmptyState({
           transition={{ delay: 0.15, duration: 0.6 }}
           className="font-display text-3xl md:text-4xl font-semibold tracking-tight text-balance leading-[1.15] mb-3"
         >
-          Explore Congress with{" "}
-          <span className="text-gradient">AI-powered</span> research
+          Hi, I'm <span className="text-mindy">mindy</span>!
         </motion.h1>
 
         {/* Subtitle */}
@@ -116,10 +128,19 @@ function HeroEmptyState({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25, duration: 0.6 }}
-          className="text-muted-foreground text-base md:text-lg max-w-md mx-auto mb-10 text-balance leading-relaxed"
+          className="text-muted-foreground text-base md:text-lg max-w-md mx-auto mb-4 text-balance leading-relaxed"
         >
-          Ask about legislators, voting records, committee hearings, and policy positions.
-          Get informed, then take action.
+          I'm here to help you connect with your representatives on the issues that matter to you.
+        </motion.p>
+
+        {/* Sample prompt */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.6 }}
+          className="text-muted-foreground/80 text-sm max-w-md mx-auto mb-8 text-balance leading-relaxed italic"
+        >
+          Try asking something like: "Which of my representatives support renewable energy, and how can I encourage them to do more?"
         </motion.p>
 
         {/* Suggestion cards - Editorial style */}
@@ -164,7 +185,7 @@ function HeroEmptyState({
           className="mt-8 text-xs text-muted-foreground/60 flex items-center justify-center gap-2"
         >
           <Search className="w-3 h-3" />
-          <span>Type your question below or select a suggestion</span>
+          <span>Ask me anything about your representatives</span>
         </motion.p>
       </motion.div>
 

@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { motion } from "framer-motion";
-import { Landmark } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export interface TypingIndicatorProps {
@@ -39,16 +38,22 @@ export function TypingIndicator({ className }: TypingIndicatorProps) {
     >
       {/* Avatar */}
       <div
-        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-secondary border border-border/50 text-muted-foreground"
+        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white border border-border/50 overflow-hidden"
         aria-hidden="true"
       >
-        <Landmark className="h-4 w-4" />
+        <img
+          src="/mindy_media_kit/logos/mindy_icon_color.png"
+          alt="mindy"
+          width={32}
+          height={32}
+          className="object-contain"
+        />
       </div>
 
       {/* Typing bubble */}
       <div className="flex flex-col gap-1 items-start">
         <span className="text-[10px] font-medium text-muted-foreground/70 uppercase tracking-wider px-0.5">
-          CivicLens
+          mindy
         </span>
         <div className="flex items-center gap-1.5 rounded-xl rounded-tl-sm bg-card border border-border px-4 py-3 card-shadow">
           {[0, 1, 2].map((index) => (

@@ -26,10 +26,25 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Legislators Chat",
+  title: "mindy - Your Civic Engagement Assistant",
   description:
-    "AI-powered chat interface for researching US legislators, congressional hearings, and voting records.",
-  keywords: ["congress", "legislators", "voting records", "congressional hearings", "civic tech"],
+    "Meet mindy, your friendly AI assistant for researching US legislators, understanding their positions, and making your voice heard on the issues you care about.",
+  keywords: ["congress", "legislators", "voting records", "congressional hearings", "civic engagement", "contact representatives"],
+  icons: {
+    icon: [
+      { url: "/mindy_media_kit/favicons/favicon.ico" },
+      { url: "/mindy_media_kit/favicons/mindy_icon_32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/mindy_media_kit/favicons/mindy_icon_16x16.png", sizes: "16x16", type: "image/png" },
+    ],
+    apple: [
+      { url: "/mindy_media_kit/favicons/mindy_icon_180x180.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
+  openGraph: {
+    title: "mindy - Your Civic Engagement Assistant",
+    description: "Meet mindy, your friendly AI assistant for researching US legislators and making your voice heard.",
+    images: ["/mindy_media_kit/social/og_pink_1200x630.jpg"],
+  },
 };
 
 export default function RootLayout({

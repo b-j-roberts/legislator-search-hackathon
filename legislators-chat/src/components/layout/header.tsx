@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Moon, Sun, PanelLeftOpen, MessageSquarePlus, Users, Landmark } from "lucide-react";
+import { Moon, Sun, PanelLeftOpen, MessageSquarePlus, Users } from "lucide-react";
 import { useTheme } from "next-themes";
 import { motion } from "framer-motion";
 import { useChat } from "@/hooks/use-chat";
@@ -66,7 +66,7 @@ export function Header() {
     <TooltipProvider delayDuration={300}>
       <header className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur-md supports-[backdrop-filter]:bg-background/80 flex-shrink-0">
         {/* Decorative top line */}
-        <div className="h-[2px] bg-gradient-to-r from-transparent via-accent/50 to-transparent" />
+        <div className="h-[2px] bg-gradient-to-r from-transparent via-mindy/50 to-transparent" />
 
         <div className="flex h-14 md:h-16 items-center justify-between px-4 md:px-6">
           {/* Left section - Menu and Branding */}
@@ -97,18 +97,24 @@ export function Header() {
               className="flex items-center gap-3 group transition-all duration-300"
             >
               <motion.div
-                className="relative flex items-center justify-center w-9 h-9 rounded-lg bg-primary dark:bg-accent"
+                className="relative flex items-center justify-center w-9 h-9"
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.2 }}
               >
-                <Landmark className="h-[18px] w-[18px] text-primary-foreground dark:text-accent-foreground" />
+                <img
+                  src="/mindy_media_kit/logos/mindy_icon_color.png"
+                  alt="mindy"
+                  width={36}
+                  height={36}
+                  className="object-contain"
+                />
               </motion.div>
               <div className="flex flex-col">
                 <span className="font-display text-lg font-semibold tracking-tight leading-none text-foreground">
-                  CivicLens
+                  mindy
                 </span>
                 <span className="text-[10px] text-muted-foreground font-medium tracking-wider uppercase mt-0.5">
-                  Congressional Research
+                  Engage in Democracy
                 </span>
               </div>
             </Link>
@@ -136,14 +142,14 @@ export function Header() {
                       variant="default"
                       size="sm"
                       asChild
-                      className="gap-2 rounded-lg bg-accent text-accent-foreground hover:bg-accent/90 shadow-sm px-3 h-9"
+                      className="gap-2 rounded-lg bg-mindy text-mindy-foreground hover:bg-mindy/90 shadow-sm px-3 h-9"
                     >
                       <Link href="/contact">
                         <Users className="h-4 w-4" />
                         <span className="hidden sm:inline text-sm font-medium">Contact</span>
                         <Badge
                           variant="secondary"
-                          className="ml-0.5 bg-accent-foreground/20 text-accent-foreground border-0 h-5 min-w-5 px-1.5 rounded-md text-xs font-semibold"
+                          className="ml-0.5 bg-mindy-foreground/20 text-mindy-foreground border-0 h-5 min-w-5 px-1.5 rounded-md text-xs font-semibold"
                         >
                           {selectionCount}
                         </Badge>
