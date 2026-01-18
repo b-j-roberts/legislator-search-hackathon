@@ -18,41 +18,6 @@ After implementing the feature, please provide a concise step-by-step instructio
 
 Minimum viable integration to enable AI-powered congressional search.
 
-### 1.3 Maple AI Prompt Engineering
-
-**Description**: Configure Maple AI system prompt to understand and use the search API.
-
-**Requirements**:
-- [ ] Create search-aware system prompt explaining PolSearch capabilities
-- [ ] Define JSON output format for search requests
-- [ ] Teach Maple available filters (speaker, committee, chamber, congress, date range)
-- [ ] Teach Maple about content types (hearings, floor_speech, votes)
-- [ ] Include examples of well-formed search JSON in prompt
-- [ ] Instruct Maple to auto-retry with broader search if no results
-
-**JSON Output Format**:
-```json
-{
-  "action": "search",
-  "params": {
-    "q": "query text",
-    "type": "hearing,floor_speech",
-    "speaker": "optional",
-    "chamber": "senate",
-    "from": "2023-01-01",
-    "limit": 10,
-    "enrich": true
-  }
-}
-```
-
-**Implementation Notes**:
-- Place system prompt in `src/lib/prompts/search-system.ts`
-- Include context about what data is available (2020-2026 congressional records)
-- Explain the retry strategy in prompt so Maple relaxes filters automatically
-
----
-
 ### 1.4 JSON Extraction & Orchestration
 
 **Description**: Parse Maple's structured JSON output and execute search flow.
