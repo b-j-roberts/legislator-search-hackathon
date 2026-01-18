@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(podsearch search:*)",
+      "Bash(SQLX_OFFLINE=true cargo check:*)",
+      "Bash(psql:*)",
+      "Bash(createdb:*)",
+      "Bash(DATABASE_URL=\"postgres://localhost/polsearch\" sqlx migrate run:*)",
+      "Bash(DATABASE_URL=\"postgres://localhost/polsearch\" cargo check:*)",
+      "Bash(DATABASE_URL=\"postgres://localhost/polsearch\" cargo sqlx prepare:*)",
+      "Bash(DATABASE_URL=\"postgres://localhost/polsearch\" *)",
+      "Bash(swift package clean:*)",
+      "Bash(./target/debug/polsearch:*)",
+      "Bash(ls:*)"
+    ]
+  }
+}
