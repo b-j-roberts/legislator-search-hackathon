@@ -6,7 +6,7 @@
  * currently active legislator.
  */
 
-import type { Legislator, ContactMethod } from "./types";
+import type { Legislator, ContactMethod, CallScript, EmailDraft } from "./types";
 
 // =============================================================================
 // Types
@@ -14,6 +14,18 @@ import type { Legislator, ContactMethod } from "./types";
 
 /** Contact status for a legislator in the queue */
 export type ContactStatus = "pending" | "active" | "contacted" | "skipped";
+
+/** Outcome of a contact attempt */
+export type ContactOutcome = "successful" | "voicemail" | "no_answer" | "busy" | "sent";
+
+/** Saved draft for a legislator */
+export interface SavedDraft {
+  contentType: "call" | "email";
+  callScript?: CallScript;
+  emailDraft?: EmailDraft;
+  selectedSubjectIndex?: number;
+  savedAt: string;
+}
 
 /** A queue item wrapping a legislator with status */
 export interface QueueItem {
@@ -23,6 +35,10 @@ export interface QueueItem {
   notes?: string;
   /** Preferred contact method for this legislator */
   contactMethod?: ContactMethod;
+  /** Outcome of the contact (when status is 'contacted') */
+  contactOutcome?: ContactOutcome;
+  /** Saved draft for this legislator */
+  savedDraft?: SavedDraft;
 }
 
 /** Storage format for the contact queue */
@@ -183,7 +199,11 @@ export function reorderQueue(
 /**
  * Mark the current active legislator as contacted and move to next
  */
-export function markContacted(queue: QueueStorage): QueueStorage {
+export function markContacted(
+  queue: QueueStorage,
+  outcome?: ContactOutcome,
+  notes?: string
+): QueueStorage {
   if (queue.activeIndex < 0 || queue.activeIndex >= queue.items.length) {
     return queue;
   }
@@ -193,6 +213,8 @@ export function markContacted(queue: QueueStorage): QueueStorage {
     ...newItems[queue.activeIndex],
     status: "contacted",
     contactedAt: new Date().toISOString(),
+    contactOutcome: outcome,
+    notes: notes || newItems[queue.activeIndex].notes,
   };
 
   // Find next pending item
@@ -461,5 +483,68 @@ export function getContactAvailability(legislator: Legislator): {
     hasPhone,
     hasEmail,
     hasBoth: hasPhone && hasEmail,
+  };
+}
+
+// =============================================================================
+// Draft Management Functions
+// =============================================================================
+
+/**
+ * Save a draft for a legislator in the queue
+ */
+export function saveDraft(
+  queue: QueueStorage,
+  legislatorId: string,
+  draft: Omit<SavedDraft, "savedAt">
+): QueueStorage {
+  const itemIndex = queue.items.findIndex((item) => item.legislator.id === legislatorId);
+
+  if (itemIndex === -1) {
+    return queue;
+  }
+
+  const newItems = [...queue.items];
+  newItems[itemIndex] = {
+    ...newItems[itemIndex],
+    savedDraft: {
+      ...draft,
+      savedAt: new Date().toISOString(),
+    },
+  };
+
+  return {
+    ...queue,
+    items: newItems,
+  };
+}
+
+/**
+ * Get a saved draft for a legislator
+ */
+export function getSavedDraft(queue: QueueStorage, legislatorId: string): SavedDraft | undefined {
+  const item = queue.items.find((item) => item.legislator.id === legislatorId);
+  return item?.savedDraft;
+}
+
+/**
+ * Clear a saved draft for a legislator
+ */
+export function clearDraft(queue: QueueStorage, legislatorId: string): QueueStorage {
+  const itemIndex = queue.items.findIndex((item) => item.legislator.id === legislatorId);
+
+  if (itemIndex === -1) {
+    return queue;
+  }
+
+  const newItems = [...queue.items];
+  newItems[itemIndex] = {
+    ...newItems[itemIndex],
+    savedDraft: undefined,
+  };
+
+  return {
+    ...queue,
+    items: newItems,
   };
 }

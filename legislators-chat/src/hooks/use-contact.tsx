@@ -7,6 +7,8 @@ import {
   type QueueStorage,
   type QueueItem,
   type ContactStatus,
+  type ContactOutcome,
+  type SavedDraft,
   loadQueue,
   saveQueue,
   clearQueue,
@@ -23,6 +25,9 @@ import {
   setDefaultContactMethod,
   getEffectiveContactMethod,
   getContactAvailability,
+  saveDraft,
+  getSavedDraft,
+  clearDraft,
 } from "@/lib/queue-storage";
 
 // =============================================================================
@@ -33,7 +38,7 @@ import {
 export type ContactStep = "research" | "contact" | "complete";
 
 /** Re-export queue types for consumers */
-export type { QueueItem, ContactStatus, ContactMethod };
+export type { QueueItem, ContactStatus, ContactMethod, ContactOutcome, SavedDraft };
 export { getEffectiveContactMethod, getContactAvailability };
 
 interface ContactContextValue {
@@ -72,7 +77,7 @@ interface ContactContextValue {
   /** Reorder queue items */
   reorderQueueItems: (fromIndex: number, toIndex: number) => void;
   /** Mark current legislator as contacted and move to next */
-  markCurrentContacted: () => void;
+  markCurrentContacted: (outcome?: ContactOutcome, notes?: string) => void;
   /** Skip current legislator (move to end of queue) */
   skipCurrentLegislator: () => void;
   /** Remove a legislator from the queue */
@@ -97,6 +102,14 @@ interface ContactContextValue {
   setDefaultMethod: (method: ContactMethod, applyToAll?: boolean) => void;
   /** Get the current default contact method */
   defaultContactMethod: ContactMethod;
+
+  // Draft Management
+  /** Save a draft for a legislator */
+  saveLegislatorDraft: (legislatorId: string, draft: Omit<SavedDraft, "savedAt">) => void;
+  /** Get a saved draft for a legislator */
+  getLegislatorDraft: (legislatorId: string) => SavedDraft | undefined;
+  /** Clear a saved draft for a legislator */
+  clearLegislatorDraft: (legislatorId: string) => void;
 }
 
 type ContactAction =
@@ -295,11 +308,14 @@ export function ContactProvider({ children }: ContactProviderProps) {
     [state.queue]
   );
 
-  const markCurrentContacted = React.useCallback(() => {
-    if (!state.queue) return;
-    const newQueue = markContacted(state.queue);
-    dispatch({ type: "SET_QUEUE", payload: newQueue });
-  }, [state.queue]);
+  const markCurrentContacted = React.useCallback(
+    (outcome?: ContactOutcome, notes?: string) => {
+      if (!state.queue) return;
+      const newQueue = markContacted(state.queue, outcome, notes);
+      dispatch({ type: "SET_QUEUE", payload: newQueue });
+    },
+    [state.queue]
+  );
 
   const skipCurrentLegislator = React.useCallback(() => {
     if (!state.queue) return;
@@ -351,6 +367,33 @@ export function ContactProvider({ children }: ContactProviderProps) {
     [state.queue]
   );
 
+  // Draft management functions
+  const saveLegislatorDraft = React.useCallback(
+    (legislatorId: string, draft: Omit<SavedDraft, "savedAt">) => {
+      if (!state.queue) return;
+      const newQueue = saveDraft(state.queue, legislatorId, draft);
+      dispatch({ type: "SET_QUEUE", payload: newQueue });
+    },
+    [state.queue]
+  );
+
+  const getLegislatorDraft = React.useCallback(
+    (legislatorId: string): SavedDraft | undefined => {
+      if (!state.queue) return undefined;
+      return getSavedDraft(state.queue, legislatorId);
+    },
+    [state.queue]
+  );
+
+  const clearLegislatorDraft = React.useCallback(
+    (legislatorId: string) => {
+      if (!state.queue) return;
+      const newQueue = clearDraft(state.queue, legislatorId);
+      dispatch({ type: "SET_QUEUE", payload: newQueue });
+    },
+    [state.queue]
+  );
+
   // Derived queue values
   const contactedCount = state.queue ? getContactedCount(state.queue) : 0;
   const remainingCount = state.queue ? getRemainingCount(state.queue) : 0;
@@ -390,6 +433,10 @@ export function ContactProvider({ children }: ContactProviderProps) {
     setLegislatorContactMethod,
     setDefaultMethod,
     defaultContactMethod,
+    // Draft management
+    saveLegislatorDraft,
+    getLegislatorDraft,
+    clearLegislatorDraft,
   };
 
   return <ContactContext.Provider value={value}>{children}</ContactContext.Provider>;

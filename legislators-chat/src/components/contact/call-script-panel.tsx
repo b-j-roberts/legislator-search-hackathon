@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Phone, Clock, MessageSquare, HelpCircle, CheckCircle2, Copy, RefreshCw } from "lucide-react";
+import { Phone, Clock, MessageSquare, HelpCircle, RefreshCw, Edit3, CheckCircle2 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { CallScript, Legislator, TonePreference } from "@/lib/types";
 import { ToneSelectorCompact } from "./tone-selector";
+import { ContentActions } from "./content-actions";
 
 interface CallScriptPanelProps {
   script: CallScript | null;
@@ -20,6 +21,9 @@ interface CallScriptPanelProps {
   selectedTone: TonePreference;
   onToneChange: (tone: TonePreference) => void;
   onRegenerate: () => void;
+  onEdit?: () => void;
+  onSaveDraft?: () => void;
+  hasUnsavedChanges?: boolean;
   className?: string;
 }
 
@@ -58,36 +62,6 @@ function CallScriptSkeleton() {
   );
 }
 
-function CopyButton({ text, className }: { text: string; className?: string }) {
-  const [copied, setCopied] = React.useState(false);
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error("Failed to copy:", err);
-    }
-  };
-
-  return (
-    <Button
-      variant="ghost"
-      size="icon-sm"
-      onClick={handleCopy}
-      className={cn("flex-shrink-0", className)}
-      title={copied ? "Copied!" : "Copy to clipboard"}
-    >
-      {copied ? (
-        <CheckCircle2 className="size-3.5 text-green-500" />
-      ) : (
-        <Copy className="size-3.5" />
-      )}
-    </Button>
-  );
-}
-
 export function CallScriptPanel({
   script,
   legislator,
@@ -96,35 +70,11 @@ export function CallScriptPanel({
   selectedTone,
   onToneChange,
   onRegenerate,
+  onEdit,
+  onSaveDraft,
+  hasUnsavedChanges,
   className,
 }: CallScriptPanelProps) {
-  // Build full script text for copying
-  const fullScriptText = React.useMemo(() => {
-    if (!script) return "";
-
-    const lines = [
-      "INTRODUCTION:",
-      script.introduction,
-      "",
-      "TALKING POINTS:",
-      ...script.talkingPoints.map((point, i) => `${i + 1}. ${point}`),
-      "",
-    ];
-
-    if (script.anticipatedResponses.length > 0) {
-      lines.push("ANTICIPATED QUESTIONS:");
-      script.anticipatedResponses.forEach((ar) => {
-        lines.push(`Q: ${ar.question}`);
-        lines.push(`A: ${ar.response}`);
-        lines.push("");
-      });
-    }
-
-    lines.push("CLOSING:");
-    lines.push(script.closing);
-
-    return lines.join("\n");
-  }, [script]);
 
   return (
     <Card className={cn("overflow-hidden", className)}>
@@ -156,7 +106,17 @@ export function CallScriptPanel({
             disabled={isLoading}
           />
           <div className="flex items-center gap-2">
-            {script && <CopyButton text={fullScriptText} />}
+            {onEdit && script && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onEdit}
+                className="gap-1.5"
+              >
+                <Edit3 className="size-3.5" />
+                Edit
+              </Button>
+            )}
             <Button
               variant="outline"
               size="sm"
@@ -169,6 +129,19 @@ export function CallScriptPanel({
             </Button>
           </div>
         </div>
+
+        {/* Content Actions */}
+        {script && (
+          <div className="mt-3 pt-3 border-t border-border">
+            <ContentActions
+              contentType="call"
+              legislator={legislator}
+              callScript={script}
+              onSaveDraft={onSaveDraft}
+              hasUnsavedChanges={hasUnsavedChanges}
+            />
+          </div>
+        )}
       </CardHeader>
 
       <CardContent>

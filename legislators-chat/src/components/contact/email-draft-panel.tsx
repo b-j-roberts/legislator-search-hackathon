@@ -7,10 +7,9 @@ import {
   FileText,
   Quote,
   Link as LinkIcon,
-  CheckCircle2,
-  Copy,
   RefreshCw,
   ChevronDown,
+  Edit3,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -20,6 +19,7 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { EmailDraft, Legislator, TonePreference } from "@/lib/types";
 import { ToneSelectorCompact } from "./tone-selector";
+import { ContentActions } from "./content-actions";
 
 interface EmailDraftPanelProps {
   draft: EmailDraft | null;
@@ -29,6 +29,9 @@ interface EmailDraftPanelProps {
   selectedTone: TonePreference;
   onToneChange: (tone: TonePreference) => void;
   onRegenerate: () => void;
+  onEdit?: () => void;
+  onSaveDraft?: () => void;
+  hasUnsavedChanges?: boolean;
   className?: string;
 }
 
@@ -51,36 +54,6 @@ function EmailDraftSkeleton() {
       </div>
       <Skeleton className="h-12 w-full" />
     </div>
-  );
-}
-
-function CopyButton({ text, className }: { text: string; className?: string }) {
-  const [copied, setCopied] = React.useState(false);
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error("Failed to copy:", err);
-    }
-  };
-
-  return (
-    <Button
-      variant="ghost"
-      size="icon-sm"
-      onClick={handleCopy}
-      className={cn("flex-shrink-0", className)}
-      title={copied ? "Copied!" : "Copy to clipboard"}
-    >
-      {copied ? (
-        <CheckCircle2 className="size-3.5 text-green-500" />
-      ) : (
-        <Copy className="size-3.5" />
-      )}
-    </Button>
   );
 }
 
@@ -151,6 +124,9 @@ export function EmailDraftPanel({
   selectedTone,
   onToneChange,
   onRegenerate,
+  onEdit,
+  onSaveDraft,
+  hasUnsavedChanges,
   className,
 }: EmailDraftPanelProps) {
   const [selectedSubjectIndex, setSelectedSubjectIndex] = React.useState(0);
@@ -159,56 +135,6 @@ export function EmailDraftPanel({
   React.useEffect(() => {
     setSelectedSubjectIndex(0);
   }, [draft]);
-
-  // Build full email text for copying
-  const fullEmailText = React.useMemo(() => {
-    if (!draft) return "";
-
-    const lines = [
-      `Subject: ${draft.subjectLines[selectedSubjectIndex]}`,
-      "",
-      draft.salutation,
-      "",
-      draft.opening,
-      "",
-      ...draft.body.map((p) => `${p}\n`),
-    ];
-
-    if (draft.citations && draft.citations.length > 0) {
-      lines.push("References:");
-      draft.citations.forEach((c) => {
-        lines.push(`- ${c.text} (${c.source}${c.url ? `: ${c.url}` : ""})`);
-      });
-      lines.push("");
-    }
-
-    lines.push(draft.closing);
-    lines.push("");
-    lines.push(draft.signature);
-
-    return lines.join("\n");
-  }, [draft, selectedSubjectIndex]);
-
-  // Build mailto link
-  const mailtoLink = React.useMemo(() => {
-    if (!draft || !legislator.contact.email) return "";
-
-    const subject = encodeURIComponent(draft.subjectLines[selectedSubjectIndex]);
-    const bodyText = [
-      draft.salutation,
-      "",
-      draft.opening,
-      "",
-      ...draft.body,
-      "",
-      draft.closing,
-      "",
-      draft.signature.replace(/\\n/g, "\n"),
-    ].join("\n");
-    const body = encodeURIComponent(bodyText);
-
-    return `mailto:${legislator.contact.email}?subject=${subject}&body=${body}`;
-  }, [draft, legislator.contact.email, selectedSubjectIndex]);
 
   return (
     <Card className={cn("overflow-hidden", className)}>
@@ -224,11 +150,6 @@ export function EmailDraftPanel({
               {legislator.name}
             </CardDescription>
           </div>
-          {draft && legislator.contact.email && (
-            <Button variant="default" size="sm" asChild>
-              <a href={mailtoLink}>Open in Email</a>
-            </Button>
-          )}
         </div>
 
         {/* Tone selector and actions */}
@@ -239,7 +160,17 @@ export function EmailDraftPanel({
             disabled={isLoading}
           />
           <div className="flex items-center gap-2">
-            {draft && <CopyButton text={fullEmailText} />}
+            {onEdit && draft && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onEdit}
+                className="gap-1.5"
+              >
+                <Edit3 className="size-3.5" />
+                Edit
+              </Button>
+            )}
             <Button
               variant="outline"
               size="sm"
@@ -252,6 +183,20 @@ export function EmailDraftPanel({
             </Button>
           </div>
         </div>
+
+        {/* Content Actions */}
+        {draft && (
+          <div className="mt-3 pt-3 border-t border-border">
+            <ContentActions
+              contentType="email"
+              legislator={legislator}
+              emailDraft={draft}
+              selectedSubjectIndex={selectedSubjectIndex}
+              onSaveDraft={onSaveDraft}
+              hasUnsavedChanges={hasUnsavedChanges}
+            />
+          </div>
+        )}
       </CardHeader>
 
       <CardContent>

@@ -25,7 +25,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { ProgressStepper } from "@/components/layout";
-import { ContactQueue, ContactMethodSelector, ContentGenerationPanel } from "@/components/contact";
+import { ContactQueue, ContactMethodSelector, ContentGenerationPanel, MarkCompleteDialog } from "@/components/contact";
+import type { ContactOutcome } from "@/components/contact";
 
 import type { QueueItem } from "@/hooks/use-contact";
 import type { ContactMethod } from "@/lib/types";
@@ -97,7 +98,7 @@ function CompletedState({ totalContacted }: { totalContacted: number }) {
 interface ActiveContactPanelProps {
   item: QueueItem;
   onMethodChange: (method: ContactMethod) => void;
-  onMarkContacted: () => void;
+  onMarkContacted: (outcome: ContactOutcome, notes?: string) => void;
 }
 
 function ActiveContactPanel({ item, onMethodChange, onMarkContacted }: ActiveContactPanelProps) {
@@ -105,6 +106,7 @@ function ActiveContactPanel({ item, onMethodChange, onMarkContacted }: ActiveCon
   const availability = getContactAvailability(legislator);
   const effectiveMethod = getEffectiveContactMethod(item);
   const [copied, setCopied] = React.useState(false);
+  const [showConfirmDialog, setShowConfirmDialog] = React.useState(false);
 
   const contactInfo =
     effectiveMethod === "call" ? legislator.contact.phone : legislator.contact.email;
@@ -120,83 +122,100 @@ function ActiveContactPanel({ item, onMethodChange, onMarkContacted }: ActiveCon
     }
   };
 
+  const handleConfirmContact = (outcome: ContactOutcome, notes?: string) => {
+    onMarkContacted(outcome, notes);
+    setShowConfirmDialog(false);
+  };
+
   return (
-    <Card className="border-primary/50 bg-primary/5">
-      <CardContent className="pt-4 pb-4">
-        <div className="flex flex-col gap-4">
-          {/* Header with name and method selector */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-            <div className="flex items-center gap-3">
-              <div className="rounded-full bg-primary p-2.5">
-                {effectiveMethod === "call" ? (
-                  <Phone className="size-5 text-primary-foreground" />
-                ) : (
-                  <Mail className="size-5 text-primary-foreground" />
-                )}
+    <>
+      <Card className="border-primary/50 bg-primary/5">
+        <CardContent className="pt-4 pb-4">
+          <div className="flex flex-col gap-4">
+            {/* Header with name and method selector */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="rounded-full bg-primary p-2.5">
+                  {effectiveMethod === "call" ? (
+                    <Phone className="size-5 text-primary-foreground" />
+                  ) : (
+                    <Mail className="size-5 text-primary-foreground" />
+                  )}
+                </div>
+                <div>
+                  <p className="text-lg font-semibold text-foreground">{legislator.name}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {legislator.chamber === "House" ? "Representative" : "Senator"} •{" "}
+                    {legislator.party === "D" ? "Democrat" : legislator.party === "R" ? "Republican" : "Independent"} •{" "}
+                    {legislator.state}
+                    {legislator.district ? `-${legislator.district}` : ""}
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="text-lg font-semibold text-foreground">{legislator.name}</p>
-                <p className="text-sm text-muted-foreground">
-                  {legislator.chamber === "House" ? "Representative" : "Senator"} •{" "}
-                  {legislator.party === "D" ? "Democrat" : legislator.party === "R" ? "Republican" : "Independent"} •{" "}
-                  {legislator.state}
-                  {legislator.district ? `-${legislator.district}` : ""}
-                </p>
-              </div>
+
+              {/* Method selector - only show if both methods available */}
+              {availability.hasBoth && (
+                <ContactMethodSelector
+                  value={effectiveMethod}
+                  onChange={onMethodChange}
+                  hasPhone={availability.hasPhone}
+                  hasEmail={availability.hasEmail}
+                />
+              )}
             </div>
 
-            {/* Method selector - only show if both methods available */}
-            {availability.hasBoth && (
-              <ContactMethodSelector
-                value={effectiveMethod}
-                onChange={onMethodChange}
-                hasPhone={availability.hasPhone}
-                hasEmail={availability.hasEmail}
-              />
+            {/* Contact info display */}
+            {contactInfo && (
+              <div className="flex items-center gap-2 p-3 rounded-lg bg-background border border-border">
+                <div className="flex-1 font-mono text-sm text-foreground break-all">{contactInfo}</div>
+                <Button variant="ghost" size="icon-sm" onClick={handleCopy} className="flex-shrink-0">
+                  {copied ? (
+                    <CheckCircle2 className="size-4 text-green-500" />
+                  ) : (
+                    <Copy className="size-4" />
+                  )}
+                </Button>
+                <Button variant="default" size="sm" asChild className="flex-shrink-0">
+                  <a
+                    href={effectiveMethod === "call" ? `tel:${contactInfo}` : `mailto:${contactInfo}`}
+                  >
+                    {effectiveMethod === "call" ? "Call Now" : "Open Email"}
+                  </a>
+                </Button>
+              </div>
             )}
-          </div>
 
-          {/* Contact info display */}
-          {contactInfo && (
-            <div className="flex items-center gap-2 p-3 rounded-lg bg-background border border-border">
-              <div className="flex-1 font-mono text-sm text-foreground break-all">{contactInfo}</div>
-              <Button variant="ghost" size="icon-sm" onClick={handleCopy} className="flex-shrink-0">
-                {copied ? (
-                  <CheckCircle2 className="size-4 text-green-500" />
-                ) : (
-                  <Copy className="size-4" />
-                )}
-              </Button>
-              <Button variant="default" size="sm" asChild className="flex-shrink-0">
-                <a
-                  href={effectiveMethod === "call" ? `tel:${contactInfo}` : `mailto:${contactInfo}`}
-                >
-                  {effectiveMethod === "call" ? "Call Now" : "Open Email"}
-                </a>
+            {/* Availability indicator */}
+            {!availability.hasBoth && (
+              <p className="text-xs text-muted-foreground flex items-center gap-1">
+                <AlertCircle className="size-3" />
+                {!availability.hasPhone
+                  ? "Phone number not available for this representative"
+                  : "Email not available for this representative"}
+              </p>
+            )}
+
+            {/* Mark contacted button */}
+            <div className="flex justify-end">
+              <Button onClick={() => setShowConfirmDialog(true)} className="gap-1.5">
+                <CheckCircle2 className="size-4" />
+                Mark as Contacted
               </Button>
             </div>
-          )}
-
-          {/* Availability indicator */}
-          {!availability.hasBoth && (
-            <p className="text-xs text-muted-foreground flex items-center gap-1">
-              <AlertCircle className="size-3" />
-              {!availability.hasPhone
-                ? "Phone number not available for this representative"
-                : "Email not available for this representative"}
-            </p>
-          )}
-
-          {/* Mark contacted button */}
-          <div className="flex justify-end">
-            <Button onClick={onMarkContacted} className="gap-1.5">
-              <CheckCircle2 className="size-4" />
-              Mark as Contacted
-            </Button>
           </div>
-        </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+
+      {/* Confirmation Dialog */}
+      <MarkCompleteDialog
+        open={showConfirmDialog}
+        onOpenChange={setShowConfirmDialog}
+        legislator={legislator}
+        contactMethod={effectiveMethod}
+        onConfirm={handleConfirmContact}
+        onCancel={() => setShowConfirmDialog(false)}
+      />
+    </>
   );
 }
 
@@ -387,8 +406,8 @@ function ContactPageContent() {
     router.push("/");
   };
 
-  const handleMarkContacted = () => {
-    markCurrentContacted();
+  const handleMarkContacted = (outcome: ContactOutcome, notes?: string) => {
+    markCurrentContacted(outcome, notes);
   };
 
   const totalCount = queue?.items.length ?? 0;

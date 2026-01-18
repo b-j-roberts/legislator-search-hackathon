@@ -17,31 +17,6 @@ After implementing the feature, please provide a concise step-by-step instructio
 
 Enable users to transition from research/chat phase to taking action by contacting their representatives with AI-generated, personalized call scripts and email drafts.
 
-## 1.4 Content Editor with AI Chat
-
-**Description**: Allow users to refine generated content through AI conversation.
-
-**Requirements**:
-- [ ] Display generated script/email in editable rich text area
-- [ ] Add inline AI chat panel for refinement requests
-- [ ] Support common refinement commands:
-  - "Make it shorter/longer"
-  - "Make it more formal/casual"
-  - "Add more statistics"
-  - "Include my personal story about..."
-  - "Change the tone to..."
-- [ ] Apply AI suggestions directly to draft
-- [ ] Show diff/changes highlighted
-- [ ] Maintain edit history with undo/redo
-- [ ] Add quick-action buttons for common edits
-
-**Implementation Notes**:
-- Keep refinement chat context separate from research chat
-- Consider side-by-side layout (draft | chat)
-- Preserve original generated version for comparison
-
----
-
 ## 1.5 Actions & Completion
 
 **Description**: Enable users to finalize and send/save their outreach.

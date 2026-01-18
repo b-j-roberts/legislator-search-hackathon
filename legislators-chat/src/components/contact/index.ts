@@ -5,3 +5,6 @@ export { ToneSelector, ToneSelectorCompact } from "./tone-selector";
 export { CallScriptPanel } from "./call-script-panel";
 export { EmailDraftPanel } from "./email-draft-panel";
 export { ContentGenerationPanel } from "./content-generation-panel";
+export { ContentActions } from "./content-actions";
+export { MarkCompleteDialog } from "./mark-complete-dialog";
+export type { ContactOutcome } from "./mark-complete-dialog";
