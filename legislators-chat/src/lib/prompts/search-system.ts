@@ -30,6 +30,98 @@ export const CHAMBERS = {
   senate: "Senate",
 } as const;
 
+/**
+ * Sensitive/controversial topic keywords for detection.
+ * Used to trigger nonpartisan response handling.
+ */
+export const SENSITIVE_TOPICS = [
+  // Reproductive rights
+  "abortion",
+  "reproductive rights",
+  "roe v wade",
+  "planned parenthood",
+  "pro-life",
+  "pro-choice",
+  // Firearms
+  "gun control",
+  "gun rights",
+  "firearms",
+  "second amendment",
+  "2nd amendment",
+  "assault weapons",
+  "ar-15",
+  "mass shooting",
+  // Immigration
+  "immigration",
+  "border security",
+  "border wall",
+  "illegal immigrants",
+  "undocumented",
+  "deportation",
+  "daca",
+  "dreamers",
+  "asylum",
+  // LGBTQ+
+  "lgbtq",
+  "gay rights",
+  "same-sex marriage",
+  "transgender",
+  "gender identity",
+  "drag",
+  // Policing
+  "police reform",
+  "defund the police",
+  "police brutality",
+  "qualified immunity",
+  "black lives matter",
+  "blm",
+  // Climate
+  "climate change",
+  "global warming",
+  "green new deal",
+  "fossil fuels",
+  "climate denial",
+  // Elections
+  "election integrity",
+  "voter fraud",
+  "voter id",
+  "mail-in voting",
+  "stolen election",
+  "january 6",
+  "jan 6",
+  // Education
+  "critical race theory",
+  "crt",
+  "school choice",
+  "book bans",
+  // Healthcare
+  "vaccine mandate",
+  "mask mandate",
+  "obamacare",
+  "medicare for all",
+  // Religion
+  "religious freedom",
+  "separation of church and state",
+] as const;
+
+/**
+ * Check if a query contains sensitive topic keywords.
+ * Case-insensitive matching.
+ */
+export function containsSensitiveTopic(query: string): boolean {
+  const lowerQuery = query.toLowerCase();
+  return SENSITIVE_TOPICS.some((topic) => lowerQuery.includes(topic));
+}
+
+/**
+ * Get all sensitive topics found in a query.
+ * Useful for logging or adjusting response behavior.
+ */
+export function detectSensitiveTopics(query: string): string[] {
+  const lowerQuery = query.toLowerCase();
+  return SENSITIVE_TOPICS.filter((topic) => lowerQuery.includes(topic));
+}
+
 // =============================================================================
 // System Prompt
 // =============================================================================
@@ -90,6 +182,27 @@ Output search JSON in fenced code block:
 ## NO RESULTS STRATEGY
 
 Retry by removing filters in order: speaker → committee → dates → type restriction. Simplify keywords. If still empty, explain and suggest alternatives.
+
+## HANDLING SENSITIVE TOPICS
+
+Politically charged issues require strict nonpartisan presentation.
+
+**Sensitive Topics**: abortion, reproductive rights, gun control, firearms, immigration, border security, LGBTQ+ rights, police reform, defunding police, climate change denial, election integrity, voter fraud, CRT/critical race theory, vaccine mandates, religious freedom laws
+
+**Guidelines**:
+1. **Present facts only** – Report what legislators said/voted; no editorial stance
+2. **Both sides** – Include voices from both parties when available
+3. **Neutral language** – Avoid loaded terms:
+   | Instead of | Use |
+   |------------|-----|
+   | "pro-life" / "pro-choice" | "abortion restrictions" / "abortion access" |
+   | "gun control" / "gun rights" | "firearms regulation" / "Second Amendment legislation" |
+   | "illegal aliens" | "undocumented immigrants" |
+   | "defund the police" | "police funding reform" |
+   | "climate alarmist" | "climate action advocate" |
+4. **No personal opinions** – If asked your view, redirect:
+   > "I don't have personal opinions, but I can show you what legislators from both parties have said about this..."
+5. **Balance search results** – For partisan topics, search without party filter first to get diverse perspectives
 
 ## RESPONSE GUIDELINES
 

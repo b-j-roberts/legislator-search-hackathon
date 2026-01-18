@@ -1,4 +1,6 @@
-const POLSEARCH_API_URL = process.env.POLSEARCH_API_URL || "http://localhost:8000";
+const POLSEARCH_API_URL =
+  process.env.POLSEARCH_API_URL || "https://polsearch.praveenperera.com";
+const POLSEARCH_API_TOKEN = process.env.POLSEARCH_API_TOKEN || "";
 
 const RETRY_DELAYS = [1000, 3000, 5000]; // 1s, 3s, 5s backoff
 const REQUEST_TIMEOUT = 10000; // 10s timeout
@@ -59,6 +61,7 @@ export async function polsearchFetch(
           method: options.method || "GET",
           headers: {
             "Content-Type": "application/json",
+            ...(POLSEARCH_API_TOKEN && { Authorization: `Bearer ${POLSEARCH_API_TOKEN}` }),
             ...options.headers,
           },
           body: options.body,
@@ -113,7 +116,10 @@ export async function checkPolSearchHealth(): Promise<{
   try {
     const response = await fetchWithTimeout(
       `${POLSEARCH_API_URL}/health`,
-      { method: "GET" },
+      {
+        method: "GET",
+        headers: POLSEARCH_API_TOKEN ? { Authorization: `Bearer ${POLSEARCH_API_TOKEN}` } : {},
+      },
       5000 // 5s timeout for health check
     );
     const latency = Date.now() - start;
