@@ -19,6 +19,7 @@ polsearch-archive = { workspace = true }
 
 chrono = { workspace = true }
 colored = "2"
+indicatif = "0.17"
 shellexpand = "3"
 clap = { workspace = true }
 anstyle = { workspace = true }

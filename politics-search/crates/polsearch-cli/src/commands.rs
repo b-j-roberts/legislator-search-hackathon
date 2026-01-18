@@ -9,6 +9,7 @@ pub mod ingest_hearings;
 pub mod ingest_votes;
 pub mod missing_hearings;
 pub mod search;
+pub mod util;
 
 use color_eyre::eyre::Result;
 use polsearch_db::Database;
