@@ -1,0 +1,50 @@
+[package]
+name = "polsearch-api"
+description = "REST API for PolSearch"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[[bin]]
+name = "polsearch-api"
+path = "src/main.rs"
+
+[dependencies]
+# Workspace crates
+polsearch-core.workspace = true
+polsearch-db.workspace = true
+polsearch-pipeline.workspace = true
+
+# Workspace deps
+tokio.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+color-eyre.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+uuid.workspace = true
+chrono.workspace = true
+
+# Web framework
+axum = "0.8"
+tower-http = { version = "0.6", features = ["cors", "trace"] }
+
+# OpenAPI
+utoipa = { version = "5", features = ["axum_extras", "uuid", "chrono"] }
+utoipa-swagger-ui = { version = "9", features = ["axum"] }
+
+# LanceDB and Arrow
+lancedb = "0.23"
+arrow-array = "56"
+
+# Async utilities
+futures = { workspace = true }
+
+# Utilities
+shellexpand = "3"
+dotenvy = { workspace = true }
+
+[lints]
+workspace = true

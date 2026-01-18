@@ -2,9 +2,7 @@
 
 use color_eyre::eyre::Result;
 use colored::Colorize;
-use lancedb::index::Index;
-use lancedb::table::OptimizeAction;
-use polsearch_pipeline::stages::{FtsIngester, FTS_TABLE_NAME};
+use polsearch_pipeline::stages::FtsIngester;
 use std::path::Path;
 use std::time::Instant;
 
@@ -125,57 +123,26 @@ pub async fn ingest(
     println!();
     println!(
         "{}",
-"Run 'polsearch fts index' to create the FTS index".dimmed()
+        "Run 'polsearch index' to create FTS indexes".dimmed()
     );
 
     Ok(())
 }
 
-/// Run the FTS index command
-pub async fn index(lancedb_path: &str) -> Result<()> {
-    let db = lancedb::connect(lancedb_path).execute().await?;
+/// Clear/delete the FTS table
+pub async fn clear(lancedb_path: &str) -> Result<()> {
+    println!("{}", "Clearing FTS table...".yellow());
 
-    let table = match db.open_table(FTS_TABLE_NAME).execute().await {
-        Ok(t) => t,
-        Err(_) => {
-            println!(
-                "{}",
-                format!("Table '{}' not found. Run 'polsearch fts ingest' first.", FTS_TABLE_NAME).yellow()
-            );
-            return Ok(());
+    let lancedb = lancedb::connect(lancedb_path).execute().await?;
+
+    match lancedb.drop_table("text_fts", &[]).await {
+        Ok(()) => {
+            println!("{}", "FTS table deleted successfully".green());
         }
-    };
-
-    let row_count = table.count_rows(None).await?;
-    println!(
-        "{}",
-        format!("Creating FTS index on {} ({} rows)...", FTS_TABLE_NAME, row_count).cyan()
-    );
-
-    let start = Instant::now();
-
-    table
-        .create_index(
-            &["text"],
-            Index::FTS(lancedb::index::scalar::FtsIndexBuilder::default()),
-        )
-        .execute()
-        .await?;
-    println!("{}", "FTS index created".green());
-
-    println!("{}", "Optimizing table...".yellow());
-    let stats = table.optimize(OptimizeAction::All).await?;
-    if let Some(compaction) = stats.compaction {
-        println!("  Compacted {} fragments", compaction.files_removed);
+        Err(e) => {
+            println!("{}", format!("No FTS table to delete: {}", e).yellow());
+        }
     }
-    if let Some(prune) = stats.prune {
-        println!("  Pruned {} bytes", prune.bytes_removed);
-    }
-
-    let duration = start.elapsed();
-    println!();
-    println!("{}", "Done!".green().bold());
-    println!("  Time elapsed: {:.1}s", duration.as_secs_f64());
 
     Ok(())
 }

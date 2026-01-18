@@ -14,6 +14,7 @@ pub async fn run(
     force: bool,
     dry_run: bool,
     validate: bool,
+    year: Option<i32>,
     lancedb_path: &str,
 ) -> Result<()> {
     let transcript_path = Path::new(path);
@@ -32,7 +33,7 @@ pub async fn run(
         );
 
         let db = get_database().await?;
-        let ingester = HearingIngester::new(db, lancedb_path, force).await?;
+        let ingester = HearingIngester::new(db, lancedb_path, force, year).await?;
         let (valid, invalid) = ingester.validate_directory(transcript_path, limit)?;
 
         println!();
@@ -77,9 +78,12 @@ pub async fn run(
     if force {
         println!("{}", "Force mode enabled - will re-process existing hearings".yellow());
     }
+    if let Some(y) = year {
+        println!("{}", format!("Filtering to year {}", y).cyan());
+    }
 
     let db = get_database().await?;
-    let mut ingester = HearingIngester::new(db, lancedb_path, force).await?;
+    let mut ingester = HearingIngester::new(db, lancedb_path, force, year).await?;
     let stats = ingester.ingest_directory(transcript_path, limit).await?;
 
     println!();

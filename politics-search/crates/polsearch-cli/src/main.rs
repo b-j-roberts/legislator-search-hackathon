@@ -249,6 +249,10 @@ enum HearingsCommands {
         #[arg(long)]
         validate: bool,
 
+        /// Filter to hearings from a specific year (e.g., 2025)
+        #[arg(long)]
+        year: Option<i32>,
+
         /// `LanceDB` storage path
         #[arg(long, default_value = "~/.polsearch/lancedb")]
         lancedb_path: String,
@@ -329,6 +333,10 @@ enum SpeechesCommands {
         #[arg(long)]
         validate: bool,
 
+        /// Filter to speeches from a specific year (e.g., 2025)
+        #[arg(long)]
+        year: Option<i32>,
+
         /// `LanceDB` storage path
         #[arg(long, default_value = "~/.polsearch/lancedb")]
         lancedb_path: String,
@@ -408,6 +416,9 @@ enum FtsCommands {
         #[arg(long)]
         dry_run: bool,
     },
+
+    /// Clear/delete the FTS table to start fresh
+    Clear,
 }
 
 #[derive(Subcommand)]
@@ -496,10 +507,11 @@ async fn main() -> Result<()> {
                 force,
                 dry_run,
                 validate,
+                year,
                 lancedb_path,
             } => {
                 let expanded = shellexpand::tilde(&lancedb_path).to_string();
-                commands::ingest_hearings::run(&path, limit, force, dry_run, validate, &expanded)
+                commands::ingest_hearings::run(&path, limit, force, dry_run, validate, year, &expanded)
                     .await?;
             }
             HearingsCommands::Missing {
@@ -530,11 +542,12 @@ async fn main() -> Result<()> {
                 force,
                 dry_run,
                 validate,
+                year,
                 lancedb_path,
             } => {
                 let expanded = shellexpand::tilde(&lancedb_path).to_string();
                 commands::ingest_floor_speeches::run(
-                    &path, limit, force, dry_run, validate, &expanded,
+                    &path, limit, force, dry_run, validate, year, &expanded,
                 )
                 .await?;
             }
@@ -591,6 +604,9 @@ async fn main() -> Result<()> {
                         &expanded,
                     )
                     .await?;
+                }
+                FtsCommands::Clear => {
+                    commands::fts::clear(&expanded).await?;
                 }
             }
         }

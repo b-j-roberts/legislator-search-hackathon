@@ -5,7 +5,7 @@ use arrow_array::{
     StringArray,
 };
 use arrow_schema::{DataType, Field, Schema};
-use chrono::NaiveDate;
+use chrono::{Datelike, NaiveDate};
 use color_eyre::eyre::{bail, eyre, Result};
 use polsearch_core::{FloorSpeech, FloorSpeechSegment, FloorSpeechStatement};
 use polsearch_db::Database;
@@ -58,6 +58,7 @@ pub struct FloorSpeechIngester {
     embedder: TextEmbedder,
     lancedb: lancedb::Connection,
     force: bool,
+    year_filter: Option<i32>,
 }
 
 impl FloorSpeechIngester {
@@ -65,7 +66,7 @@ impl FloorSpeechIngester {
     ///
     /// # Errors
     /// Returns an error if embedding model or `LanceDB` fails to initialize
-    pub async fn new(db: Database, lancedb_path: &str, force: bool) -> Result<Self> {
+    pub async fn new(db: Database, lancedb_path: &str, force: bool, year_filter: Option<i32>) -> Result<Self> {
         let embedder = TextEmbedder::new()?;
         let lancedb = lancedb::connect(lancedb_path).execute().await?;
 
@@ -75,6 +76,7 @@ impl FloorSpeechIngester {
             embedder,
             lancedb,
             force,
+            year_filter,
         })
     }
 
@@ -116,6 +118,14 @@ impl FloorSpeechIngester {
         // parse date
         let speech_date = NaiveDate::parse_from_str(&speech_json.date, "%Y-%m-%d")
             .map_err(|e| eyre!("Invalid date format: {} - {}", speech_json.date, e))?;
+
+        // skip if year doesn't match filter
+        if let Some(target_year) = self.year_filter {
+            if speech_date.year() != target_year {
+                stats.files_skipped += 1;
+                return Ok(stats);
+            }
+        }
 
         // create floor speech record
         let floor_speech = FloorSpeech::new(

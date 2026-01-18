@@ -1,15 +1,18 @@
 //! FTS-only ingestion for fast text search without embeddings
 
-use arrow_array::{Int32Array, RecordBatch, RecordBatchIterator, StringArray};
+use arrow_array::{Array, Int32Array, RecordBatch, RecordBatchIterator, StringArray};
 use arrow_schema::{DataType, Field, Schema};
-use chrono::NaiveDate;
-use color_eyre::eyre::{bail, eyre, Result};
+use color_eyre::eyre::{bail, Result};
 use polsearch_core::RollCallVote;
 use polsearch_db::Database;
+use rayon::prelude::*;
 use serde::Deserialize;
+use std::collections::HashSet;
 use std::fs;
-use std::path::Path;
+use std::path::{Path, PathBuf};
+use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Arc;
+use std::time::Instant;
 use tracing::{info, warn};
 
 use super::chunk::TextChunker;
@@ -74,6 +77,7 @@ pub struct FtsIngestStats {
 }
 
 /// FTS record for writing to `LanceDB`
+#[derive(Clone)]
 struct FtsRecord {
     id: String,
     content_type: String,
@@ -83,10 +87,15 @@ struct FtsRecord {
     text: String,
 }
 
+/// Result of parsing a single file
+struct ParseResult {
+    records: Vec<FtsRecord>,
+    skipped: bool,
+}
+
 /// FTS ingester for text-only ingestion without embeddings
 pub struct FtsIngester {
     db: Database,
-    chunker: TextChunker,
     lancedb: lancedb::Connection,
     force: bool,
 }
@@ -99,12 +108,7 @@ impl FtsIngester {
     pub async fn new(db: Database, lancedb_path: &str, force: bool) -> Result<Self> {
         let lancedb = lancedb::connect(lancedb_path).execute().await?;
 
-        Ok(Self {
-            db,
-            chunker: TextChunker::default(),
-            lancedb,
-            force,
-        })
+        Ok(Self { db, lancedb, force })
     }
 
     /// Get the FTS table schema (no vector column)
@@ -168,28 +172,33 @@ impl FtsIngester {
         Ok(())
     }
 
-    /// Ingest a single hearing JSON file (text-only)
-    async fn ingest_hearing_file(&self, path: &Path) -> Result<(usize, usize)> {
-        let content = fs::read_to_string(path)?;
-        let transcript: TranscriptJson = serde_json::from_str(&content)
-            .map_err(|e| eyre!("Failed to parse {}: {}", path.display(), e))?;
+    /// Parse a single hearing JSON file (pure CPU work, no async)
+    fn parse_hearing_file(path: &Path, skip_ids: &HashSet<String>) -> Option<ParseResult> {
+        let content = match fs::read_to_string(path) {
+            Ok(c) => c,
+            Err(e) => {
+                warn!("Failed to read {}: {}", path.display(), e);
+                return None;
+            }
+        };
 
-        // Check if already exists in postgres
-        if !self.force
-            && self
-                .db
-                .hearings()
-                .exists_by_package_id(&transcript.package_id)
-                .await?
-        {
-            return Ok((0, 1)); // skipped
+        let transcript: TranscriptJson = match serde_json::from_str(&content) {
+            Ok(t) => t,
+            Err(e) => {
+                warn!("Failed to parse {}: {}", path.display(), e);
+                return None;
+            }
+        };
+
+        // Check if should skip
+        if skip_ids.contains(&transcript.package_id) {
+            return Some(ParseResult {
+                records: vec![],
+                skipped: true,
+            });
         }
 
-        // Parse date
-        let _hearing_date = NaiveDate::parse_from_str(&transcript.date, "%Y-%m-%d")
-            .map_err(|e| eyre!("Invalid date format: {} - {}", transcript.date, e))?;
-
-        // Process statements and create FTS records
+        let chunker = TextChunker::default();
         let mut records = Vec::new();
         let mut segment_index = 0;
 
@@ -199,7 +208,7 @@ impl FtsIngester {
             }
 
             let statement_id = uuid::Uuid::now_v7();
-            let chunks = self.chunker.chunk(&stmt_json.text);
+            let chunks = chunker.chunk(&stmt_json.text);
 
             for chunk_text in &chunks {
                 let segment_id = uuid::Uuid::now_v7();
@@ -215,34 +224,39 @@ impl FtsIngester {
             }
         }
 
-        let segments_created = records.len();
-        self.write_to_lancedb(&records).await?;
-
-        Ok((segments_created, 0))
+        Some(ParseResult {
+            records,
+            skipped: false,
+        })
     }
 
-    /// Ingest a single floor speech JSON file (text-only)
-    async fn ingest_speech_file(&self, path: &Path) -> Result<(usize, usize)> {
-        let content = fs::read_to_string(path)?;
-        let speech: FloorSpeechJson = serde_json::from_str(&content)
-            .map_err(|e| eyre!("Failed to parse {}: {}", path.display(), e))?;
+    /// Parse a single floor speech JSON file (pure CPU work, no async)
+    fn parse_speech_file(path: &Path, skip_ids: &HashSet<String>) -> Option<ParseResult> {
+        let content = match fs::read_to_string(path) {
+            Ok(c) => c,
+            Err(e) => {
+                warn!("Failed to read {}: {}", path.display(), e);
+                return None;
+            }
+        };
 
-        // Check if already exists
-        if !self.force
-            && self
-                .db
-                .floor_speeches()
-                .exists_by_event_id(&speech.event_id)
-                .await?
-        {
-            return Ok((0, 1)); // skipped
+        let speech: FloorSpeechJson = match serde_json::from_str(&content) {
+            Ok(s) => s,
+            Err(e) => {
+                warn!("Failed to parse {}: {}", path.display(), e);
+                return None;
+            }
+        };
+
+        // Check if should skip
+        if skip_ids.contains(&speech.event_id) {
+            return Some(ParseResult {
+                records: vec![],
+                skipped: true,
+            });
         }
 
-        // Parse date
-        let _speech_date = NaiveDate::parse_from_str(&speech.date, "%Y-%m-%d")
-            .map_err(|e| eyre!("Invalid date format: {} - {}", speech.date, e))?;
-
-        // Process statements and create FTS records
+        let chunker = TextChunker::default();
         let mut records = Vec::new();
         let mut segment_index = 0;
 
@@ -252,7 +266,7 @@ impl FtsIngester {
             }
 
             let statement_id = uuid::Uuid::now_v7();
-            let chunks = self.chunker.chunk(&stmt_json.text);
+            let chunks = chunker.chunk(&stmt_json.text);
 
             for chunk_text in &chunks {
                 let segment_id = uuid::Uuid::now_v7();
@@ -268,13 +282,66 @@ impl FtsIngester {
             }
         }
 
-        let segments_created = records.len();
-        self.write_to_lancedb(&records).await?;
-
-        Ok((segments_created, 0))
+        Some(ParseResult {
+            records,
+            skipped: false,
+        })
     }
 
-    /// Ingest hearings from a directory (text-only)
+    /// Get existing hearing content IDs from LanceDB FTS table
+    async fn get_existing_hearing_ids(&self) -> Result<HashSet<String>> {
+        if self.force {
+            return Ok(HashSet::new());
+        }
+        self.get_existing_content_ids("hearing").await
+    }
+
+    /// Get existing floor speech content IDs from LanceDB FTS table
+    async fn get_existing_speech_ids(&self) -> Result<HashSet<String>> {
+        if self.force {
+            return Ok(HashSet::new());
+        }
+        self.get_existing_content_ids("floor_speech").await
+    }
+
+    /// Get existing content IDs from LanceDB FTS table for a given content type
+    async fn get_existing_content_ids(&self, content_type: &str) -> Result<HashSet<String>> {
+        use arrow_array::cast::AsArray;
+        use futures::TryStreamExt;
+        use lancedb::query::{ExecutableQuery, QueryBase};
+
+        let table = match self.lancedb.open_table(FTS_TABLE_NAME).execute().await {
+            Ok(t) => t,
+            Err(_) => return Ok(HashSet::new()),
+        };
+
+        let filter = format!("content_type = '{content_type}'");
+
+        let batches: Vec<RecordBatch> = table
+            .query()
+            .select(lancedb::query::Select::columns(&["content_id"]))
+            .only_if(filter)
+            .execute()
+            .await?
+            .try_collect()
+            .await?;
+
+        let mut ids = HashSet::new();
+        for batch in batches {
+            if let Some(col) = batch.column_by_name("content_id") {
+                let string_array = col.as_string::<i32>();
+                for i in 0..string_array.len() {
+                    if !string_array.is_null(i) {
+                        ids.insert(string_array.value(i).to_string());
+                    }
+                }
+            }
+        }
+
+        Ok(ids)
+    }
+
+    /// Ingest hearings from a directory using parallel processing
     ///
     /// # Errors
     /// Returns an error if directory reading fails
@@ -283,57 +350,93 @@ impl FtsIngester {
         path: &Path,
         limit: Option<usize>,
     ) -> Result<FtsIngestStats> {
-        let mut stats = FtsIngestStats::default();
-
         if !path.is_dir() {
             bail!("Path is not a directory: {}", path.display());
         }
 
-        let mut entries: Vec<_> = fs::read_dir(path)?
+        let mut entries: Vec<PathBuf> = fs::read_dir(path)?
             .filter_map(Result::ok)
             .filter(|e| e.path().extension().is_some_and(|ext| ext == "json"))
+            .map(|e| e.path())
             .collect();
 
-        entries.sort_by_key(std::fs::DirEntry::path);
+        entries.sort();
 
         if let Some(max) = limit {
             entries.truncate(max);
         }
 
         let total = entries.len();
-        info!("Processing {} hearing files for FTS", total);
+        info!("Processing {} hearing files for FTS (parallel)", total);
 
-        for (i, entry) in entries.into_iter().enumerate() {
-            let file_path = entry.path();
-            match self.ingest_hearing_file(&file_path).await {
-                Ok((segments, skipped)) => {
-                    if skipped > 0 {
-                        stats.hearings_skipped += 1;
+        // Get existing IDs to skip
+        let skip_ids = self.get_existing_hearing_ids().await?;
+        info!("Found {} existing hearings to skip", skip_ids.len());
+
+        // Progress tracking
+        let processed_count = AtomicUsize::new(0);
+        let start_time = Instant::now();
+
+        // Parse files in parallel
+        let results: Vec<ParseResult> = entries
+            .par_iter()
+            .filter_map(|path| {
+                let result = Self::parse_hearing_file(path, &skip_ids);
+                let count = processed_count.fetch_add(1, Ordering::Relaxed) + 1;
+                if count % 500 == 0 || count == total {
+                    let elapsed = start_time.elapsed().as_secs_f64();
+                    let rate = count as f64 / elapsed;
+                    let remaining = total - count;
+                    let eta_secs = if rate > 0.0 {
+                        remaining as f64 / rate
                     } else {
-                        stats.hearings_processed += 1;
-                        stats.segments_created += segments;
-                    }
-                    if (i + 1) % 100 == 0 || i + 1 == total {
-                        info!(
-                            "[{}/{}] Hearings: {} processed, {} skipped, {} segments",
-                            i + 1,
-                            total,
-                            stats.hearings_processed,
-                            stats.hearings_skipped,
-                            stats.segments_created
-                        );
-                    }
+                        0.0
+                    };
+                    info!(
+                        "[{}/{}] Parsing hearings... {:.0} files/sec, ETA: {:.0}s",
+                        count, total, rate, eta_secs
+                    );
                 }
-                Err(e) => {
-                    warn!("[{}/{}] Failed {}: {}", i + 1, total, file_path.display(), e);
-                }
+                result
+            })
+            .collect();
+
+        // Aggregate stats and records
+        let mut stats = FtsIngestStats::default();
+        let mut all_records = Vec::new();
+
+        for result in results {
+            if result.skipped {
+                stats.hearings_skipped += 1;
+            } else {
+                stats.hearings_processed += 1;
+                stats.segments_created += result.records.len();
+                all_records.extend(result.records);
             }
         }
+
+        // Write to LanceDB in batches
+        const BATCH_SIZE: usize = 10000;
+        let total_records = all_records.len();
+        for (i, chunk) in all_records.chunks(BATCH_SIZE).enumerate() {
+            self.write_to_lancedb(chunk).await?;
+            info!(
+                "Written batch {}/{} ({} records)",
+                i + 1,
+                (total_records + BATCH_SIZE - 1) / BATCH_SIZE,
+                chunk.len()
+            );
+        }
+
+        info!(
+            "Hearings complete: {} processed, {} skipped, {} segments",
+            stats.hearings_processed, stats.hearings_skipped, stats.segments_created
+        );
 
         Ok(stats)
     }
 
-    /// Ingest floor speeches from a directory (text-only)
+    /// Ingest floor speeches from a directory using parallel processing
     ///
     /// # Errors
     /// Returns an error if directory reading fails
@@ -342,52 +445,88 @@ impl FtsIngester {
         path: &Path,
         limit: Option<usize>,
     ) -> Result<FtsIngestStats> {
-        let mut stats = FtsIngestStats::default();
-
         if !path.is_dir() {
             bail!("Path is not a directory: {}", path.display());
         }
 
-        let mut entries: Vec<_> = fs::read_dir(path)?
+        let mut entries: Vec<PathBuf> = fs::read_dir(path)?
             .filter_map(Result::ok)
             .filter(|e| e.path().extension().is_some_and(|ext| ext == "json"))
+            .map(|e| e.path())
             .collect();
 
-        entries.sort_by_key(std::fs::DirEntry::path);
+        entries.sort();
 
         if let Some(max) = limit {
             entries.truncate(max);
         }
 
         let total = entries.len();
-        info!("Processing {} floor speech files for FTS", total);
+        info!("Processing {} floor speech files for FTS (parallel)", total);
 
-        for (i, entry) in entries.into_iter().enumerate() {
-            let file_path = entry.path();
-            match self.ingest_speech_file(&file_path).await {
-                Ok((segments, skipped)) => {
-                    if skipped > 0 {
-                        stats.speeches_skipped += 1;
+        // Get existing IDs to skip
+        let skip_ids = self.get_existing_speech_ids().await?;
+        info!("Found {} existing speeches to skip", skip_ids.len());
+
+        // Progress tracking
+        let processed_count = AtomicUsize::new(0);
+        let start_time = Instant::now();
+
+        // Parse files in parallel
+        let results: Vec<ParseResult> = entries
+            .par_iter()
+            .filter_map(|path| {
+                let result = Self::parse_speech_file(path, &skip_ids);
+                let count = processed_count.fetch_add(1, Ordering::Relaxed) + 1;
+                if count % 500 == 0 || count == total {
+                    let elapsed = start_time.elapsed().as_secs_f64();
+                    let rate = count as f64 / elapsed;
+                    let remaining = total - count;
+                    let eta_secs = if rate > 0.0 {
+                        remaining as f64 / rate
                     } else {
-                        stats.speeches_processed += 1;
-                        stats.segments_created += segments;
-                    }
-                    if (i + 1) % 100 == 0 || i + 1 == total {
-                        info!(
-                            "[{}/{}] Speeches: {} processed, {} skipped, {} segments",
-                            i + 1,
-                            total,
-                            stats.speeches_processed,
-                            stats.speeches_skipped,
-                            stats.segments_created
-                        );
-                    }
+                        0.0
+                    };
+                    info!(
+                        "[{}/{}] Parsing speeches... {:.0} files/sec, ETA: {:.0}s",
+                        count, total, rate, eta_secs
+                    );
                 }
-                Err(e) => {
-                    warn!("[{}/{}] Failed {}: {}", i + 1, total, file_path.display(), e);
-                }
+                result
+            })
+            .collect();
+
+        // Aggregate stats and records
+        let mut stats = FtsIngestStats::default();
+        let mut all_records = Vec::new();
+
+        for result in results {
+            if result.skipped {
+                stats.speeches_skipped += 1;
+            } else {
+                stats.speeches_processed += 1;
+                stats.segments_created += result.records.len();
+                all_records.extend(result.records);
             }
         }
+
+        // Write to LanceDB in batches
+        const BATCH_SIZE: usize = 10000;
+        let total_records = all_records.len();
+        for (i, chunk) in all_records.chunks(BATCH_SIZE).enumerate() {
+            self.write_to_lancedb(chunk).await?;
+            info!(
+                "Written batch {}/{} ({} records)",
+                i + 1,
+                (total_records + BATCH_SIZE - 1) / BATCH_SIZE,
+                chunk.len()
+            );
+        }
+
+        info!(
+            "Speeches complete: {} processed, {} skipped, {} segments",
+            stats.speeches_processed, stats.speeches_skipped, stats.segments_created
+        );
 
         Ok(stats)
     }

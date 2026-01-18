@@ -53,6 +53,7 @@ polsearch-util = { path = "crates/polsearch-util" }
 polsearch-db = { path = "crates/polsearch-db" }
 polsearch-pipeline = { path = "crates/polsearch-pipeline" }
 polsearch-archive = { path = "crates/polsearch-archive" }
+polsearch-api = { path = "crates/polsearch-api" }
 
 [workspace.lints.rust]
 unsafe_code = "forbid"

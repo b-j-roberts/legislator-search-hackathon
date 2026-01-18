@@ -5,7 +5,7 @@ use arrow_array::{
     StringArray,
 };
 use arrow_schema::{DataType, Field, Schema};
-use chrono::NaiveDate;
+use chrono::{Datelike, NaiveDate};
 use color_eyre::eyre::{bail, eyre, Result};
 use colored::Colorize;
 use polsearch_core::{Hearing, HearingSegment, HearingStatement};
@@ -61,6 +61,7 @@ pub struct HearingIngester {
     embedder: TextEmbedder,
     lancedb: lancedb::Connection,
     force: bool,
+    year_filter: Option<i32>,
 }
 
 impl HearingIngester {
@@ -68,7 +69,7 @@ impl HearingIngester {
     ///
     /// # Errors
     /// Returns an error if embedding model or `LanceDB` fails to initialize
-    pub async fn new(db: Database, lancedb_path: &str, force: bool) -> Result<Self> {
+    pub async fn new(db: Database, lancedb_path: &str, force: bool, year_filter: Option<i32>) -> Result<Self> {
         let embedder = TextEmbedder::new()?;
         let lancedb = lancedb::connect(lancedb_path).execute().await?;
 
@@ -78,6 +79,7 @@ impl HearingIngester {
             embedder,
             lancedb,
             force,
+            year_filter,
         })
     }
 
@@ -108,6 +110,14 @@ impl HearingIngester {
         // Parse date
         let hearing_date = NaiveDate::parse_from_str(&transcript.date, "%Y-%m-%d")
             .map_err(|e| eyre!("Invalid date format: {} - {}", transcript.date, e))?;
+
+        // Skip if year doesn't match filter
+        if let Some(target_year) = self.year_filter {
+            if hearing_date.year() != target_year {
+                stats.files_skipped += 1;
+                return Ok(stats);
+            }
+        }
 
         // Create hearing record
         let hearing = Hearing::new(
