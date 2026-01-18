@@ -17,25 +17,6 @@ After implementing the feature, please provide a concise step-by-step instructio
 
 Features that enhance the experience but aren't required for initial launch.
 
-### 2.1b UI Redesign ( Contact Page )
-
-**Description**: Update the contact page layout and styling for improved user experience using the frontend-design SKILL for claude.
-
-**Requirements**:
-- [ ] Think through overall layout and structure of the contact page
-- [ ] Use modern color scheme and typography consistent with main page
-- [ ] Design a better header/subheader section which takes up less space
-- [ ] Design a more engaging and modern contact components based on each contact method
-- [ ] Design a more engaging and modern contact queue with better spacing and alignment, more useful icons, and clearer information hierarchy
-- [ ] Ensure consistent design considerations for all components/forms and ensure nothing is too cluttered or overwhelming or crowded
-
-**Implementation Notes**:
-- Use consistent design language with main page
-- Focus on usability and clarity
-- Consider responsive design for mobile
-- Try to reduce cognitive load for new users
-- Do not feel obligated to keep existing elements/layout if a better design is possible
-
 ### 2.1c UI Redesign ( Complete Page )
 
 **Description**: Redesign the complete page to enhance visual appeal and usability using the frontend-design SKILL for claude.

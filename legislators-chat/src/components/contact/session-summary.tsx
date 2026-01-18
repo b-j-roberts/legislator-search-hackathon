@@ -1,30 +1,25 @@
 "use client";
 
 import * as React from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
-  PartyPopper,
   Phone,
   Mail,
   Download,
   Share2,
   Twitter,
-  Facebook,
-  Linkedin,
   Copy,
   Check,
-  ArrowLeft,
+  ArrowRight,
   Trash2,
-  MessageCircle,
   Clock,
-  Users,
-  CheckCircle2,
+  Award,
+  Linkedin,
+  ChevronDown,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
   DialogContent,
@@ -39,26 +34,16 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import type { QueueItem } from "@/lib/queue-storage";
-import type { Legislator } from "@/lib/types";
 
 // =============================================================================
 // Types
 // =============================================================================
 
 interface SessionSummaryProps {
-  /** All queue items (to show contacted ones) */
   items: QueueItem[];
-  /** Research context/topic */
   researchContext: string | null;
-  /** Callback to clear session */
   onClearSession: () => void;
-  /** Callback to continue research */
   onContinueResearch: () => void;
-}
-
-interface ContactedLegislatorCardProps {
-  item: QueueItem;
-  index: number;
 }
 
 // =============================================================================
@@ -69,10 +54,8 @@ function formatDateTime(isoString: string): { date: string; time: string } {
   const date = new Date(isoString);
   return {
     date: date.toLocaleDateString("en-US", {
-      weekday: "short",
       month: "short",
       day: "numeric",
-      year: "numeric",
     }),
     time: date.toLocaleTimeString("en-US", {
       hour: "numeric",
@@ -85,17 +68,17 @@ function formatDateTime(isoString: string): { date: string; time: string } {
 function getOutcomeLabel(outcome?: string): string {
   switch (outcome) {
     case "successful":
-      return "Spoke with someone";
+      return "Connected";
     case "voicemail":
-      return "Left voicemail";
+      return "Voicemail";
     case "no_answer":
       return "No answer";
     case "busy":
-      return "Line busy";
+      return "Busy";
     case "sent":
-      return "Email sent";
+      return "Sent";
     default:
-      return "Contacted";
+      return "Done";
   }
 }
 
@@ -163,200 +146,441 @@ function generateShareText(count: number, researchContext: string | null): strin
 // Sub-Components
 // =============================================================================
 
-function ContactedLegislatorCard({ item, index }: ContactedLegislatorCardProps) {
+function CelebrationHero({ count }: { count: number }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="text-center mb-10"
+    >
+      {/* Award badge */}
+      <motion.div
+        initial={{ scale: 0, rotate: -10 }}
+        animate={{ scale: 1, rotate: 0 }}
+        transition={{ type: "spring", duration: 0.6, delay: 0.1 }}
+        className="inline-block mb-6"
+      >
+        <div className="relative">
+          {/* Glow effect */}
+          <div className="absolute inset-0 bg-gradient-to-br from-copper/30 to-gold/30 rounded-2xl blur-xl" />
+
+          {/* Badge container */}
+          <div className="relative bg-gradient-to-br from-copper/10 to-gold/10 rounded-2xl p-6 border border-copper/20">
+            <Award className="size-8 text-copper mx-auto" />
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Headline */}
+      <motion.h1
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-3"
+      >
+        <span className="text-gradient">Well Done</span>
+      </motion.h1>
+
+      {/* Subline */}
+      <motion.p
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="text-muted-foreground max-w-md mx-auto leading-relaxed"
+      >
+        You contacted{" "}
+        <span className="text-foreground font-semibold">{count} representative{count !== 1 ? "s" : ""}</span>.{" "}
+        Every voice matters in our democracy.
+      </motion.p>
+    </motion.div>
+  );
+}
+
+function ImpactCard({
+  contactedCount,
+  callCount,
+  emailCount,
+  researchContext,
+}: {
+  contactedCount: number;
+  callCount: number;
+  emailCount: number;
+  researchContext: string | null;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.4 }}
+      className="relative mb-8"
+    >
+      <div className="relative bg-card border border-border rounded-2xl overflow-hidden">
+        {/* Subtle gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-copper/5 via-transparent to-gold/5 pointer-events-none" />
+
+        <div className="relative p-5 sm:p-6">
+          {/* Stats row */}
+          <div className="flex items-center justify-center gap-8 sm:gap-12">
+            {/* Total */}
+            <div className="text-center">
+              <div className="font-display text-4xl sm:text-5xl font-bold text-gradient mb-1">
+                {contactedCount}
+              </div>
+              <div className="text-xs text-muted-foreground uppercase tracking-wide">
+                Contacted
+              </div>
+            </div>
+
+            {/* Divider */}
+            <div className="h-12 w-px bg-border" />
+
+            {/* Breakdown */}
+            <div className="flex items-center gap-6">
+              {callCount > 0 && (
+                <div className="flex items-center gap-2">
+                  <div className="size-8 rounded-lg bg-copper/10 flex items-center justify-center">
+                    <Phone className="size-4 text-copper" />
+                  </div>
+                  <div>
+                    <div className="text-lg font-semibold text-foreground">{callCount}</div>
+                    <div className="text-xs text-muted-foreground">call{callCount !== 1 ? "s" : ""}</div>
+                  </div>
+                </div>
+              )}
+
+              {emailCount > 0 && (
+                <div className="flex items-center gap-2">
+                  <div className="size-8 rounded-lg bg-teal/10 flex items-center justify-center">
+                    <Mail className="size-4 text-teal" />
+                  </div>
+                  <div>
+                    <div className="text-lg font-semibold text-foreground">{emailCount}</div>
+                    <div className="text-xs text-muted-foreground">email{emailCount !== 1 ? "s" : ""}</div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Topic */}
+          {researchContext && (
+            <div className="mt-5 pt-5 border-t border-border">
+              <div className="text-xs text-muted-foreground uppercase tracking-wide mb-1">Topic</div>
+              <div className="text-sm text-foreground">{researchContext}</div>
+            </div>
+          )}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+function ContactTimelineItem({
+  item,
+  index,
+  isLast,
+}: {
+  item: QueueItem;
+  index: number;
+  isLast: boolean;
+}) {
   const { legislator } = item;
-  const title = legislator.chamber === "Senate" ? "Senator" : "Rep.";
+  const title = legislator.chamber === "Senate" ? "Sen." : "Rep.";
   const contactedAt = item.contactedAt ? formatDateTime(item.contactedAt) : null;
+
+  const partyColor = {
+    D: "bg-blue-500",
+    R: "bg-red-500",
+    I: "bg-purple-500",
+  }[legislator.party] || "bg-muted-foreground";
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: -10 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: 0.5 + index * 0.05 }}
+      className="relative flex gap-4"
+    >
+      {/* Timeline connector */}
+      <div className="flex flex-col items-center">
+        <div
+          className={cn(
+            "size-2.5 rounded-full ring-4 ring-background",
+            item.contactMethod === "call" ? "bg-copper" : "bg-teal"
+          )}
+        />
+        {!isLast && (
+          <div className="w-px flex-1 bg-border mt-2" />
+        )}
+      </div>
+
+      {/* Content */}
+      <div className={cn("flex-1 pb-6", isLast && "pb-0")}>
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="font-medium text-foreground">
+                {title} {legislator.name}
+              </span>
+              <span
+                className={cn(
+                  "size-1.5 rounded-full",
+                  partyColor
+                )}
+              />
+              <span className="text-xs text-muted-foreground">
+                {legislator.state}{legislator.district ? `-${legislator.district}` : ""}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2 mt-1">
+              <span className="text-xs text-muted-foreground">
+                {item.contactMethod === "call" ? "Called" : "Emailed"}
+              </span>
+              <span className="text-muted-foreground/40">·</span>
+              <span className="text-xs text-muted-foreground">
+                {getOutcomeLabel(item.contactOutcome)}
+              </span>
+            </div>
+          </div>
+
+          {contactedAt && (
+            <div className="flex items-center gap-1 text-xs text-muted-foreground flex-shrink-0">
+              <Clock className="size-3" />
+              {contactedAt.time}
+            </div>
+          )}
+        </div>
+
+        {item.notes && (
+          <div className="mt-2 text-xs text-muted-foreground bg-muted/30 rounded-lg px-3 py-2 border border-border/50">
+            {item.notes}
+          </div>
+        )}
+      </div>
+    </motion.div>
+  );
+}
+
+function ContactTimeline({ items }: { items: QueueItem[] }) {
+  const contactedItems = items.filter((item) => item.status === "contacted");
+  const [showAll, setShowAll] = React.useState(false);
+
+  const visibleItems = showAll ? contactedItems : contactedItems.slice(0, 3);
+  const hasMore = contactedItems.length > 3;
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.05 }}
+      transition={{ delay: 0.5 }}
+      className="mb-8"
     >
-      <Card className="border-green-500/20 bg-green-500/5">
-        <CardContent className="pt-4 pb-4">
-          <div className="flex items-start gap-3">
-            {/* Check icon */}
-            <div className="rounded-full bg-green-500/20 p-1.5 mt-0.5">
-              <CheckCircle2 className="size-4 text-green-500" />
-            </div>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="font-display text-lg font-semibold text-foreground">
+          Contact History
+        </h2>
+        <span className="text-xs text-muted-foreground">
+          {contactedItems.length} total
+        </span>
+      </div>
 
-            {/* Content */}
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="font-medium text-foreground">
-                  {title} {legislator.name}
-                </span>
-                <Badge
-                  variant="outline"
-                  className={cn(
-                    "text-xs",
-                    legislator.party === "D"
-                      ? "border-blue-500/50 text-blue-500"
-                      : legislator.party === "R"
-                        ? "border-red-500/50 text-red-500"
-                        : "border-purple-500/50 text-purple-500"
-                  )}
-                >
-                  {legislator.party === "D" ? "D" : legislator.party === "R" ? "R" : "I"}
-                </Badge>
-                <span className="text-xs text-muted-foreground">
-                  {legislator.state}
-                  {legislator.district ? `-${legislator.district}` : ""}
-                </span>
-              </div>
-
-              {/* Contact method and outcome */}
-              <div className="flex items-center gap-2 mt-2 flex-wrap">
-                <Badge
-                  variant="secondary"
-                  className={cn(
-                    "text-xs gap-1",
-                    item.contactMethod === "call"
-                      ? "bg-amber-500/10 text-amber-500"
-                      : "bg-blue-500/10 text-blue-500"
-                  )}
-                >
-                  {item.contactMethod === "call" ? (
-                    <Phone className="size-3" />
-                  ) : (
-                    <Mail className="size-3" />
-                  )}
-                  {item.contactMethod === "call" ? "Call" : "Email"}
-                </Badge>
-                <span className="text-xs text-muted-foreground">
-                  {getOutcomeLabel(item.contactOutcome)}
-                </span>
-              </div>
-
-              {/* Timestamp */}
-              {contactedAt && (
-                <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
-                  <Clock className="size-3" />
-                  {contactedAt.date} at {contactedAt.time}
-                </div>
-              )}
-
-              {/* Notes */}
-              {item.notes && (
-                <div className="mt-2 text-xs text-muted-foreground bg-muted/50 rounded p-2">
-                  <span className="font-medium">Notes:</span> {item.notes}
-                </div>
-              )}
-            </div>
+      <div className="relative bg-card border border-border rounded-xl p-5">
+        <AnimatePresence mode="wait">
+          <div key={showAll ? "all" : "partial"}>
+            {visibleItems.map((item, index) => (
+              <ContactTimelineItem
+                key={item.legislator.id}
+                item={item}
+                index={index}
+                isLast={index === visibleItems.length - 1}
+              />
+            ))}
           </div>
-        </CardContent>
-      </Card>
+        </AnimatePresence>
+
+        {hasMore && (
+          <button
+            onClick={() => setShowAll(!showAll)}
+            className="w-full flex items-center justify-center gap-1 pt-4 mt-4 border-t border-border text-xs text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <span>{showAll ? "Show less" : `Show ${contactedItems.length - 3} more`}</span>
+            <ChevronDown className={cn("size-3 transition-transform", showAll && "rotate-180")} />
+          </button>
+        )}
+      </div>
     </motion.div>
   );
 }
 
-function SharePopover({
+function ActionButtons({
   shareText,
-  onCopy,
+  onDownload,
+  onCopyShare,
+  copied,
 }: {
   shareText: string;
-  onCopy: () => void;
+  onDownload: () => void;
+  onCopyShare: () => void;
+  copied: boolean;
 }) {
   const encodedText = encodeURIComponent(shareText);
 
-  const shareLinks = [
-    {
-      name: "Twitter / X",
-      icon: Twitter,
-      url: `https://twitter.com/intent/tweet?text=${encodedText}`,
-      color: "hover:text-sky-400",
-    },
-    {
-      name: "Facebook",
-      icon: Facebook,
-      url: `https://www.facebook.com/sharer/sharer.php?quote=${encodedText}`,
-      color: "hover:text-blue-600",
-    },
-    {
-      name: "LinkedIn",
-      icon: Linkedin,
-      url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent("https://legislatorschat.com")}&summary=${encodedText}`,
-      color: "hover:text-blue-500",
-    },
-  ];
-
   return (
-    <PopoverContent align="end" className="w-64">
-      <div className="space-y-3">
-        <div>
-          <h4 className="font-medium text-sm mb-1">Share your impact</h4>
-          <p className="text-xs text-muted-foreground">
-            Inspire others to participate in democracy!
-          </p>
-        </div>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.6 }}
+      className="flex flex-wrap items-center justify-center gap-3 mb-10"
+    >
+      <Button onClick={onDownload} variant="outline" size="sm" className="gap-2">
+        <Download className="size-4" />
+        Download Report
+      </Button>
 
-        {/* Social links */}
-        <div className="flex gap-2">
-          {shareLinks.map(({ name, icon: Icon, url, color }) => (
-            <Button
-              key={name}
-              variant="outline"
-              size="icon"
-              asChild
-              className={cn("transition-colors", color)}
-            >
-              <a href={url} target="_blank" rel="noopener noreferrer" title={name}>
-                <Icon className="size-4" />
-              </a>
-            </Button>
-          ))}
-        </div>
-
-        {/* Copy text button */}
-        <div className="pt-2 border-t border-border">
-          <p className="text-xs text-muted-foreground mb-2 line-clamp-2">
-            {shareText}
-          </p>
-          <Button variant="outline" size="sm" onClick={onCopy} className="w-full gap-1.5">
-            <Copy className="size-3" />
-            Copy Text
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button variant="outline" size="sm" className="gap-2">
+            {copied ? (
+              <Check className="size-4 text-copper" />
+            ) : (
+              <Share2 className="size-4" />
+            )}
+            Share Impact
           </Button>
-        </div>
-      </div>
-    </PopoverContent>
+        </PopoverTrigger>
+        <PopoverContent align="center" className="w-72">
+          <div className="space-y-4">
+            <div>
+              <h4 className="font-display font-medium text-sm mb-1">Share your impact</h4>
+              <p className="text-xs text-muted-foreground">
+                Inspire others to make their voices heard.
+              </p>
+            </div>
+
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="icon"
+                asChild
+                className="hover:bg-sky-500/10 hover:text-sky-500 hover:border-sky-500/50 transition-colors"
+              >
+                <a
+                  href={`https://twitter.com/intent/tweet?text=${encodedText}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Twitter className="size-4" />
+                </a>
+              </Button>
+              <Button
+                variant="outline"
+                size="icon"
+                asChild
+                className="hover:bg-blue-500/10 hover:text-blue-500 hover:border-blue-500/50 transition-colors"
+              >
+                <a
+                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent("https://legislatorschat.com")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Linkedin className="size-4" />
+                </a>
+              </Button>
+            </div>
+
+            <div className="pt-3 border-t border-border">
+              <p className="text-xs text-muted-foreground mb-2 line-clamp-2">
+                {shareText}
+              </p>
+              <Button variant="secondary" size="sm" onClick={onCopyShare} className="w-full gap-2">
+                {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
+                {copied ? "Copied!" : "Copy Text"}
+              </Button>
+            </div>
+          </div>
+        </PopoverContent>
+      </Popover>
+    </motion.div>
   );
 }
 
-function ClearSessionDialog({
-  open,
-  onOpenChange,
-  onConfirm,
+function FooterActions({
+  onContinueResearch,
+  onClearSession,
 }: {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  onConfirm: () => void;
+  onContinueResearch: () => void;
+  onClearSession: () => void;
 }) {
+  const [showClearDialog, setShowClearDialog] = React.useState(false);
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Trash2 className="size-5 text-destructive" />
-            Clear Session?
-          </DialogTitle>
-          <DialogDescription>
-            This will clear all your contact history and let you start fresh. This action
-            cannot be undone.
-          </DialogDescription>
-        </DialogHeader>
-        <DialogFooter className="gap-2 sm:gap-0">
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
-          </Button>
-          <Button variant="destructive" onClick={onConfirm} className="gap-1.5">
-            <Trash2 className="size-4" />
-            Clear Session
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    <>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.7 }}
+        className="space-y-4"
+      >
+        {/* Primary action */}
+        <Button
+          onClick={onContinueResearch}
+          size="lg"
+          className="w-full gap-2 bg-gradient-to-r from-copper to-gold text-copper-foreground hover:opacity-90"
+        >
+          Continue Researching
+          <ArrowRight className="size-4" />
+        </Button>
+
+        {/* Secondary action */}
+        <button
+          onClick={() => setShowClearDialog(true)}
+          className="w-full flex items-center justify-center gap-2 py-2 text-sm text-muted-foreground hover:text-destructive transition-colors"
+        >
+          <Trash2 className="size-4" />
+          Clear session & start fresh
+        </button>
+
+        {/* Encouraging footer */}
+        <p className="text-center text-xs text-muted-foreground pt-4">
+          Democracy thrives when citizens participate.{" "}
+          <span className="text-foreground">Thank you.</span>
+        </p>
+      </motion.div>
+
+      {/* Clear session dialog */}
+      <Dialog open={showClearDialog} onOpenChange={setShowClearDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Trash2 className="size-5 text-destructive" />
+              Clear Session?
+            </DialogTitle>
+            <DialogDescription>
+              This will clear all your contact history and let you start fresh.
+              This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="gap-2 sm:gap-0">
+            <Button variant="outline" onClick={() => setShowClearDialog(false)}>
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => {
+                setShowClearDialog(false);
+                onClearSession();
+              }}
+              className="gap-2"
+            >
+              <Trash2 className="size-4" />
+              Clear Session
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
 
@@ -370,7 +594,6 @@ export function SessionSummary({
   onClearSession,
   onContinueResearch,
 }: SessionSummaryProps) {
-  const [showClearDialog, setShowClearDialog] = React.useState(false);
   const [copied, setCopied] = React.useState(false);
 
   const contactedItems = items.filter((item) => item.status === "contacted");
@@ -402,201 +625,29 @@ export function SessionSummary({
     }
   };
 
-  const handleClearConfirm = () => {
-    setShowClearDialog(false);
-    onClearSession();
-  };
-
   return (
-    <div className="space-y-6">
-      {/* Hero section */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-center py-8"
-      >
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ type: "spring", duration: 0.5 }}
-          className="inline-flex items-center justify-center rounded-full bg-green-500/20 p-4 mb-4"
-        >
-          <PartyPopper className="size-8 text-green-500" />
-        </motion.div>
-        <motion.h2
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="text-2xl font-bold text-foreground mb-2"
-        >
-          Outstanding Work!
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="text-muted-foreground max-w-md mx-auto"
-        >
-          You&apos;ve made your voice heard. Every contact counts in a healthy democracy.
-        </motion.p>
-      </motion.div>
+    <div className="space-y-2">
+      <CelebrationHero count={contactedItems.length} />
 
-      {/* Stats cards */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-        className="grid grid-cols-3 gap-4"
-      >
-        <Card className="text-center">
-          <CardContent className="pt-4 pb-4">
-            <div className="rounded-full bg-primary/10 p-2 w-fit mx-auto mb-2">
-              <Users className="size-5 text-primary" />
-            </div>
-            <p className="text-2xl font-bold text-foreground">{contactedItems.length}</p>
-            <p className="text-xs text-muted-foreground">Contacted</p>
-          </CardContent>
-        </Card>
+      <ImpactCard
+        contactedCount={contactedItems.length}
+        callCount={callCount}
+        emailCount={emailCount}
+        researchContext={researchContext}
+      />
 
-        <Card className="text-center">
-          <CardContent className="pt-4 pb-4">
-            <div className="rounded-full bg-amber-500/10 p-2 w-fit mx-auto mb-2">
-              <Phone className="size-5 text-amber-500" />
-            </div>
-            <p className="text-2xl font-bold text-foreground">{callCount}</p>
-            <p className="text-xs text-muted-foreground">Calls</p>
-          </CardContent>
-        </Card>
+      <ContactTimeline items={items} />
 
-        <Card className="text-center">
-          <CardContent className="pt-4 pb-4">
-            <div className="rounded-full bg-blue-500/10 p-2 w-fit mx-auto mb-2">
-              <Mail className="size-5 text-blue-500" />
-            </div>
-            <p className="text-2xl font-bold text-foreground">{emailCount}</p>
-            <p className="text-xs text-muted-foreground">Emails</p>
-          </CardContent>
-        </Card>
-      </motion.div>
+      <ActionButtons
+        shareText={shareText}
+        onDownload={handleDownload}
+        onCopyShare={handleCopyShareText}
+        copied={copied}
+      />
 
-      {/* Research topic */}
-      {researchContext && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-        >
-          <Card className="bg-muted/30">
-            <CardContent className="pt-4 pb-4">
-              <div className="flex items-start gap-3">
-                <MessageCircle className="size-5 text-muted-foreground mt-0.5" />
-                <div>
-                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">
-                    Topic
-                  </p>
-                  <p className="text-sm text-foreground">{researchContext}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-      )}
-
-      {/* Action buttons */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6 }}
-        className="flex flex-wrap gap-2 justify-center"
-      >
-        <Button onClick={handleDownload} variant="outline" className="gap-1.5">
-          <Download className="size-4" />
-          Download Report
-        </Button>
-
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="outline" className="gap-1.5">
-              {copied ? (
-                <Check className="size-4 text-green-500" />
-              ) : (
-                <Share2 className="size-4" />
-              )}
-              Share Impact
-            </Button>
-          </PopoverTrigger>
-          <SharePopover shareText={shareText} onCopy={handleCopyShareText} />
-        </Popover>
-      </motion.div>
-
-      {/* Contacted legislators list */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7 }}
-      >
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-base flex items-center gap-2">
-              <CheckCircle2 className="size-5 text-green-500" />
-              Contacted Representatives
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <div className="max-h-[400px] overflow-y-auto pr-1">
-              <div className="space-y-3 pr-3">
-                {contactedItems.map((item, index) => (
-                  <ContactedLegislatorCard
-                    key={item.legislator.id}
-                    item={item}
-                    index={index}
-                  />
-                ))}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </motion.div>
-
-      {/* Footer actions */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.8 }}
-        className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-border"
-      >
-        <Button onClick={onContinueResearch} className="flex-1 gap-1.5">
-          <ArrowLeft className="size-4" />
-          Continue Research
-        </Button>
-        <Button
-          variant="outline"
-          onClick={() => setShowClearDialog(true)}
-          className="flex-1 gap-1.5 text-muted-foreground hover:text-destructive hover:border-destructive"
-        >
-          <Trash2 className="size-4" />
-          Clear & Start Fresh
-        </Button>
-      </motion.div>
-
-      {/* Encouraging message */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1 }}
-        className="text-center py-4"
-      >
-        <p className="text-sm text-muted-foreground">
-          Democracy works best when citizens participate.{" "}
-          <span className="text-foreground font-medium">Thank you for being engaged!</span>
-        </p>
-      </motion.div>
-
-      {/* Clear session confirmation dialog */}
-      <ClearSessionDialog
-        open={showClearDialog}
-        onOpenChange={setShowClearDialog}
-        onConfirm={handleClearConfirm}
+      <FooterActions
+        onContinueResearch={onContinueResearch}
+        onClearSession={onClearSession}
       />
     </div>
   );
