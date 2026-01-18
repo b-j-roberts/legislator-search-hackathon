@@ -17,23 +17,6 @@ After implementing the feature, please provide a concise step-by-step instructio
 
 Features that enhance the experience but aren't required for initial launch.
 
-### 2.1a UI Redesign ( Home/Main Page )
-
-**Description**: Revamp the main landing page for better readability and user engagement using the frontend-design SKILL for claude.
-
-**Requirements**:
-- [ ] Think through overall layout and structure of the home page
-- [ ] Come up with a modern color scheme and typography
-- [ ] Design a better header
-- [ ] Design a more engaging and modern chat interface
-- [ ] Design a more engaging and modern result panel
-
-**Implementation Notes**:
-- Use consistent design language
-- Focus on usability and clarity
-- Consider responsive design for mobile
-- Try to reduce cognitive load for new users
-
 ### 2.1b UI Redesign ( Contact Page )
 
 **Description**: Update the contact page layout and styling for improved user experience using the frontend-design SKILL for claude.
@@ -51,6 +34,7 @@ Features that enhance the experience but aren't required for initial launch.
 - Focus on usability and clarity
 - Consider responsive design for mobile
 - Try to reduce cognitive load for new users
+- Do not feel obligated to keep existing elements/layout if a better design is possible
 
 ### 2.1c UI Redesign ( Complete Page )
 
@@ -83,7 +67,24 @@ Features that enhance the experience but aren't required for initial launch.
 - Test switching between multiple sessions rapidly
 - Ensure no residual data from previous sessions appears
 
-### 2.3 Document Viewer
+### 2.3 Real Contact Data
+
+**Description**: Integrate real contact data for legislators.
+
+**Requirements**:
+- [ ] Source reliable legislator contact data per legislator
+- [ ] If no email is available, use phone/fax/address/...
+- [ ] Provide links to official contact pages per legislator ( with note on required info needs to be filled out by user )
+- [ ] Update ContactCard component to display real data
+- [ ] Test with multiple legislators to ensure data accuracy
+
+**Implementation Notes**:
+- Use official government APIs or datasets
+- Ensure data is up-to-date and accurate
+- Handle missing data gracefully
+- Scrape, check, and look into all data related to contact methods for legislators
+
+### 2.4 Document Viewer
 
 **Description**: Display related documents, hearings, and vote records.
 
@@ -102,7 +103,7 @@ Features that enhance the experience but aren't required for initial launch.
 
 ---
 
-### 2.4 Report Generation
+### 2.5 Report Generation
 
 **Description**: Generate and export advocacy reports.
 
@@ -117,25 +118,6 @@ Features that enhance the experience but aren't required for initial launch.
 - Report generation happens on backend
 - Frontend handles display and export
 - Consider print-friendly CSS
-
----
-
-### 2.5 Streaming Responses
-
-**Description**: Implement real-time streaming of AI responses from Maple AI.
-
-**Requirements**:
-- [ ] Set up SSE connection for streaming
-- [ ] Stream message text token-by-token
-- [ ] Update structured data as it arrives
-- [ ] Handle connection interruptions
-- [ ] Show connection status indicator
-
-**Implementation Notes**:
-- Maple Proxy API is streaming-only (`/v1/chat/completions`)
-- Improves perceived performance significantly
-- Backend proxies Maple stream to frontend via SSE
-- Handle TEE attestation delays gracefully
 
 ---
 

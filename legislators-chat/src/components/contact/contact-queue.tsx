@@ -17,7 +17,7 @@ import {
 } from "@dnd-kit/sortable";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import { motion, AnimatePresence } from "framer-motion";
-import { Users, CheckCircle2 } from "lucide-react";
+import { Users, CheckCircle2, Sparkles } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { useContact } from "@/hooks/use-contact";
@@ -30,12 +30,17 @@ export interface ContactQueueProps {
 function EmptyState() {
   return (
     <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
-      <div className="rounded-full bg-muted p-4 mb-4">
-        <Users className="size-8 text-muted-foreground" />
+      <div className="relative mb-4">
+        <div className="absolute inset-0 bg-gradient-to-br from-copper/10 to-gold/10 rounded-full blur-xl" />
+        <div className="relative rounded-full bg-muted p-4 border border-border">
+          <Users className="size-6 text-muted-foreground" />
+        </div>
       </div>
-      <h3 className="text-lg font-medium text-foreground mb-2">No representatives in queue</h3>
-      <p className="text-sm text-muted-foreground max-w-xs">
-        Select representatives from the research phase to add them to your contact queue.
+      <h3 className="font-display text-base font-semibold text-foreground mb-1.5">
+        Queue Empty
+      </h3>
+      <p className="text-sm text-muted-foreground max-w-[200px]">
+        Select representatives from research to add them here.
       </p>
     </div>
   );
@@ -46,19 +51,23 @@ function CompletedState({ count }: { count: number }) {
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="flex flex-col items-center justify-center py-12 px-4 text-center"
+      className="flex flex-col items-center justify-center py-10 px-4 text-center"
     >
-      <div className="rounded-full bg-green-500/20 p-4 mb-4">
-        <CheckCircle2 className="size-8 text-green-400" />
+      <div className="relative mb-4">
+        <div className="absolute inset-0 bg-green-500/20 rounded-full blur-xl" />
+        <div className="relative rounded-full bg-green-500/10 p-4 border border-green-500/20">
+          <CheckCircle2 className="size-6 text-green-400" />
+        </div>
       </div>
-      <h3 className="text-lg font-medium text-foreground mb-2">All representatives contacted</h3>
-      <p className="text-sm text-muted-foreground max-w-xs">
-        You&apos;ve reached out to all {count} representative{count !== 1 ? "s" : ""} in your queue.
+      <h3 className="font-display text-base font-semibold text-foreground mb-1.5">
+        All Done!
+      </h3>
+      <p className="text-sm text-muted-foreground">
+        You&apos;ve contacted all {count} representative{count !== 1 ? "s" : ""}.
       </p>
     </motion.div>
   );
 }
-
 
 export function ContactQueue({ className }: ContactQueueProps) {
   const {
@@ -98,7 +107,6 @@ export function ContactQueue({ className }: ContactQueueProps) {
     [queue, reorderQueueItems]
   );
 
-  // No queue or empty queue
   if (!queue || queue.items.length === 0) {
     return (
       <div className={cn("", className)}>
@@ -107,13 +115,11 @@ export function ContactQueue({ className }: ContactQueueProps) {
     );
   }
 
-  // All completed
   if (isComplete) {
     return (
       <div className={cn("", className)}>
         <CompletedState count={queue.items.length} />
-        {/* Still show the list but in completed state */}
-        <div className="mt-6 space-y-2">
+        <div className="mt-4 space-y-1">
           {queue.items.map((item, index) => (
             <ContactQueueItem
               key={item.legislator.id}
@@ -129,7 +135,6 @@ export function ContactQueue({ className }: ContactQueueProps) {
     );
   }
 
-  // Separate pending/active items from completed items
   const pendingItems = queue.items.filter(
     (item) => item.status === "pending" || item.status === "active"
   );
@@ -137,7 +142,6 @@ export function ContactQueue({ className }: ContactQueueProps) {
     (item) => item.status === "contacted" || item.status === "skipped"
   );
 
-  // Only include pending items in drag context (completed can't be reordered)
   const pendingItemIds = pendingItems.map((item) => item.legislator.id);
 
   return (
@@ -149,20 +153,19 @@ export function ContactQueue({ className }: ContactQueueProps) {
         modifiers={[restrictToVerticalAxis]}
       >
         <SortableContext items={pendingItemIds} strategy={verticalListSortingStrategy}>
-          <div className="space-y-2">
+          <div className="space-y-1">
             <AnimatePresence mode="popLayout">
               {pendingItems.map((item) => {
-                // Use original index for display
                 const originalIndex = queue.items.findIndex(
                   (i) => i.legislator.id === item.legislator.id
                 );
                 return (
                   <motion.div
                     key={item.legislator.id}
-                    initial={{ opacity: 0, y: 10 }}
+                    initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.2 }}
+                    transition={{ duration: 0.15 }}
                     layout
                   >
                     <ContactQueueItem
@@ -179,7 +182,6 @@ export function ContactQueue({ className }: ContactQueueProps) {
                               if (item.status === "active") {
                                 skipCurrentLegislator();
                               } else {
-                                // Move non-active pending item to end
                                 reorderQueueItems(originalIndex, queue.items.length - 1);
                               }
                             }
@@ -200,17 +202,16 @@ export function ContactQueue({ className }: ContactQueueProps) {
         </SortableContext>
       </DndContext>
 
-      {/* Completed items section with separator */}
       {completedItems.length > 0 && (
-        <div className="mt-4">
-          <div className="flex items-center gap-2 mb-3">
+        <div className="mt-6">
+          <div className="flex items-center gap-3 mb-3 px-2">
             <div className="flex-1 h-px bg-border" />
-            <span className="text-xs text-muted-foreground font-medium px-2">
-              Completed ({completedItems.length})
+            <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
+              Completed · {completedItems.length}
             </span>
             <div className="flex-1 h-px bg-border" />
           </div>
-          <div className="space-y-2">
+          <div className="space-y-1">
             <AnimatePresence mode="popLayout">
               {completedItems.map((item) => {
                 const originalIndex = queue.items.findIndex(
@@ -219,10 +220,10 @@ export function ContactQueue({ className }: ContactQueueProps) {
                 return (
                   <motion.div
                     key={item.legislator.id}
-                    initial={{ opacity: 0, y: 10 }}
+                    initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.2 }}
+                    transition={{ duration: 0.15 }}
                     layout
                   >
                     <ContactQueueItem

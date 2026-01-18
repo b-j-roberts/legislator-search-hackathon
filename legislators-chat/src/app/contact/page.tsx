@@ -9,46 +9,43 @@ import {
   Phone,
   Mail,
   Users,
-  AlertCircle,
   CheckCircle2,
   Copy,
-  PanelRightClose,
-  PanelRightOpen,
-  ListOrdered,
-  GripVertical,
+  X,
+  ChevronRight,
+  Sparkles,
 } from "lucide-react";
 
 import { useContact, getEffectiveContactMethod, getContactAvailability } from "@/hooks/use-contact";
 import { ContactContentProvider } from "@/hooks/use-contact-content";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Badge } from "@/components/ui/badge";
 import { ContactQueue, ContactMethodSelector, ContentGenerationPanel, MarkCompleteDialog } from "@/components/contact";
 import type { ContactOutcome } from "@/components/contact";
 
 import type { QueueItem } from "@/hooks/use-contact";
 import type { ContactMethod } from "@/lib/types";
-import {
-  loadUIPreferences,
-  saveUIPreferences,
-  QUEUE_WIDTH_MIN,
-  QUEUE_WIDTH_MAX,
-} from "@/lib/ui-preferences";
+import { autoLoadFixturesIfNeeded } from "@/lib/fixtures/mock-legislators";
+import { cn } from "@/lib/utils";
 
 function EmptyState() {
   return (
-    <div className="flex flex-col items-center justify-center py-16 px-4 text-center">
-      <div className="rounded-full bg-muted p-4 mb-4">
-        <Users className="size-8 text-muted-foreground" />
+    <div className="flex flex-col items-center justify-center py-20 px-4 text-center">
+      <div className="relative mb-6">
+        <div className="absolute inset-0 bg-gradient-to-br from-copper/20 to-gold/20 rounded-full blur-xl" />
+        <div className="relative rounded-full bg-muted p-5 border border-border">
+          <Users className="size-10 text-muted-foreground" />
+        </div>
       </div>
-      <h3 className="text-lg font-medium text-foreground mb-2">No representatives selected</h3>
-      <p className="text-sm text-muted-foreground max-w-xs mb-6">
-        Go back to the research phase to select representatives you&apos;d like to contact.
+      <h3 className="font-display text-2xl font-semibold text-foreground mb-3">
+        No Representatives Selected
+      </h3>
+      <p className="text-muted-foreground max-w-sm mb-8 leading-relaxed">
+        Return to research to select the representatives you&apos;d like to contact about your issue.
       </p>
-      <Button asChild>
+      <Button asChild size="lg" className="gap-2">
         <Link href="/">
-          <ArrowLeft className="size-4 mr-2" />
+          <ArrowLeft className="size-4" />
           Back to Research
         </Link>
       </Button>
@@ -56,14 +53,21 @@ function EmptyState() {
   );
 }
 
-
-interface ActiveContactPanelProps {
+interface ActiveLegislatorHeroProps {
   item: QueueItem;
   onMethodChange: (method: ContactMethod) => void;
   onMarkContacted: (outcome: ContactOutcome, notes?: string) => void;
+  queuePosition: number;
+  totalCount: number;
 }
 
-function ActiveContactPanel({ item, onMethodChange, onMarkContacted }: ActiveContactPanelProps) {
+function ActiveLegislatorHero({
+  item,
+  onMethodChange,
+  onMarkContacted,
+  queuePosition,
+  totalCount,
+}: ActiveLegislatorHeroProps) {
   const { legislator } = item;
   const availability = getContactAvailability(legislator);
   const effectiveMethod = getEffectiveContactMethod(item);
@@ -89,86 +93,147 @@ function ActiveContactPanel({ item, onMethodChange, onMarkContacted }: ActiveCon
     setShowConfirmDialog(false);
   };
 
+  const partyLabel = legislator.party === "D" ? "Democrat" : legislator.party === "R" ? "Republican" : "Independent";
+  const chamberLabel = legislator.chamber === "House" ? "Representative" : "Senator";
+  const location = legislator.district ? `${legislator.state}-${legislator.district}` : legislator.state;
+
   return (
     <>
-      <Card className="border-primary/50 bg-primary/5">
-        <CardContent className="pt-4 pb-4">
-          <div className="flex flex-col gap-4">
-            {/* Header with name and method selector */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-              <div className="flex items-center gap-3">
-                <div className="rounded-full bg-primary p-2.5">
-                  {effectiveMethod === "call" ? (
-                    <Phone className="size-5 text-primary-foreground" />
-                  ) : (
-                    <Mail className="size-5 text-primary-foreground" />
-                  )}
-                </div>
-                <div>
-                  <p className="text-lg font-semibold text-foreground">{legislator.name}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {legislator.chamber === "House" ? "Representative" : "Senator"} •{" "}
-                    {legislator.party === "D" ? "Democrat" : legislator.party === "R" ? "Republican" : "Independent"} •{" "}
-                    {legislator.state}
-                    {legislator.district ? `-${legislator.district}` : ""}
-                  </p>
-                </div>
-              </div>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="relative"
+      >
+        {/* Decorative background gradient */}
+        <div className="absolute -inset-4 bg-gradient-to-br from-copper/5 via-transparent to-gold/5 rounded-3xl blur-2xl pointer-events-none" />
 
-              {/* Method selector - only show if both methods available */}
+        <div className="relative bg-card border border-border rounded-2xl overflow-hidden">
+          {/* Header strip */}
+          <div className="bg-gradient-to-r from-muted/50 to-muted/30 px-6 py-3 border-b border-border">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  Now Contacting
+                </span>
+                <span className="text-xs text-muted-foreground/60">
+                  {queuePosition} of {totalCount}
+                </span>
+              </div>
               {availability.hasBoth && (
                 <ContactMethodSelector
                   value={effectiveMethod}
                   onChange={onMethodChange}
                   hasPhone={availability.hasPhone}
                   hasEmail={availability.hasEmail}
+                  size="sm"
                 />
               )}
             </div>
+          </div>
 
-            {/* Contact info display */}
-            {contactInfo && (
-              <div className="flex items-center gap-2 p-3 rounded-lg bg-background border border-border">
-                <div className="flex-1 font-mono text-sm text-foreground break-all">{contactInfo}</div>
-                <Button variant="ghost" size="icon-sm" onClick={handleCopy} className="flex-shrink-0">
-                  {copied ? (
-                    <CheckCircle2 className="size-4 text-green-500" />
-                  ) : (
-                    <Copy className="size-4" />
-                  )}
-                </Button>
-                <Button variant="default" size="sm" asChild className="flex-shrink-0">
-                  <a
-                    href={effectiveMethod === "call" ? `tel:${contactInfo}` : `mailto:${contactInfo}`}
-                  >
-                    {effectiveMethod === "call" ? "Call Now" : "Open Email"}
-                  </a>
-                </Button>
+          {/* Main content */}
+          <div className="p-6">
+            <div className="flex flex-col sm:flex-row sm:items-start gap-6">
+              {/* Legislator info */}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-start gap-4">
+                  {/* Avatar */}
+                  <div className="relative flex-shrink-0">
+                    <div className={cn(
+                      "size-16 sm:size-20 rounded-full flex items-center justify-center text-xl sm:text-2xl font-display font-bold",
+                      legislator.party === "D" && "bg-blue-500/10 text-blue-400 ring-2 ring-blue-500/30",
+                      legislator.party === "R" && "bg-red-500/10 text-red-400 ring-2 ring-red-500/30",
+                      legislator.party === "I" && "bg-purple-500/10 text-purple-400 ring-2 ring-purple-500/30"
+                    )}>
+                      {legislator.name.split(" ").map(n => n[0]).slice(0, 2).join("")}
+                    </div>
+                  </div>
+
+                  {/* Name and details */}
+                  <div className="flex-1 min-w-0">
+                    <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground leading-tight">
+                      {legislator.name}
+                    </h2>
+                    <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
+                      <span>{chamberLabel}</span>
+                      <span className="text-muted-foreground/40">·</span>
+                      <span>{partyLabel}</span>
+                      <span className="text-muted-foreground/40">·</span>
+                      <span>{location}</span>
+                    </div>
+                  </div>
+                </div>
               </div>
-            )}
+            </div>
 
-            {/* Availability indicator */}
-            {!availability.hasBoth && (
-              <p className="text-xs text-muted-foreground flex items-center gap-1">
-                <AlertCircle className="size-3" />
-                {!availability.hasPhone
-                  ? "Phone number not available for this representative"
-                  : "Email not available for this representative"}
-              </p>
-            )}
+            {/* Contact action area */}
+            <div className="mt-6 pt-6 border-t border-border">
+              <div className="flex flex-col sm:flex-row gap-4">
+                {/* Contact info box */}
+                {contactInfo && (
+                  <div className="flex-1 flex items-center gap-3 px-4 py-3 rounded-xl bg-muted/50 border border-border">
+                    <div className="flex-shrink-0">
+                      {effectiveMethod === "call" ? (
+                        <Phone className="size-5 text-copper" />
+                      ) : (
+                        <Mail className="size-5 text-copper" />
+                      )}
+                    </div>
+                    <span className="flex-1 font-mono text-sm text-foreground truncate">
+                      {contactInfo}
+                    </span>
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      onClick={handleCopy}
+                      className="flex-shrink-0"
+                    >
+                      {copied ? (
+                        <CheckCircle2 className="size-4 text-green-500" />
+                      ) : (
+                        <Copy className="size-4" />
+                      )}
+                    </Button>
+                  </div>
+                )}
 
-            {/* Mark contacted button */}
-            <div className="flex justify-end">
-              <Button onClick={() => setShowConfirmDialog(true)} className="gap-1.5">
-                <CheckCircle2 className="size-4" />
-                Mark as Contacted
-              </Button>
+                {/* Action buttons */}
+                <div className="flex gap-3 flex-shrink-0">
+                  {contactInfo && (
+                    <Button size="lg" asChild className="gap-2 flex-1 sm:flex-initial">
+                      <a href={effectiveMethod === "call" ? `tel:${contactInfo}` : `mailto:${contactInfo}`}>
+                        {effectiveMethod === "call" ? (
+                          <>
+                            <Phone className="size-4" />
+                            Call Now
+                          </>
+                        ) : (
+                          <>
+                            <Mail className="size-4" />
+                            Open Email
+                          </>
+                        )}
+                      </a>
+                    </Button>
+                  )}
+                  <Button
+                    size="lg"
+                    variant="secondary"
+                    onClick={() => setShowConfirmDialog(true)}
+                    className="gap-2 flex-1 sm:flex-initial"
+                  >
+                    <CheckCircle2 className="size-4" />
+                    <span className="hidden sm:inline">Mark Complete</span>
+                    <span className="sm:hidden">Done</span>
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </motion.div>
 
-      {/* Confirmation Dialog */}
       <MarkCompleteDialog
         open={showConfirmDialog}
         onOpenChange={setShowConfirmDialog}
@@ -181,220 +246,117 @@ function ActiveContactPanel({ item, onMethodChange, onMarkContacted }: ActiveCon
   );
 }
 
-interface QueueSidebarProps {
+interface QueuePanelProps {
   isOpen: boolean;
-  onToggle: () => void;
+  onClose: () => void;
   contactedCount: number;
   totalCount: number;
   defaultContactMethod: ContactMethod;
   onSetDefaultMethod: (method: ContactMethod, applyToAll?: boolean) => void;
-  width: number;
-  onWidthChange: (width: number) => void;
 }
 
-function QueueSidebar({
+function QueuePanel({
   isOpen,
-  onToggle,
+  onClose,
   contactedCount,
   totalCount,
   defaultContactMethod,
   onSetDefaultMethod,
-  width,
-  onWidthChange,
-}: QueueSidebarProps) {
-  const [isResizing, setIsResizing] = React.useState(false);
-  const sidebarRef = React.useRef<HTMLDivElement>(null);
-  const widthRef = React.useRef(width);
-
-  // Keep ref in sync with width prop
-  React.useEffect(() => {
-    widthRef.current = width;
-  }, [width]);
-
-  // Handle resize drag
-  const handleResizeStart = React.useCallback(
-    (e: React.MouseEvent | React.TouchEvent) => {
-      e.preventDefault();
-      setIsResizing(true);
-
-      const startX = "touches" in e ? e.touches[0].clientX : e.clientX;
-      const startWidth = widthRef.current;
-
-      const handleMove = (moveEvent: MouseEvent | TouchEvent) => {
-        const currentX =
-          "touches" in moveEvent
-            ? moveEvent.touches[0].clientX
-            : moveEvent.clientX;
-        // Dragging left increases width (sidebar is on right)
-        const delta = startX - currentX;
-        const newWidth = Math.max(
-          QUEUE_WIDTH_MIN,
-          Math.min(QUEUE_WIDTH_MAX, startWidth + delta)
-        );
-        onWidthChange(newWidth);
-        widthRef.current = newWidth;
-      };
-
-      const handleEnd = () => {
-        setIsResizing(false);
-        document.removeEventListener("mousemove", handleMove);
-        document.removeEventListener("mouseup", handleEnd);
-        document.removeEventListener("touchmove", handleMove);
-        document.removeEventListener("touchend", handleEnd);
-        // Save to localStorage when drag ends using ref for current value
-        saveUIPreferences({ contactQueueWidth: widthRef.current });
-      };
-
-      document.addEventListener("mousemove", handleMove);
-      document.addEventListener("mouseup", handleEnd);
-      document.addEventListener("touchmove", handleMove);
-      document.addEventListener("touchend", handleEnd);
-    },
-    [onWidthChange]
-  );
+}: QueuePanelProps) {
+  const progress = totalCount > 0 ? (contactedCount / totalCount) * 100 : 0;
 
   return (
     <>
-      {/* Mobile toggle button */}
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={onToggle}
-        className="fixed right-4 top-20 z-40 gap-1.5 shadow-lg lg:hidden"
-      >
-        {isOpen ? <PanelRightClose className="size-4" /> : <PanelRightOpen className="size-4" />}
-        <span className="sr-only">{isOpen ? "Close queue" : "Open queue"}</span>
-        {!isOpen && (
-          <Badge variant="secondary" className="ml-1">
-            {contactedCount}/{totalCount}
-          </Badge>
-        )}
-      </Button>
-
-      {/* Desktop expand button - shown when sidebar is collapsed */}
-      {!isOpen && (
-        <div className="hidden lg:flex items-start pt-3 pr-2">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onToggle}
-            className="h-8 w-8"
-            title="Expand contact queue"
-          >
-            <PanelRightOpen className="h-4 w-4" />
-          </Button>
-        </div>
-      )}
-
-      {/* Sidebar - mobile: slide-in drawer, desktop: side panel */}
+      {/* Mobile backdrop */}
       <AnimatePresence>
         {isOpen && (
-          <>
-            {/* Backdrop for mobile */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 lg:hidden"
-              onClick={onToggle}
-            />
-
-            {/* Resize handle - desktop only */}
-            <div
-              onMouseDown={handleResizeStart}
-              onTouchStart={handleResizeStart}
-              className={`hidden lg:flex items-center justify-center w-1 hover:w-1.5 bg-border hover:bg-primary/50 cursor-col-resize transition-all group ${
-                isResizing ? "w-1.5 bg-primary/50" : ""
-              }`}
-            >
-              <GripVertical
-                className={`h-6 w-4 text-muted-foreground/50 group-hover:text-primary transition-colors ${
-                  isResizing ? "text-primary" : ""
-                }`}
-              />
-            </div>
-
-            {/* Sidebar panel */}
-            <motion.aside
-              ref={sidebarRef}
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              style={{ width: `${width}px` }}
-              className="fixed right-0 top-0 bottom-0 w-full max-w-[500px] bg-background border-l border-border z-50 flex flex-col shadow-2xl lg:relative lg:shadow-none lg:z-auto lg:border-l-0"
-            >
-              {/* Sidebar header */}
-              <div className="flex-shrink-0 px-3 py-2 border-b border-border bg-muted/30">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <ListOrdered className="size-4 text-muted-foreground" />
-                    <span className="text-sm font-medium text-muted-foreground">Queue</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="outline" className="text-xs">
-                      {contactedCount}/{totalCount}
-                    </Badge>
-                    <Button
-                      variant="ghost"
-                      size="icon-sm"
-                      onClick={onToggle}
-                      title="Collapse queue"
-                    >
-                      <PanelRightClose className="size-4" />
-                    </Button>
-                  </div>
-                </div>
-
-                {/* Progress bar */}
-                <div className="mt-2">
-                  <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-                    <motion.div
-                      className="h-full bg-primary"
-                      initial={{ width: 0 }}
-                      animate={{ width: `${totalCount > 0 ? (contactedCount / totalCount) * 100 : 0}%` }}
-                      transition={{ duration: 0.5, ease: "easeOut" }}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Default method preference - compact row */}
-              {totalCount > 1 && (
-                <div className="flex-shrink-0 px-3 py-2 border-b border-border">
-                  <div className="flex items-center justify-between gap-2">
-                    <p className="text-xs font-medium text-muted-foreground">Default</p>
-                    <div className="flex items-center gap-1.5">
-                      <ContactMethodSelector
-                        value={defaultContactMethod}
-                        onChange={(method) => onSetDefaultMethod(method, false)}
-                        hasPhone={true}
-                        hasEmail={true}
-                        size="sm"
-                      />
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => onSetDefaultMethod(defaultContactMethod, true)}
-                        className="text-xs h-7 px-2"
-                      >
-                        Apply All
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Queue list */}
-              <ScrollArea className="flex-1">
-                <div className="p-3">
-                  <ContactQueue />
-                </div>
-              </ScrollArea>
-            </motion.aside>
-          </>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 lg:hidden"
+            onClick={onClose}
+          />
         )}
       </AnimatePresence>
+
+      {/* Panel */}
+      <motion.aside
+        initial={false}
+        animate={{
+          x: isOpen ? 0 : "100%",
+          opacity: isOpen ? 1 : 0,
+        }}
+        transition={{ type: "spring", damping: 25, stiffness: 300 }}
+        className={cn(
+          "fixed right-0 top-0 bottom-0 w-full max-w-[400px] bg-card border-l border-border z-50 flex flex-col",
+          "lg:relative lg:z-auto lg:translate-x-0 lg:opacity-100 lg:max-w-none lg:w-[380px] lg:flex-shrink-0",
+          !isOpen && "lg:hidden"
+        )}
+      >
+        {/* Panel header */}
+        <div className="flex-shrink-0 px-5 py-4 border-b border-border bg-muted/30">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h3 className="font-display text-lg font-semibold text-foreground">
+                Contact Queue
+              </h3>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                {contactedCount} of {totalCount} completed
+              </p>
+            </div>
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={onClose}
+              className="lg:hidden"
+            >
+              <X className="size-4" />
+            </Button>
+          </div>
+
+          {/* Progress bar */}
+          <div className="relative h-2 bg-muted rounded-full overflow-hidden">
+            <motion.div
+              className="absolute inset-y-0 left-0 bg-gradient-to-r from-copper to-gold rounded-full"
+              initial={{ width: 0 }}
+              animate={{ width: `${progress}%` }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+            />
+          </div>
+
+          {/* Default method selector */}
+          {totalCount > 1 && (
+            <div className="mt-4 flex items-center justify-between gap-3 pt-3 border-t border-border">
+              <span className="text-xs font-medium text-muted-foreground">Default method</span>
+              <div className="flex items-center gap-2">
+                <ContactMethodSelector
+                  value={defaultContactMethod}
+                  onChange={(method) => onSetDefaultMethod(method, false)}
+                  hasPhone={true}
+                  hasEmail={true}
+                  size="sm"
+                />
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => onSetDefaultMethod(defaultContactMethod, true)}
+                  className="text-xs h-7 px-2 text-muted-foreground hover:text-foreground"
+                >
+                  Apply all
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Queue list */}
+        <ScrollArea className="flex-1">
+          <div className="p-4">
+            <ContactQueue />
+          </div>
+        </ScrollArea>
+      </motion.aside>
     </>
   );
 }
@@ -419,12 +381,12 @@ function ContactPageContent() {
   } = useContact();
 
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
-  const [sidebarWidth, setSidebarWidth] = React.useState(384); // Default width
 
-  // Load UI preferences from localStorage on mount
+  // Dev mode: Auto-load mock fixtures if no queue data exists
   React.useEffect(() => {
-    const prefs = loadUIPreferences();
-    setSidebarWidth(prefs.contactQueueWidth);
+    if (autoLoadFixturesIfNeeded()) {
+      window.location.reload();
+    }
   }, []);
 
   // Ensure we're on the contact step and initialize queue if needed
@@ -459,108 +421,138 @@ function ContactPageContent() {
   };
 
   const totalCount = queue?.items.length ?? 0;
+  const currentPosition = activeItem
+    ? queue?.items.findIndex((i) => i.legislator.id === activeItem.legislator.id) ?? 0
+    : 0;
 
-  // Calculate progress text
-  const progressText = queue
-    ? isComplete
-      ? `All ${totalCount} representative${totalCount !== 1 ? "s" : ""} contacted`
-      : `${contactedCount} of ${totalCount} contacted`
-    : "Loading...";
+  // Close sidebar on mobile by default
+  React.useEffect(() => {
+    const checkMobile = () => {
+      if (window.innerWidth < 1024) {
+        setIsSidebarOpen(false);
+      }
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   return (
-    <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
-      {/* Header */}
-      <div className="flex-shrink-0 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="px-4 py-4">
-          <div className="mb-3">
-            <Button variant="ghost" size="sm" onClick={handleBack} className="gap-1.5">
-              <ArrowLeft className="size-4" />
-              Back to Research
-            </Button>
-          </div>
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-foreground">
-                Contact Your Representatives
-              </h1>
-              <p className="text-muted-foreground mt-0.5">{progressText}</p>
+    <div className="flex flex-1 min-h-0 overflow-hidden">
+      {/* Main content area */}
+      <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
+        {/* Compact header */}
+        <header className="flex-shrink-0 border-b border-border bg-background">
+          <div className="px-4 sm:px-6 py-3">
+            <div className="flex items-center justify-between gap-4">
+              {/* Back button and title */}
+              <div className="flex items-center gap-3">
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  onClick={handleBack}
+                  className="rounded-full"
+                >
+                  <ArrowLeft className="size-4" />
+                </Button>
+                <div>
+                  <h1 className="font-display text-lg sm:text-xl font-bold text-foreground">
+                    Contact Representatives
+                  </h1>
+                </div>
+              </div>
+
+              {/* Progress and queue toggle */}
+              <div className="flex items-center gap-3">
+                {queue && (
+                  <>
+                    {/* Progress indicator */}
+                    <div className="hidden sm:flex items-center gap-2">
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-24 h-1.5 bg-muted rounded-full overflow-hidden">
+                          <motion.div
+                            className="h-full bg-copper rounded-full"
+                            initial={{ width: 0 }}
+                            animate={{ width: `${totalCount > 0 ? (contactedCount / totalCount) * 100 : 0}%` }}
+                            transition={{ duration: 0.5, ease: "easeOut" }}
+                          />
+                        </div>
+                        <span className="text-xs text-muted-foreground font-medium">
+                          {contactedCount}/{totalCount}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Queue toggle */}
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                      className="gap-2"
+                    >
+                      <Users className="size-4" />
+                      <span className="hidden sm:inline">Queue</span>
+                      <span className="sm:hidden">{contactedCount}/{totalCount}</span>
+                    </Button>
+                  </>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+        </header>
 
-      {/* Main content area with sidebar */}
-      <div className="flex flex-1 min-h-0 overflow-hidden">
-        {/* Main content */}
-        <div className="flex-1 min-w-0 overflow-hidden">
-          <ScrollArea className="h-full">
-            <div className="max-w-3xl mx-auto px-4 py-6">
-              {!hasSelections && !queue ? (
-                <EmptyState />
-              ) : (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="space-y-6"
-                >
-                  {/* Queue sidebar toggle for desktop (when closed) */}
-                  <div className="hidden lg:flex lg:justify-end">
-                    {!isSidebarOpen && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setIsSidebarOpen(true)}
-                        className="gap-1.5"
-                      >
-                        <PanelRightOpen className="size-4" />
-                        Show Queue
-                        <Badge variant="secondary" className="ml-1">
-                          {contactedCount}/{totalCount}
-                        </Badge>
-                      </Button>
-                    )}
-                  </div>
+        {/* Scrollable content */}
+        <ScrollArea className="flex-1">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            {!hasSelections && !queue ? (
+              <EmptyState />
+            ) : (
+              <div className="space-y-8">
+                {/* Active legislator hero */}
+                {activeItem && (
+                  <ActiveLegislatorHero
+                    item={activeItem}
+                    onMethodChange={(method) =>
+                      setLegislatorContactMethod(activeItem.legislator.id, method)
+                    }
+                    onMarkContacted={handleMarkContacted}
+                    queuePosition={currentPosition + 1}
+                    totalCount={totalCount}
+                  />
+                )}
 
-                  {/* Active contact panel */}
-                  {activeItem && (
-                    <ActiveContactPanel
-                      item={activeItem}
-                      onMethodChange={(method) =>
-                        setLegislatorContactMethod(activeItem.legislator.id, method)
-                      }
-                      onMarkContacted={handleMarkContacted}
-                    />
-                  )}
-
-                  {/* AI Content Generation */}
-                  {activeItem && (
+                {/* AI Content Generation */}
+                {activeItem && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
+                  >
                     <ContentGenerationPanel
                       activeItem={activeItem}
                       contactMethod={getEffectiveContactMethod(activeItem)}
                       researchContext={researchContext}
                       autoPopulatedFields={autoPopulatedFields}
                     />
-                  )}
-                </motion.div>
-              )}
-            </div>
-          </ScrollArea>
-        </div>
-
-        {/* Queue sidebar */}
-        {queue && (
-          <QueueSidebar
-            isOpen={isSidebarOpen}
-            onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
-            contactedCount={contactedCount}
-            totalCount={totalCount}
-            defaultContactMethod={defaultContactMethod}
-            onSetDefaultMethod={setDefaultMethod}
-            width={sidebarWidth}
-            onWidthChange={setSidebarWidth}
-          />
-        )}
+                  </motion.div>
+                )}
+              </div>
+            )}
+          </div>
+        </ScrollArea>
       </div>
+
+      {/* Queue sidebar */}
+      {queue && (
+        <QueuePanel
+          isOpen={isSidebarOpen}
+          onClose={() => setIsSidebarOpen(false)}
+          contactedCount={contactedCount}
+          totalCount={totalCount}
+          defaultContactMethod={defaultContactMethod}
+          onSetDefaultMethod={setDefaultMethod}
+        />
+      )}
     </div>
   );
 }
