@@ -21,7 +21,7 @@ Features that enhance the experience but aren't required for initial launch.
 
 **Description**: Polish UI/UX components and interactions.
 
-- [ ] When moving to the Session complete page, it should set tab to Complete instead of staying on Contact
+- [ ] When moving to the Session complete page, it should set tab to Complete instead of staying on Contact ( ie we should navigate to /complete )
 
 ### 2.1 Leaning feature
 

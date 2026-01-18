@@ -24,7 +24,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
-import { ContactQueue, ContactMethodSelector, ContentGenerationPanel, MarkCompleteDialog, SessionSummary } from "@/components/contact";
+import { ContactQueue, ContactMethodSelector, ContentGenerationPanel, MarkCompleteDialog } from "@/components/contact";
 import type { ContactOutcome } from "@/components/contact";
 
 import type { QueueItem } from "@/hooks/use-contact";
@@ -415,7 +415,6 @@ function ContactPageContent() {
     setDefaultMethod,
     defaultContactMethod,
     researchContext,
-    clearSelections,
   } = useContact();
 
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
@@ -441,6 +440,14 @@ function ContactPageContent() {
     }
   }, [hasSelections, queue, initializeQueue]);
 
+  // Navigate to /complete when session is complete
+  React.useEffect(() => {
+    if (isComplete && queue) {
+      setCurrentStep("complete");
+      router.push("/complete");
+    }
+  }, [isComplete, queue, router, setCurrentStep]);
+
   const handleBack = () => {
     setCurrentStep("research");
     router.push("/");
@@ -448,17 +455,6 @@ function ContactPageContent() {
 
   const handleMarkContacted = (outcome: ContactOutcome, notes?: string) => {
     markCurrentContacted(outcome, notes);
-  };
-
-  const handleClearSession = () => {
-    clearSelections();
-    setCurrentStep("research");
-    router.push("/");
-  };
-
-  const handleContinueResearch = () => {
-    setCurrentStep("research");
-    router.push("/");
   };
 
   const totalCount = queue?.items.length ?? 0;
@@ -484,7 +480,7 @@ function ContactPageContent() {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold text-foreground">
-                {isComplete ? "Session Complete" : "Contact Your Representatives"}
+                Contact Your Representatives
               </h1>
               <p className="text-muted-foreground mt-0.5">{progressText}</p>
             </div>
@@ -500,13 +496,6 @@ function ContactPageContent() {
             <div className="max-w-3xl mx-auto px-4 py-6">
               {!hasSelections && !queue ? (
                 <EmptyState />
-              ) : isComplete && queue ? (
-                <SessionSummary
-                  items={queue.items}
-                  researchContext={researchContext}
-                  onClearSession={handleClearSession}
-                  onContinueResearch={handleContinueResearch}
-                />
               ) : (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -557,7 +546,7 @@ function ContactPageContent() {
         </div>
 
         {/* Queue sidebar */}
-        {queue && !isComplete && (
+        {queue && (
           <QueueSidebar
             isOpen={isSidebarOpen}
             onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
