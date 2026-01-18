@@ -1,0 +1,56 @@
+{
+  "bioguide_id": "S001220",
+  "name": "Dale W. Strong",
+  "total_found": 22,
+  "filtered_count": 4,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "BzQy8ugRa-8",
+      "title": "Rep. Dale Strong Provides Update on Progress in D.C. at VBC | July 30, 2025 | News 19 at 6 p.m.",
+      "url": "https://www.youtube.com/watch?v=BzQy8ugRa-8",
+      "channel": "WHNT News 19",
+      "channel_id": "UCV8mxYCe-Tauwd09rS9cOVg",
+      "upload_date": null,
+      "duration": 82.0,
+      "view_count": 41,
+      "description": ""
+    },
+    {
+      "video_id": "WTA0QnirtG0",
+      "title": "Freedom To Fuel -Episode-18 Congressman Dale Strong",
+      "url": "https://www.youtube.com/watch?v=WTA0QnirtG0",
+      "channel": "Huntsville Utilities",
+      "channel_id": "UCHKxgmMSHe3i1Ay_u6Cx3RA",
+      "upload_date": null,
+      "duration": 862.0,
+      "view_count": 185,
+      "description": ""
+    },
+    {
+      "video_id": "jz2kiA8oH3g",
+      "title": "Rep. Dale Strong Exposes $86M ICE Contract Scandal & NGO Corruption in Fiery Congressional Hearing",
+      "url": "https://www.youtube.com/watch?v=jz2kiA8oH3g",
+      "channel": "US Prime News ",
+      "channel_id": "UCoDv2F_MBwvUoldO29r7F7Q",
+      "upload_date": null,
+      "duration": 406.0,
+      "view_count": 28,
+      "description": ""
+    },
+    {
+      "video_id": "EQIg55hd2NY",
+      "title": "Congressional Bill That Will ELIMINATE Income Tax and ABOLISH the IRS \u2013 Truth About HR 25",
+      "url": "https://www.youtube.com/watch?v=EQIg55hd2NY",
+      "channel": "What Is Congress Voting On Today?",
+      "channel_id": "UCNOZArVfiijiPAKheU50bqA",
+      "upload_date": null,
+      "duration": 1078.0,
+      "view_count": 4134,
+      "description": ""
+    }
+  ]
+}

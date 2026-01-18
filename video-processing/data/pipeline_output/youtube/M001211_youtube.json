@@ -1,0 +1,34 @@
+{
+  "bioguide_id": "M001211",
+  "name": "Mary E. Miller",
+  "total_found": 17,
+  "filtered_count": 2,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "6YOwOxUhXro",
+      "title": "Congresswoman Mary E. Miller Grills Sanctuary State Governors in Intense Hearing!",
+      "url": "https://www.youtube.com/watch?v=6YOwOxUhXro",
+      "channel": "Political Spin",
+      "channel_id": "UC6310UoangSlrKHWmRXhQbg",
+      "upload_date": null,
+      "duration": 350.0,
+      "view_count": 46,
+      "description": ""
+    },
+    {
+      "video_id": "vsozlTYuOE4",
+      "title": "RTP 180: Storytelling | Mary Miller, NC Newsroom Cooperative",
+      "url": "https://www.youtube.com/watch?v=vsozlTYuOE4",
+      "channel": "Research Triangle Park ",
+      "channel_id": "UCJipw66jCxNMsZJMXaBZOmg",
+      "upload_date": null,
+      "duration": 421.0,
+      "view_count": 109,
+      "description": ""
+    }
+  ]
+}

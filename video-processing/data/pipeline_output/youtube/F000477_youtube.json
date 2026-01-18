@@ -1,0 +1,23 @@
+{
+  "bioguide_id": "F000477",
+  "name": "Valerie P. Foushee",
+  "total_found": 12,
+  "filtered_count": 1,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "JJMWm_JPKTA",
+      "title": "North Dakota Legislative Review 1303; Rich Wardner; Senate Majority Leader (R) Dickinson",
+      "url": "https://www.youtube.com/watch?v=JJMWm_JPKTA",
+      "channel": "Prairie Public",
+      "channel_id": "UC4BOzQel6tvJm7OEDd3vZlw",
+      "upload_date": null,
+      "duration": 1607.0,
+      "view_count": 114,
+      "description": ""
+    }
+  ]
+}

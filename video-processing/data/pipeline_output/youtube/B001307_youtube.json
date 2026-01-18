@@ -1,0 +1,45 @@
+{
+  "bioguide_id": "B001307",
+  "name": "James R. Baird",
+  "total_found": 3,
+  "filtered_count": 3,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "o90a9nYzzDo",
+      "title": "135 GOP Reps Supported Red Flags. Was YOUR Congress Critter One Of Them?",
+      "url": "https://www.youtube.com/watch?v=o90a9nYzzDo",
+      "channel": "ARFCOM News",
+      "channel_id": "UCbiiqvaU4DuhAn33LqCz0qA",
+      "upload_date": null,
+      "duration": 661.0,
+      "view_count": 10090,
+      "description": ""
+    },
+    {
+      "video_id": "tb7YqgHrM-k",
+      "title": "126 House Republicans Trying to Undermine Democracy displayed in14 seconds - open captioned",
+      "url": "https://www.youtube.com/watch?v=tb7YqgHrM-k",
+      "channel": "Captioning for Everyone",
+      "channel_id": "UCuynh1xfy81AQz19ax3lWQA",
+      "upload_date": null,
+      "duration": 55.0,
+      "view_count": 59,
+      "description": ""
+    },
+    {
+      "video_id": "gST3ncSovk8",
+      "title": "These 109 House Republicans Are Trying to Undermine Our Democracy",
+      "url": "https://www.youtube.com/watch?v=gST3ncSovk8",
+      "channel": "Daily Star 24h",
+      "channel_id": "UCuMpb3RcxZFQWp9GjpHVQYA",
+      "upload_date": null,
+      "duration": 596.0,
+      "view_count": 16,
+      "description": ""
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "bioguide_id": "M001227",
+  "name": "Jennifer L. McClellan",
+  "total_found": 21,
+  "filtered_count": 6,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "GnG2sj1EYbo",
+      "title": "Jennifer McClellan Becomes Virginia's 1st Black Congresswoman | NBC4 Washington",
+      "url": "https://www.youtube.com/watch?v=GnG2sj1EYbo",
+      "channel": "NBC4 Washington",
+      "channel_id": "UC1VKVKhJLc7PjdPPVxTDk0Q",
+      "upload_date": null,
+      "duration": 159.0,
+      "view_count": 296,
+      "description": ""
+    },
+    {
+      "video_id": "_wvoYGiZWQE",
+      "title": "Senator Jennifer McClellan presents SB 1073 in Senate Committee on Finance and Appropriations",
+      "url": "https://www.youtube.com/watch?v=_wvoYGiZWQE",
+      "channel": "Senator Jennifer McClellan",
+      "channel_id": "UCTY6ZmxDOoEPxT9jzETutaQ",
+      "upload_date": null,
+      "duration": 91.0,
+      "view_count": 41,
+      "description": ""
+    },
+    {
+      "video_id": "KVrBJVRZy1k",
+      "title": "Senator Jennifer McClellan presents The Reproductive Health Protection Act on the Senate Floor",
+      "url": "https://www.youtube.com/watch?v=KVrBJVRZy1k",
+      "channel": "Senator Jennifer McClellan",
+      "channel_id": "UCTY6ZmxDOoEPxT9jzETutaQ",
+      "upload_date": null,
+      "duration": 887.0,
+      "view_count": 54,
+      "description": ""
+    },
+    {
+      "video_id": "IxJp9kYAADA",
+      "title": "Senator Jennifer McClellan commemorates the first 6 African Americans elected to the VA Senate",
+      "url": "https://www.youtube.com/watch?v=IxJp9kYAADA",
+      "channel": "Senator Jennifer McClellan",
+      "channel_id": "UCTY6ZmxDOoEPxT9jzETutaQ",
+      "upload_date": null,
+      "duration": 287.0,
+      "view_count": 51,
+      "description": ""
+    },
+    {
+      "video_id": "o8PNaPps29M",
+      "title": "February 7, 2017   Senator McClellan Speaks Against SJ223 on the Senate Floor",
+      "url": "https://www.youtube.com/watch?v=o8PNaPps29M",
+      "channel": "Senator Jennifer McClellan",
+      "channel_id": "UCTY6ZmxDOoEPxT9jzETutaQ",
+      "upload_date": null,
+      "duration": 272.0,
+      "view_count": 70,
+      "description": ""
+    },
+    {
+      "video_id": "MYOhFxXYNbE",
+      "title": "Senate Members have some fun with Jennifer McClellan as she introduces first bill",
+      "url": "https://www.youtube.com/watch?v=MYOhFxXYNbE",
+      "channel": "Senator Jennifer McClellan",
+      "channel_id": "UCTY6ZmxDOoEPxT9jzETutaQ",
+      "upload_date": null,
+      "duration": 236.0,
+      "view_count": 96,
+      "description": ""
+    }
+  ]
+}

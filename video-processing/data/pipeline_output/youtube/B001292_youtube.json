@@ -1,0 +1,89 @@
+{
+  "bioguide_id": "B001292",
+  "name": "Donald S. Beyer, Jr.",
+  "total_found": 30,
+  "filtered_count": 7,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "QCruSnCWm-U",
+      "title": "Interview with Congressman Donald Beyer",
+      "url": "https://www.youtube.com/watch?v=QCruSnCWm-U",
+      "channel": "AAV",
+      "channel_id": "UCFlRDK4B5BT05CXe5QuYpUw",
+      "upload_date": null,
+      "duration": 498.0,
+      "view_count": 505,
+      "description": ""
+    },
+    {
+      "video_id": "Di3N6LiNseg",
+      "title": "For Va. Rep. Beyer, skipping Trump's inauguration is a 'small symbol'",
+      "url": "https://www.youtube.com/watch?v=Di3N6LiNseg",
+      "channel": "Washington Post",
+      "channel_id": "UCHd62-u_v4DvJ8TCFtpi4GA",
+      "upload_date": null,
+      "duration": 79.0,
+      "view_count": 180,
+      "description": ""
+    },
+    {
+      "video_id": "s7E5B8j1ca8",
+      "title": "Interview de Donald S. Beyer Jr (Trailer)",
+      "url": "https://www.youtube.com/watch?v=s7E5B8j1ca8",
+      "channel": "Julien Schekter",
+      "channel_id": "UCgEIv4AKrXQTSriEYA8o6CQ",
+      "upload_date": null,
+      "duration": 25.0,
+      "view_count": 65,
+      "description": ""
+    },
+    {
+      "video_id": "-209gcrr1j8",
+      "title": "Inside Scoop - Road to Richmond Interviews - Don Beyer 1/04/2015",
+      "url": "https://www.youtube.com/watch?v=-209gcrr1j8",
+      "channel": "Newstuff2002",
+      "channel_id": "UC72YVw_Ny3XE_ICV3mL9yqQ",
+      "upload_date": null,
+      "duration": 266.0,
+      "view_count": 6,
+      "description": ""
+    },
+    {
+      "video_id": "G6ELwlRDDx4",
+      "title": "Congressman David B. McKinley Supports ASHA's Advocacy Efforts",
+      "url": "https://www.youtube.com/watch?v=G6ELwlRDDx4",
+      "channel": "American Speech-Language-Hearing Association",
+      "channel_id": "UC-RlNcHZEucIevdNBeR-KPw",
+      "upload_date": null,
+      "duration": 252.0,
+      "view_count": 162,
+      "description": ""
+    },
+    {
+      "video_id": "WV7_OvCZyZ0",
+      "title": "\u2018Historically Productive\u2019: Don Beyer Touts Accomplishments Of Biden & Previous Dem House Majority",
+      "url": "https://www.youtube.com/watch?v=WV7_OvCZyZ0",
+      "channel": "Forbes Breaking News",
+      "channel_id": "UCg40OxZ1GYh3u3jBntB6DLg",
+      "upload_date": null,
+      "duration": 266.0,
+      "view_count": 403,
+      "description": ""
+    },
+    {
+      "video_id": "M8Zd-jNOMoE",
+      "title": "WSBR Program with Congressman Donald S. Beyer Jr.",
+      "url": "https://www.youtube.com/watch?v=M8Zd-jNOMoE",
+      "channel": "WSBR",
+      "channel_id": "UCOLDa_sEUcykGGrH_Tmv50w",
+      "upload_date": null,
+      "duration": 3109.0,
+      "view_count": 123,
+      "description": ""
+    }
+  ]
+}

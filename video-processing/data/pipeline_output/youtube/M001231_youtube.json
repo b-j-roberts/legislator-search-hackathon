@@ -1,0 +1,100 @@
+{
+  "bioguide_id": "M001231",
+  "name": "John W. Mannion",
+  "total_found": 34,
+  "filtered_count": 8,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "CWCHRP9WWk0",
+      "title": "Sen. John Mannion interview: 2/2/2021",
+      "url": "https://www.youtube.com/watch?v=CWCHRP9WWk0",
+      "channel": "NewsChannel 9 WSYR Syracuse",
+      "channel_id": "UC-3Vp3Qy14wylC9WK8F1zUA",
+      "upload_date": null,
+      "duration": 333.0,
+      "view_count": 101,
+      "description": ""
+    },
+    {
+      "video_id": "JM5s3b31JK4",
+      "title": "State Senator John Mannion joins NewsChannel 9 to talk NYS budget passing",
+      "url": "https://www.youtube.com/watch?v=JM5s3b31JK4",
+      "channel": "NewsChannel 9 WSYR Syracuse",
+      "channel_id": "UC-3Vp3Qy14wylC9WK8F1zUA",
+      "upload_date": null,
+      "duration": 360.0,
+      "view_count": 62,
+      "description": ""
+    },
+    {
+      "video_id": "qQXVr-EMXNA",
+      "title": "Onondaga County Executive Ryan McMahon interview",
+      "url": "https://www.youtube.com/watch?v=qQXVr-EMXNA",
+      "channel": "NewsChannel 9 WSYR Syracuse",
+      "channel_id": "UC-3Vp3Qy14wylC9WK8F1zUA",
+      "upload_date": null,
+      "duration": 274.0,
+      "view_count": 89,
+      "description": ""
+    },
+    {
+      "video_id": "_UQ62TlpaVE",
+      "title": "Representative Mannion Attends ECESE Subcommittee Hearing on FERPA and PPRA",
+      "url": "https://www.youtube.com/watch?v=_UQ62TlpaVE",
+      "channel": "Representative John W. Mannion",
+      "channel_id": "UCpyYOrSc3hZ2O86ngw1sj-A",
+      "upload_date": null,
+      "duration": 291.0,
+      "view_count": 833,
+      "description": ""
+    },
+    {
+      "video_id": "O7GEVtS_uPc",
+      "title": "Standing Committee on Disabilities Roundtable - 06/03/21",
+      "url": "https://www.youtube.com/watch?v=O7GEVtS_uPc",
+      "channel": "NYSenate",
+      "channel_id": "UCVJzgJ1u9YANbvHDHryZO2g",
+      "upload_date": null,
+      "duration": 11384.0,
+      "view_count": 267,
+      "description": ""
+    },
+    {
+      "video_id": "R3-J6Tu1VoY",
+      "title": "Rep. Mannion Questions Sec. McMahon at Hearing",
+      "url": "https://www.youtube.com/watch?v=R3-J6Tu1VoY",
+      "channel": "Representative John W. Mannion",
+      "channel_id": "UCpyYOrSc3hZ2O86ngw1sj-A",
+      "upload_date": null,
+      "duration": 59.0,
+      "view_count": 99,
+      "description": ""
+    },
+    {
+      "video_id": "SP9suw3-0jE",
+      "title": "Forum with Congressman John Mannion 4/10/25",
+      "url": "https://www.youtube.com/watch?v=SP9suw3-0jE",
+      "channel": "LWV of Cortland County NY",
+      "channel_id": "UCEOLHMUsDIOu3HxZ9ZB2IHA",
+      "upload_date": null,
+      "duration": 3507.0,
+      "view_count": 99,
+      "description": ""
+    },
+    {
+      "video_id": "eWmiheySZnY",
+      "title": "Senator Mannion Delivers Farewell Remarks in the Senate Chamber",
+      "url": "https://www.youtube.com/watch?v=eWmiheySZnY",
+      "channel": "Representative John W. Mannion",
+      "channel_id": "UCpyYOrSc3hZ2O86ngw1sj-A",
+      "upload_date": null,
+      "duration": 785.0,
+      "view_count": 6126,
+      "description": ""
+    }
+  ]
+}

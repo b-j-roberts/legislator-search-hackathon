@@ -1,0 +1,188 @@
+{
+  "bioguide_id": "F000471",
+  "name": "Scott Fitzgerald",
+  "total_found": 45,
+  "filtered_count": 16,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "HZ2xe2OFTX8",
+      "title": "Interview With Julia Alvarez, 2009 F. Scott Fitzgerald Award Honoree",
+      "url": "https://www.youtube.com/watch?v=HZ2xe2OFTX8",
+      "channel": "Montgomery College",
+      "channel_id": "UCkddb0DpvVkAQN7qGK8LTbg",
+      "upload_date": null,
+      "duration": 1620.0,
+      "view_count": 44054,
+      "description": ""
+    },
+    {
+      "video_id": "qi4balciQrQ",
+      "title": "Scott Fitzgerald Slams Obamacare in Fiery Hearing Clash",
+      "url": "https://www.youtube.com/watch?v=qi4balciQrQ",
+      "channel": "Policy Record",
+      "channel_id": "UCi7YrhQHw2-BdSZndNffHSw",
+      "upload_date": null,
+      "duration": 436.0,
+      "view_count": 28,
+      "description": ""
+    },
+    {
+      "video_id": "kmcQmys1NOY",
+      "title": "Chairman Fitzgerald Opening Statement - Judiciary Subcommittee Hearing on Obamacare Subsidy Fraud",
+      "url": "https://www.youtube.com/watch?v=kmcQmys1NOY",
+      "channel": "Congressman Scott Fitzgerald",
+      "channel_id": "UCJfQkmIsvXzc6isNouh8X5w",
+      "upload_date": null,
+      "duration": 435.0,
+      "view_count": 422,
+      "description": ""
+    },
+    {
+      "video_id": "WqqLdN6yDec",
+      "title": "Rep. Fitzgerald Discusses Chairing Joint Judiciary Subcommittee Hearing on Obamacare Subsidy Fraud",
+      "url": "https://www.youtube.com/watch?v=WqqLdN6yDec",
+      "channel": "Congressman Scott Fitzgerald",
+      "channel_id": "UCJfQkmIsvXzc6isNouh8X5w",
+      "upload_date": null,
+      "duration": 461.0,
+      "view_count": 545,
+      "description": ""
+    },
+    {
+      "video_id": "rUolO_NpVio",
+      "title": "Fitzgerald Introduces James Schloemer, CEO of Continental Properties, at Financial Services Hearing",
+      "url": "https://www.youtube.com/watch?v=rUolO_NpVio",
+      "channel": "Congressman Scott Fitzgerald",
+      "channel_id": "UCJfQkmIsvXzc6isNouh8X5w",
+      "upload_date": null,
+      "duration": 45.0,
+      "view_count": 94,
+      "description": ""
+    },
+    {
+      "video_id": "yAjoB6zV5ks",
+      "title": "Scott Fitzgerald Leads House Judiciary Committee Hearing On Medical Residency Antitrust Exemption",
+      "url": "https://www.youtube.com/watch?v=yAjoB6zV5ks",
+      "channel": "Forbes Breaking News",
+      "channel_id": "UCg40OxZ1GYh3u3jBntB6DLg",
+      "upload_date": null,
+      "duration": 4951.0,
+      "view_count": 1029,
+      "description": ""
+    },
+    {
+      "video_id": "7ROKBWN4W_M",
+      "title": "Scott Fitzgerald Leads House Judiciary Committee Hearing About Bankruptcy Law",
+      "url": "https://www.youtube.com/watch?v=7ROKBWN4W_M",
+      "channel": "Forbes Breaking News",
+      "channel_id": "UCg40OxZ1GYh3u3jBntB6DLg",
+      "upload_date": null,
+      "duration": 6788.0,
+      "view_count": 673,
+      "description": ""
+    },
+    {
+      "video_id": "8TCA7uTWH9I",
+      "title": "Fitzgerald Q&A at Financial Services Hearing on FDIC\u2019s Failed Leadership & Toxic Workplace Culture",
+      "url": "https://www.youtube.com/watch?v=8TCA7uTWH9I",
+      "channel": "Congressman Scott Fitzgerald",
+      "channel_id": "UCJfQkmIsvXzc6isNouh8X5w",
+      "upload_date": null,
+      "duration": 217.0,
+      "view_count": 5,
+      "description": ""
+    },
+    {
+      "video_id": "rqcXVmJwkqo",
+      "title": "Fitzgerald Calls On Congress To Fix 'Judicial System Instead Of Going After People Caught Up In It'",
+      "url": "https://www.youtube.com/watch?v=rqcXVmJwkqo",
+      "channel": "Forbes Breaking News",
+      "channel_id": "UCg40OxZ1GYh3u3jBntB6DLg",
+      "upload_date": null,
+      "duration": 354.0,
+      "view_count": 1894,
+      "description": ""
+    },
+    {
+      "video_id": "KGYFxsIavNY",
+      "title": "JUST IN: House Judiciary Committee Holds Hearing On Foreign Governments Targeting U.S. Businesses",
+      "url": "https://www.youtube.com/watch?v=KGYFxsIavNY",
+      "channel": "Forbes Breaking News",
+      "channel_id": "UCg40OxZ1GYh3u3jBntB6DLg",
+      "upload_date": null,
+      "duration": 5936.0,
+      "view_count": 1732,
+      "description": ""
+    },
+    {
+      "video_id": "k3QRKNsHP4g",
+      "title": "Rep. Fitzgerald Q&A at Financial Services Hearing on Basel Endgame and Economic Uncertainty",
+      "url": "https://www.youtube.com/watch?v=k3QRKNsHP4g",
+      "channel": "Congressman Scott Fitzgerald",
+      "channel_id": "UCJfQkmIsvXzc6isNouh8X5w",
+      "upload_date": null,
+      "duration": 301.0,
+      "view_count": 129,
+      "description": ""
+    },
+    {
+      "video_id": "LnNfVvxxm5o",
+      "title": "Rep. Fitzgerald Q&A with Special Counsel Hur at Judiciary Committee Hearing",
+      "url": "https://www.youtube.com/watch?v=LnNfVvxxm5o",
+      "channel": "Congressman Scott Fitzgerald",
+      "channel_id": "UCJfQkmIsvXzc6isNouh8X5w",
+      "upload_date": null,
+      "duration": 309.0,
+      "view_count": 159,
+      "description": ""
+    },
+    {
+      "video_id": "rjfQKzrsiTQ",
+      "title": "F. Scott Fitzgerald Literary Conference Short Story Contest first prize winner speech",
+      "url": "https://www.youtube.com/watch?v=rjfQKzrsiTQ",
+      "channel": "Juliana Converse",
+      "channel_id": "UCQmGEWh50mpI6DbfSuPGo-A",
+      "upload_date": null,
+      "duration": 374.0,
+      "view_count": 484,
+      "description": ""
+    },
+    {
+      "video_id": "ybkIIRvnyrc",
+      "title": "Rep  Fitzgerald Floor Speech on HALT Fentanyl Act",
+      "url": "https://www.youtube.com/watch?v=ybkIIRvnyrc",
+      "channel": "Congressman Scott Fitzgerald",
+      "channel_id": "UCJfQkmIsvXzc6isNouh8X5w",
+      "upload_date": null,
+      "duration": 73.0,
+      "view_count": 282,
+      "description": ""
+    },
+    {
+      "video_id": "JmJnHOBh6Hg",
+      "title": "F. Scott Fitzgerald -- his own voice! RARE Shakespeare Othello's speech (Act 1, Scene 3) Desdemona",
+      "url": "https://www.youtube.com/watch?v=JmJnHOBh6Hg",
+      "channel": "Tim Gracyk",
+      "channel_id": "UCtRvrDqERePGnsZbXwHbQtA",
+      "upload_date": null,
+      "duration": 192.0,
+      "view_count": 112,
+      "description": ""
+    },
+    {
+      "video_id": "D7DFWVsSUrY",
+      "title": "DeWitt Sage - F. Scott Fitzgerald: Winter Dreams - 2001 Peabody Award Acceptance Speech",
+      "url": "https://www.youtube.com/watch?v=D7DFWVsSUrY",
+      "channel": "Peabody Awards",
+      "channel_id": "UC60HoTDk5hf2bhLzC0IE49Q",
+      "upload_date": null,
+      "duration": 126.0,
+      "view_count": 525,
+      "description": ""
+    }
+  ]
+}

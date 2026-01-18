@@ -1,0 +1,23 @@
+{
+  "bioguide_id": "M001240",
+  "name": "Addison P. McDowell",
+  "total_found": 35,
+  "filtered_count": 1,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "xCKw5HkXUCk",
+      "title": "Rep. McDowell at House Judiciary Charlotte Field Hearing on Violent Crime | 9.29.25",
+      "url": "https://www.youtube.com/watch?v=xCKw5HkXUCk",
+      "channel": "Congressman Addison McDowell",
+      "channel_id": "UCO5SSmrYk_46CsYJfl_xSHw",
+      "upload_date": null,
+      "duration": 175.0,
+      "view_count": 254,
+      "description": ""
+    }
+  ]
+}

@@ -1,0 +1,342 @@
+{
+  "bioguide_id": "E000294",
+  "name": "Tom Emmer",
+  "total_found": 46,
+  "filtered_count": 30,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "JWe_4CaBVEw",
+      "title": "Full exclusive interview: Rep. Emmer discusses TPS, gov. shutdown, healthcare and Epstein Files",
+      "url": "https://www.youtube.com/watch?v=JWe_4CaBVEw",
+      "channel": "KARE 11",
+      "channel_id": "UC1JAwKeDUjN2orv5t7LWODQ",
+      "upload_date": null,
+      "duration": 3062.0,
+      "view_count": 862,
+      "description": ""
+    },
+    {
+      "video_id": "kAhWDYnApIY",
+      "title": "Congressman Tom Emmer interview | Crypto vs SEC Regulation Update",
+      "url": "https://www.youtube.com/watch?v=kAhWDYnApIY",
+      "channel": "Paul Barron Network",
+      "channel_id": "UC4VPa7EOvObpyCRI4YKRQRw",
+      "upload_date": null,
+      "duration": 1802.0,
+      "view_count": 84964,
+      "description": ""
+    },
+    {
+      "video_id": "3WcjwDKgrGI",
+      "title": "Majority Whip Tom Emmer joins ABC News' This Week | August 31, 2025",
+      "url": "https://www.youtube.com/watch?v=3WcjwDKgrGI",
+      "channel": "Rep. Tom Emmer",
+      "channel_id": "UCScZcPwdddt6fffxbRLFQVw",
+      "upload_date": null,
+      "duration": 489.0,
+      "view_count": 442,
+      "description": ""
+    },
+    {
+      "video_id": "86NWCY5t2v0",
+      "title": "Congressman Tom Emmer backs Trump's Somali TPS decision",
+      "url": "https://www.youtube.com/watch?v=86NWCY5t2v0",
+      "channel": "KARE 11",
+      "channel_id": "UC1JAwKeDUjN2orv5t7LWODQ",
+      "upload_date": null,
+      "duration": 352.0,
+      "view_count": 12283,
+      "description": ""
+    },
+    {
+      "video_id": "JYvaJ3wQEIk",
+      "title": "Interview: Rep. Tom Emmer On Trump's Enduring Impact On Republican Party",
+      "url": "https://www.youtube.com/watch?v=JYvaJ3wQEIk",
+      "channel": "WCCO - CBS Minnesota",
+      "channel_id": "UCry2gCVdntv6r661sKUiKXw",
+      "upload_date": null,
+      "duration": 339.0,
+      "view_count": 1853,
+      "description": ""
+    },
+    {
+      "video_id": "NDAfkHzArC4",
+      "title": "Congressman Tom Emmer joins Harris Faulkner on The Faulkner Focus - 8/10/22",
+      "url": "https://www.youtube.com/watch?v=NDAfkHzArC4",
+      "channel": "Rep. Tom Emmer",
+      "channel_id": "UCScZcPwdddt6fffxbRLFQVw",
+      "upload_date": null,
+      "duration": 373.0,
+      "view_count": 204,
+      "description": ""
+    },
+    {
+      "video_id": "NXrUqUBtsDg",
+      "title": "Majority Whip Tom Emmer on Trump pardons and narrow House majority",
+      "url": "https://www.youtube.com/watch?v=NXrUqUBtsDg",
+      "channel": "ABC News",
+      "channel_id": "UCBi2mrWuNuyYy4gbM6fU18Q",
+      "upload_date": null,
+      "duration": 402.0,
+      "view_count": 2819,
+      "description": ""
+    },
+    {
+      "video_id": "tFHpWnMVn0M",
+      "title": "House Majority Whip Tom Emmer joins the Ruthless Podcast | November 5, 2025",
+      "url": "https://www.youtube.com/watch?v=tFHpWnMVn0M",
+      "channel": "Rep. Tom Emmer",
+      "channel_id": "UCScZcPwdddt6fffxbRLFQVw",
+      "upload_date": null,
+      "duration": 1613.0,
+      "view_count": 54,
+      "description": ""
+    },
+    {
+      "video_id": "KUp-I1LgpyI",
+      "title": "WCCO Interview: Tom Emmer Talks Bachmann, ISIS & Obama",
+      "url": "https://www.youtube.com/watch?v=KUp-I1LgpyI",
+      "channel": "WCCO - CBS Minnesota",
+      "channel_id": "UCry2gCVdntv6r661sKUiKXw",
+      "upload_date": null,
+      "duration": 297.0,
+      "view_count": 354,
+      "description": ""
+    },
+    {
+      "video_id": "7GEv1C-XzTc",
+      "title": "Congressman Tom Emmer Interview - Crypto Regulations, SEC Gary Gensler, Stablecoins & CBDCs",
+      "url": "https://www.youtube.com/watch?v=7GEv1C-XzTc",
+      "channel": "Thinking Crypto",
+      "channel_id": "UCjpkwsuHgYx9fBE0ojsJ_-w",
+      "upload_date": null,
+      "duration": 1744.0,
+      "view_count": 11487,
+      "description": ""
+    },
+    {
+      "video_id": "ef4QrNZnNVU",
+      "title": "Tom Emmer Interview",
+      "url": "https://www.youtube.com/watch?v=ef4QrNZnNVU",
+      "channel": "Michael McIntee",
+      "channel_id": "UCDIPsk87a6D3QqS0DeAUMPA",
+      "upload_date": null,
+      "duration": 103.0,
+      "view_count": 403,
+      "description": ""
+    },
+    {
+      "video_id": "PtEbY_5IQW4",
+      "title": "Minnesota and Personalized Medicine: An Interview With Rep. Tom Emmer",
+      "url": "https://www.youtube.com/watch?v=PtEbY_5IQW4",
+      "channel": "personalizedmedicine",
+      "channel_id": "UCS9NUgP9ylhrS_qRJyzFsFg",
+      "upload_date": null,
+      "duration": 931.0,
+      "view_count": 97,
+      "description": ""
+    },
+    {
+      "video_id": "f_K7ok_Hh2o",
+      "title": "Rep. Emmer at MN fraud hearing: What did Gov. Walz know?",
+      "url": "https://www.youtube.com/watch?v=f_K7ok_Hh2o",
+      "channel": "FOX 9 Minneapolis-St. Paul",
+      "channel_id": "UClwddNv0Cr6SIEGkzVK886w",
+      "upload_date": null,
+      "duration": 232.0,
+      "view_count": 22248,
+      "description": ""
+    },
+    {
+      "video_id": "3OieX2IqqZ4",
+      "title": "Rep. Tom Emmer grills Gov. Tim Walz during a U.S. House hearing on sanctuary states",
+      "url": "https://www.youtube.com/shorts/3OieX2IqqZ4",
+      "channel": "FOX 9 Minneapolis-St. Paul",
+      "channel_id": "UClwddNv0Cr6SIEGkzVK886w",
+      "upload_date": null,
+      "duration": 69.0,
+      "view_count": 80365,
+      "description": ""
+    },
+    {
+      "video_id": "u8WsFBpfekg",
+      "title": "Minnesota Rep. Emmer grills Gov. Walz at House hearing on sanctuary cities",
+      "url": "https://www.youtube.com/watch?v=u8WsFBpfekg",
+      "channel": "CBS News",
+      "channel_id": "UC8p1vwvWtl6T73JiExfWs1g",
+      "upload_date": null,
+      "duration": 310.0,
+      "view_count": 37951,
+      "description": ""
+    },
+    {
+      "video_id": "saW1HxZaqtc",
+      "title": "House Majority Whip Tom Emmer on Minnesota Fraud before House Oversight Committee | January 7, 2026",
+      "url": "https://www.youtube.com/watch?v=saW1HxZaqtc",
+      "channel": "Rep. Tom Emmer",
+      "channel_id": "UCScZcPwdddt6fffxbRLFQVw",
+      "upload_date": null,
+      "duration": 300.0,
+      "view_count": 942,
+      "description": ""
+    },
+    {
+      "video_id": "dsMSWmF3DJc",
+      "title": "Congressman Tom Emmer appears upside down on Zoom hearing",
+      "url": "https://www.youtube.com/watch?v=dsMSWmF3DJc",
+      "channel": "Reuters",
+      "channel_id": "UChqUTb7kYRX8-EiaN3XFrSQ",
+      "upload_date": null,
+      "duration": 78.0,
+      "view_count": 30624,
+      "description": ""
+    },
+    {
+      "video_id": "EEOhm0q3vCk",
+      "title": "Emmer presses Walz at House hearing on sanctuary cities",
+      "url": "https://www.youtube.com/watch?v=EEOhm0q3vCk",
+      "channel": "WCCO - CBS Minnesota",
+      "channel_id": "UCry2gCVdntv6r661sKUiKXw",
+      "upload_date": null,
+      "duration": 310.0,
+      "view_count": 6840,
+      "description": ""
+    },
+    {
+      "video_id": "QU1Vg5TQHUI",
+      "title": " Tom Emmer TORCHES Gov. Tim Walz in Explosive Hearing Over Riots, ICE & \u201cGestapo\u201d Remark.",
+      "url": "https://www.youtube.com/watch?v=QU1Vg5TQHUI",
+      "channel": "THE POLICY ROOM ",
+      "channel_id": "UCNvSFr7hgezezIx2JLZef_w",
+      "upload_date": null,
+      "duration": 561.0,
+      "view_count": 3,
+      "description": ""
+    },
+    {
+      "video_id": "WoE6GGt-lZQ",
+      "title": "Majority Whip Tom Emmer gives remarks at Financial Services hearing | September 14, 2023",
+      "url": "https://www.youtube.com/watch?v=WoE6GGt-lZQ",
+      "channel": "Rep. Tom Emmer",
+      "channel_id": "UCScZcPwdddt6fffxbRLFQVw",
+      "upload_date": null,
+      "duration": 91.0,
+      "view_count": 306,
+      "description": ""
+    },
+    {
+      "video_id": "eL-lFFKkgpM",
+      "title": "Tom Emmer Speaks at Oversight Hearing on Minnesota Fraud",
+      "url": "https://www.youtube.com/watch?v=eL-lFFKkgpM",
+      "channel": "moneycontrol",
+      "channel_id": "UChftTVI0QJmyXkajQYt2tiQ",
+      "upload_date": null,
+      "duration": 329.0,
+      "view_count": 350,
+      "description": ""
+    },
+    {
+      "video_id": "gupJt1OPFHw",
+      "title": "$9 BILLION Fraud Bombshell: Tom Emmer TORCHES Tim Walz in Explosive Hearing",
+      "url": "https://www.youtube.com/watch?v=gupJt1OPFHw",
+      "channel": "50 Patriots",
+      "channel_id": "UCycB7ACAq-p614m6Coe9y3A",
+      "upload_date": null,
+      "duration": 516.0,
+      "view_count": 14,
+      "description": ""
+    },
+    {
+      "video_id": "QllSl2SoBoc",
+      "title": "FULL SPEECH: Tom Emmer Speaks at the NRCC Dinner in Washington D.C. - 4/8/25",
+      "url": "https://www.youtube.com/watch?v=QllSl2SoBoc",
+      "channel": "Right Side Broadcasting Network",
+      "channel_id": "UCHqC-yWZ1kri4YzwRSt6RGQ",
+      "upload_date": null,
+      "duration": 288.0,
+      "view_count": 2457,
+      "description": ""
+    },
+    {
+      "video_id": "IKOdcMSygp0",
+      "title": "Congressman Tom Emmer speaks on the House floor in support of Mental Health Reforms, 6/22/22",
+      "url": "https://www.youtube.com/watch?v=IKOdcMSygp0",
+      "channel": "Rep. Tom Emmer",
+      "channel_id": "UCScZcPwdddt6fffxbRLFQVw",
+      "upload_date": null,
+      "duration": 145.0,
+      "view_count": 165,
+      "description": ""
+    },
+    {
+      "video_id": "UU7zVo5zQdQ",
+      "title": "Majority Whip Tom Emmer delivers floor speech in support of the CLARITY Act | July 17, 2025",
+      "url": "https://www.youtube.com/watch?v=UU7zVo5zQdQ",
+      "channel": "Rep. Tom Emmer",
+      "channel_id": "UCScZcPwdddt6fffxbRLFQVw",
+      "upload_date": null,
+      "duration": 130.0,
+      "view_count": 136,
+      "description": ""
+    },
+    {
+      "video_id": "LWr3If3GBeY",
+      "title": "Majority Whip Tom Emmer delivers floor speech honoring Financial Services Chairman Patrick McHenry",
+      "url": "https://www.youtube.com/watch?v=LWr3If3GBeY",
+      "channel": "Rep. Tom Emmer",
+      "channel_id": "UCScZcPwdddt6fffxbRLFQVw",
+      "upload_date": null,
+      "duration": 61.0,
+      "view_count": 54,
+      "description": ""
+    },
+    {
+      "video_id": "sIhlbZgx77U",
+      "title": "WATCH: Rep. Tom Emmer speaks at 2024 Republican National Convention | 2024 RNC Night 2",
+      "url": "https://www.youtube.com/watch?v=sIhlbZgx77U",
+      "channel": "PBS NewsHour",
+      "channel_id": "UC6ZFN9Tx6xh-skXCuRHCDpQ",
+      "upload_date": null,
+      "duration": 276.0,
+      "view_count": 2792,
+      "description": ""
+    },
+    {
+      "video_id": "eOPGt-5wK3M",
+      "title": "Tom Emmer Speech Republican National Convention Milwaukee 2024, Day 2",
+      "url": "https://www.youtube.com/watch?v=eOPGt-5wK3M",
+      "channel": "Politi Spies",
+      "channel_id": "UCcEqIjiVU2JBS-JyDrVY9Eg",
+      "upload_date": null,
+      "duration": 292.0,
+      "view_count": 11,
+      "description": ""
+    },
+    {
+      "video_id": "FxBDAiU_gfM",
+      "title": "Rep. Tom Emmer At MN GOP Convention - Full Speech",
+      "url": "https://www.youtube.com/watch?v=FxBDAiU_gfM",
+      "channel": "Michael McIntee",
+      "channel_id": "UCDIPsk87a6D3QqS0DeAUMPA",
+      "upload_date": null,
+      "duration": 646.0,
+      "view_count": 182,
+      "description": ""
+    },
+    {
+      "video_id": "LeKs3x4OOUo",
+      "title": "2010 GOP State Convention - Tom Emmer Begins Acceptance Speech",
+      "url": "https://www.youtube.com/watch?v=LeKs3x4OOUo",
+      "channel": "jeobrieniii",
+      "channel_id": "UCxjanrGTghU8U_xJTC4NrrA",
+      "upload_date": null,
+      "duration": 92.0,
+      "view_count": 166,
+      "description": ""
+    }
+  ]
+}

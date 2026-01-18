@@ -1,0 +1,78 @@
+{
+  "bioguide_id": "C001136",
+  "name": "Herbert C. Conaway, Jr.",
+  "total_found": 38,
+  "filtered_count": 6,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "flN7wbsdyas",
+      "title": "No Distractions: Congressman Dr. Herb Conaway",
+      "url": "https://www.youtube.com/watch?v=flN7wbsdyas",
+      "channel": "Elizabeth Booker Houston",
+      "channel_id": "UCXk2O-OVpjSZC9bru35--ww",
+      "upload_date": null,
+      "duration": 378.0,
+      "view_count": 171,
+      "description": "Intro\u00a0..."
+    },
+    {
+      "video_id": "vGGcCHBRW40",
+      "title": "Conaway on Assembly Health Committee Discussion of Affordable Health Care",
+      "url": "https://www.youtube.com/watch?v=vGGcCHBRW40",
+      "channel": "New Jersey Assembly Democrats",
+      "channel_id": "UCo1chL_L4kGu4ga3V0NNcfg",
+      "upload_date": null,
+      "duration": 69.0,
+      "view_count": 20,
+      "description": ""
+    },
+    {
+      "video_id": "gXqHk0EvNls",
+      "title": "Conaway & Eustace Excerpts from Health Committee Hearing on NJ Water Quality & Lead Contamination",
+      "url": "https://www.youtube.com/watch?v=gXqHk0EvNls",
+      "channel": "New Jersey Assembly Democrats",
+      "channel_id": "UCo1chL_L4kGu4ga3V0NNcfg",
+      "upload_date": null,
+      "duration": 370.0,
+      "view_count": 52,
+      "description": ""
+    },
+    {
+      "video_id": "LAGmTmHOBds",
+      "title": "Gusciora & Conaway Opening Remarks at Joint Hearing on Tiered Health Insurance Networks in NJ",
+      "url": "https://www.youtube.com/watch?v=LAGmTmHOBds",
+      "channel": "New Jersey Assembly Democrats",
+      "channel_id": "UCo1chL_L4kGu4ga3V0NNcfg",
+      "upload_date": null,
+      "duration": 373.0,
+      "view_count": 35,
+      "description": ""
+    },
+    {
+      "video_id": "UXJe7bR220I",
+      "title": "Excerpts from Conaway & Benson News Conference Strongly Opposing 'Citizens United' Decision (AR-86)",
+      "url": "https://www.youtube.com/watch?v=UXJe7bR220I",
+      "channel": "New Jersey Assembly Democrats",
+      "channel_id": "UCo1chL_L4kGu4ga3V0NNcfg",
+      "upload_date": null,
+      "duration": 232.0,
+      "view_count": 24,
+      "description": ""
+    },
+    {
+      "video_id": "wOFAKyFxFPA",
+      "title": "HCNJ -  25th Anniversary - Congressman Dr. Herbert Conaway, Jr. message - November 19, 2023",
+      "url": "https://www.youtube.com/watch?v=wOFAKyFxFPA",
+      "channel": "Health Camp of New Jersey ",
+      "channel_id": "UCDcZbRePqabZEzMJI_2ZF5w",
+      "upload_date": null,
+      "duration": 278.0,
+      "view_count": 0,
+      "description": ""
+    }
+  ]
+}

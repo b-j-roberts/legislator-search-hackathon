@@ -1,0 +1,56 @@
+{
+  "bioguide_id": "M001239",
+  "name": "John J. McGuire III",
+  "total_found": 17,
+  "filtered_count": 4,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "or_MDJnmihc",
+      "title": "Defendant collapses in court after guilty verdict",
+      "url": "https://www.youtube.com/watch?v=or_MDJnmihc",
+      "channel": "CBS News",
+      "channel_id": "UC8p1vwvWtl6T73JiExfWs1g",
+      "upload_date": null,
+      "duration": 151.0,
+      "view_count": 80669381,
+      "description": ""
+    },
+    {
+      "video_id": "RpvRHiw2VsY",
+      "title": "Congressman John McGuire Grills Sanctuary City Mayors During Hearing!",
+      "url": "https://www.youtube.com/watch?v=RpvRHiw2VsY",
+      "channel": "Political Spin",
+      "channel_id": "UC6310UoangSlrKHWmRXhQbg",
+      "upload_date": null,
+      "duration": 314.0,
+      "view_count": 128,
+      "description": ""
+    },
+    {
+      "video_id": "ER97GqMuKO8",
+      "title": "What Life Is Like For 2 of the Youngest Women on Death Row | A Hidden America (Extra)",
+      "url": "https://www.youtube.com/watch?v=ER97GqMuKO8",
+      "channel": "ABC News",
+      "channel_id": "UCBi2mrWuNuyYy4gbM6fU18Q",
+      "upload_date": null,
+      "duration": 63.0,
+      "view_count": 5116030,
+      "description": ""
+    },
+    {
+      "video_id": "ABjvcuFAUZU",
+      "title": "Congressman John McGuire's Powerful Address at The Stay-at-Home Federal Workforce Hearing",
+      "url": "https://www.youtube.com/watch?v=ABjvcuFAUZU",
+      "channel": "Political Spin",
+      "channel_id": "UC6310UoangSlrKHWmRXhQbg",
+      "upload_date": null,
+      "duration": 335.0,
+      "view_count": 359,
+      "description": ""
+    }
+  ]
+}

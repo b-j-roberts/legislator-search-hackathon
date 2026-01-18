@@ -1,0 +1,23 @@
+{
+  "bioguide_id": "O000175",
+  "name": "Andrew Ogles",
+  "total_found": 10,
+  "filtered_count": 1,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "AADkTDMxcXs",
+      "title": "Some House Republicans shrug off shutdown concerns",
+      "url": "https://www.youtube.com/watch?v=AADkTDMxcXs",
+      "channel": "catty news",
+      "channel_id": "UC4DC_ogWXR3veQODauNR6Ig",
+      "upload_date": null,
+      "duration": 214.0,
+      "view_count": 0,
+      "description": ""
+    }
+  ]
+}

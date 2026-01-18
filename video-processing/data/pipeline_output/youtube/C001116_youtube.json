@@ -1,0 +1,45 @@
+{
+  "bioguide_id": "C001116",
+  "name": "Andrew S. Clyde",
+  "total_found": 9,
+  "filtered_count": 3,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "oWKDYJqFc-U",
+      "title": "GOP Congressman Refuses To Shake Hands With Officer Beaten In Jan. 6 Attack",
+      "url": "https://www.youtube.com/watch?v=oWKDYJqFc-U",
+      "channel": "MS NOW",
+      "channel_id": "UCaXkIU1QidjPwiAYu6GcHjg",
+      "upload_date": null,
+      "duration": 308.0,
+      "view_count": 391915,
+      "description": ""
+    },
+    {
+      "video_id": "ZuWH3xTV9UM",
+      "title": "Congressman BUSTED on Lie About Capitol Riots",
+      "url": "https://www.youtube.com/watch?v=ZuWH3xTV9UM",
+      "channel": "The Young Turks",
+      "channel_id": "UC1yBKRuGpC1tSM73A0ZjYjQ",
+      "upload_date": null,
+      "duration": 425.0,
+      "view_count": 117978,
+      "description": ""
+    },
+    {
+      "video_id": "EQIg55hd2NY",
+      "title": "Congressional Bill That Will ELIMINATE Income Tax and ABOLISH the IRS \u2013 Truth About HR 25",
+      "url": "https://www.youtube.com/watch?v=EQIg55hd2NY",
+      "channel": "What Is Congress Voting On Today?",
+      "channel_id": "UCNOZArVfiijiPAKheU50bqA",
+      "upload_date": null,
+      "duration": 1078.0,
+      "view_count": 4134,
+      "description": ""
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "bioguide_id": "H001103",
+  "name": "Pablo Jos\u00e9 Hern\u00e1ndez",
+  "total_found": 39,
+  "filtered_count": 4,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "Fp-UsEauSf4",
+      "title": "Homeland Security Committee hearing on H.R. 2261",
+      "url": "https://www.youtube.com/watch?v=Fp-UsEauSf4",
+      "channel": "Comisionado Residente Pablo Jos\u00e9 Hern\u00e1ndez",
+      "channel_id": "UCLwZMkPIjqhiQpJODizT0uQ",
+      "upload_date": null,
+      "duration": 292.0,
+      "view_count": 26,
+      "description": ""
+    },
+    {
+      "video_id": "INbETF4ylFg",
+      "title": "Chairman Pfluger Leads CTI Hearing on the Digital Battleground",
+      "url": "https://www.youtube.com/watch?v=INbETF4ylFg",
+      "channel": "Congressman August Pfluger",
+      "channel_id": "UC8bJT16wpa7co50ELvpMTTg",
+      "upload_date": null,
+      "duration": 432.0,
+      "view_count": 65,
+      "description": ""
+    },
+    {
+      "video_id": "sXEdjXjGazI",
+      "title": "Hot politics, million-dollar spending, and social controversies | Live and Unfiltered",
+      "url": "https://www.youtube.com/watch?v=sXEdjXjGazI",
+      "channel": "ABC Puerto Rico",
+      "channel_id": "UC5aJ7MNAF8V0CPg7Aotrx3A",
+      "upload_date": null,
+      "duration": 2809.0,
+      "view_count": 345,
+      "description": ""
+    },
+    {
+      "video_id": "PgLxVUjdvgw",
+      "title": "Floor Speech - Hurricane Maria\u2019s 8-Year Anniversary",
+      "url": "https://www.youtube.com/watch?v=PgLxVUjdvgw",
+      "channel": "Comisionado Residente Pablo Jos\u00e9 Hern\u00e1ndez",
+      "channel_id": "UCLwZMkPIjqhiQpJODizT0uQ",
+      "upload_date": null,
+      "duration": 254.0,
+      "view_count": 146,
+      "description": ""
+    }
+  ]
+}

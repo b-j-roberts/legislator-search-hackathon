@@ -1,0 +1,133 @@
+{
+  "bioguide_id": "L000606",
+  "name": "George Latimer",
+  "total_found": 46,
+  "filtered_count": 11,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "VS5loDVFDI4",
+      "title": "Full interview with George Latimer | The Point with Marcia Kramer",
+      "url": "https://www.youtube.com/watch?v=VS5loDVFDI4",
+      "channel": "CBS New York",
+      "channel_id": "UCNZyLULUQBp5e9Q1cKtvk6Q",
+      "upload_date": null,
+      "duration": 1133.0,
+      "view_count": 1632,
+      "description": ""
+    },
+    {
+      "video_id": "nRhZ4fl0xds",
+      "title": "George Latimer Interview for Greenburgh Cable TV",
+      "url": "https://www.youtube.com/watch?v=nRhZ4fl0xds",
+      "channel": "George Latimer",
+      "channel_id": "UCAj7fpfhI4dF9h8Wrb7KHSw",
+      "upload_date": null,
+      "duration": 806.0,
+      "view_count": 474,
+      "description": ""
+    },
+    {
+      "video_id": "N27e09iGs10",
+      "title": "An Interview with George Latimer",
+      "url": "https://www.youtube.com/watch?v=N27e09iGs10",
+      "channel": "Official Westchester Gov Videos",
+      "channel_id": "UCC774tkGUZw8xoZtHhuQUsQ",
+      "upload_date": null,
+      "duration": 167.0,
+      "view_count": 338,
+      "description": ""
+    },
+    {
+      "video_id": "4Ye1alQV05k",
+      "title": "Ashley Billone interviews George Latimer on election night",
+      "url": "https://www.youtube.com/watch?v=4Ye1alQV05k",
+      "channel": "The Local Live",
+      "channel_id": "UCshSXwHVRmrCaBPUPek-h-w",
+      "upload_date": null,
+      "duration": 32.0,
+      "view_count": 41,
+      "description": ""
+    },
+    {
+      "video_id": "KMce4eMd8II",
+      "title": "Interview: George Latimer's 1st reaction to beating Bowman in 16th Congressional District | News 12",
+      "url": "https://www.youtube.com/watch?v=KMce4eMd8II",
+      "channel": "News 12",
+      "channel_id": "UCFhbonoFqxg2b9FMRzYAwog",
+      "upload_date": null,
+      "duration": 316.0,
+      "view_count": 6597,
+      "description": ""
+    },
+    {
+      "video_id": "lph4gGKy1ic",
+      "title": "Black Westchester Power Hour - The Westchester County Exec George Latimer Interview, July 2, 2020",
+      "url": "https://www.youtube.com/watch?v=lph4gGKy1ic",
+      "channel": "Black Westchester",
+      "channel_id": "UCJjCZBa4GgjtglVR9fvbSWQ",
+      "upload_date": null,
+      "duration": 4628.0,
+      "view_count": 26,
+      "description": ""
+    },
+    {
+      "video_id": "J5bcvrJCDUo",
+      "title": "WPDCC Interview with Westchester County Executive George Latimer",
+      "url": "https://www.youtube.com/watch?v=J5bcvrJCDUo",
+      "channel": "Danielle Solinski",
+      "channel_id": "UCltQLDW1ofOlsCsnaAimYIA",
+      "upload_date": null,
+      "duration": 1558.0,
+      "view_count": 24,
+      "description": ""
+    },
+    {
+      "video_id": "RvPOIk1P56E",
+      "title": "George Latimer a \"perfect fit\" for 16th Congressional District, assemblywoman says",
+      "url": "https://www.youtube.com/watch?v=RvPOIk1P56E",
+      "channel": "CBS New York",
+      "channel_id": "UCNZyLULUQBp5e9Q1cKtvk6Q",
+      "upload_date": null,
+      "duration": 120.0,
+      "view_count": 2852,
+      "description": ""
+    },
+    {
+      "video_id": "dgepT9COU80",
+      "title": "Westchester County Executive Latimer Addresses PSC Hearing on Natual Gas Moratorium",
+      "url": "https://www.youtube.com/watch?v=dgepT9COU80",
+      "channel": "Westfair Business Journal",
+      "channel_id": "UCcLjimhzpEZCMeL2ItGpLAg",
+      "upload_date": null,
+      "duration": 57.0,
+      "view_count": 70,
+      "description": ""
+    },
+    {
+      "video_id": "25SgYSntvf0",
+      "title": "County Executive George Latimer's Second Inaugural Speech and Swearing-in",
+      "url": "https://www.youtube.com/watch?v=25SgYSntvf0",
+      "channel": "Official Westchester Gov Videos",
+      "channel_id": "UCC774tkGUZw8xoZtHhuQUsQ",
+      "upload_date": null,
+      "duration": 782.0,
+      "view_count": 149,
+      "description": ""
+    },
+    {
+      "video_id": "CiYcdVoeYZM",
+      "title": "George Latimer victory speech after winning primary for NY's 16th Congressional District | News 12",
+      "url": "https://www.youtube.com/watch?v=CiYcdVoeYZM",
+      "channel": "News 12",
+      "channel_id": "UCFhbonoFqxg2b9FMRzYAwog",
+      "upload_date": null,
+      "duration": 457.0,
+      "view_count": 510,
+      "description": ""
+    }
+  ]
+}

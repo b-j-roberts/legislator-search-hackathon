@@ -1,0 +1,89 @@
+{
+  "bioguide_id": "S001229",
+  "name": "Jefferson Shreve",
+  "total_found": 38,
+  "filtered_count": 7,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "Z7CuZx0JVUY",
+      "title": "One-on-one with Indy mayoral candidate Jefferson Shreve I Decision 2023 (EXTENDED INTERVIEW)",
+      "url": "https://www.youtube.com/watch?v=Z7CuZx0JVUY",
+      "channel": "WTHR",
+      "channel_id": "UCSFLs1nwzqSC3Tq6cXhJkLg",
+      "upload_date": null,
+      "duration": 2303.0,
+      "view_count": 438,
+      "description": ""
+    },
+    {
+      "video_id": "vQgwRZ3YyNo",
+      "title": "Jefferson Shreve, Republican candidate for Indiana's Sixth Congressional District",
+      "url": "https://www.youtube.com/watch?v=vQgwRZ3YyNo",
+      "channel": "All Indiana Podcast Network",
+      "channel_id": "UCpbfYilWVgizjtsSwerAR5w",
+      "upload_date": null,
+      "duration": 729.0,
+      "view_count": 11,
+      "description": ""
+    },
+    {
+      "video_id": "Qr0HvYmi7HE",
+      "title": "Decision 2023: Indianapolis mayoral candidate interviews",
+      "url": "https://www.youtube.com/watch?v=Qr0HvYmi7HE",
+      "channel": "WTHR",
+      "channel_id": "UCSFLs1nwzqSC3Tq6cXhJkLg",
+      "upload_date": null,
+      "duration": 317.0,
+      "view_count": 153,
+      "description": ""
+    },
+    {
+      "video_id": "NYtqF3S7k4U",
+      "title": "Hogsett, Shreve Faceoff on Public Safety in Mayoral Debate - CBS4",
+      "url": "https://www.youtube.com/watch?v=NYtqF3S7k4U",
+      "channel": "Cameron Ridle",
+      "channel_id": "UCQhDsubI7rb14HuZXq0Z3ig",
+      "upload_date": null,
+      "duration": 181.0,
+      "view_count": 23,
+      "description": ""
+    },
+    {
+      "video_id": "PM805WQiIxM",
+      "title": "Shreve Enters Race for Congress | WFYI News Now",
+      "url": "https://www.youtube.com/watch?v=PM805WQiIxM",
+      "channel": "WFYI",
+      "channel_id": "UCDA3qlm3qBFr32CKfYyNqVQ",
+      "upload_date": null,
+      "duration": 353.0,
+      "view_count": 68,
+      "description": ""
+    },
+    {
+      "video_id": "e0ZnrRs8B6I",
+      "title": "WFYI News Now | October 30, 2023",
+      "url": "https://www.youtube.com/watch?v=e0ZnrRs8B6I",
+      "channel": "WFYI",
+      "channel_id": "UCDA3qlm3qBFr32CKfYyNqVQ",
+      "upload_date": null,
+      "duration": 635.0,
+      "view_count": 38,
+      "description": ""
+    },
+    {
+      "video_id": "4qpf3IcEW8o",
+      "title": "Indianapolis Mayoral Debate on FOX59",
+      "url": "https://www.youtube.com/watch?v=4qpf3IcEW8o",
+      "channel": "FOX59 News",
+      "channel_id": "UCktceZtn0Kxd53qjjM2KzqA",
+      "upload_date": null,
+      "duration": 3473.0,
+      "view_count": 1777,
+      "description": ""
+    }
+  ]
+}

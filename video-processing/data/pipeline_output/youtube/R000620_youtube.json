@@ -1,0 +1,56 @@
+{
+  "bioguide_id": "R000620",
+  "name": "Luz M. Rivas",
+  "total_found": 17,
+  "filtered_count": 4,
+  "search_params": {
+    "published_after": "2020-01-01",
+    "used_api": false
+  },
+  "videos": [
+    {
+      "video_id": "NS78OvBek8M",
+      "title": "AB 2223 Assembly Health Committee Hearing",
+      "url": "https://www.youtube.com/watch?v=NS78OvBek8M",
+      "channel": "California Family Council",
+      "channel_id": "UCG1CokuOBHQnQF9hqG_r1pA",
+      "upload_date": null,
+      "duration": 1728.0,
+      "view_count": 984,
+      "description": ""
+    },
+    {
+      "video_id": "kZhn-Ya-f2M",
+      "title": "Congresswoman Luz M. Rivas community swear in speech, Congratulations Congresswoman Luz M. Rivas!",
+      "url": "https://www.youtube.com/watch?v=kZhn-Ya-f2M",
+      "channel": "Voces Unidas SFV",
+      "channel_id": "UC8TC8JRaYc2Z-FeL96xmPWw",
+      "upload_date": null,
+      "duration": 907.0,
+      "view_count": 416,
+      "description": ""
+    },
+    {
+      "video_id": "qjQLDKVCC9Y",
+      "title": "Rudy Ortega, blessing of Congresswoman Rivas community swear in.",
+      "url": "https://www.youtube.com/watch?v=qjQLDKVCC9Y",
+      "channel": "Voces Unidas SFV",
+      "channel_id": "UC8TC8JRaYc2Z-FeL96xmPWw",
+      "upload_date": null,
+      "duration": 195.0,
+      "view_count": 21,
+      "description": ""
+    },
+    {
+      "video_id": "TuSQ3iCTZd0",
+      "title": "2020 CASC Forum - Ang\u00e9lica Mar\u00eda Due\u00f1as, candidate for US Congress (District 29)",
+      "url": "https://www.youtube.com/watch?v=TuSQ3iCTZd0",
+      "channel": "Roger Royse Law",
+      "channel_id": "UCE1suuHnbRxEe2RZytRwGTg",
+      "upload_date": null,
+      "duration": 122.0,
+      "view_count": 374,
+      "description": ""
+    }
+  ]
+}
